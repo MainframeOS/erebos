@@ -1,6 +1,6 @@
 {
   "name": "erebos",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Swarm and PSS client",
   "main": "lib/index.js",
   "browser": "dist/erebos.min.js",
