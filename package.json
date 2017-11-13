@@ -5,7 +5,6 @@
   "main": "lib/index.js",
   "browser": "dist/erebos.min.js",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "clean": "del dist && del lib",
     "build:cjs": "cross-env BABEL_ENV=node babel src --out-dir lib --ignore web.js",
