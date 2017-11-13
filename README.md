@@ -67,26 +67,26 @@ bob.sendAsym(base64ToHex(key), topic, encodeMessage('hello world'))
 
 Creates a BZZ instance using the server provided as `url`.
 
-#### .uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string>
+#### BZZ.uploadRaw(data: string | Buffer, headers?: Object = {}): Promise
 
 Uploads the provided `data` to the `bzzr:` endpoint and returns the created hash.  
 The `content-length` header will be added to the `headers` Object based on the `data`.
 
-#### .downloadRaw(hash: string): Promise<Response>
+#### BZZ.downloadRaw(hash: string): Promise
 
 Downloads the file matching the provided `hash` using the `bzzr:` endpoint.
 
-#### .downloadRawBlob(hash: string): Promise<Blob>
+#### BZZ.downloadRawBlob(hash: string): Promise
 
 **Browser only - not available when using Node**  
 Downloads the file matching the provided `hash` as a [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
 
-#### .downloadRawBuffer(hash: string): Promise<Buffer>
+#### BZZ.downloadRawBuffer(hash: string): Promise
 
 **Node only - not available in browser**  
 Downloads the file matching the provided `hash` as a [`Buffer`](https://nodejs.org/dist/latest-v9.x/docs/api/buffer.html#buffer_buffer).
 
-#### .downloadRawText(hash: string): Promise<string>
+#### BZZ.downloadRawText(hash: string): Promise
 
 Downloads the file matching the provided `hash` as a string.
 
@@ -99,15 +99,15 @@ the provided URL.
 
 Creates a PSS instance with the provided `RPC` instance.
 
-#### .getBaseAddr(): Promise<base64>
+#### PSS.getBaseAddr(): Promise
 
 Calls [`pss_baseAddr`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_baseaddr).
 
-#### .getPublicKey(): Promise<base64>
+#### PSS.getPublicKey(): Promise
 
 Calls [`pss_getPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_getPublicKey).
 
-#### .sendAsym(key: hex, topic: topic, message: byteArray): Promise<null>
+#### PSS.sendAsym(key: hex, topic: topic, message: byteArray): Promise
 
 Calls [`pss_sendAsym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendAsym) with the provided arguments:
 
@@ -115,7 +115,7 @@ Calls [`pss_sendAsym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm
 - `topic: topic`: destination topic
 - `message: byteArray`
 
-#### .sendSym(keyID: string, topic: topic, message: byteArray): Promise<null>
+#### PSS.sendSym(keyID: string, topic: topic, message: byteArray): Promise
 
 Calls [`pss_sendSym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendSym) with the provided arguments:
 
@@ -123,7 +123,7 @@ Calls [`pss_sendSym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/
 - `topic: topic`: destination topic
 - `message: byteArray`
 
-#### .setPeerPublicKey(key: byteArray, topic: topic, address?: string = ''): Promise<null>
+#### PSS.setPeerPublicKey(key: byteArray, topic: topic, address?: string = ''): Promise
 
 Calls [`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setPeerPublicKey) with the provided arguments:
 
@@ -131,7 +131,7 @@ Calls [`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/blob/p
 - `topic: topic`
 - `address: byteArray`
 
-#### .setSymmetricKey(key: byteArray, topic: topic, address?: string = '', useForDecryption: boolean = false): Promise<string>
+#### PSS.setSymmetricKey(key: byteArray, topic: topic, address?: string = '', useForDecryption: boolean = false): Promise
 
 Calls [`pss_setSymmetricKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setSymmetricKey) with the provided arguments:
 
@@ -141,15 +141,15 @@ Calls [`pss_setSymmetricKey`](https://github.com/ethersphere/go-ethereum/blob/ps
 
 Returns the generated symmetric key ID.
 
-#### .stringToTopic(str: string): Promise<topic>
+#### PSS.stringToTopic(str: string): Promise
 
 Calls [`pss_stringToTopic`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_stringToTopic) with the provided string and returns the generated topic.
 
-#### .subscribeTopic(topic: topic): Promise<hex>
+#### PSS.subscribeTopic(topic: topic): Promise
 
 Calls [`pss_subscribe`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_subscribe) with the provided topic and returns the subscription handle.
 
-#### .createSubscription(subscription: hex): Observable<Object>
+#### PSS.createSubscription(subscription: hex): Observable
 
 Creates a [RxJS Observable](http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html) that will emit events matching the provided subscription handle as created by calling `subscribeTopic()` once subscribed to.
 
@@ -163,27 +163,27 @@ As documented in [PSS API](https://github.com/ethersphere/go-ethereum/blob/pss/s
 }
 ```
 
-#### .createTopicSubscription(topic: topic): Promise<Observable<Object>>
+#### PSS.createTopicSubscription(topic: topic): Promise
 
 Shortcut for calling `subscribeTopic()` followed by `createSubscription()`.
 
-### RPC(transport: Subject<Object>)
+### RPC(transport: Subject)
 
 Creates a RPC instance over the provided [RxJS Subject](http://reactivex.io/rxjs/class/es6/Subject.js~Subject.html) and starts subscribing to it.
 
-#### .connect()
+#### RPC.connect()
 
 Subscribes to the transport.
 
-#### .observe(method: string, params?: Array<any>): Observable<any>
+#### RPC.observe(method: string, params?: Array): Observable
 
 Creates a [RxJS Observable](http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html) that will call the `method` with the provided `params` once subscribed to.
 
-#### .promise(method: string, params?: Array<any>): Promise<any>
+#### RPC.promise(method: string, params?: Array): Promise
 
 Calls the `method` with the provided `params` and provides the resulting Promise.
 
-#### .subscribe(destinationOrNext: Observer | (any) => void, error?: (any) => void, complete?: () => void): () => void
+#### RPC.subscribe(destinationOrNext: Observer | (any) => void, error?: (any) => void, complete?: () => void): () => void
 
 Creates a [RxJS Subscriber](http://reactivex.io/rxjs/class/es6/Subscriber.js~Subscriber.html) for incoming events over the transport with the provided arguments and returns the unsubscribe function.
 
