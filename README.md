@@ -105,11 +105,11 @@ Calls [`pss_baseAddr`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm
 
 #### PSS.getPublicKey(): Promise
 
-Calls [`pss_getPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_getPublicKey).
+Calls [`pss_getPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_getpublickey).
 
 #### PSS.sendAsym(key: hex, topic: topic, message: byteArray): Promise
 
-Calls [`pss_sendAsym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendAsym) with the provided arguments:
+Calls [`pss_sendAsym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendasym) with the provided arguments:
 
 - `key: hex`: public key of the peer
 - `topic: topic`: destination topic
@@ -117,7 +117,7 @@ Calls [`pss_sendAsym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm
 
 #### PSS.sendSym(keyID: string, topic: topic, message: byteArray): Promise
 
-Calls [`pss_sendSym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendSym) with the provided arguments:
+Calls [`pss_sendSym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendsym) with the provided arguments:
 
 - `keyID: string`: symmetric key ID generated using `setSymmetricKey()`
 - `topic: topic`: destination topic
@@ -125,7 +125,7 @@ Calls [`pss_sendSym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/
 
 #### PSS.setPeerPublicKey(key: byteArray, topic: topic, address?: string = ''): Promise
 
-Calls [`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setPeerPublicKey) with the provided arguments:
+Calls [`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setpeerpublickey) with the provided arguments:
 
 - `key: byteArray`: public key of the peer
 - `topic: topic`
@@ -133,7 +133,7 @@ Calls [`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/blob/p
 
 #### PSS.setSymmetricKey(key: byteArray, topic: topic, address?: string = '', useForDecryption: boolean = false): Promise
 
-Calls [`pss_setSymmetricKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setSymmetricKey) with the provided arguments:
+Calls [`pss_setSymmetricKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setsymmetrickey) with the provided arguments:
 
 - `key: byteArray`: public key of the peer
 - `topic: topic`
@@ -143,7 +143,7 @@ Returns the generated symmetric key ID.
 
 #### PSS.stringToTopic(str: string): Promise
 
-Calls [`pss_stringToTopic`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_stringToTopic) with the provided string and returns the generated topic.
+Calls [`pss_stringToTopic`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_stringtotopic) with the provided string and returns the generated topic.
 
 #### PSS.subscribeTopic(topic: topic): Promise
 
