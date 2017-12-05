@@ -23,6 +23,10 @@ const config = {
     }),
     commonjs(),
   ],
+  treeshake: {
+    pureExternalModules: true,
+    propertyReadSideEffects: false,
+  },
 }
 
 if (env === 'production') {

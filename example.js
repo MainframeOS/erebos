@@ -1,10 +1,4 @@
-const {
-  base64ToArray,
-  base64ToHex,
-  createPSSWebSocket,
-  decodeMessage,
-  encodeMessage,
-} = require('./lib')
+const { createPSSWebSocket, decodeHex, encodeHex } = require('./lib')
 
 const run = async () => {
   // Open WebSocket connections
@@ -20,15 +14,15 @@ const run = async () => {
   // Make Alice subscribe to the created topic and Bob add her public key
   const [subscription] = await Promise.all([
     alice.subscribeTopic(topic),
-    bob.setPeerPublicKey(base64ToArray(key), topic),
+    bob.setPeerPublicKey(key, topic),
   ])
   // Actually subscribe to the messages stream
   alice.createSubscription(subscription).subscribe(payload => {
-    const msg = decodeMessage(payload.Msg)
+    const msg = decodeHex(payload.Msg)
     console.log(`received message from ${payload.Key}: ${msg}`)
   })
   // Send message to Alice
-  bob.sendAsym(base64ToHex(key), topic, encodeMessage('hello world'))
+  bob.sendAsym(key, topic, encodeHex('hello world'))
 }
 
 run().catch(console.error)

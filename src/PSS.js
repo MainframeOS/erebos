@@ -3,9 +3,7 @@
 import { Observable } from 'rxjs/Observable'
 
 import type RPC from './RPC'
-import type { base64, byteArray, hex } from './utils'
-
-export type topic = [number, number, number, number]
+import type { hex } from './utils'
 
 export default class PSS {
   _rpc: RPC
@@ -14,33 +12,29 @@ export default class PSS {
     this._rpc = rpc
   }
 
-  getBaseAddr(): Promise<base64> {
+  getBaseAddr(): Promise<hex> {
     return this._rpc.promise('pss_baseAddr')
   }
 
-  getPublicKey(): Promise<base64> {
+  getPublicKey(): Promise<hex> {
     return this._rpc.promise('pss_getPublicKey')
   }
 
-  sendAsym(key: hex, topic: topic, message: byteArray): Promise<null> {
+  sendAsym(key: hex, topic: hex, message: hex): Promise<null> {
     return this._rpc.promise('pss_sendAsym', [key, topic, message])
   }
 
-  sendSym(keyID: string, topic: topic, message: byteArray): Promise<null> {
+  sendSym(keyID: hex, topic: hex, message: hex): Promise<null> {
     return this._rpc.promise('pss_sendSym', [keyID, topic, message])
   }
 
-  setPeerPublicKey(
-    key: byteArray,
-    topic: topic,
-    address: string = '',
-  ): Promise<null> {
+  setPeerPublicKey(key: hex, topic: hex, address: string = ''): Promise<null> {
     return this._rpc.promise('pss_setPeerPublicKey', [key, topic, address])
   }
 
   setSymmetricKey(
-    key: byteArray,
-    topic: topic,
+    key: hex,
+    topic: hex,
     address: string = '',
     useForDecryption: boolean = false,
   ): Promise<string> {
@@ -52,11 +46,11 @@ export default class PSS {
     ])
   }
 
-  stringToTopic(str: string): Promise<topic> {
+  stringToTopic(str: string): Promise<hex> {
     return this._rpc.promise('pss_stringToTopic', [str])
   }
 
-  subscribeTopic(topic: topic): Promise<hex> {
+  subscribeTopic(topic: hex): Promise<hex> {
     return this._rpc.promise('pss_subscribe', ['receive', topic])
   }
 
@@ -89,7 +83,7 @@ export default class PSS {
     })
   }
 
-  async createTopicSubscription(topic: topic): Promise<Observable<Object>> {
+  async createTopicSubscription(topic: hex): Promise<Observable<Object>> {
     const subscription = await this.subscribeTopic(topic)
     return this.createSubscription(subscription)
   }
