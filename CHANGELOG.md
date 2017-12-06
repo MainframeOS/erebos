@@ -1,4 +1,4 @@
-## master (unreleased)
+## v0.1.0-0 (beta)
 
 Update PSS APIs to use arguments as hex following
 [`ethersphere/go-ethereum#140`](https://github.com/ethersphere/go-ethereum/pull/140).

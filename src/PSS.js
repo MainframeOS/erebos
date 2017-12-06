@@ -24,18 +24,18 @@ export default class PSS {
     return this._rpc.promise('pss_sendAsym', [key, topic, message])
   }
 
-  sendSym(keyID: hex, topic: hex, message: hex): Promise<null> {
+  sendSym(keyID: string, topic: hex, message: hex): Promise<null> {
     return this._rpc.promise('pss_sendSym', [keyID, topic, message])
   }
 
-  setPeerPublicKey(key: hex, topic: hex, address: string = ''): Promise<null> {
+  setPeerPublicKey(key: hex, topic: hex, address: hex = '0x'): Promise<null> {
     return this._rpc.promise('pss_setPeerPublicKey', [key, topic, address])
   }
 
   setSymmetricKey(
     key: hex,
     topic: hex,
-    address: string = '',
+    address: hex = '0x',
     useForDecryption: boolean = false,
   ): Promise<string> {
     return this._rpc.promise('pss_setSymmetricKey', [

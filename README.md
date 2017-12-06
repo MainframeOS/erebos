@@ -111,7 +111,7 @@ with the provided arguments:
 * `topic: hex`: destination topic
 * `message: hex`
 
-#### PSS.sendSym(keyID: hex, topic: hex, message: hex): Promise
+#### PSS.sendSym(keyID: string, topic: hex, message: hex): Promise
 
 Calls
 [`pss_sendSym`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_sendsym)
@@ -121,7 +121,7 @@ with the provided arguments:
 * `topic: hex`: destination topic
 * `message: hex`
 
-#### PSS.setPeerPublicKey(key: hex, topic: hex, address?: string = ''): Promise
+#### PSS.setPeerPublicKey(key: hex, topic: hex, address?: hex = '0x'): Promise
 
 Calls
 [`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setpeerpublickey)
@@ -131,7 +131,7 @@ with the provided arguments:
 * `topic: hex`
 * `address: hex`
 
-#### PSS.setSymmetricKey(key: hex, topic: hex, address?: string = '', useForDecryption: boolean = false): Promise
+#### PSS.setSymmetricKey(key: hex, topic: hex, address?: hex = '0x', useForDecryption: boolean = false): Promise
 
 Calls
 [`pss_setSymmetricKey`](https://github.com/ethersphere/go-ethereum/blob/pss/swarm/pss/README.md#pss_setsymmetrickey)
@@ -141,7 +141,7 @@ with the provided arguments:
 * `topic: hex`
 * `address: hex`
 
-Returns the generated symmetric key ID.
+Returns the generated symmetric key ID as a `string`.
 
 #### PSS.stringToTopic(str: string): Promise
 
