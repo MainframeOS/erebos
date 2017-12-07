@@ -9,6 +9,9 @@ This library is a work-in-progress client for Swarm and PSS, themselves still at
 a proof-of-concept stage. It is intended for demonstration purposes only.\
 APIs are likely to be changed and even removed between releases without prior notice.
 
+At the moment this library may be only compatible with Swarm builds using
+[the `pss-apimsg-hex` branch of `MainframeHQ/go-ethereum`](https://github.com/MainframeHQ/go-ethereum/tree/pss-apimsg-hex).
+
 ## Installation
 
 ```sh
