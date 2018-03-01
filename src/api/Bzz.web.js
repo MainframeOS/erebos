@@ -1,8 +1,8 @@
 // @flow
 
-import BaseBZZ from './BaseBZZ'
+import BaseBzz from './BaseBzz'
 
-export default class BZZ extends BaseBZZ {
+export default class Bzz extends BaseBzz {
   constructor(url: string) {
     super(url)
     this._fetch = window.fetch

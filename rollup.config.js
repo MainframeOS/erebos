@@ -9,6 +9,7 @@ const env = process.env.NODE_ENV
 const config = {
   input: 'src/index.js',
   output: {
+    exports: 'named',
     file: env === 'production' ? 'dist/erebos.min.js' : 'dist/erebos.js',
     format: 'umd',
     name: 'erebos',

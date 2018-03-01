@@ -2,34 +2,39 @@
 
 import { Observable } from 'rxjs/Observable'
 
-import type RPC from './RPC'
-import type { hex } from './utils'
+import type StreamRPC from '../rpc/Stream'
+import type { hex } from '../types'
 
-export default class PSS {
-  _rpc: RPC
+export default class Pss {
+  _rpc: StreamRPC
 
-  constructor(rpc: RPC) {
+  constructor(rpc: StreamRPC) {
+    if (!rpc.canSubscribe) {
+      throw new Error(
+        'Invalid RPC instance provided: must support subscriptions',
+      )
+    }
     this._rpc = rpc
   }
 
-  getBaseAddr(): Promise<hex> {
-    return this._rpc.promise('pss_baseAddr')
+  baseAddr(): Promise<hex> {
+    return this._rpc.request('pss_baseAddr')
   }
 
   getPublicKey(): Promise<hex> {
-    return this._rpc.promise('pss_getPublicKey')
+    return this._rpc.request('pss_getPublicKey')
   }
 
   sendAsym(key: hex, topic: hex, message: hex): Promise<null> {
-    return this._rpc.promise('pss_sendAsym', [key, topic, message])
+    return this._rpc.request('pss_sendAsym', [key, topic, message])
   }
 
   sendSym(keyID: string, topic: hex, message: hex): Promise<null> {
-    return this._rpc.promise('pss_sendSym', [keyID, topic, message])
+    return this._rpc.request('pss_sendSym', [keyID, topic, message])
   }
 
   setPeerPublicKey(key: hex, topic: hex, address: hex = '0x'): Promise<null> {
-    return this._rpc.promise('pss_setPeerPublicKey', [key, topic, address])
+    return this._rpc.request('pss_setPeerPublicKey', [key, topic, address])
   }
 
   setSymmetricKey(
@@ -38,7 +43,7 @@ export default class PSS {
     address: hex = '0x',
     useForDecryption: boolean = false,
   ): Promise<string> {
-    return this._rpc.promise('pss_setSymmetricKey', [
+    return this._rpc.request('pss_setSymmetricKey', [
       key,
       topic,
       address,
@@ -47,11 +52,11 @@ export default class PSS {
   }
 
   stringToTopic(str: string): Promise<hex> {
-    return this._rpc.promise('pss_stringToTopic', [str])
+    return this._rpc.request('pss_stringToTopic', [str])
   }
 
   subscribeTopic(topic: hex): Promise<hex> {
-    return this._rpc.promise('pss_subscribe', ['receive', topic])
+    return this._rpc.request('pss_subscribe', ['receive', topic])
   }
 
   createSubscription(subscription: hex): Observable<Object> {

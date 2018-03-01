@@ -1,6 +1,0 @@
-flow-typed
-src
-.babelrc
-.flowconfig
-example.js
-rollup.config.js

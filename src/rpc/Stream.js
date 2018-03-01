@@ -5,7 +5,9 @@ import type { Subject } from 'rxjs/Subject'
 import { Subscriber } from 'rxjs/Subscriber'
 import type { Subscription } from 'rxjs/Subscription'
 
-export default class RPC {
+import BaseRPC from './BaseRPC'
+
+export default class StreamRPC extends BaseRPC {
   _currentId: number = 0
   _observers: Map<number, Subscriber<*>>
   _subscribers: Set<Subscriber<*>>
@@ -13,6 +15,7 @@ export default class RPC {
   _transport: Subject<Object>
 
   constructor(transport: Subject<Object>) {
+    super(true)
     this._observers = new Map()
     this._subscribers = new Set()
     this._transport = transport
@@ -80,7 +83,7 @@ export default class RPC {
     })
   }
 
-  promise(method: string, params?: Array<any>): Promise<any> {
+  request(method: string, params?: Array<any>): Promise<any> {
     return new Promise((resolve, reject) => {
       const sub = this.observe(method, params).subscribe(
         value => {

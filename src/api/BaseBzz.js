@@ -3,7 +3,7 @@
 // $FlowFixMe
 import { Buffer } from 'buffer'
 
-export default class BaseBZZ {
+export default class BaseBzz {
   _fetch: *
   _url: string
 

@@ -3,7 +3,7 @@
 // $FlowFixMe
 import { Buffer } from 'buffer'
 
-export type hex = string
+import type { hex } from './types'
 
 const hexToBuffer = (hex: hex) => Buffer.from(hex.substr(2), 'hex')
 
