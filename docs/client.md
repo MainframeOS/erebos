@@ -1,6 +1,6 @@
 # Erebos Client
 
-The Erebos `Client` class provides an unified way of interacting with the various APIs based on a provided configuration, or simply a server endpoint.\
+The Erebos `Client` class provides an unified way of interacting with the various APIs based on a provided configuration, or simply a server endpoint.
 
 ### new Client()
 

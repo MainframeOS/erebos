@@ -29,7 +29,7 @@ yarn add erebos
   * [Pss](docs/api-pss.md) - Postal Services over Swarm
   * [Shh](docs/api-shh.md) - Whisper
   * [Web3](docs/api-web3.md)
-* [RPC hanlders](docs/rpc.md)
+* [RPC handlers](docs/rpc.md)
 * [Transports](docs/transport.md)
 * [Utilities](docs/util.md)
 
