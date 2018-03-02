@@ -1,4 +1,4 @@
-# Erebos
+# Erebos documentation
 
 The Erebos library exposes modules split into 3 layers:
 

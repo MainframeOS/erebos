@@ -19,7 +19,7 @@ yarn add erebos
 * [Postal Services over Swarm (PSS)](examples/pss.js)
 * [Whisper (SHH)](examples/shh.js)
 
-## [Documentation](docs/index.md)
+## [Documentation](docs/)
 
 * [Client](docs/client.md)
 * [APIs](docs/api.md)

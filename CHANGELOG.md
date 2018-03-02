@@ -1,3 +1,12 @@
+## v0.2.0 (2018-03-02)
+
+* Remove `createPSSWebSocket()`.
+* Rename `BZZ` to `BzzAPI`, `PSS` to `PssAPI` and `RPC` to `StreamRPC`.
+* Add `EthAPI`, `NetAPI`, `ShhAPI`, `Web3API` and `RequestRPC` classes.
+* Add transports and `rpc()` factories.
+* Add `Client` class.
+* Update documentation and add Whisper example.
+
 ## v0.1.0 (2017-12-07)
 
 Breaking API change in PSS, use
