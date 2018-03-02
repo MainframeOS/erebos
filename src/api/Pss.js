@@ -88,8 +88,9 @@ export default class Pss {
     })
   }
 
-  async createTopicSubscription(topic: hex): Promise<Observable<Object>> {
-    const subscription = await this.subscribeTopic(topic)
-    return this.createSubscription(subscription)
+  createTopicSubscription(topic: hex): Promise<Observable<Object>> {
+    return this.subscribeTopic(topic).then(subscription =>
+      this.createSubscription(subscription),
+    )
   }
 }

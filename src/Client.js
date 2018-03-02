@@ -25,8 +25,8 @@ export default class Client {
   _shh: ?ShhAPI
   _web3: ?Web3API
 
-  constructor(config: string | ClientConfig) {
-    if (typeof config === 'string') {
+  constructor(config?: string | ClientConfig) {
+    if (config == null || typeof config === 'string') {
       this._rpc = rpc(config)
     } else {
       this._http = config.http

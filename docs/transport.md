@@ -1,9 +1,10 @@
 # Transports
 
-Erebos supports 3 transports to interact with a server:
+Erebos supports 4 transports to interact with a server:
 
 * HTTP using `httpTransport`
 * IPC using `ipcTransport`
+* Web3 using `web3Transport`
 * WebSocket using `webSocketTransport`
 
 ### httpTransport()
@@ -26,6 +27,16 @@ Creates an ICP transport using a [RxJS Subject](http://reactivex.io/rxjs/class/e
 1. `path: string`
 
 **Returns** `Subject<Object>`
+
+### web3Transport()
+
+Uses an existing Web3 provider, either injected or defaulting to `web3.currentProvider`.
+
+**Arguments**
+
+1. `provider?: Object`
+
+**Returns** `(data: Object) => Promise<Object>`
 
 ### webSocketTransport()
 

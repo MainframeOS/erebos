@@ -8,7 +8,7 @@ import type { Subscription } from 'rxjs/Subscription'
 import BaseRPC from './BaseRPC'
 
 export default class StreamRPC extends BaseRPC {
-  _currentId: number = 0
+  _currentId: number = 1
   _observers: Map<number, Subscriber<*>>
   _subscribers: Set<Subscriber<*>>
   _subscription: Subscription

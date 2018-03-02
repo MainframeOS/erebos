@@ -11,19 +11,14 @@ export default class BaseBzz {
     this._url = url
   }
 
-  async uploadRaw(
-    data: string | Buffer,
-    headers?: Object = {},
-  ): Promise<string> {
+  uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
-    const res = await this._fetch(`${this._url}/bzzr:`, {
+    return this._fetch(`${this._url}/bzzr:`, {
       body,
       headers,
       method: 'POST',
-    })
-    const hash = await res.text()
-    return hash
+    }).then(res => res.text())
   }
 
   downloadRaw(hash: string): Promise<*> {

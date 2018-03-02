@@ -1,8 +1,8 @@
 # RPC handlers
 
 A RPC handler is used by the various [APIs](api.md) to make JSON-RPC calls over the provided [transport](transport.md).\
-Erebos provides 2 types of RPC handlers: request-based (`RequestRPC`) and stream-based (`StreamRPC`) and 3 factory functions based on the chosen transport: `httpRPC`, `ipcRPC` and `webSocketRPC`.\
-The `rpc` factory function will select the appropriate RCP handler and transport based on the provided argument.
+Erebos provides 2 types of RPC handlers: request-based (`RequestRPC`) and stream-based (`StreamRPC`) and 4 factory functions based on the chosen transport: `httpRPC`, `ipcRPC`, `web3RPC` and `webSocketRPC`.\
+The `rpc` factory function will select the appropriate RPC handler and transport based on the provided argument.
 
 ### new RequestRPC()
 
@@ -36,6 +36,14 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Returns** a `StreamRPC` instance using the `IPC` transport.
 
+### web3RPC()
+
+**Arguments**
+
+1. `provider?: Object`, provider to use, defaults to `web3.currentProvider` otherwise.
+
+**Returns** a `RequestRPC` instance.
+
 ### webSocketRPC()
 
 **Arguments**
@@ -48,6 +56,6 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Arguments**
 
-1. `endpoint: string`
+1. `endpoint?: string | Object`
 
-**Returns** a `RequestRPC` or `StreamRPC` using the relevant transport based on the provided `endpoint` (URL or socket path when using IPC).
+**Returns** a `RequestRPC` or `StreamRPC` using the relevant transport based on the provided `endpoint` (URL for HTTP or WebSocket, socket path when using IPC and optional Web3 provider otherwise).

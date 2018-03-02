@@ -3,7 +3,7 @@
 import BaseRPC from './BaseRPC'
 
 export default class RequestRPC extends BaseRPC {
-  _currentId: number = 0
+  _currentId: number = 1
   _fetch: (data: Object) => Promise<Object>
 
   constructor(fetch: *) {
@@ -11,20 +11,19 @@ export default class RequestRPC extends BaseRPC {
     this._fetch = fetch
   }
 
-  async request(method: string, params?: Array<any>): Promise<any> {
-    const msg = await this._fetch({
+  request(method: string, params?: Array<any>): Promise<any> {
+    return this._fetch({
       id: this._currentId++,
       jsonrpc: '2.0',
       method,
       params,
+    }).then(msg => {
+      if (msg.error) {
+        const err: Object = new Error(msg.error.message)
+        err.code = msg.error.code
+        throw err
+      }
+      return msg.result
     })
-
-    if (msg.error) {
-      const err: Object = new Error(msg.error.message)
-      err.code = msg.error.code
-      throw err
-    }
-
-    return msg.result
   }
 }

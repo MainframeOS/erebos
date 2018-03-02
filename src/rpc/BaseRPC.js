@@ -11,7 +11,7 @@ export default class BaseRPC {
     return this._canSubscribe
   }
 
-  async request(...args: *) {
-    throw new Error('Must be implemented')
+  request(...args: *): Promise<any> {
+    return Promise.reject(new Error('Must be implemented'))
   }
 }
