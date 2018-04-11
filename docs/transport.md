@@ -13,7 +13,7 @@ Creates a HTTP transport using the [Fetch API](https://developer.mozilla.org/en-
 
 **Arguments**
 
-1. `url: string`
+1.  `url: string`
 
 **Returns** `(data: Object) => Promise<Object>`
 
@@ -24,7 +24,7 @@ Creates an ICP transport using a [RxJS Subject](http://reactivex.io/rxjs/class/e
 
 **Arguments**
 
-1. `path: string`
+1.  `path: string`
 
 **Returns** `Subject<Object>`
 
@@ -34,7 +34,7 @@ Uses an existing Web3 provider, either injected or defaulting to `web3.currentPr
 
 **Arguments**
 
-1. `provider?: Object`
+1.  `provider?: Object`
 
 **Returns** `(data: Object) => Promise<Object>`
 
@@ -44,6 +44,6 @@ Creates an WebSocket transport using a [RxJS Subject](http://reactivex.io/rxjs/c
 
 **Arguments**
 
-1. `url: string`
+1.  `url: string`
 
 **Returns** `Subject<Object>`

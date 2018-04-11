@@ -6,7 +6,7 @@ Creates an Net instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `rpc: RPC`
+1.  `rpc: RPC`
 
 ### .version()
 

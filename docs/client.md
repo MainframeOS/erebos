@@ -25,7 +25,7 @@ type ClientConfig = {
 
 **Arguments**
 
-1. `config: string | ClientConfig`
+1.  `config: string | ClientConfig`
 
 ### .rpc
 

@@ -1,12 +1,12 @@
 # BZZ API
 
-### new Bzz
+### new Bzz()
 
 Creates a Bzz instance using the server provided as `url`.
 
 **Arguments**
 
-1. `url: string`
+1.  `url: string`
 
 ### .uploadRaw()
 
@@ -16,8 +16,8 @@ The `content-length` header will be added to the `headers` Object based on the `
 
 **Arguments**
 
-1. `data: string | Buffer`
-1. `headers?: Object = {}`
+1.  `data: string | Buffer`
+1.  `headers?: Object = {}`
 
 **Returns** `Promise<Response>`
 
@@ -27,7 +27,7 @@ Downloads the file matching the provided `hash` using the `bzzr:` endpoint.
 
 **Arguments**
 
-1. `hash: string`
+1.  `hash: string`
 
 **Returns** `Promise<Response>`
 
@@ -38,7 +38,7 @@ Downloads the file matching the provided `hash` as a [`Blob`](https://developer.
 
 **Arguments**
 
-1. `hash: string`
+1.  `hash: string`
 
 **Returns** `Promise<Blob>`
 
@@ -49,7 +49,7 @@ Downloads the file matching the provided `hash` as a [`Buffer`](https://nodejs.o
 
 **Arguments**
 
-1. `hash: string`
+1.  `hash: string`
 
 **Returns** `Promise<Buffer>`
 
@@ -59,6 +59,6 @@ Downloads the file matching the provided `hash` as a string.
 
 **Arguments**
 
-1. `hash: string`
+1.  `hash: string`
 
 **Returns** `Promise<string>`

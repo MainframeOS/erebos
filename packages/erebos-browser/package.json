@@ -1,0 +1,33 @@
+{
+  "name": "erebos-browser",
+  "version": "0.1.0",
+  "description": "Erebos for browser",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "browser": "dist/erebos.min.js",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": ["lib/*"],
+  "scripts": {
+    "clean": "del dist && del lib",
+    "build:cjs": "cross-env BABEL_ENV=node babel src --out-dir lib",
+    "build:flow": "flow-copy-source src lib",
+    "build:umd": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c",
+    "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c",
+    "build":
+      "yarn clean && yarn build:cjs && yarn build:flow && yarn build:umd && yarn build:umd:min",
+    "test": "flow check",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@mainframe/rpc-browser": "^0.1.0",
+    "@mainframe/utils-hex": "^0.1.0",
+    "erebos-api-bzz-browser": "*",
+    "erebos-client-base": "*",
+    "rxjs": "^5.5.9"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.69.0"
+  }
+}

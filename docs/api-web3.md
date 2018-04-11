@@ -6,7 +6,7 @@ Creates a Web3 instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `rpc: RPC`
+1.  `rpc: RPC`
 
 ### .clientVersion()
 
@@ -16,6 +16,6 @@ Creates a Web3 instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `data: hex`
+1.  `data: hex`
 
 **Returns** `Promise<hex>`

@@ -1,9 +1,11 @@
-const { PssAPI, rpc, decodeHex, encodeHex } = require('../lib')
+const { Client, decodeHex, encodeHex } = require('../lib')
 
 const run = async () => {
   // Create PSS clients over WebSocket
-  const alice = new PssAPI(rpc('ws://localhost:8501'))
-  const bob = new PssAPI(rpc('ws://localhost:8502'))
+  const client1 = new Client('ws://localhost:8501')
+  const alice = client1.pss
+  const client2 = new Client('ws://localhost:8502')
+  const bob = client2.pss
 
   // Retrieve Alice's public key and create the topic
   const [key, topic] = await Promise.all([

@@ -10,7 +10,7 @@ Creates a `RequestRPC` instance using the provided fetch function.
 
 **Arguments**
 
-1. `fetch: (data: Object) => Promise<Object>`
+1.  `fetch: (data: Object) => Promise<Object>`
 
 ### new StreamRPC()
 
@@ -18,13 +18,13 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Arguments**
 
-1. `transport: Subject<Object>`
+1.  `transport: Subject<Object>`
 
 ### httpRPC()
 
 **Arguments**
 
-1. `url: string`
+1.  `url: string`
 
 **Returns** a `RequestRPC` instance using the `HTTP` transport.
 
@@ -32,7 +32,7 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Arguments**
 
-1. `path: string`
+1.  `path: string`
 
 **Returns** a `StreamRPC` instance using the `IPC` transport.
 
@@ -40,7 +40,7 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Arguments**
 
-1. `provider?: Object`, provider to use, defaults to `web3.currentProvider` otherwise.
+1.  `provider?: Object`, provider to use, defaults to `web3.currentProvider` otherwise.
 
 **Returns** a `RequestRPC` instance.
 
@@ -48,7 +48,7 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Arguments**
 
-1. `url: string`
+1.  `url: string`
 
 **Returns** a `StreamRPC` instance using the `WebSocket` transport.
 
@@ -56,6 +56,6 @@ Creates a `StreamRPC` instance using the provided [RxJS Subject](http://reactive
 
 **Arguments**
 
-1. `endpoint?: string | Object`
+1.  `endpoint?: string | Object`
 
 **Returns** a `RequestRPC` or `StreamRPC` using the relevant transport based on the provided `endpoint` (URL for HTTP or WebSocket, socket path when using IPC and optional Web3 provider otherwise).

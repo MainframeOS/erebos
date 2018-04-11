@@ -1,10 +1,10 @@
-const { ShhAPI, rpc, decodeHex, encodeHex } = require('../lib')
+const { Client, decodeHex, encodeHex } = require('../lib')
 
 const sleep = time => new Promise(resolve => setTimeout(resolve, time))
 
 const run = async () => {
   // Connect to the server over HTTP
-  const shh = new ShhAPI(rpc('http://localhost:8545'))
+  const { shh } = new Client('http://localhost:8545')
 
   // Get Alice's and Bob's keys
   const [aliceKeyID, bobKeyID] = await Promise.all([

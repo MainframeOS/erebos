@@ -53,7 +53,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `rpc: RPC`
+1.  `rpc: RPC`
 
 ### .version()
 
@@ -67,7 +67,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `size: number`
+1.  `size: number`
 
 **Returns** `Promise<boolean>`
 
@@ -75,7 +75,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `pow: number`
+1.  `pow: number`
 
 **Returns** `Promise<boolean>`
 
@@ -83,7 +83,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `bloom: hex`
+1.  `bloom: hex`
 
 **Returns** `Promise<boolean>`
 
@@ -91,7 +91,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `enode: string`
+1.  `enode: string`
 
 **Returns** `Promise<boolean>`
 
@@ -103,7 +103,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `key: hex`
+1.  `key: hex`
 
 **Returns** `Promise<string>`
 
@@ -111,7 +111,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<boolean>`
 
@@ -119,7 +119,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<boolean>`
 
@@ -127,7 +127,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<hex>`
 
@@ -135,7 +135,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<hex>`
 
@@ -147,7 +147,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `key: hex`
+1.  `key: hex`
 
 **Returns** `Promise<string>`
 
@@ -155,7 +155,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `password: string`
+1.  `password: string`
 
 **Returns** `Promise<string>`
 
@@ -163,7 +163,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<boolean>`
 
@@ -171,7 +171,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<hex>`
 
@@ -179,7 +179,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<boolean>`
 
@@ -187,7 +187,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `msg: ShhPostMessage`
+1.  `msg: ShhPostMessage`
 
 **Returns** `Promise<boolean>`
 
@@ -195,7 +195,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<Array<ShhReceivedMessage>>`
 
@@ -203,7 +203,7 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: string`
+1.  `id: string`
 
 **Returns** `Promise<boolean>`
 
@@ -211,6 +211,6 @@ Creates a Shh instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `criteria: ShhFilterCriteria`
+1.  `criteria: ShhFilterCriteria`
 
 **Returns** `Promise<string>`

@@ -97,7 +97,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `rpc: RPC`
+1.  `rpc: RPC`
 
 ### .protocolVersion()
 
@@ -135,8 +135,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `address: hex`
-1. `block: blockIndex`
+1.  `address: hex`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -144,9 +144,9 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `address: hex`
-1. `position: hex`
-1. `block: blockIndex`
+1.  `address: hex`
+1.  `position: hex`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -154,8 +154,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `address: hex`
-1. `block: blockIndex`
+1.  `address: hex`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -163,7 +163,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
+1.  `hash: hex`
 
 **Returns** `Promise<hex>`
 
@@ -171,7 +171,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `block: blockIndex`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -179,7 +179,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
+1.  `hash: hex`
 
 **Returns** `Promise<hex>`
 
@@ -187,7 +187,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `block: blockIndex`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -195,8 +195,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `address: hex`
-1. `block: blockIndex`
+1.  `address: hex`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -204,8 +204,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `address: hex`
-1. `message: hex`
+1.  `address: hex`
+1.  `message: hex`
 
 **Returns** `Promise<hex>`
 
@@ -213,7 +213,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `transaction: { from: hex, to?: hex, gas?: hex, gasPrice?: hex, value?: hex, data: hex, nonce?: hex, }`
+1.  `transaction: { from: hex, to?: hex, gas?: hex, gasPrice?: hex, value?: hex, data: hex, nonce?: hex, }`
 
 **Returns** `Promise<hex>`
 
@@ -221,7 +221,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `data: hex`
+1.  `data: hex`
 
 **Returns** `Promise<hex>`
 
@@ -229,8 +229,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `transaction: { from?: hex, to: hex, gas?: hex, gasPrice?: hex, value?: hex, data?: hex, }`
-1. `block: blockIndex`
+1.  `transaction: { from?: hex, to: hex, gas?: hex, gasPrice?: hex, value?: hex, data?: hex, }`
+1.  `block: blockIndex`
 
 **Returns** `Promise<hex>`
 
@@ -238,7 +238,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `transaction: { from?: hex, to?: hex, gas?: hex, gasPrice?: hex, value?: hex, data?: hex, }`
+1.  `transaction: { from?: hex, to?: hex, gas?: hex, gasPrice?: hex, value?: hex, data?: hex, }`
 
 **Returns** `Promise<hex>`
 
@@ -246,8 +246,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
-1. `full: boolean`
+1.  `hash: hex`
+1.  `full: boolean`
 
 **Returns** `Promise<?EthBlock>`
 
@@ -255,8 +255,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `block: blockIndex`
-1. `full: boolean`
+1.  `block: blockIndex`
+1.  `full: boolean`
 
 **Returns** `Promise<?EthBlock>`
 
@@ -264,7 +264,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
+1.  `hash: hex`
 
 **Returns** `Promise<?EthTransaction>`
 
@@ -272,8 +272,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
-1. `index: hex`
+1.  `hash: hex`
+1.  `index: hex`
 
 **Returns** `Promise<?EthTransaction>`
 
@@ -281,8 +281,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `block: blockIndex`
-1. `index: hex`
+1.  `block: blockIndex`
+1.  `index: hex`
 
 **Returns** `Promise<?EthTransaction>`
 
@@ -290,7 +290,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
+1.  `hash: hex`
 
 **Returns** `Promise<?EthTransactionReceipt>`
 
@@ -298,8 +298,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hash: hex`
-1. `index: hex`
+1.  `hash: hex`
+1.  `index: hex`
 
 **Returns** `Promise<?EthBlock>`
 
@@ -307,8 +307,8 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `block: blockIndex`
-1. `index: hex`
+1.  `block: blockIndex`
+1.  `index: hex`
 
 **Returns** `Promise<?EthBlock>`
 
@@ -320,7 +320,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `code: string`
+1.  `code: string`
 
 **Returns** `Promise<hex>`
 
@@ -328,7 +328,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `code: string`
+1.  `code: string`
 
 **Returns** `Promise<hex>`
 
@@ -336,7 +336,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `code: string`
+1.  `code: string`
 
 **Returns** `Promise<hex>`
 
@@ -344,7 +344,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `options: EthFilterOptions`
+1.  `options: EthFilterOptions`
 
 **Returns** `Promise<hex>`
 
@@ -360,7 +360,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: hex`
+1.  `id: hex`
 
 **Returns** `Promise<boolean>`
 
@@ -368,7 +368,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: hex`
+1.  `id: hex`
 
 **Returns** `Promise<EthFilterResults>`
 
@@ -376,7 +376,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `id: hex`
+1.  `id: hex`
 
 **Returns** `Promise<EthFilterResults>`
 
@@ -384,7 +384,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `options: EthFilterOptions`
+1.  `options: EthFilterOptions`
 
 **Returns** `Promise<Array<EthLog>>`
 
@@ -396,9 +396,9 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `nonce: hex`
-1. `hash: hex`
-1. `digest: hex`
+1.  `nonce: hex`
+1.  `hash: hex`
+1.  `digest: hex`
 
 **Returns** `Promise<boolean>`
 
@@ -406,7 +406,7 @@ Creates an Eth instance using the provided `rpc` handler.
 
 **Arguments**
 
-1. `hashRate: hex`
-1. `id: hex`
+1.  `hashRate: hex`
+1.  `id: hex`
 
 **Returns** `Promise<boolean>`

@@ -1,0 +1,30 @@
+{
+  "name": "erebos-client-base",
+  "version": "0.1.0",
+  "description": "Client base",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "lib/index.js",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": ["lib/*"],
+  "scripts": {
+    "clean": "del lib",
+    "build:js": "flow-remove-types src --out-dir lib",
+    "build:flow": "flow-copy-source src lib",
+    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "test": "flow check",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "erebos-api-eth": "*",
+    "erebos-api-net": "*",
+    "erebos-api-pss": "*",
+    "erebos-api-shh": "*",
+    "erebos-api-web3": "*"
+  },
+  "devDependencies": {
+    "@mainframe/rpc-base": "^0.1.0",
+    "erebos-api-bzz-base": "*",
+    "flow-bin": "^0.69.0"
+  }
+}
