@@ -1,4 +1,4 @@
-const { Client, decodeHex, encodeHex } = require('../lib')
+const { Client, decodeHex, encodeHex } = require('../packages/erebos')
 
 const sleep = time => new Promise(resolve => setTimeout(resolve, time))
 

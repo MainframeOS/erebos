@@ -1,3 +1,8 @@
+## v0.3.0 (in progress)
+
+* Split modules into individual packages.
+* Move RPC, transport and utilities modules to [MainframeHQ/js-tools](https://github.com/MainframeHQ/js-tools).
+
 ## v0.2.0 (2018-03-02)
 
 * Remove `createPSSWebSocket()`.

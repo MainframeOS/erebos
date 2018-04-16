@@ -1,8 +1,14 @@
 // @flow
 
-// Useful re-exports
+// Re-exports from imported libraries
 export { default as rpc } from '@mainframe/rpc-node'
 export { hexType, hexEmpty, encodeHex, decodeHex } from '@mainframe/utils-hex'
+export { default as BzzAPI } from 'erebos-api-bzz-node'
+export { default as EthAPI } from 'erebos-api-eth'
+export { default as NetAPI } from 'erebos-api-net'
+export { default as PssAPI } from 'erebos-api-pss'
+export { default as ShhAPI } from 'erebos-api-shh'
+export { default as Web3API } from 'erebos-api-web3'
 
 // Types
 export type { hex } from '@mainframe/utils-hex'

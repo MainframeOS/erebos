@@ -17,11 +17,14 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@mainframe/utils-hex": "^0.1.0",
+    "@mainframe/utils-hex": "^0.1.0"
+  },
+  "peerDependencies": {
     "rxjs": "^5.5.8"
   },
   "devDependencies": {
     "@mainframe/rpc-stream": "^0.1.0",
-    "flow-bin": "^0.69.0"
+    "flow-bin": "^0.69.0",
+    "rxjs": "^5.5.8"
   }
 }

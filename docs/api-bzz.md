@@ -1,5 +1,11 @@
 # BZZ API
 
+```js
+import Bzz from 'erebos-api-bzz-browser' // browser
+// or
+import Bzz from 'erebos-api-bzz-node' // node
+```
+
 ### new Bzz()
 
 Creates a Bzz instance using the server provided as `url`.

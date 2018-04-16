@@ -1,5 +1,9 @@
 # Web3 API
 
+```js
+import Web3 from 'erebos-api-web3'
+```
+
 ### new Web3()
 
 Creates a Web3 instance using the provided `rpc` handler.

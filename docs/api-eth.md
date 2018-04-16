@@ -1,5 +1,9 @@
 # Eth API
 
+```js
+import Eth from 'erebos-api-eth'
+```
+
 ## Types
 
 ```js

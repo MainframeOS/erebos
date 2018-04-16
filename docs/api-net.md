@@ -1,5 +1,9 @@
 # Net API
 
+```js
+import Net from 'erebos-api-net'
+```
+
 ### new Net()
 
 Creates an Net instance using the provided `rpc` handler.

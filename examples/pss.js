@@ -1,11 +1,15 @@
-const { Client, decodeHex, encodeHex } = require('../lib')
+const {
+  Client,
+  PssAPI,
+  rpc,
+  decodeHex,
+  encodeHex,
+} = require('../packages/erebos')
 
 const run = async () => {
   // Create PSS clients over WebSocket
-  const client1 = new Client('ws://localhost:8501')
-  const alice = client1.pss
-  const client2 = new Client('ws://localhost:8502')
-  const bob = client2.pss
+  const alice = new PssAPI(rpc('ws://localhost:8501'))
+  const bob = new PssAPI(rpc('ws://localhost:8502'))
 
   // Retrieve Alice's public key and create the topic
   const [key, topic] = await Promise.all([

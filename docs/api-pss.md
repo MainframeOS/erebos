@@ -1,5 +1,9 @@
 # Postal Services over Swarm (PSS) API
 
+```js
+import Pss from 'erebos-api-pss'
+```
+
 ### new Pss()
 
 Creates a Pss instance with the provided `StreamRPC` instance.

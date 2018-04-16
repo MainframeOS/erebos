@@ -1,12 +1,13 @@
 {
   "name": "erebos-node",
   "version": "0.1.0",
-  "description": "Erebos for node",
+  "description": "Ethereum and Swarm client for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "index.js",
+  "module": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
-  "files": ["lib/*"],
+  "files": ["index.js", "lib/*"],
   "scripts": {
     "clean": "del lib",
     "build:js": "flow-remove-types src --out-dir lib",
@@ -19,6 +20,11 @@
     "@mainframe/rpc-node": "^0.1.0",
     "@mainframe/utils-hex": "^0.1.0",
     "erebos-api-bzz-node": "*",
+    "erebos-api-eth": "*",
+    "erebos-api-net": "*",
+    "erebos-api-pss": "*",
+    "erebos-api-pss": "*",
+    "erebos-api-web3": "*",
     "erebos-client-base": "*",
     "esm": "^3.0.17"
   },
