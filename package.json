@@ -5,14 +5,14 @@
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "flow:create-symlinks": "flow-mono create-symlinks .flowconfig",
-    "flow:install-types": "flow-mono install-types --overwrite --ignoreDeps=peer",
+    "flow:install-types":
+      "flow-mono install-types --overwrite --ignoreDeps=dev",
     "flow:create-stubs": "flow-mono create-stubs --use-root",
-    "flow:bootstrap": "yarn flow:create-symlinks && yarn flow:install-types && yarn flow:create-stubs",
+    "flow:bootstrap":
+      "yarn flow:create-symlinks && yarn flow:install-types && yarn flow:create-stubs",
     "bootstrap": "lerna bootstrap && yarn flow:bootstrap",
     "test": "lerna run test",
     "build": "lerna run build",
@@ -29,13 +29,13 @@
     "babel-preset-flow": "^6.23.0",
     "cross-env": "^5.1.4",
     "del-cli": "^1.1.0",
-    "flow-bin": "^0.69.0",
+    "flow-bin": "^0.70.0",
     "flow-copy-source": "^1.3.0",
     "flow-mono-cli": "^1.3.1",
     "flow-remove-types": "^1.2.3",
-    "lerna": "^2.10.1",
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14"
+    "lerna": "^2.10.2",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15"
   },
   "flow-mono": {
     "create-symlinks": {

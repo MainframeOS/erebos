@@ -6,7 +6,9 @@
   "main": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
-  "files": ["lib/*"],
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "clean": "del lib",
     "build:js": "flow-remove-types src --out-dir lib",
@@ -25,6 +27,6 @@
   "devDependencies": {
     "@mainframe/rpc-base": "^0.1.0",
     "erebos-api-bzz-base": "*",
-    "flow-bin": "^0.69.0"
+    "flow-bin": "^0.70.0"
   }
 }

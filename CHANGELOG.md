@@ -2,6 +2,7 @@
 
 * Split modules into individual packages.
 * Move RPC, transport and utilities modules to [MainframeHQ/js-tools](https://github.com/MainframeHQ/js-tools).
+* Update RxJS dependency to v6.
 
 ## v0.2.0 (2018-03-02)
 

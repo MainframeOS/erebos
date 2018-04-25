@@ -1,4 +1,5 @@
 node_modules
 /packages/*/dist
 /packages/*/lib
+/packages/*/.flowconfig
 *.log

@@ -17,19 +17,19 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@mainframe/rpc-node": "^0.1.0",
+    "@mainframe/rpc-node": "^0.2.0",
     "@mainframe/utils-hex": "^0.1.0",
     "erebos-api-bzz-node": "*",
     "erebos-api-eth": "*",
     "erebos-api-net": "*",
     "erebos-api-pss": "*",
-    "erebos-api-pss": "*",
+    "erebos-api-shh": "*",
     "erebos-api-web3": "*",
     "erebos-client-base": "*",
-    "esm": "^3.0.17"
+    "esm": "^3.0.26"
   },
   "devDependencies": {
-    "flow-bin": "^0.69.0",
-    "rxjs": "^5.5.9"
+    "flow-bin": "^0.70.0",
+    "rxjs": "^6.0.0"
   }
 }

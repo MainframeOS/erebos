@@ -2,7 +2,7 @@
 
 import type StreamRPC from '@mainframe/rpc-stream'
 import { hexEmpty, type hex } from '@mainframe/utils-hex'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 
 export default class Pss {
   _rpc: StreamRPC
