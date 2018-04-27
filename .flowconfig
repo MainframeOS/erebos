@@ -1,15 +1,10 @@
-# This file will be symlinked into all packages of the mono-repo,
-# therefore are paths like `./../../` just a reference to the root of the mono-repo.
-#
 [ignore]
-<PROJECT_ROOT>/dist/.*
-<PROJECT_ROOT>/lib/.*
+packages/*/dist/.*
+packages/*/lib/.*
 
 [include]
 
 [libs]
-# Include patched typings or stubs from the root of the mono-repo.
-./../../flow-typed/npm
 
 [lints]
 

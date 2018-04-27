@@ -1,57 +1,24 @@
 {
   "name": "erebos",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Ethereum and Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": {
+    "packages": ["packages/*"]
+  },
   "scripts": {
-    "flow:create-symlinks": "flow-mono create-symlinks .flowconfig",
-    "flow:install-types":
-      "flow-mono install-types --overwrite --ignoreDeps=dev",
-    "flow:create-stubs": "flow-mono create-stubs --use-root",
-    "flow:align": "flow-mono align-versions",
-    "flow:bootstrap":
-      "yarn flow:create-symlinks && yarn flow:install-types && yarn flow:create-stubs",
     "bootstrap": "lerna bootstrap && yarn flow:bootstrap",
-    "test": "lerna run test",
+    "test": "flow check",
     "build": "lerna run build",
     "start": "yarn test && yarn build"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.1",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-syntax-class-properties": "^6.13.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-flow": "^6.23.0",
-    "cross-env": "^5.1.4",
     "del-cli": "^1.1.0",
     "flow-bin": "^0.71.0",
     "flow-copy-source": "^1.3.0",
-    "flow-mono-cli": "^1.3.1",
     "flow-remove-types": "^1.2.3",
-    "lerna": "^2.10.2",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
-  },
-  "flow-mono": {
-    "create-symlinks": {
-      "ignore": []
-    },
-    "create-stubs": {
-      "dependencies": [
-        "@mainframe/rpc-base",
-        "@mainframe/rpc-browser",
-        "@mainframe/rpc-node",
-        "@mainframe/rpc-stream",
-        "@mainframe/utils-hex",
-        "rxjs",
-        "rx-socket"
-      ]
-    }
+    "lerna": "^2.10.2"
   }
 }

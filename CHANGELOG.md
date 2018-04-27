@@ -1,4 +1,4 @@
-## v0.3.0 (in progress)
+## v0.3.0 (2018-04-27)
 
 * Split modules into individual packages.
 * Move RPC, transport and utilities modules to [MainframeHQ/js-tools](https://github.com/MainframeHQ/js-tools).
