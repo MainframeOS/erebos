@@ -1,6 +1,6 @@
 {
   "name": "erebos-api-shh",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Whisper (SHH) API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -15,12 +15,6 @@
     "build:js": "flow-remove-types src --out-dir lib",
     "build:flow": "flow-copy-source src lib",
     "build": "yarn clean && yarn build:js && yarn build:flow",
-    "test": "flow check",
     "prepublishOnly": "yarn build"
-  },
-  "devDependencies": {
-    "@mainframe/rpc-base": "^0.1.0",
-    "@mainframe/utils-hex": "^0.1.0",
-    "flow-bin": "^0.71.0"
   }
 }

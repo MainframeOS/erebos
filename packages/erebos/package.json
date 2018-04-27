@@ -1,15 +1,18 @@
 {
   "name": "erebos",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Ethereum and Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "index.js",
   "browser": "browser.js",
   "author": "Mainframe",
   "license": "MIT",
-  "files": ["index.js", "browser.js"],
+  "files": [
+    "index.js",
+    "browser.js"
+  ],
   "dependencies": {
-    "erebos-browser": "*",
-    "erebos-node": "*"
+    "erebos-browser": "^0.3.0",
+    "erebos-node": "^0.3.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "erebos-api-bzz-browser",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Bzz API for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -15,13 +15,9 @@
     "build:js": "flow-remove-types src --out-dir lib",
     "build:flow": "flow-copy-source src lib",
     "build": "yarn clean && yarn build:js && yarn build:flow",
-    "test": "flow check",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "erebos-api-bzz-base": "*"
-  },
-  "devDependencies": {
-    "flow-bin": "^0.71.0"
+    "erebos-api-bzz-base": "^0.3.0"
   }
 }

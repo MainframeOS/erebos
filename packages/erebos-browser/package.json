@@ -1,6 +1,6 @@
 {
   "name": "erebos-browser",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Ethereum and Swarm client for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "dist/erebos.js",
@@ -13,24 +13,29 @@
   "scripts": {
     "clean": "del dist",
     "build": "yarn clean && yarn webpack",
-    "test": "flow check",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@mainframe/rpc-browser": "^0.2.0",
     "@mainframe/utils-hex": "^0.1.0",
-    "erebos-api-bzz-browser": "*",
-    "erebos-api-eth": "*",
-    "erebos-api-net": "*",
-    "erebos-api-pss": "*",
-    "erebos-api-shh": "*",
-    "erebos-api-web3": "*",
-    "erebos-client-base": "*",
+    "erebos-api-bzz-browser": "^0.3.0",
+    "erebos-api-eth": "^0.3.0",
+    "erebos-api-net": "^0.3.0",
+    "erebos-api-pss": "^0.3.0",
+    "erebos-api-shh": "^0.3.0",
+    "erebos-api-web3": "^0.3.0",
+    "erebos-client-base": "^0.3.0",
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.1",
     "babel-loader": "^7.1.4",
-    "flow-bin": "^0.71.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-syntax-class-properties": "^6.13.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15"
   }

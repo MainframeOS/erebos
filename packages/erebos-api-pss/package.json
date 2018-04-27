@@ -1,6 +1,6 @@
 {
   "name": "erebos-api-pss",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "PSS API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -15,7 +15,6 @@
     "build:js": "flow-remove-types src --out-dir lib",
     "build:flow": "flow-copy-source src lib",
     "build": "yarn clean && yarn build:js && yarn build:flow",
-    "test": "flow check",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
@@ -25,7 +24,6 @@
     "rxjs": "^6.0.0"
   },
   "devDependencies": {
-    "@mainframe/rpc-stream": "^0.2.0",
     "flow-bin": "^0.71.0",
     "rxjs": "^6.0.0"
   }
