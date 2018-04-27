@@ -2,6 +2,8 @@
 
 Universal Erebos library - [MainframeHQ/erebos](https://github.com/MainframeHQ/erebos).
 
+Uses [erebos-browser](../erebos-browser) or [erebos-node](../erebos-node) depending on the environment. You should use one of these packages directly if you do not need to support both environment.
+
 ## Installation
 
 ```sh

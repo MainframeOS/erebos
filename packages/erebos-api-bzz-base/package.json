@@ -19,6 +19,6 @@
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "flow-bin": "^0.70.0"
+    "flow-bin": "^0.71.0"
   }
 }

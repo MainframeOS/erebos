@@ -7,7 +7,10 @@
   "module": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
-  "files": ["index.js", "lib/*"],
+  "files": [
+    "index.js",
+    "lib/*"
+  ],
   "scripts": {
     "clean": "del lib",
     "build:js": "flow-remove-types src --out-dir lib",
@@ -26,10 +29,10 @@
     "erebos-api-shh": "*",
     "erebos-api-web3": "*",
     "erebos-client-base": "*",
-    "esm": "^3.0.26"
+    "esm": "^3.0.27"
   },
   "devDependencies": {
-    "flow-bin": "^0.70.0",
+    "flow-bin": "^0.71.0",
     "rxjs": "^6.0.0"
   }
 }
