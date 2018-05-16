@@ -3,7 +3,7 @@
 import type RPC from '@mainframe/rpc-base'
 import type BzzAPI from 'erebos-api-bzz-base'
 import EthAPI from 'erebos-api-eth'
-import NetAPI from 'erebos-api-eth'
+import NetAPI from 'erebos-api-net'
 import PssAPI from 'erebos-api-pss'
 import ShhAPI from 'erebos-api-shh'
 import Web3API from 'erebos-api-web3'

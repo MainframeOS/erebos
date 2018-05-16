@@ -7,10 +7,7 @@
   "module": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
-  "files": [
-    "index.js",
-    "lib/*"
-  ],
+  "files": ["index.js", "lib/*"],
   "scripts": {
     "clean": "del lib",
     "build:js": "flow-remove-types src --out-dir lib",
@@ -21,6 +18,7 @@
   },
   "dependencies": {
     "@mainframe/rpc-node": "^0.2.0",
+    "@mainframe/rpc-stream": "^0.2.1",
     "@mainframe/utils-hex": "^0.1.0",
     "erebos-api-bzz-node": "^0.3.0",
     "erebos-api-eth": "^0.3.0",
@@ -29,9 +27,9 @@
     "erebos-api-shh": "^0.3.0",
     "erebos-api-web3": "^0.3.0",
     "erebos-client-base": "^0.3.0",
-    "esm": "^3.0.27"
+    "esm": "^3.0.34"
   },
   "devDependencies": {
-    "rxjs": "^6.0.0"
+    "rxjs": "^6.1.0"
   }
 }
