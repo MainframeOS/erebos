@@ -14,4 +14,4 @@ export { default as Web3API } from 'erebos-api-web3'
 export type { hex } from '@mainframe/utils-hex'
 export type { ClientConfig } from 'erebos-client-base'
 
-export { default as Client } from './client'
+export { default as Client } from './Client'
