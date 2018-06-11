@@ -9,7 +9,7 @@ describe('BaseBzz', () => {
     fetch.resetMocks()
   })
 
-  it('uploadRaw() uploads the contents and returns the hash', async () => {
+  it('uploadRaw() uploads the contents and returns the hash of the file', async () => {
     // Mock the expected response body
     const expectedHash = 'abcdef123456'
     fetch.mockResponseOnce(expectedHash)
@@ -29,5 +29,79 @@ describe('BaseBzz', () => {
     expect(method).toBe('POST')
     // Check the `content-length` header is set based on the body
     expect(headers['content-length']).toBe(5)
+  })
+
+  it('upload() uploads the contents and returns the hash of the manifest', async () => {
+    const expectedHash = 'abcdef123456'
+    fetch.mockResponseOnce(expectedHash)
+    const hash = await bzz.upload('hello')
+    expect(hash).toBe(expectedHash)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}/bzz:`)
+    expect(Buffer.from('hello').equals(body)).toBe(true)
+    expect(method).toBe('POST')
+    expect(headers['content-length']).toBe(5)
+  })
+
+  it('downloadRaw() requests the data at hash address and returns the response object', async () => {
+    const expectedContent = 'hello'
+    fetch.mockResponseOnce(expectedContent)
+    const hash = 'abcdef123456'
+    const response = await bzz.downloadRaw(hash)
+
+    expect(response.body).toBe(expectedContent)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}/bzz-raw:/${hash}`)
+  })
+
+  it('downloadRawText() requests the data at hash address and returns the response text', async () => {
+    const expectedContent = 'hello'
+    fetch.mockResponseOnce(expectedContent)
+    const hash = 'abcdef123456'
+    const response = await bzz.downloadRawText(hash)
+
+    expect(response).toBe(expectedContent)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}/bzz-raw:/${hash}`)
+  })
+
+  it('download() requests the data at manifest address and returns the response object', async () => {
+    const expectedContent = 'hello'
+    fetch.mockResponseOnce(expectedContent)
+    const hash = 'abcdef123456'
+    const response = await bzz.download(hash)
+
+    expect(response.body).toBe(expectedContent)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}/bzz:/${hash}`)
+  })
+
+  it('download() allows specifying content hash included in the manifest', async () => {
+    const expectedContent = 'hello'
+    fetch.mockResponseOnce(expectedContent)
+    const manifest_hash = 'abcdef123456'
+    const content_hash = 'uvwxyz456789'
+    const response = await bzz.download(manifest_hash, content_hash)
+
+    expect(response.body).toBe(expectedContent)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}/bzz:/${manifest_hash}/${content_hash}`)
+  })
+
+  it('downloadText() requests the data at manifest address and returns the response text', async () => {
+    const expectedContent = 'hello'
+    fetch.mockResponseOnce(expectedContent)
+    const hash = 'abcdef123456'
+    const response = await bzz.downloadText(hash)
+
+    expect(response).toBe(expectedContent)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}/bzz:/${hash}`)
   })
 })
