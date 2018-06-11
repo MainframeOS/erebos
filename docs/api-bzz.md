@@ -16,7 +16,7 @@ Creates a Bzz instance using the server provided as `url`.
 
 ### .uploadRaw()
 
-Uploads the provided `data` to the `bzzr:` endpoint and returns the created
+Uploads the provided `data` to the `bzz-raw:` endpoint and returns the created
 hash.\
 The `content-length` header will be added to the `headers` Object based on the `data`.
 
@@ -29,7 +29,7 @@ The `content-length` header will be added to the `headers` Object based on the `
 
 ### .downloadRaw()
 
-Downloads the file matching the provided `hash` using the `bzzr:` endpoint.
+Downloads the file matching the provided `hash` using the `bzz-raw:` endpoint.
 
 **Arguments**
 

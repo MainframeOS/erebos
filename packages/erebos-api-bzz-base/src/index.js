@@ -11,7 +11,7 @@ export default class BaseBzz {
   uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
-    return this._fetch(`${this._url}/bzzr:`, {
+    return this._fetch(`${this._url}/bzz-raw:`, {
       body,
       headers,
       method: 'POST',
@@ -19,7 +19,7 @@ export default class BaseBzz {
   }
 
   downloadRaw(hash: string): Promise<*> {
-    return this._fetch(`${this._url}/bzzr:/${hash}`)
+    return this._fetch(`${this._url}/bzz-raw:/${hash}`)
   }
 
   downloadRawText(hash: string): Promise<string> {
