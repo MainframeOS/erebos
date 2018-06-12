@@ -29,8 +29,8 @@ export default class BaseBzz {
   }
 
   download(hash: string, path?: string = ''): Promise<*> {
-    const content_path = path === '' ? '' : `/${path}`
-    return this._fetch(`${this._url}/bzz:/${hash}${content_path}`)
+    const contentPath = path === '' ? '' : `/${path}`
+    return this._fetch(`${this._url}/bzz:/${hash}${contentPath}`)
   }
 
   downloadText(hash: string, path?: string = ''): Promise<string> {

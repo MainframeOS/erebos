@@ -83,14 +83,14 @@ describe('BaseBzz', () => {
   it('download() allows specifying content hash included in the manifest', async () => {
     const expectedContent = 'hello'
     fetch.mockResponseOnce(expectedContent)
-    const manifest_hash = 'abcdef123456'
-    const content_hash = 'uvwxyz456789'
-    const response = await bzz.download(manifest_hash, content_hash)
+    const manifestHash = 'abcdef123456'
+    const contentHash = 'uvwxyz456789'
+    const response = await bzz.download(manifestHash, contentHash)
 
     expect(response.body).toBe(expectedContent)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${manifest_hash}/${content_hash}`)
+    expect(fetchUrl).toBe(`${url}/bzz:/${manifestHash}/${contentHash}`)
   })
 
   it('downloadText() requests the data at manifest address and returns the response text', async () => {
