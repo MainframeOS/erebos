@@ -7,7 +7,9 @@
   "module": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
-  "files": ["lib/*"],
+  "files": [
+    "lib/*"
+  ],
   "scripts": {
     "clean": "del lib",
     "build:js": "flow-remove-types src --out-dir lib",
@@ -19,10 +21,10 @@
     "@mainframe/utils-hex": "^0.1.0"
   },
   "peerDependencies": {
-    "rxjs": "^6.0.0"
+    "rxjs": "^6.2.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.72.0",
-    "rxjs": "^6.1.0"
+    "flow-bin": "^0.74.0",
+    "rxjs": "^6.2.1"
   }
 }

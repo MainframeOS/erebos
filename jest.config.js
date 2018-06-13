@@ -2,7 +2,5 @@ module.exports = {
   automock: false,
   bail: true,
   collectCoverage: true,
-  setupFiles: [
-    "./setupJest.js"
-  ]
+  setupFiles: ['./jest.setup.js'],
 }
