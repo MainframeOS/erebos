@@ -1,6 +1,7 @@
 // @flow
 
 import type StreamRPC from '@mainframe/rpc-stream'
+// eslint-disable-next-line import/named
 import { hexEmpty, type hex } from '@mainframe/utils-hex'
 import { Observable } from 'rxjs'
 

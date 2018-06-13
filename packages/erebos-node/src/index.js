@@ -11,7 +11,9 @@ export { default as ShhAPI } from 'erebos-api-shh'
 export { default as Web3API } from 'erebos-api-web3'
 
 // Types
+// eslint-disable-next-line import/named
 export type { hex } from '@mainframe/utils-hex'
+// eslint-disable-next-line import/named
 export type { ClientConfig } from 'erebos-client-base'
 
 export { default as Client } from './Client'

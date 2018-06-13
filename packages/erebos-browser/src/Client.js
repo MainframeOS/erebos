@@ -4,7 +4,7 @@ import createRPC, { httpRPC, wsRPC } from '@mainframe/rpc-browser'
 import BzzAPI from 'erebos-api-bzz-browser'
 import BaseClient, {
   createInstantiateAPI,
-  type ClientConfig,
+  type ClientConfig, // eslint-disable-line import/named
 } from 'erebos-client-base'
 
 const instantiateAPI = createInstantiateAPI(createRPC)

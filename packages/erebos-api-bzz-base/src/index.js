@@ -15,7 +15,9 @@ export default class BaseBzz {
       body,
       headers,
       method: 'POST',
-    }).then(res => res.ok ? res.text() : Promise.reject(new Error(res.statusText)))
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
   }
 
   uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string> {
