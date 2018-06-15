@@ -9,6 +9,10 @@ export default class Bzz extends BaseBzz {
     this._fetch = fetch
   }
 
+  downloadBuffer(hash: string): Promise<Buffer> {
+    return this.download(hash).then(res => res.buffer())
+  }
+
   downloadRawBuffer(hash: string): Promise<Buffer> {
     return this.downloadRaw(hash).then(res => res.buffer())
   }
