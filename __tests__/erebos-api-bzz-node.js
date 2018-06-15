@@ -2,19 +2,23 @@ import Bzz from '../packages/erebos-api-bzz-node'
 import fetch from 'node-fetch'
 
 describe('Bzz', () => {
+  let uploadContent
   const url = 'http://localhost:8500'
   const bzz = new Bzz(url)
   bzz._fetch = require('node-fetch')
 
+  beforeEach(() => {
+    uploadContent = Math.random().toString(36).slice(2)
+  })
+
   it('trying to upload without specifying content-type fails', async () => {
-    const uploadRequest = bzz.upload('hello')
+    const uploadRequest = bzz.upload(uploadContent)
     expect(uploadRequest).rejects.toThrow('Bad Request')
   })
 
   it('uploading and downloading single file using bzz', async () => {
-    const uploadContent = 'hello'
     const headers = {'Content-Type': 'text/plain'}
-    const manifestHash = await bzz.upload('hello', headers)
+    const manifestHash = await bzz.upload(uploadContent, headers)
 
     const response = await bzz.download(manifestHash)
     expect(await response.text()).toBe(uploadContent)
@@ -27,8 +31,7 @@ describe('Bzz', () => {
   })
 
   it('uploading and downloading single file using bzz-raw', async () => {
-    const uploadContent = 'hello'
-    const hash = await bzz.uploadRaw('hello')
+    const hash = await bzz.uploadRaw(uploadContent)
 
     const response = await bzz.downloadRaw(hash)
     expect(await response.text()).toBe(uploadContent)
@@ -41,9 +44,8 @@ describe('Bzz', () => {
   })
 
   it('downloading the manifest', async () => {
-    const uploadContent = 'hello'
     const headers = {'Content-Type': 'text/plain'}
-    const manifestHash = await bzz.upload('hello', headers)
+    const manifestHash = await bzz.upload(uploadContent, headers)
 
     // Requesting manifestHash with bzz-raw directly returns the manifest file
     const manifest = await bzz.downloadRawText(manifestHash)
