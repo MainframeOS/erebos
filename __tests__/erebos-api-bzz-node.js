@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 
 describe('Bzz', () => {
   let uploadContent
-  const url = 'http://localhost:8500'
+  const url = 'http://localhost:8500/'
   const bzz = new Bzz(url)
   bzz._fetch = require('node-fetch')
 

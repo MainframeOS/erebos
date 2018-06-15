@@ -1,7 +1,7 @@
 import BaseBzz from '../packages/erebos-api-bzz-base'
 
 describe('BaseBzz', () => {
-  const url = 'https://example.com/swarm-gateways'
+  const url = 'https://example.com/swarm-gateways/'
   const bzz = new BaseBzz(url)
   bzz._fetch = fetch // Injected by extending class
 
@@ -21,7 +21,7 @@ describe('BaseBzz', () => {
     // Extract arguments provided to the first (and only) fetch() call
     const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
     // Check uploadRaw() provides the proper URL
-    expect(fetchUrl).toBe(`${url}/bzz-raw:`)
+    expect(fetchUrl).toBe(`${url}bzz-raw:`)
     // Check the body is converted to a Buffer when a string is provided
     // Needs to use buffer.equals() to properly check buffer equality
     expect(Buffer.from('hello').equals(body)).toBe(true)
@@ -38,7 +38,7 @@ describe('BaseBzz', () => {
     expect(hash).toBe(expectedHash)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:`)
+    expect(fetchUrl).toBe(`${url}bzz:`)
     expect(Buffer.from('hello').equals(body)).toBe(true)
     expect(method).toBe('POST')
     expect(headers['content-length']).toBe(5)
@@ -53,7 +53,7 @@ describe('BaseBzz', () => {
     expect(response.body).toBe(expectedContent)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz-raw:/${hash}`)
+    expect(fetchUrl).toBe(`${url}bzz-raw:/${hash}`)
   })
 
   it('downloadRawText() requests the data at hash address and returns the response text', async () => {
@@ -65,7 +65,7 @@ describe('BaseBzz', () => {
     expect(response).toBe(expectedContent)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz-raw:/${hash}`)
+    expect(fetchUrl).toBe(`${url}bzz-raw:/${hash}`)
   })
 
   it('download() requests the data at manifest address and returns the response object', async () => {
@@ -77,7 +77,7 @@ describe('BaseBzz', () => {
     expect(response.body).toBe(expectedContent)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${hash}`)
+    expect(fetchUrl).toBe(`${url}bzz:/${hash}`)
   })
 
   it('download() allows specifying content hash included in the manifest', async () => {
@@ -90,7 +90,7 @@ describe('BaseBzz', () => {
     expect(response.body).toBe(expectedContent)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${manifestHash}/${contentHash}`)
+    expect(fetchUrl).toBe(`${url}bzz:/${manifestHash}/${contentHash}`)
   })
 
   it('downloadText() requests the data at manifest address and returns the response text', async () => {
@@ -102,6 +102,6 @@ describe('BaseBzz', () => {
     expect(response).toBe(expectedContent)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${hash}`)
+    expect(fetchUrl).toBe(`${url}bzz:/${hash}`)
   })
 })
