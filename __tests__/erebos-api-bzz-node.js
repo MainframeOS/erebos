@@ -1,11 +1,9 @@
 import Bzz from '../packages/erebos-api-bzz-node'
-import fetch from 'node-fetch'
 
 describe('Bzz', () => {
   let uploadContent
   const url = 'http://localhost:8500/'
   const bzz = new Bzz(url)
-  bzz._fetch = require('node-fetch')
 
   beforeEach(() => {
     uploadContent = Math.random().toString(36).slice(2)
