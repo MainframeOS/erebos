@@ -14,6 +14,10 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run:
+          name: Run swarm
+          command: ./start_swarm_node.sh tmp
+          background: true
+      - run:
           name: Setup
           command: yarn install && yarn bootstrap
       - save_cache:
