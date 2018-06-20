@@ -49,6 +49,7 @@ $GODIR/build/bin/swarm \
     --bzzaccount $KEY \
     --ens-api '' \
     --bzznetworkid 922 \
+    --httpaddr 0.0.0.0 \
     --ws \
     --wsorigins '*'
 
