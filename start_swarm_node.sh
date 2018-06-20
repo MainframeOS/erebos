@@ -21,4 +21,5 @@ KEY=$(jq --raw-output '.address' $DATADIR/keystore/*)
     --verbosity 4 \
     --bzzaccount $KEY \
     --httpaddr 0.0.0.0 \
+    --nat none \
     --nodiscover
