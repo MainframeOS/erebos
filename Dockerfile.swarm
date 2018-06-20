@@ -28,5 +28,5 @@ RUN cp /app/go-ethereum/build/bin/swarm /app/bin/
 # do not package the source code into the image
 RUN rm -rf /app/go-ethereum/
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy script for starting swarm into the container
+COPY ./start_swarm_node.sh /app
