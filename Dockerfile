@@ -1,5 +1,5 @@
 # Use an official golang image for simplicity (and compilation)
-FROM golang:1.9.7-stretch
+FROM golang:1.10.3-stretch
 
 RUN mkdir /app && mkdir /app/bin
 
