@@ -70,7 +70,7 @@ yarn add erebos # universal
 yarn install
 yarn bootstrap
 yarn build
-docker pull mainframehq/swarm
+docker build -t erebos -f Dockerfile.erebos .
 ```
 
 ### Running tests
@@ -78,13 +78,19 @@ docker pull mainframehq/swarm
 In one terminal window run:
 
 ```
-docker run -p 8500:8500 erebos
+docker run -publish 8500:8500 erebos
 ```
 
 And in the second one run:
 
 ```
 yarn test:all
+```
+
+After you're done you can use this command to stop the container running the erebos image:
+
+```
+docker ps -q --filter ancestor="erebos" | xargs -r docker stop
 ```
 
 ## License
