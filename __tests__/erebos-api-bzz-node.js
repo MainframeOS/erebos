@@ -1,107 +1,100 @@
-import BaseBzz from '../packages/erebos-api-bzz-base'
+import Bzz from '../packages/erebos-api-bzz-node'
 
-describe('BaseBzz', () => {
-  const url = 'https://example.com/swarm-gateways'
-  const bzz = new BaseBzz(url)
-  bzz._fetch = fetch // Injected by extending class
+describe('Bzz', () => {
+  let uploadContent
+  const url = 'http://localhost:8500/'
+  const bzz = new Bzz(url)
 
   beforeEach(() => {
-    fetch.resetMocks()
+    uploadContent = Math.random().toString(36).slice(2)
   })
 
-  it('uploadRaw() uploads the contents and returns the hash of the file', async () => {
-    // Mock the expected response body
-    const expectedHash = 'abcdef123456'
-    fetch.mockResponseOnce(expectedHash)
-    const hash = await bzz.uploadRaw('hello')
-    // Function call parses and return the response body
-    expect(hash).toBe(expectedHash)
-    // Ensure only one call to fetch() has been made
-    expect(fetch.mock.calls).toHaveLength(1)
-    // Extract arguments provided to the first (and only) fetch() call
-    const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
-    // Check uploadRaw() provides the proper URL
-    expect(fetchUrl).toBe(`${url}/bzz-raw:`)
-    // Check the body is converted to a Buffer when a string is provided
-    // Needs to use buffer.equals() to properly check buffer equality
-    expect(Buffer.from('hello').equals(body)).toBe(true)
-    // Check the request is properly sent as POST
-    expect(method).toBe('POST')
-    // Check the `content-length` header is set based on the body
-    expect(headers['content-length']).toBe(5)
+  it('trying to upload without specifying content-type fails', async () => {
+    const uploadRequest = bzz.upload(uploadContent)
+    expect(uploadRequest).rejects.toThrow('Bad Request')
   })
 
-  it('upload() uploads the contents and returns the hash of the manifest', async () => {
-    const expectedHash = 'abcdef123456'
-    fetch.mockResponseOnce(expectedHash)
-    const hash = await bzz.upload('hello')
-    expect(hash).toBe(expectedHash)
-    expect(fetch.mock.calls).toHaveLength(1)
-    const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:`)
-    expect(Buffer.from('hello').equals(body)).toBe(true)
-    expect(method).toBe('POST')
-    expect(headers['content-length']).toBe(5)
+  it('uploading and downloading single file using bzz', async () => {
+    const headers = {'Content-Type': 'text/plain'}
+    const manifestHash = await bzz.upload(uploadContent, headers)
+
+    const response = await bzz.download(manifestHash)
+    expect(await response.text()).toBe(uploadContent)
+
+    const text = await bzz.downloadText(manifestHash)
+    expect(text).toBe(uploadContent)
+
+    const buffer = await bzz.downloadBuffer(manifestHash)
+    expect(buffer.toString('utf8')).toBe(uploadContent)
   })
 
-  it('downloadRaw() requests the data at hash address and returns the response object', async () => {
-    const expectedContent = 'hello'
-    fetch.mockResponseOnce(expectedContent)
-    const hash = 'abcdef123456'
+  it('uploading and downloading single file using bzz with content path', async () => {
+    const headers = {'Content-Type': 'text/plain'}
+    const manifestHash = await bzz.upload(uploadContent, headers)
+
+    const manifest = await bzz.downloadRawText(manifestHash)
+    const entryHash = JSON.parse(manifest).entries[0].hash
+    const response = await bzz.download(manifestHash, entryHash)
+    expect(await response.text()).toBe(uploadContent)
+
+    const text = await bzz.downloadText(manifestHash, entryHash)
+    expect(text).toBe(uploadContent)
+
+    const buffer = await bzz.downloadBuffer(manifestHash, entryHash)
+    expect(buffer.toString('utf8')).toBe(uploadContent)
+  })
+
+  it('uploading and downloading single file using bzz-raw', async () => {
+    const hash = await bzz.uploadRaw(uploadContent)
+
     const response = await bzz.downloadRaw(hash)
+    expect(await response.text()).toBe(uploadContent)
 
-    expect(response.body).toBe(expectedContent)
-    expect(fetch.mock.calls).toHaveLength(1)
-    const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz-raw:/${hash}`)
+    const text = await bzz.downloadRawText(hash)
+    expect(text).toBe(uploadContent)
+
+    const buffer = await bzz.downloadRawBuffer(hash)
+    expect(buffer.toString('utf8')).toBe(uploadContent)
   })
 
-  it('downloadRawText() requests the data at hash address and returns the response text', async () => {
-    const expectedContent = 'hello'
-    fetch.mockResponseOnce(expectedContent)
-    const hash = 'abcdef123456'
-    const response = await bzz.downloadRawText(hash)
+  it('downloading the manifest', async () => {
+    const headers = {'Content-Type': 'text/plain'}
+    const manifestHash = await bzz.upload(uploadContent, headers)
 
-    expect(response).toBe(expectedContent)
-    expect(fetch.mock.calls).toHaveLength(1)
-    const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz-raw:/${hash}`)
+    // Requesting manifestHash with bzz-raw directly returns the manifest file
+    const manifest = await bzz.downloadRawText(manifestHash)
+    const entry = JSON.parse(manifest).entries[0]
+    expect(entry.contentType).toBe('text/plain')
+    expect(entry.size).toBe(uploadContent.length)
   })
 
-  it('download() requests the data at manifest address and returns the response object', async () => {
-    const expectedContent = 'hello'
-    fetch.mockResponseOnce(expectedContent)
-    const hash = 'abcdef123456'
-    const response = await bzz.download(hash)
+  it('uploading and downloading single file using bzz using Buffer type', async () => {
+    const bufferData = Buffer.from(uploadContent, 'utf8')
+    const headers = {'Content-Type': 'application/octet-stream'}
+    const manifestHash = await bzz.upload(bufferData, headers)
 
-    expect(response.body).toBe(expectedContent)
-    expect(fetch.mock.calls).toHaveLength(1)
-    const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${hash}`)
+    const response = await bzz.download(manifestHash)
+    expect(await response.text()).toBe(uploadContent)
+
+    const text = await bzz.downloadText(manifestHash)
+    expect(text).toBe(uploadContent)
+
+    const buffer = await bzz.downloadBuffer(manifestHash)
+    expect(buffer.toString('utf8')).toBe(uploadContent)
   })
 
-  it('download() allows specifying content hash included in the manifest', async () => {
-    const expectedContent = 'hello'
-    fetch.mockResponseOnce(expectedContent)
-    const manifestHash = 'abcdef123456'
-    const contentHash = 'uvwxyz456789'
-    const response = await bzz.download(manifestHash, contentHash)
+  it('uploading and downloading single file using bzz using Buffer type', async () => {
+    const bufferData = Buffer.from(uploadContent, 'utf8')
+    const headers = {'Content-Type': 'application/octet-stream'}
+    const manifestHash = await bzz.uploadRaw(bufferData, headers)
 
-    expect(response.body).toBe(expectedContent)
-    expect(fetch.mock.calls).toHaveLength(1)
-    const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${manifestHash}/${contentHash}`)
-  })
+    const response = await bzz.downloadRaw(manifestHash)
+    expect(await response.text()).toBe(uploadContent)
 
-  it('downloadText() requests the data at manifest address and returns the response text', async () => {
-    const expectedContent = 'hello'
-    fetch.mockResponseOnce(expectedContent)
-    const hash = 'abcdef123456'
-    const response = await bzz.downloadText(hash)
+    const text = await bzz.downloadRawText(manifestHash)
+    expect(text).toBe(uploadContent)
 
-    expect(response).toBe(expectedContent)
-    expect(fetch.mock.calls).toHaveLength(1)
-    const [fetchUrl] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}/bzz:/${hash}`)
+    const buffer = await bzz.downloadRawBuffer(manifestHash)
+    expect(buffer.toString('utf8')).toBe(uploadContent)
   })
 })

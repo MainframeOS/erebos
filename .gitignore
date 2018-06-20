@@ -1,5 +1,6 @@
 node_modules
 coverage
+external_deps
 /packages/*/dist
 /packages/*/lib
 /packages/*/.flowconfig

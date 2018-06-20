@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:10
+      - image: mainframehq/swarm
+        command: [./start_swarm_node.sh, tmp]
 
     working_directory: ~/repo
 

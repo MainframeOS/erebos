@@ -1,6 +1,7 @@
 [ignore]
 packages/*/dist/.*
 packages/*/lib/.*
+external_deps
 
 [include]
 
