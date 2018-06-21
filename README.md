@@ -70,7 +70,7 @@ yarn add erebos # universal
 yarn install
 yarn bootstrap
 yarn build
-docker build -t erebos -f Dockerfile.erebos .
+docker build --tag erebos --file Dockerfile.erebos .
 ```
 
 ### Running tests
@@ -78,7 +78,7 @@ docker build -t erebos -f Dockerfile.erebos .
 In one terminal window run:
 
 ```
-docker run -publish 8500:8500 erebos
+docker run --publish 8500:8500 erebos
 ```
 
 And in the second one run:
