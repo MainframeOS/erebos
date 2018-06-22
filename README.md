@@ -56,6 +56,43 @@ yarn add erebos # universal
 | [`erebos-api-bzz-base`](/packages/erebos-api-bzz-base) | [![npm version](https://img.shields.io/npm/v/erebos-api-bzz-base.svg)](https://www.npmjs.com/package/erebos-api-bzz-base) | Shared logic for Swarm (BZZ) APIs
 | [`erebos-client-base`](/packages/erebos-client-base) | [![npm version](https://img.shields.io/npm/v/erebos-client-base.svg)](https://www.npmjs.com/package/erebos-client-base) | Shared logic for Client APIs
 
+## Development
+
+### Prerequisites
+
+* [Node](https://nodejs.org/en/) v10+ (includes npm)
+* [Yarn](https://yarnpkg.com/lang/en/) (optional - faster alternative to npm)
+* [Docker](https://www.docker.com/community-edition)
+
+### Setup
+
+```
+yarn install
+yarn bootstrap
+yarn build
+docker build --tag erebos --file Dockerfile.erebos .
+```
+
+### Running tests
+
+In one terminal window run:
+
+```
+docker run --publish 8500:8500 erebos
+```
+
+And in the second one run:
+
+```
+yarn test:all
+```
+
+After you're done you can use this command to stop the container running the erebos image:
+
+```
+docker ps -q --filter ancestor="erebos" | xargs -r docker stop
+```
+
 ## License
 
 MIT.\
