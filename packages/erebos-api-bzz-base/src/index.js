@@ -1,5 +1,7 @@
 // @flow
 
+import FormData from 'form-data'
+
 export default class BaseBzz {
   _fetch: *
   _url: string
@@ -8,12 +10,35 @@ export default class BaseBzz {
     this._url = new URL(url).toString()
   }
 
-  upload(data: string | Buffer, headers?: Object = {}): Promise<string> {
+  upload(data: string | Buffer | Object, headers?: Object): Promise<string> {
+    if (typeof data === 'string' || Buffer.isBuffer(data)) {
+      return this.uploadFile(data, headers)
+    } else {
+      return this.uploadDirectory(data)
+    }
+  }
+
+  uploadDirectory(directory: Object) {
+    const form = new FormData()
+    Object.keys(directory).forEach(function(key, _) {
+      form.append(key, directory[key].data)
+    }, directory)
+
+    return this._fetch(`${this._url}bzz:`, {
+      method: 'POST',
+      body: form,
+      headers: form.getHeaders(),
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
+  }
+
+  uploadFile(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
     return this._fetch(`${this._url}bzz:`, {
-      body,
-      headers,
+      body: body,
+      headers: headers,
       method: 'POST',
     }).then(
       res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
@@ -24,8 +49,8 @@ export default class BaseBzz {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
     return this._fetch(`${this._url}bzz-raw:`, {
-      body,
-      headers,
+      body: body,
+      headers: headers,
       method: 'POST',
     }).then(res => res.text())
   }

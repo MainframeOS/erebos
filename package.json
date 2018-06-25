@@ -38,6 +38,7 @@
     "flow-bin": "^0.74.0",
     "flow-copy-source": "^2.0.0",
     "flow-remove-types": "^1.2.3",
+    "form-data": "^2.3.2",
     "jest": "^23.1.0",
     "jest-fetch-mock": "^1.6.4",
     "jest-junit": "^5.0.0",
