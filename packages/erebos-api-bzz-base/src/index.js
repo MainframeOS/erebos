@@ -9,7 +9,10 @@ export default class BaseBzz {
     this._url = new URL(url).toString()
   }
 
-  upload(data: string | Buffer | Object, headers?: Object): Promise<string> {
+  upload(
+    data: string | Buffer | Object,
+    headers?: Object = {},
+  ): Promise<string> {
     if (typeof data === 'string' || Buffer.isBuffer(data)) {
       return this.uploadFile(data, headers)
     } else {
