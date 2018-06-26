@@ -1,9 +1,8 @@
 // @flow
 
-import FormData from 'form-data'
-
 export default class BaseBzz {
   _fetch: *
+  _FormData: *
   _url: string
 
   constructor(url: string) {
@@ -19,7 +18,7 @@ export default class BaseBzz {
   }
 
   uploadDirectory(directory: Object) {
-    const form = new FormData()
+    const form = new this._FormData()
     Object.keys(directory).forEach(function(key, _) {
       form.append(key, directory[key].data)
     }, directory)
