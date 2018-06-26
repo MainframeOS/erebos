@@ -4,7 +4,7 @@
 
 import Bzz from '../packages/erebos-api-bzz-browser'
 
-describe('Bzz', () => {
+describe('bzz-browser', () => {
   let uploadContent
   const url = 'http://localhost:8500/'
   const bzz = new Bzz(url)
