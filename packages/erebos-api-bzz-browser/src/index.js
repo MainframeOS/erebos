@@ -9,6 +9,10 @@ export default class Bzz extends BaseBzz {
     this._FormData = window.FormData
   }
 
+  uploadDirectory(directory: Object): Promise<string> {
+    return Promise.reject(new Error('Not Implemented'))
+  }
+
   downloadRawBlob(hash: string): Promise<Blob> {
     return this.downloadRaw(hash).then(res => res.blob())
   }

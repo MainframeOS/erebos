@@ -17,21 +17,6 @@ export default class BaseBzz {
     }
   }
 
-  uploadDirectory(directory: Object) {
-    const form = new this._FormData()
-    Object.keys(directory).forEach(function(key, _) {
-      form.append(key, directory[key].data)
-    }, directory)
-
-    return this._fetch(`${this._url}bzz:`, {
-      method: 'POST',
-      body: form,
-      headers: form.getHeaders(),
-    }).then(
-      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
-    )
-  }
-
   uploadFile(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length

@@ -11,6 +11,21 @@ export default class Bzz extends BaseBzz {
     this._FormData = FormData
   }
 
+  uploadDirectory(directory: Object) {
+    const form = new this._FormData()
+    Object.keys(directory).forEach(function(key, _) {
+      form.append(key, directory[key].data)
+    }, directory)
+
+    return this._fetch(`${this._url}bzz:`, {
+      method: 'POST',
+      body: form,
+      headers: form.getHeaders(),
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
+  }
+
   downloadBuffer(hash: string, path?: string = ''): Promise<Buffer> {
     return this.download(hash, path).then(res => res.buffer())
   }
