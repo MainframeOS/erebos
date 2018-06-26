@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import Bzz from '../packages/erebos-api-bzz-node'
 
 describe('Bzz', () => {
@@ -96,5 +100,22 @@ describe('Bzz', () => {
 
     const buffer = await bzz.downloadRawBuffer(manifestHash)
     expect(buffer.toString('utf8')).toBe(uploadContent)
+  })
+
+  it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
+    const dir = {
+      "foo.txt": {data: "this is foo.txt"},
+      "bar.txt": {data: "this is bar.txt"}
+    }
+    const dirHash = await bzz.uploadDirectory(dir)
+    const manifest = await bzz.downloadRawText(dirHash)
+    const entries = JSON.parse(manifest).entries
+
+    let downloadedDir = {}
+    for (let entry of entries) {
+      const data = await bzz.downloadRawText(entry.hash)
+      downloadedDir[entry.path] = {data: data}
+    }
+    expect(dir).toEqual(downloadedDir)
   })
 })
