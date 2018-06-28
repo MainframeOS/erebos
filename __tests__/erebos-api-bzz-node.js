@@ -109,13 +109,12 @@ describe('bzz-node', () => {
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.downloadRawText(dirHash)
-    const entries = JSON.parse(manifest).entries
-
-    let downloadedDir = {}
-    for (let entry of entries) {
-      const data = await bzz.downloadRawText(entry.hash)
-      downloadedDir[entry.path] = {data: data}
-    }
+    const entries = Object.values(JSON.parse(manifest).entries)
+    const downloaded = await Promise.all(entries.map(entry => bzz.downloadRawText(entry.hash)))
+    const downloadedDir = entries.reduce((acc, entry, i) => {
+      acc[entry.path] = {data: downloaded[i]}
+      return acc
+    }, {})
     expect(dir).toEqual(downloadedDir)
   })
 })
