@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@mainframe/rpc-node": "^0.2.0",
-    "@mainframe/rpc-stream": "^0.2.2",
+    "@mainframe/rpc-stream": "^0.2.3",
     "@mainframe/utils-hex": "^0.1.0",
     "erebos-api-bzz-node": "^0.3.0",
     "erebos-api-eth": "^0.3.0",
@@ -30,7 +30,7 @@
     "erebos-api-shh": "^0.3.0",
     "erebos-api-web3": "^0.3.0",
     "erebos-client-base": "^0.3.0",
-    "esm": "^3.0.34"
+    "esm": "^3.0.61"
   },
   "devDependencies": {
     "rxjs": "^6.2.0"

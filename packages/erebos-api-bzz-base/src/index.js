@@ -20,6 +20,7 @@ export default class BaseBzz {
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
   uploadDirectory(directory: Object): Promise<string> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }

@@ -15,6 +15,6 @@ export default class Web3 {
   }
 
   sha3(data: hex): Promise<hex> {
-    return this._rpc.request('web3_sha3')
+    return this._rpc.request('web3_sha3', data)
   }
 }

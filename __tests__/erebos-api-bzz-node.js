@@ -10,7 +10,9 @@ describe('bzz-node', () => {
   const bzz = new Bzz(url)
 
   beforeEach(() => {
-    uploadContent = Math.random().toString(36).slice(2)
+    uploadContent = Math.random()
+      .toString(36)
+      .slice(2)
   })
 
   it('trying to upload without specifying content-type fails', async () => {
@@ -19,7 +21,7 @@ describe('bzz-node', () => {
   })
 
   it('uploading and downloading single file using bzz', async () => {
-    const headers = {'Content-Type': 'text/plain'}
+    const headers = { 'Content-Type': 'text/plain' }
     const manifestHash = await bzz.upload(uploadContent, headers)
 
     const response = await bzz.download(manifestHash)
@@ -33,7 +35,7 @@ describe('bzz-node', () => {
   })
 
   it('uploading and downloading single file using bzz with content path', async () => {
-    const headers = {'Content-Type': 'text/plain'}
+    const headers = { 'Content-Type': 'text/plain' }
     const manifestHash = await bzz.upload(uploadContent, headers)
 
     const manifest = await bzz.downloadRawText(manifestHash)
@@ -62,7 +64,7 @@ describe('bzz-node', () => {
   })
 
   it('downloading the manifest', async () => {
-    const headers = {'Content-Type': 'text/plain'}
+    const headers = { 'Content-Type': 'text/plain' }
     const manifestHash = await bzz.upload(uploadContent, headers)
 
     // Requesting manifestHash with bzz-raw directly returns the manifest file
@@ -74,7 +76,7 @@ describe('bzz-node', () => {
 
   it('uploading and downloading single file using bzz using Buffer type', async () => {
     const bufferData = Buffer.from(uploadContent, 'utf8')
-    const headers = {'Content-Type': 'application/octet-stream'}
+    const headers = { 'Content-Type': 'application/octet-stream' }
     const manifestHash = await bzz.upload(bufferData, headers)
 
     const response = await bzz.download(manifestHash)
@@ -87,32 +89,19 @@ describe('bzz-node', () => {
     expect(buffer.toString('utf8')).toBe(uploadContent)
   })
 
-  it('uploading and downloading single file using bzz using Buffer type', async () => {
-    const bufferData = Buffer.from(uploadContent, 'utf8')
-    const headers = {'Content-Type': 'application/octet-stream'}
-    const manifestHash = await bzz.uploadRaw(bufferData, headers)
-
-    const response = await bzz.downloadRaw(manifestHash)
-    expect(await response.text()).toBe(uploadContent)
-
-    const text = await bzz.downloadRawText(manifestHash)
-    expect(text).toBe(uploadContent)
-
-    const buffer = await bzz.downloadRawBuffer(manifestHash)
-    expect(buffer.toString('utf8')).toBe(uploadContent)
-  })
-
   it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
     const dir = {
-      "foo.txt": {data: "this is foo.txt"},
-      "bar.txt": {data: "this is bar.txt"}
+      'foo.txt': { data: 'this is foo.txt' },
+      'bar.txt': { data: 'this is bar.txt' },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.downloadRawText(dirHash)
     const entries = Object.values(JSON.parse(manifest).entries)
-    const downloaded = await Promise.all(entries.map(entry => bzz.downloadRawText(entry.hash)))
+    const downloaded = await Promise.all(
+      entries.map(entry => bzz.downloadRawText(entry.hash)),
+    )
     const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = {data: downloaded[i]}
+      acc[entry.path] = { data: downloaded[i] }
       return acc
     }, {})
     expect(dir).toEqual(downloadedDir)
