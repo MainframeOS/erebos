@@ -2,18 +2,35 @@
 
 export default class BaseBzz {
   _fetch: *
+  _FormData: *
   _url: string
 
   constructor(url: string) {
     this._url = new URL(url).toString()
   }
 
-  upload(data: string | Buffer, headers?: Object = {}): Promise<string> {
+  upload(
+    data: string | Buffer | Object,
+    headers?: Object = {},
+  ): Promise<string> {
+    if (typeof data === 'string' || Buffer.isBuffer(data)) {
+      return this.uploadFile(data, headers)
+    } else {
+      return this.uploadDirectory(data)
+    }
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  uploadDirectory(directory: Object): Promise<string> {
+    return Promise.reject(new Error('Must be implemented in extending class'))
+  }
+
+  uploadFile(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
     return this._fetch(`${this._url}bzz:`, {
-      body,
-      headers,
+      body: body,
+      headers: headers,
       method: 'POST',
     }).then(
       res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
@@ -24,8 +41,8 @@ export default class BaseBzz {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
     return this._fetch(`${this._url}bzz-raw:`, {
-      body,
-      headers,
+      body: body,
+      headers: headers,
       method: 'POST',
     }).then(res => res.text())
   }
