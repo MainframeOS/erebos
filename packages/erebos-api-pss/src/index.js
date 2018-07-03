@@ -77,6 +77,7 @@ export default class Pss {
               try {
                 observer.next(result)
               } catch (err) {
+                // eslint-disable-next-line no-console
                 console.warn('Error handling message', result, err)
               }
             }

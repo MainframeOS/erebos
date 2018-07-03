@@ -1,3 +1,5 @@
+/* global fetch */
+
 import BaseBzz from '../packages/erebos-api-bzz-base'
 
 describe('BaseBzz', () => {

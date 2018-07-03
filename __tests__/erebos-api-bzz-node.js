@@ -6,7 +6,9 @@ describe('Bzz', () => {
   const bzz = new Bzz(url)
 
   beforeEach(() => {
-    uploadContent = Math.random().toString(36).slice(2)
+    uploadContent = Math.random()
+      .toString(36)
+      .slice(2)
   })
 
   it('trying to upload without specifying content-type fails', async () => {
@@ -15,7 +17,7 @@ describe('Bzz', () => {
   })
 
   it('uploading and downloading single file using bzz', async () => {
-    const headers = {'Content-Type': 'text/plain'}
+    const headers = { 'Content-Type': 'text/plain' }
     const manifestHash = await bzz.upload(uploadContent, headers)
 
     const response = await bzz.download(manifestHash)
@@ -29,7 +31,7 @@ describe('Bzz', () => {
   })
 
   it('uploading and downloading single file using bzz with content path', async () => {
-    const headers = {'Content-Type': 'text/plain'}
+    const headers = { 'Content-Type': 'text/plain' }
     const manifestHash = await bzz.upload(uploadContent, headers)
 
     const manifest = await bzz.downloadRawText(manifestHash)
@@ -58,7 +60,7 @@ describe('Bzz', () => {
   })
 
   it('downloading the manifest', async () => {
-    const headers = {'Content-Type': 'text/plain'}
+    const headers = { 'Content-Type': 'text/plain' }
     const manifestHash = await bzz.upload(uploadContent, headers)
 
     // Requesting manifestHash with bzz-raw directly returns the manifest file
@@ -70,7 +72,7 @@ describe('Bzz', () => {
 
   it('uploading and downloading single file using bzz using Buffer type', async () => {
     const bufferData = Buffer.from(uploadContent, 'utf8')
-    const headers = {'Content-Type': 'application/octet-stream'}
+    const headers = { 'Content-Type': 'application/octet-stream' }
     const manifestHash = await bzz.upload(bufferData, headers)
 
     const response = await bzz.download(manifestHash)
@@ -80,21 +82,6 @@ describe('Bzz', () => {
     expect(text).toBe(uploadContent)
 
     const buffer = await bzz.downloadBuffer(manifestHash)
-    expect(buffer.toString('utf8')).toBe(uploadContent)
-  })
-
-  it('uploading and downloading single file using bzz using Buffer type', async () => {
-    const bufferData = Buffer.from(uploadContent, 'utf8')
-    const headers = {'Content-Type': 'application/octet-stream'}
-    const manifestHash = await bzz.uploadRaw(bufferData, headers)
-
-    const response = await bzz.downloadRaw(manifestHash)
-    expect(await response.text()).toBe(uploadContent)
-
-    const text = await bzz.downloadRawText(manifestHash)
-    expect(text).toBe(uploadContent)
-
-    const buffer = await bzz.downloadRawBuffer(manifestHash)
     expect(buffer.toString('utf8')).toBe(uploadContent)
   })
 })

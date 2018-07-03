@@ -1,5 +1,5 @@
-// flow-typed signature: 15a62627db10532a0d66de672b6a63b0
-// flow-typed version: 17360d7665/rxjs_v6.x.x/flow_>=v0.34.x
+// flow-typed signature: 7dca9ec48b178e2f0296caf32b123aa0
+// flow-typed version: 71a8210c07/rxjs_v6.x.x/flow_>=v0.34.x
 
 type rxjs$PartialObserver<-T> =
   | {
@@ -1191,6 +1191,8 @@ declare module "rxjs/operators" {
       scheduler?: rxjs$SchedulerClass
     ): rxjs$Observable<T> => rxjs$Observable<T | U>;
 
+    toArray<+T>(): rxjs$Observable<T> => rxjs$Observable<T[]>;
+
     combineLatest<+T, A, B, C, D, E, F, G, H>(
       a: rxjs$Observable<A>,
       b: rxjs$Observable<B>,
@@ -1628,6 +1630,15 @@ declare class rxjs$UnsubscriptionError extends Error {}
 
 declare module "rxjs" {
   declare module.exports: {
+    from<+T>(
+      input: rxjs$ObservableInput<T>,
+      scheduler?: rxjs$SchedulerClass
+    ): rxjs$Observable<T>,
+    timer(
+      initialDelay: number | Date,
+      period?: number,
+      scheduler?: rxjs$SchedulerClass
+    ): rxjs$Observable<number>,
     Observable: typeof rxjs$Observable,
     Observer: typeof rxjs$Observer,
     ConnectableObservable: typeof rxjs$ConnectableObservable,
@@ -1648,6 +1659,7 @@ declare module "rxjs" {
     ObjectUnsubscribedError: typeof rxjs$ObjectUnsubscribedError,
     TimeoutError: typeof rxjs$TimeoutError,
     UnsubscriptionError: typeof rxjs$UnsubscriptionError,
+    throwError(error: any): rxjs$Observable<any>,
   };
 }
 

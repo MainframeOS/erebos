@@ -1,4 +1,5 @@
 // @flow
+/* eslint-env browser */
 
 import BaseBzz from 'erebos-api-bzz-base'
 
