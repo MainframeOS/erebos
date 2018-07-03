@@ -1,6 +1,6 @@
 import BaseBzz from '../packages/erebos-api-bzz-base'
 
-describe('BaseBzz', () => {
+describe('bzz-base', () => {
   const url = 'https://example.com/swarm-gateways/'
   const bzz = new BaseBzz(url)
   bzz._fetch = fetch // Injected by extending class
