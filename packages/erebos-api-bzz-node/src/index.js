@@ -10,7 +10,7 @@ import { Observable } from 'rxjs'
 
 export type DirectoryEntry = {
   path: string,
-  data: string | Buffer,
+  data: Buffer,
 }
 
 export default class Bzz extends BaseBzz {
@@ -45,13 +45,22 @@ export default class Bzz extends BaseBzz {
         if (res.ok) {
           const extract = tar.extract()
           extract.on('entry', (header, stream, next) => {
-            stream.on('data', data => {
-              observer.next({ path: header.name, data })
-            })
-            stream.on('end', () => {
+            if (header.type === 'file') {
+              const chunks = []
+              stream.on('data', chunk => {
+                chunks.push(chunk)
+              })
+              stream.on('end', () => {
+                observer.next({
+                  path: header.name,
+                  data: Buffer.concat(chunks),
+                })
+                next()
+              })
+              stream.resume()
+            } else {
               next()
-            })
-            stream.resume()
+            }
           })
           extract.on('finish', () => {
             observer.complete()
