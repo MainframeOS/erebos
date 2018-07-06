@@ -29,9 +29,9 @@ export default class Bzz extends BaseBzz {
   downloadDirectory(hash: string): Promise<*> {
     return this._fetch(`${this._url}bzz:/${hash}`, {
       method: 'GET',
-      headers:{
-        'Accept': 'application/x-tar'
-      }
+      headers: {
+        Accept: 'application/x-tar',
+      },
     })
   }
 

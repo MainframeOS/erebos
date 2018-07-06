@@ -2,8 +2,8 @@
  * @jest-environment node
  */
 
-import Bzz from '../packages/erebos-api-bzz-node'
 import tar from 'tar-stream'
+import Bzz from '../packages/erebos-api-bzz-node'
 
 describe('bzz-node', () => {
   let uploadContent
@@ -119,8 +119,9 @@ describe('bzz-node', () => {
     const downloadedDir = {}
 
     extract.on('entry', function(header, stream) {
-      stream.on('data', data =>
-        downloadedDir[header.name] = { data: data.toString('utf8') }
+      stream.on(
+        'data',
+        data => (downloadedDir[header.name] = { data: data.toString('utf8') }),
       )
       stream.resume()
     })
