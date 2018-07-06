@@ -3,6 +3,13 @@
 import BaseBzz from 'erebos-api-bzz-base'
 import FormData from 'form-data'
 import fetch from 'node-fetch'
+import tar from 'tar-stream'
+import { Observable } from 'rxjs'
+
+export type DirectoryEntry = {
+  path: string,
+  data: string | Buffer,
+}
 
 export default class Bzz extends BaseBzz {
   constructor(url: string) {
@@ -26,12 +33,46 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  downloadDirectory(hash: string): Promise<*> {
-    return this._fetch(`${this._url}bzz:/${hash}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/x-tar',
-      },
+  downloadDirectoryObservable(hash: string): Observable<DirectoryEntry> {
+    return Observable.create(observer => {
+      this._fetch(`${this._url}bzz:/${hash}`, {
+        headers: {
+          Accept: 'application/x-tar',
+        },
+      }).then(res => {
+        if (res.ok) {
+          const extract = tar.extract()
+          extract.on('entry', (header, stream) => {
+            stream.on('data', data => {
+              observer.next({ path: header.name, data })
+            })
+            stream.resume()
+          })
+          extract.on('finish', () => {
+            observer.complete()
+          })
+          res.body.pipe(extract)
+        } else {
+          observer.error(new Error(res.statusText))
+        }
+      })
+    })
+  }
+
+  downloadDirectory(hash: string): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      const directoryData = {}
+      this.downloadDirectoryObservable(hash).subscribe({
+        next: entry => {
+          directoryData[entry.path] = { data: entry.data }
+        },
+        error: err => {
+          reject(err)
+        },
+        complete: () => {
+          resolve(directoryData)
+        },
+      })
     })
   }
 
