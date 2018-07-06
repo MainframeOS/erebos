@@ -3,6 +3,7 @@
  */
 
 import Bzz from '../packages/erebos-api-bzz-node'
+import tar from 'tar-stream'
 
 describe('bzz-node', () => {
   let uploadContent
@@ -105,5 +106,26 @@ describe('bzz-node', () => {
       return acc
     }, {})
     expect(dir).toEqual(downloadedDir)
+  })
+
+  it('downloadDirectory() streams the same data provided to uploadDirectory()', async () => {
+    const dir = {
+      'foo2.txt': { data: 'this is foo2.txt' },
+      'bar2.txt': { data: 'this is bar2.txt' },
+    }
+    const dirHash = await bzz.uploadDirectory(dir)
+    const response = await bzz.downloadDirectory(dirHash)
+    const extract = tar.extract()
+    const downloadedDir = {}
+
+    extract.on('entry', function(header, stream) {
+      stream.on('data', data =>
+        downloadedDir[header.name] = { data: data.toString('utf8') }
+      )
+      stream.resume()
+    })
+
+    extract.on('finish', () => expect(dir).toEqual(downloadedDir))
+    response.body.pipe(extract)
   })
 })

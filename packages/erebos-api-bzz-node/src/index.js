@@ -26,6 +26,15 @@ export default class Bzz extends BaseBzz {
     )
   }
 
+  downloadDirectory(hash: string): Promise<*> {
+    return this._fetch(`${this._url}bzz:/${hash}`, {
+      method: 'GET',
+      headers:{
+        'Accept': 'application/x-tar'
+      }
+    })
+  }
+
   downloadBuffer(hash: string, path?: string = ''): Promise<Buffer> {
     return this.download(hash, path).then(res => res.buffer())
   }

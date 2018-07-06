@@ -25,6 +25,11 @@ export default class BaseBzz {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
+  // eslint-disable-next-line no-unused-vars
+  downloadDirectory(hash: string): Promise<*> {
+    return Promise.reject(new Error('Must be implemented in extending class'))
+  }
+
   uploadFile(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
