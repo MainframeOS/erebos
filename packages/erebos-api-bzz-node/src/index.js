@@ -1,7 +1,9 @@
 // @flow
 
+import path from 'path'
 import BaseBzz from 'erebos-api-bzz-base'
 import FormData from 'form-data'
+import { writeFile } from 'fs-extra'
 import fetch from 'node-fetch'
 import tar from 'tar-stream'
 import { Observable } from 'rxjs'
@@ -71,6 +73,32 @@ export default class Bzz extends BaseBzz {
         },
         complete: () => {
           resolve(directoryData)
+        },
+      })
+    })
+  }
+
+  downloadDirectoryTo(hash: string, dirPath: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const writeFiles = []
+      this.downloadDirectoryObservable(hash).subscribe({
+        next: entry => {
+          const filePath = path.join(dirPath, entry.path)
+          writeFiles.push(writeFile(filePath, entry.data))
+        },
+        error: err => {
+          reject(err)
+        },
+        complete: () => {
+          // Wait until all files have been written before resolving
+          Promise.all(writeFiles).then(
+            () => {
+              resolve(writeFiles.length)
+            },
+            err => {
+              reject(err)
+            },
+          )
         },
       })
     })

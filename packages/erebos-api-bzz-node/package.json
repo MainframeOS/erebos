@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "erebos-api-bzz-base": "^0.3.0",
+    "fs-extra": "^6.0.1",
     "node-fetch": "^2.1.2",
     "tar-stream": "^1.6.1"
   },
