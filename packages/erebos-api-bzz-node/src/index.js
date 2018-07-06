@@ -44,9 +44,12 @@ export default class Bzz extends BaseBzz {
       }).then(res => {
         if (res.ok) {
           const extract = tar.extract()
-          extract.on('entry', (header, stream) => {
+          extract.on('entry', (header, stream, next) => {
             stream.on('data', data => {
               observer.next({ path: header.name, data })
+            })
+            stream.on('end', () => {
+              next()
             })
             stream.resume()
           })
