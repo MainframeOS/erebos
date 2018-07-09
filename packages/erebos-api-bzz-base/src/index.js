@@ -1,5 +1,9 @@
 // @flow
 
+export type DirectoryData = {
+  [path: string]: { data: string | Buffer },
+}
+
 export default class BaseBzz {
   _fetch: *
   _FormData: *
@@ -10,10 +14,11 @@ export default class BaseBzz {
   }
 
   upload(
-    data: string | Buffer | Object,
+    data: string | Buffer | DirectoryData,
     headers?: Object = {},
   ): Promise<string> {
     if (typeof data === 'string' || Buffer.isBuffer(data)) {
+      // $FlowFixMe: Flow doesn't understand type refinement with Buffer check
       return this.uploadFile(data, headers)
     } else {
       return this.uploadDirectory(data)

@@ -1,7 +1,8 @@
 // @flow
 
 import path from 'path'
-import BaseBzz from 'erebos-api-bzz-base'
+// eslint-disable-next-line import/named
+import BaseBzz, { type DirectoryData } from 'erebos-api-bzz-base'
 import FormData from 'form-data'
 import { writeFile } from 'fs-extra'
 import fetch from 'node-fetch'
@@ -20,7 +21,7 @@ export default class Bzz extends BaseBzz {
     this._FormData = FormData
   }
 
-  uploadDirectory(directory: Object) {
+  uploadDirectory(directory: DirectoryData) {
     const form = new this._FormData()
     Object.keys(directory).forEach(function(key) {
       form.append(key, directory[key].data)
