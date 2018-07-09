@@ -1,13 +1,7 @@
 // @flow
 
 export type DirectoryData = {
-  [path: string]: { data: string | Buffer, size?: number },
-}
-
-export type FileEntry = {
-  data: string | Buffer,
-  path: string,
-  size?: number,
+  [path: string]: { data: string | Buffer },
 }
 
 export default class BaseBzz {
