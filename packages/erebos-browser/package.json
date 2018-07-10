@@ -3,21 +3,29 @@
   "version": "0.3.0",
   "description": "Ethereum and Swarm client for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
-  "main": "dist/erebos.js",
-  "browser": "dist/erebos.js",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "browser": "umd/erebos.js",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
-    "lib/*"
+    "cjs/*",
+    "esm/*",
+    "umd/*"
   ],
   "scripts": {
-    "clean": "del dist",
-    "build": "yarn clean && yarn webpack",
+    "clean": "del cjs esm umd",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:umd": "BABEL_ENV='browser-esm' yarn webpack",
+    "build:js": "yarn build:cjs && yarn build:esm && yarn build:umd",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
+    "build": "yarn clean && yarn build:js && yarn build:flow",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@mainframe/rpc-browser": "^0.2.0",
-    "@mainframe/utils-hex": "^0.1.0",
+    "@mainframe/rpc-browser": "^0.2.1",
+    "@mainframe/utils-hex": "^0.1.1",
     "erebos-api-bzz-browser": "^0.3.0",
     "erebos-api-eth": "^0.3.0",
     "erebos-api-net": "^0.3.0",
@@ -28,15 +36,9 @@
     "rxjs": "^6.2.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
+    "babel-loader": "^7.1.5",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-syntax-class-properties": "^6.13.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "^6.23.0",
-    "webpack": "^4.14.0",
+    "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8"
   }
 }

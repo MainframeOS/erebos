@@ -3,34 +3,31 @@
   "version": "0.3.0",
   "description": "Ethereum and Swarm client for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
-  "main": "index.js",
-  "module": "lib/index.js",
+  "main": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
-    "index.js",
     "lib/*"
   ],
   "scripts": {
     "clean": "del lib",
-    "build:js": "flow-remove-types src --out-dir lib",
+    "build:js": "BABEL_ENV=node babel src --out-dir lib",
     "build:flow": "flow-copy-source src lib",
     "build": "yarn clean && yarn build:js && yarn build:flow",
     "test": "flow check",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@mainframe/rpc-node": "^0.2.0",
-    "@mainframe/rpc-stream": "^0.2.3",
-    "@mainframe/utils-hex": "^0.1.0",
+    "@mainframe/rpc-node": "^0.2.1",
+    "@mainframe/rpc-stream": "^0.2.4",
+    "@mainframe/utils-hex": "^0.1.1",
     "erebos-api-bzz-node": "^0.3.0",
     "erebos-api-eth": "^0.3.0",
     "erebos-api-net": "^0.3.0",
     "erebos-api-pss": "^0.3.0",
     "erebos-api-shh": "^0.3.0",
     "erebos-api-web3": "^0.3.0",
-    "erebos-client-base": "^0.3.0",
-    "esm": "^3.0.61"
+    "erebos-client-base": "^0.3.0"
   },
   "devDependencies": {
     "rxjs": "^6.2.0"

@@ -1,7 +1,9 @@
 node_modules
 coverage
 external_deps
-/packages/*/dist
+/packages/*/cjs
+/packages/*/esm
 /packages/*/lib
+/packages/*/umd
 /packages/*/.flowconfig
 *.log
