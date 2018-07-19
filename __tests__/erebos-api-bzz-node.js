@@ -2,7 +2,6 @@
  * @jest-environment node
  */
 
-import tar from 'tar-stream'
 import Bzz from '../packages/erebos-api-bzz-node'
 
 describe('bzz-node', () => {
@@ -114,19 +113,14 @@ describe('bzz-node', () => {
       'bar2.txt': { data: 'this is bar2.txt' },
     }
     const dirHash = await bzz.uploadDirectory(dir)
-    const response = await bzz.downloadDirectory(dirHash)
-    const extract = tar.extract()
-    const downloadedDir = {}
-
-    extract.on('entry', function(header, stream) {
-      stream.on(
-        'data',
-        data => (downloadedDir[header.name] = { data: data.toString('utf8') }),
-      )
-      stream.resume()
-    })
-
-    extract.on('finish', () => expect(dir).toEqual(downloadedDir))
-    response.body.pipe(extract)
+    const response = await bzz.downloadDirectoryData(dirHash)
+    const downloadedDir = Object.keys(response).reduce(
+      (prev, current) => ({
+        ...prev,
+        [current]: { data: response[current].data.toString('utf8') },
+      }),
+      {},
+    )
+    expect(dir).toEqual(downloadedDir)
   })
 })
