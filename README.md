@@ -54,7 +54,7 @@ yarn add erebos # universal
 | [`erebos-api-web3`](/packages/erebos-api-web3) | [![npm version](https://img.shields.io/npm/v/erebos-api-web3.svg)](https://www.npmjs.com/package/erebos-api-eth) | Web3 APIs
 | **Base classes**
 | [`erebos-api-bzz-base`](/packages/erebos-api-bzz-base) | [![npm version](https://img.shields.io/npm/v/erebos-api-bzz-base.svg)](https://www.npmjs.com/package/erebos-api-bzz-base) | Shared logic for Swarm (BZZ) APIs
-| [`erebos-client-base`](/packages/erebos-client-base) | [![npm version](https://img.shields.io/npm/v/erebos-client-base.svg)](https://www.npmjs.com/package/erebos-client-base) | Shared logic for Client APIs
+| [`erebos-client-base`](/packages/erebos-client-base) | [![npm version](https://img.shields.io/npm/v/erebos-client-base.svg)](https://www.npmjs.com/package/erebos-client-base) [![Greenkeeper badge](https://badges.greenkeeper.io/MainframeHQ/erebos.svg)](https://greenkeeper.io/) | Shared logic for Client APIs
 
 ## Development
 
