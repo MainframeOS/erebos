@@ -35,7 +35,7 @@
     "del-cli": "^1.1.0",
     "eslint": "^5.1.0",
     "eslint-config-mainframe": "^1.4.0",
-    "flow-bin": "^0.76.0",
+    "flow-bin": "^0.77.0",
     "flow-copy-source": "^2.0.1",
     "form-data": "^2.3.2",
     "jest": "^23.3.0",
