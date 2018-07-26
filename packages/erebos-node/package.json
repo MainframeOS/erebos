@@ -30,6 +30,6 @@
     "erebos-client-base": "^0.3.0"
   },
   "devDependencies": {
-    "rxjs": "^6.2.0"
+    "rxjs": "^6.2.2"
   }
 }
