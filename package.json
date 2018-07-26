@@ -26,22 +26,23 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.5",
-    "babel-jest": "^23.2.0",
+    "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.4.0",
     "babel-plugin-syntax-class-properties": "^6.13.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "del-cli": "^1.1.0",
-    "eslint": "^5.1.0",
+    "eslint": "^5.2.0",
     "eslint-config-mainframe": "^1.4.0",
     "flow-bin": "^0.77.0",
-    "flow-copy-source": "^2.0.1",
+    "flow-copy-source": "^2.0.2",
     "form-data": "^2.3.2",
-    "jest": "^23.3.0",
+    "jest": "^23.4.1",
     "jest-fetch-mock": "^1.6.5",
     "jest-junit": "^5.1.0",
     "lerna": "^2.10.2",
-    "prettier": "^1.13.7"
+    "prettier": "^1.13.7",
+    "tar-stream": "^1.6.1"
   }
 }

@@ -106,4 +106,21 @@ describe('bzz-node', () => {
     }, {})
     expect(dir).toEqual(downloadedDir)
   })
+
+  it('downloadDirectory() streams the same data provided to uploadDirectory()', async () => {
+    const dir = {
+      'foo2.txt': { data: 'this is foo2.txt' },
+      'bar2.txt': { data: 'this is bar2.txt' },
+    }
+    const dirHash = await bzz.uploadDirectory(dir)
+    const response = await bzz.downloadDirectoryData(dirHash)
+    const downloadedDir = Object.keys(response).reduce(
+      (prev, current) => ({
+        ...prev,
+        [current]: { data: response[current].data.toString('utf8') },
+      }),
+      {},
+    )
+    expect(dir).toEqual(downloadedDir)
+  })
 })

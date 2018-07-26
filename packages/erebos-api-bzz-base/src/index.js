@@ -1,7 +1,13 @@
 // @flow
 
 export type DirectoryData = {
-  [path: string]: { data: string | Buffer },
+  [path: string]: { data: string | Buffer, size?: number },
+}
+
+export type FileEntry = {
+  data: string | Buffer,
+  path: string,
+  size?: number,
 }
 
 export default class BaseBzz {
@@ -27,6 +33,11 @@ export default class BaseBzz {
 
   // eslint-disable-next-line no-unused-vars
   uploadDirectory(directory: Object): Promise<string> {
+    return Promise.reject(new Error('Must be implemented in extending class'))
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  downloadDirectory(hash: string): Promise<*> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 

@@ -16,8 +16,17 @@
     "build": "yarn clean && yarn build:js && yarn build:flow",
     "prepublishOnly": "yarn build"
   },
+  "peerDependencies": {
+    "rxjs": "^6.2.0"
+  },
   "dependencies": {
     "erebos-api-bzz-base": "^0.3.0",
-    "node-fetch": "^2.1.2"
+    "fs-extra": "^7.0.0",
+    "node-fetch": "^2.2.0",
+    "tar-stream": "^1.6.1"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.77.0",
+    "rxjs": "^6.2.2"
   }
 }
