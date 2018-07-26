@@ -1,30 +1,33 @@
 {
   "name": "erebos-api-pss",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "PSS API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
-    "lib/*"
+    "cjs/*",
+    "esm/*"
   ],
   "scripts": {
-    "clean": "del lib",
-    "build:js": "flow-remove-types src --out-dir lib",
-    "build:flow": "flow-copy-source src lib",
+    "clean": "del cjs esm",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:js": "yarn build:cjs && yarn build:esm",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
     "build": "yarn clean && yarn build:js && yarn build:flow",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@mainframe/utils-hex": "^0.1.0"
+    "@mainframe/utils-hex": "^0.1.1"
   },
   "peerDependencies": {
     "rxjs": "^6.2.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.75.0",
+    "flow-bin": "^0.77.0",
     "rxjs": "^6.2.1"
   }
 }

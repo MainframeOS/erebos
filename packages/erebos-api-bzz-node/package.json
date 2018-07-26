@@ -4,7 +4,6 @@
   "description": "Bzz API for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
-  "module": "lib/index.js",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
@@ -12,7 +11,7 @@
   ],
   "scripts": {
     "clean": "del lib",
-    "build:js": "flow-remove-types src --out-dir lib",
+    "build:js": "BABEL_ENV=node babel src --out-dir lib",
     "build:flow": "flow-copy-source src lib",
     "build": "yarn clean && yarn build:js && yarn build:flow",
     "prepublishOnly": "yarn build"

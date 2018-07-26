@@ -1,3 +1,63 @@
 {
-  "presets": ["env", "flow"]
+  "presets": ["flow"],
+  "env": {
+    "browser-cjs": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": ["last 2 versions"]
+            },
+            "modules": "commonjs",
+            "loose": true
+          }
+        ]
+      ],
+      "plugins": ["syntax-class-properties", "transform-class-properties"]
+    },
+    "browser-esm": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": ["last 2 versions"]
+            },
+            "modules": false,
+            "loose": true
+          }
+        ]
+      ],
+      "plugins": ["syntax-class-properties", "transform-class-properties"]
+    },
+    "node": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "node": 8
+            },
+            "modules": "commonjs",
+            "loose": true
+          }
+        ]
+      ],
+      "plugins": ["syntax-class-properties", "transform-class-properties"]
+    },
+    "test": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ],
+      "plugins": ["syntax-class-properties", "transform-class-properties"]
+    }
+  }
 }

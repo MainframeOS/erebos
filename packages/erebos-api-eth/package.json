@@ -3,17 +3,20 @@
   "version": "0.3.0",
   "description": "Eth API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
-    "lib/*"
+    "cjs/*",
+    "esm/*"
   ],
   "scripts": {
-    "clean": "del lib",
-    "build:js": "flow-remove-types src --out-dir lib",
-    "build:flow": "flow-copy-source src lib",
+    "clean": "del cjs esm",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:js": "yarn build:cjs && yarn build:esm",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
     "build": "yarn clean && yarn build:js && yarn build:flow",
     "prepublishOnly": "yarn build"
   }
