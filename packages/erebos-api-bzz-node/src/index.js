@@ -12,11 +12,12 @@ import fetch from 'node-fetch'
 import tar from 'tar-stream'
 import { Observable } from 'rxjs'
 
-export const writeStreamTo = (
+export const writeStreamTo = async (
   stream: Readable,
   filePath: string,
 ): Promise<void> => {
-  return new Promise((resolve, reject) => {
+  await ensureDir(path.dirname(filePath))
+  await new Promise((resolve, reject) => {
     stream
       .pipe(createWriteStream(filePath))
       .on('error', err => {
@@ -36,13 +37,12 @@ export const extractTarStreamTo = (
     const extract = tar.extract()
     const writeFiles = [] // Keep track of files to write
     extract.on('entry', (header, stream, next) => {
-      if (header.type === 'file') {
+      if (header.type === 'file' && header.name.length > 0) {
         const filePath = path.join(dirPath, header.name)
         const fileWritten = writeStreamTo(stream, filePath).then(() => {
           next() // Extract next entry after file has been written
         })
         writeFiles.push(fileWritten)
-        stream.resume()
       } else {
         next()
       }
