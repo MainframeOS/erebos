@@ -1,6 +1,6 @@
 {
   "name": "erebos-api-bzz-node",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Bzz API for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -20,7 +20,7 @@
     "rxjs": "^6.2.0"
   },
   "dependencies": {
-    "erebos-api-bzz-base": "^0.3.0",
+    "erebos-api-bzz-base": "^0.3.1",
     "fs-extra": "^7.0.0",
     "node-fetch": "^2.2.0",
     "tar-stream": "^1.6.1"
