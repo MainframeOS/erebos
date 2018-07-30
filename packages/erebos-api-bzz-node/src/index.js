@@ -80,7 +80,7 @@ export default class Bzz extends BaseBzz {
     this._FormData = FormData
   }
 
-  uploadDirectory(directory: DirectoryData) {
+  uploadDirectory(directory: DirectoryData): Promise<string> {
     const form = new this._FormData()
     Object.keys(directory).forEach(function(key) {
       form.append(key, directory[key].data)
@@ -95,7 +95,7 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  uploadTarData(directory: DirectoryData): Promise<*> {
+  uploadTarData(directory: DirectoryData): Promise<string> {
     const pack = tar.pack()
     Object.keys(directory).forEach(function(key) {
       pack.entry({ name: key }, directory[key].data)
@@ -113,7 +113,7 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  uploadTarFile(tarPath: string): Promise<*> {
+  uploadTarFile(tarPath: string): Promise<string> {
     const readStream = fs.createReadStream(tarPath)
 
     return this._fetch(`${this._url}bzz:`, {
