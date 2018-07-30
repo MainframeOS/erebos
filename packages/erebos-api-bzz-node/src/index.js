@@ -1,6 +1,7 @@
 // @flow
 
 import path from 'path'
+import fs from 'fs'
 import type { Readable } from 'stream'
 import BaseBzz, {
   type DirectoryData, // eslint-disable-line import/named
@@ -79,7 +80,7 @@ export default class Bzz extends BaseBzz {
     this._FormData = FormData
   }
 
-  uploadDirectory(directory: DirectoryData) {
+  uploadDirectory(directory: DirectoryData): Promise<string> {
     const form = new this._FormData()
     Object.keys(directory).forEach(function(key) {
       form.append(key, directory[key].data)
@@ -89,6 +90,38 @@ export default class Bzz extends BaseBzz {
       method: 'POST',
       body: form,
       headers: form.getHeaders(),
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
+  }
+
+  uploadTarData(directory: DirectoryData): Promise<string> {
+    const pack = tar.pack()
+    Object.keys(directory).forEach(function(key) {
+      pack.entry({ name: key }, directory[key].data)
+    })
+    pack.finalize()
+
+    return this._fetch(`${this._url}bzz:`, {
+      method: 'POST',
+      body: pack,
+      headers: {
+        'Content-Type': 'application/x-tar',
+      },
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
+  }
+
+  uploadTarFile(tarPath: string): Promise<string> {
+    const readStream = fs.createReadStream(tarPath)
+
+    return this._fetch(`${this._url}bzz:`, {
+      method: 'POST',
+      body: readStream,
+      headers: {
+        'Content-Type': 'application/x-tar',
+      },
     }).then(
       res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
     )

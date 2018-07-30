@@ -2,6 +2,10 @@
  * @jest-environment node
  */
 
+import os from 'os'
+import path from 'path'
+import fs from 'fs-extra'
+import tar from 'tar-stream'
 import Bzz from '../packages/erebos-api-bzz-node'
 
 describe('bzz-node', () => {
@@ -107,7 +111,7 @@ describe('bzz-node', () => {
     expect(dir).toEqual(downloadedDir)
   })
 
-  it('downloadDirectory() streams the same data provided to uploadDirectory()', async () => {
+  it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
     const dir = {
       'foo2.txt': { data: 'this is foo2.txt' },
       'bar2.txt': { data: 'this is bar2.txt' },
@@ -122,5 +126,53 @@ describe('bzz-node', () => {
       {},
     )
     expect(dir).toEqual(downloadedDir)
+  })
+
+  it('upload directory data using uploadTarData()', async () => {
+    const dir = {
+      'foo.txt': { data: 'this is foo.txt' },
+      'bar.txt': { data: 'this is bar.txt' },
+    }
+    const dirHash = await bzz.uploadTarData(dir)
+
+    const response = await bzz.downloadDirectoryData(dirHash)
+    const downloadedDir = Object.keys(response).reduce(
+      (prev, current) => ({
+        ...prev,
+        [current]: { data: response[current].data.toString('utf8') },
+      }),
+      {},
+    )
+    expect(dir).toEqual(downloadedDir)
+  })
+
+  it('upload tar file using uploadTarFile()', async () => {
+    const dir = {
+      'foo.txt': { data: 'this is foo.txt 3' },
+      'bar.txt': { data: 'this is bar.txt 3' },
+    }
+
+    const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
+    const tempFilePath = path.join(tempDirPath, 'test-data.tar')
+    await fs.ensureDir(tempDirPath)
+    const tarFile = fs.createWriteStream(tempFilePath)
+
+    const pack = tar.pack()
+    pack.entry({ name: 'foo.txt' }, 'this is foo.txt 3')
+    pack.entry({ name: 'bar.txt' }, 'this is bar.txt 3')
+    pack.finalize()
+    pack.pipe(tarFile)
+
+    const dirHash = await bzz.uploadTarFile(tempFilePath)
+    const response = await bzz.downloadDirectoryData(dirHash)
+    const downloadedDir = Object.keys(response).reduce(
+      (prev, current) => ({
+        ...prev,
+        [current]: { data: response[current].data.toString('utf8') },
+      }),
+      {},
+    )
+    expect(dir).toEqual(downloadedDir)
+    await fs.remove(tempDirPath)
   })
 })
