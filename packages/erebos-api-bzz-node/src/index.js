@@ -108,11 +108,13 @@ export default class Bzz extends BaseBzz {
       headers: {
         'Content-Type': 'application/x-tar',
       },
-    }).then(res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
   }
 
   uploadTarFile(tarPath: string): Promise<*> {
-    const readStream = fs.createReadStream(tarPath);
+    const readStream = fs.createReadStream(tarPath)
 
     return this._fetch(`${this._url}bzz:`, {
       method: 'POST',
@@ -120,7 +122,9 @@ export default class Bzz extends BaseBzz {
       headers: {
         'Content-Type': 'application/x-tar',
       },
-    }).then(res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
   }
 
   downloadDirectoryTar(hash: string): Promise<*> {

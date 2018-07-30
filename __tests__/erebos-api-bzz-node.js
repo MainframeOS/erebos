@@ -3,9 +3,9 @@
  */
 
 import os from 'os'
+import path from 'path'
 import fs from 'fs-extra'
 import tar from 'tar-stream'
-import path from 'path'
 import Bzz from '../packages/erebos-api-bzz-node'
 
 describe('bzz-node', () => {
