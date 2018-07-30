@@ -107,7 +107,7 @@ describe('bzz-node', () => {
     expect(dir).toEqual(downloadedDir)
   })
 
-  it('downloadDirectory() streams the same data provided to uploadDirectory()', async () => {
+  it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
     const dir = {
       'foo2.txt': { data: 'this is foo2.txt' },
       'bar2.txt': { data: 'this is bar2.txt' },
