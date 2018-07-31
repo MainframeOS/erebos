@@ -184,14 +184,16 @@ describe('bzz-node', () => {
 
     const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
     await fs.ensureDir(tempDirPath)
-    await fs.outputFile(
-      path.join(tempDirPath, 'foo.txt'),
-      `this is foo.txt - ${uploadContent}`,
-    )
-    await fs.outputFile(
-      path.join(tempDirPath, 'bar.txt'),
-      `this is bar.txt - ${uploadContent}`,
-    )
+    Promise.all([
+      fs.outputFile(
+        path.join(tempDirPath, 'foo.txt'),
+        `this is foo.txt - ${uploadContent}`,
+      ),
+      fs.outputFile(
+        path.join(tempDirPath, 'bar.txt'),
+        `this is bar.txt - ${uploadContent}`,
+      ),
+    ])
 
     const dirHash = await bzz.uploadDirectoryTar(tempDirPath)
     const response = await bzz.downloadDirectoryData(dirHash)
