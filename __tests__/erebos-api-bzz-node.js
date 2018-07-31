@@ -95,8 +95,8 @@ describe('bzz-node', () => {
 
   it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
     const dir = {
-      'foo.txt': { data: 'this is foo.txt' },
-      'bar.txt': { data: 'this is bar.txt' },
+      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
+      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.downloadRawText(dirHash)
@@ -113,8 +113,8 @@ describe('bzz-node', () => {
 
   it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
     const dir = {
-      'foo2.txt': { data: 'this is foo2.txt' },
-      'bar2.txt': { data: 'this is bar2.txt' },
+      'foo2.txt': { data: `this is foo.txt - ${uploadContent}` },
+      'bar2.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const response = await bzz.downloadDirectoryData(dirHash)
@@ -130,8 +130,8 @@ describe('bzz-node', () => {
 
   it('upload directory data using uploadTarData()', async () => {
     const dir = {
-      'foo.txt': { data: 'this is foo.txt' },
-      'bar.txt': { data: 'this is bar.txt' },
+      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
+      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
     const dirHash = await bzz.uploadTarData(dir)
 
@@ -148,8 +148,8 @@ describe('bzz-node', () => {
 
   it('upload tar file using uploadTarFile()', async () => {
     const dir = {
-      'foo.txt': { data: 'this is foo.txt 3' },
-      'bar.txt': { data: 'this is bar.txt 3' },
+      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
+      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
 
     const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
@@ -158,8 +158,8 @@ describe('bzz-node', () => {
     const tarFile = fs.createWriteStream(tempFilePath)
 
     const pack = tar.pack()
-    pack.entry({ name: 'foo.txt' }, 'this is foo.txt 3')
-    pack.entry({ name: 'bar.txt' }, 'this is bar.txt 3')
+    pack.entry({ name: 'foo.txt' }, `this is foo.txt - ${uploadContent}`)
+    pack.entry({ name: 'bar.txt' }, `this is bar.txt - ${uploadContent}`)
     pack.finalize()
     pack.pipe(tarFile)
 
@@ -178,14 +178,14 @@ describe('bzz-node', () => {
 
   it('upload directory of files using uploadDirectoryTar()', async () => {
     const dir = {
-      'foo.txt': { data: 'this is foo.txt 4' },
-      'bar.txt': { data: 'this is bar.txt 4' },
+      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
+      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
 
     const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
     await fs.ensureDir(tempDirPath)
-    await fs.outputFile(path.join(tempDirPath, 'foo.txt'), 'this is foo.txt 4')
-    await fs.outputFile(path.join(tempDirPath, 'bar.txt'), 'this is bar.txt 4')
+    await fs.outputFile(path.join(tempDirPath, 'foo.txt'), `this is foo.txt - ${uploadContent}`)
+    await fs.outputFile(path.join(tempDirPath, 'bar.txt'), `this is bar.txt - ${uploadContent}`)
 
     const dirHash = await bzz.uploadDirectoryTar(tempDirPath)
     const response = await bzz.downloadDirectoryData(dirHash)

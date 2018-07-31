@@ -9,10 +9,7 @@ describe('bzz-browser', () => {
   const bzz = new Bzz(url)
 
   it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
-    const dir = {
-      'foo.txt': { data: 'this is foo.txt' },
-      'bar.txt': { data: 'this is bar.txt' },
-    }
+    const dir = {}
     const uploadRequest = bzz.uploadDirectory(dir)
     expect(uploadRequest).rejects.toThrow('Not Implemented')
   })
