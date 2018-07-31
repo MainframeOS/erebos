@@ -175,4 +175,28 @@ describe('bzz-node', () => {
     expect(dir).toEqual(downloadedDir)
     await fs.remove(tempDirPath)
   })
+
+  it('upload directory of files using uploadDirectoryTar()', async () => {
+    const dir = {
+      'foo.txt': { data: 'this is foo.txt 4' },
+      'bar.txt': { data: 'this is bar.txt 4' },
+    }
+
+    const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
+    await fs.ensureDir(tempDirPath)
+    await fs.outputFile(path.join(tempDirPath, 'foo.txt'), 'this is foo.txt 4')
+    await fs.outputFile(path.join(tempDirPath, 'bar.txt'), 'this is bar.txt 4')
+
+    const dirHash = await bzz.uploadDirectoryTar(tempDirPath)
+    const response = await bzz.downloadDirectoryData(dirHash)
+    const downloadedDir = Object.keys(response).reduce(
+      (prev, current) => ({
+        ...prev,
+        [current]: { data: response[current].data.toString('utf8') },
+      }),
+      {},
+    )
+    expect(dir).toEqual(downloadedDir)
+    await fs.remove(tempDirPath)
+  })
 })

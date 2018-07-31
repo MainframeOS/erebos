@@ -128,6 +128,18 @@ export default class Bzz extends BaseBzz {
     )
   }
 
+  uploadDirectoryTar(path: string): Promise<string> {
+    const readStream = tarFs.pack(path)
+
+    return this._fetch(`${this._url}bzz:`, {
+      method: 'POST',
+      body: readStream,
+      headers: {
+        'Content-Type': 'application/x-tar',
+      },
+    }).then(res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))))
+  }
+
   downloadDirectoryTar(hash: string): Promise<*> {
     return this._fetch(`${this._url}bzz:/${hash}`, {
       headers: {
