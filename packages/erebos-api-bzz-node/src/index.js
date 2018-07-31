@@ -10,7 +10,8 @@ import BaseBzz, {
 import FormData from 'form-data'
 import { createWriteStream, ensureDir } from 'fs-extra'
 import fetch from 'node-fetch'
-import tar from 'tar-stream'
+import tarFs from 'tar-fs'
+import tarStream from 'tar-stream'
 import { Observable } from 'rxjs'
 
 export const writeStreamTo = async (
@@ -35,7 +36,7 @@ export const extractTarStreamTo = (
   dirPath: string,
 ): Promise<number> => {
   return new Promise((resolve, reject) => {
-    const extract = tar.extract()
+    const extract = tarStream.extract()
     const writeFiles = [] // Keep track of files to write
     extract.on('entry', (header, stream, next) => {
       if (header.type === 'file' && header.name.length > 0) {
@@ -96,7 +97,7 @@ export default class Bzz extends BaseBzz {
   }
 
   uploadTarData(directory: DirectoryData): Promise<string> {
-    const pack = tar.pack()
+    const pack = tarStream.pack()
     Object.keys(directory).forEach(function(key) {
       pack.entry({ name: key }, directory[key].data)
     })
@@ -113,12 +114,22 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  uploadTarFile(tarPath: string): Promise<string> {
-    const readStream = fs.createReadStream(tarPath)
-
+  uploadTarFile(path: string): Promise<string> {
     return this._fetch(`${this._url}bzz:`, {
       method: 'POST',
-      body: readStream,
+      body: fs.createReadStream(path),
+      headers: {
+        'Content-Type': 'application/x-tar',
+      },
+    }).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
+  }
+
+  uploadDirectoryTar(path: string): Promise<string> {
+    return this._fetch(`${this._url}bzz:`, {
+      method: 'POST',
+      body: tarFs.pack(path),
       headers: {
         'Content-Type': 'application/x-tar',
       },
@@ -139,7 +150,7 @@ export default class Bzz extends BaseBzz {
     return Observable.create(observer => {
       this.downloadDirectoryTar(hash).then(
         res => {
-          const extract = tar.extract()
+          const extract = tarStream.extract()
           extract.on('entry', (header, stream, next) => {
             if (header.type === 'file') {
               const chunks = []
