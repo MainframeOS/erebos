@@ -114,12 +114,10 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  uploadTarFile(tarPath: string): Promise<string> {
-    const readStream = fs.createReadStream(tarPath)
-
+  uploadTarFile(path: string): Promise<string> {
     return this._fetch(`${this._url}bzz:`, {
       method: 'POST',
-      body: readStream,
+      body: fs.createReadStream(path),
       headers: {
         'Content-Type': 'application/x-tar',
       },
@@ -129,11 +127,9 @@ export default class Bzz extends BaseBzz {
   }
 
   uploadDirectoryTar(path: string): Promise<string> {
-    const readStream = tarFs.pack(path)
-
     return this._fetch(`${this._url}bzz:`, {
       method: 'POST',
-      body: readStream,
+      body: tarFs.pack(path),
       headers: {
         'Content-Type': 'application/x-tar',
       },
