@@ -196,7 +196,7 @@ describe('bzz-node', () => {
       ),
     ])
 
-    const dirHash = await bzz.uploadDirectoryTar(tempDirPath)
+    const dirHash = await bzz.uploadDirectoryFrom(tempDirPath)
     const response = await bzz.downloadDirectoryData(dirHash)
     const downloadedDir = Object.keys(response).reduce(
       (prev, current) => ({

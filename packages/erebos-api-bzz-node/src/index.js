@@ -126,7 +126,7 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  uploadDirectoryTar(path: string): Promise<string> {
+  uploadDirectoryFrom(path: string): Promise<string> {
     return this._fetch(`${this._url}bzz:`, {
       method: 'POST',
       body: tarFs.pack(path),
