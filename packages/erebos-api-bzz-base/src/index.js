@@ -1,7 +1,7 @@
 // @flow
 
 export type DirectoryData = {
-  [path: string]: { data: string | Buffer, size?: number },
+  [path: string]: { data: string | Buffer, contentType: string, size?: number },
 }
 
 export type FileEntry = {

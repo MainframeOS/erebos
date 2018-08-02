@@ -84,7 +84,9 @@ export default class Bzz extends BaseBzz {
   uploadDirectory(directory: DirectoryData): Promise<string> {
     const form = new this._FormData()
     Object.keys(directory).forEach(function(key) {
-      form.append(key, directory[key].data)
+      form.append(key, directory[key].data, {
+        contentType: directory[key].contentType,
+      })
     })
 
     return this._fetch(`${this._url}bzz:`, {
