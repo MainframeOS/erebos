@@ -12,6 +12,11 @@ describe('bzz-node', () => {
   let uploadContent
   const url = 'http://localhost:8500/'
   const bzz = new Bzz(url)
+  const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
+
+  beforeEach(() => {
+    fs.removeSync(tempDirPath)
+  })
 
   beforeEach(() => {
     uploadContent = Math.random()
@@ -152,7 +157,6 @@ describe('bzz-node', () => {
       'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
 
-    const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
     const tempFilePath = path.join(tempDirPath, 'test-data.tar')
     await fs.ensureDir(tempDirPath)
     const tarFile = fs.createWriteStream(tempFilePath)
@@ -183,7 +187,6 @@ describe('bzz-node', () => {
       'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
     }
 
-    const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
     await fs.ensureDir(tempDirPath)
     Promise.all([
       fs.outputFile(
