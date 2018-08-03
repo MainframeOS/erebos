@@ -176,7 +176,7 @@ describe('bzz-node', () => {
     await fs.remove(tempDirPath)
   })
 
-  it('upload directory of files using uploadDirectoryTar()', async () => {
+  it('upload directory of files using uploadDirectoryFrom()', async () => {
     jest.setTimeout(10000) // 10 secs
     const dir = {
       'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
