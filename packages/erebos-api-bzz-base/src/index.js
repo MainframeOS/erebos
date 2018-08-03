@@ -44,7 +44,7 @@ export default class BaseBzz {
   uploadFile(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       body: body,
       headers: headers,
       method: 'POST',
@@ -56,7 +56,7 @@ export default class BaseBzz {
   uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
-    return this._fetch(`${this._url}bzz-raw:`, {
+    return this._fetch(`${this._url}bzz-raw:/`, {
       body: body,
       headers: headers,
       method: 'POST',

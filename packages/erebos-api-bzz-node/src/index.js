@@ -89,7 +89,7 @@ export default class Bzz extends BaseBzz {
       })
     })
 
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: form,
       headers: form.getHeaders(),
@@ -105,7 +105,7 @@ export default class Bzz extends BaseBzz {
     })
     pack.finalize()
 
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: pack,
       headers: {
@@ -117,7 +117,7 @@ export default class Bzz extends BaseBzz {
   }
 
   uploadTarFile(path: string): Promise<string> {
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: fs.createReadStream(path),
       headers: {
@@ -129,7 +129,7 @@ export default class Bzz extends BaseBzz {
   }
 
   uploadDirectoryFrom(path: string): Promise<string> {
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: tarFs.pack(path),
       headers: {

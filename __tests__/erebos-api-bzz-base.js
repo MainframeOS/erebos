@@ -23,7 +23,7 @@ describe('bzz-base', () => {
     // Extract arguments provided to the first (and only) fetch() call
     const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
     // Check uploadRaw() provides the proper URL
-    expect(fetchUrl).toBe(`${url}bzz-raw:`)
+    expect(fetchUrl).toBe(`${url}bzz-raw:/`)
     // Check the body is converted to a Buffer when a string is provided
     // Needs to use buffer.equals() to properly check buffer equality
     expect(Buffer.from('hello').equals(body)).toBe(true)
@@ -40,7 +40,7 @@ describe('bzz-base', () => {
     expect(hash).toBe(expectedHash)
     expect(fetch.mock.calls).toHaveLength(1)
     const [fetchUrl, { body, headers, method }] = fetch.mock.calls[0]
-    expect(fetchUrl).toBe(`${url}bzz:`)
+    expect(fetchUrl).toBe(`${url}bzz:/`)
     expect(Buffer.from('hello').equals(body)).toBe(true)
     expect(method).toBe('POST')
     expect(headers['content-length']).toBe(5)
