@@ -31,13 +31,11 @@ export default class BaseBzz {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
-  uploadDirectory(directory: Object): Promise<string> {
+  uploadDirectory(_directory: Object): Promise<string> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
-  // eslint-disable-next-line no-unused-vars
-  downloadDirectory(hash: string): Promise<string> {
+  downloadDirectory(_hash: string): Promise<string> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
