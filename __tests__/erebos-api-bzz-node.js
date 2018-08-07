@@ -102,9 +102,11 @@ describe('bzz-node', () => {
     const dir = {
       [`foo-${uploadContent}.txt`]: {
         data: `this is foo-${uploadContent}.txt`,
+        contentType: 'plain/text',
       },
       [`bar-${uploadContent}.txt`]: {
         data: `this is bar-${uploadContent}.txt`,
+        contentType: 'plain/text',
       },
     }
     const dirHash = await bzz.uploadDirectory(dir)
@@ -114,7 +116,7 @@ describe('bzz-node', () => {
       entries.map(entry => bzz.downloadRawText(entry.hash)),
     )
     const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = { data: downloaded[i] }
+      acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
       return acc
     }, {})
     expect(dir).toEqual(downloadedDir)
