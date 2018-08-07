@@ -100,8 +100,12 @@ describe('bzz-node', () => {
 
   it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.downloadRawText(dirHash)
@@ -118,8 +122,12 @@ describe('bzz-node', () => {
 
   it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
     const dir = {
-      'foo2.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar2.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const response = await bzz.downloadDirectoryData(dirHash)
@@ -135,8 +143,12 @@ describe('bzz-node', () => {
 
   it('upload directory data using uploadTarData()', async () => {
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
     const dirHash = await bzz.uploadTarData(dir)
 
@@ -153,8 +165,12 @@ describe('bzz-node', () => {
 
   it('upload tar file using uploadTarFile()', async () => {
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
 
     const tempFilePath = path.join(tempDirPath, 'test-data.tar')
@@ -162,8 +178,14 @@ describe('bzz-node', () => {
     const tarFile = fs.createWriteStream(tempFilePath)
 
     const pack = tar.pack()
-    pack.entry({ name: 'foo.txt' }, `this is foo.txt - ${uploadContent}`)
-    pack.entry({ name: 'bar.txt' }, `this is bar.txt - ${uploadContent}`)
+    pack.entry(
+      { name: `foo-${uploadContent}.txt` },
+      `this is foo-${uploadContent}.txt`,
+    )
+    pack.entry(
+      { name: `bar-${uploadContent}.txt` },
+      `this is bar-${uploadContent}.txt`,
+    )
     pack.finalize()
     pack.pipe(tarFile)
 
@@ -183,19 +205,23 @@ describe('bzz-node', () => {
   it('upload directory of files using uploadDirectoryFrom()', async () => {
     jest.setTimeout(10000) // 10 secs
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
 
     await fs.ensureDir(tempDirPath)
     Promise.all([
       fs.outputFile(
-        path.join(tempDirPath, 'foo.txt'),
-        `this is foo.txt - ${uploadContent}`,
+        path.join(tempDirPath, `foo-${uploadContent}.txt`),
+        `this is foo-${uploadContent}.txt`,
       ),
       fs.outputFile(
-        path.join(tempDirPath, 'bar.txt'),
-        `this is bar.txt - ${uploadContent}`,
+        path.join(tempDirPath, `bar-${uploadContent}.txt`),
+        `this is bar-${uploadContent}.txt`,
       ),
     ])
 
