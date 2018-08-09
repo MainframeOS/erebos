@@ -15,6 +15,8 @@ export default class Bzz extends BaseBzz {
   }
 
   downloadRawBlob(hash: string): Promise<Blob> {
-    return this.downloadRaw(hash).then(res => res.blob())
+    return this.downloadRaw(hash).then(
+      res => (res.ok ? res.blob() : Promise.reject(new Error(res.statusText))),
+    )
   }
 }
