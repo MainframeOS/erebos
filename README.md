@@ -1,7 +1,5 @@
 # Erebos [![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg)](https://circleci.com/gh/MainframeHQ/erebos) [![npm](https://img.shields.io/npm/v/erebos.svg)](https://www.npmjs.com/package/erebos)
 
-
-
 JavaScript client for the Ethereum ecosystem, notably Swarm and PSS.
 
 ## Disclaimer
@@ -20,21 +18,21 @@ yarn add erebos # universal
 
 ## Examples
 
-* [Postal Services over Swarm (PSS)](examples/pss.js)
-* [Whisper (SHH)](examples/shh.js)
+- [Postal Services over Swarm (PSS)](examples/pss.js)
+- [Whisper (SHH)](examples/shh.js)
 
 ## [Documentation](docs/)
 
-* [Client](docs/client.md)
-* [APIs](docs/api.md)
-  * [Bzz](docs/api-bzz.md) - file storage
-  * [Eth](docs/api-eth.md) - Ethereum blockchain
-  * [Net](docs/api-net.md) - network
-  * [Pss](docs/api-pss.md) - Postal Services over Swarm
-  * [Shh](docs/api-shh.md) - Whisper
-  * [Web3](docs/api-web3.md)
-* RPC client factory for the [browser](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-browser#rpc-browser) or [node](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-node#rpc-node) depending on the package.
-* [Hexadecimal-encoding utilities](https://github.com/MainframeHQ/js-tools/tree/master/packages/utils-hex#utils-hex)
+- [Client](docs/client.md)
+- [APIs](docs/api.md)
+  - [Bzz](docs/api-bzz.md) - file storage
+  - [Eth](docs/api-eth.md) - Ethereum blockchain
+  - [Net](docs/api-net.md) - network
+  - [Pss](docs/api-pss.md) - Postal Services over Swarm
+  - [Shh](docs/api-shh.md) - Whisper
+  - [Web3](docs/api-web3.md)
+- RPC client factory for the [browser](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-browser#rpc-browser) or [node](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-node#rpc-node) depending on the package.
+- [Hexadecimal-encoding utilities](https://github.com/MainframeHQ/js-tools/tree/master/packages/utils-hex#utils-hex)
 
 ## Packages
 
@@ -60,9 +58,9 @@ yarn add erebos # universal
 
 ### Prerequisites
 
-* [Node](https://nodejs.org/en/) v10+ (includes npm)
-* [Yarn](https://yarnpkg.com/lang/en/) (optional - faster alternative to npm)
-* [Docker](https://www.docker.com/community-edition)
+- [Node](https://nodejs.org/en/) v10+ (includes npm)
+- [Yarn](https://yarnpkg.com/lang/en/) (optional - faster alternative to npm)
+- [Docker](https://www.docker.com/community-edition)
 
 ### Setup
 
@@ -78,19 +76,13 @@ docker build --tag erebos --file Dockerfile.erebos .
 In one terminal window run:
 
 ```
-docker run --publish 8500:8500 erebos
+docker run --publish 8500:8500 --interactive --tty erebos
 ```
 
 And in the second one run:
 
 ```
 yarn test:all
-```
-
-After you're done you can use this command to stop the container running the erebos image:
-
-```
-docker ps -q --filter ancestor="erebos" | xargs -r docker stop
 ```
 
 ## License
