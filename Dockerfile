@@ -9,11 +9,11 @@ WORKDIR /app
 # Install dependencies
 RUN apt-get update && apt-get install -y jq
 
-RUN git clone https://github.com/MainframeHQ/go-ethereum.git -b swarm-network-rewrite
+RUN git clone https://github.com/ethereum/go-ethereum.git
 
 WORKDIR /app/go-ethereum
 
-RUN git fetch origin && git checkout 5ad2d33513b8fdd7e5f8f5dac279aa33e6747a79
+RUN git fetch origin && git checkout 3ec5dda4d2dd0dec6d5bd465752f30e8f6ce208c
 
 RUN make geth
 RUN make swarm
