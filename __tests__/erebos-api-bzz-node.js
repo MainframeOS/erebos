@@ -177,6 +177,7 @@ describe('bzz-node', () => {
   })
 
   it('upload directory of files using uploadDirectoryTar()', async () => {
+    jest.setTimeout(10000) // 10 secs
     const dir = {
       'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
       'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
