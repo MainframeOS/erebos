@@ -1,7 +1,7 @@
 // @flow
 
 export type DirectoryData = {
-  [path: string]: { data: string | Buffer, size?: number },
+  [path: string]: { data: string | Buffer, contentType: string, size?: number },
 }
 
 export type FileEntry = {
@@ -31,20 +31,18 @@ export default class BaseBzz {
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
-  uploadDirectory(directory: Object): Promise<string> {
+  uploadDirectory(_directory: Object): Promise<string> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
-  // eslint-disable-next-line no-unused-vars
-  downloadDirectory(hash: string): Promise<string> {
+  downloadDirectory(_hash: string): Promise<string> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
   uploadFile(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       body: body,
       headers: headers,
       method: 'POST',
@@ -56,7 +54,7 @@ export default class BaseBzz {
   uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     headers['content-length'] = body.length
-    return this._fetch(`${this._url}bzz-raw:`, {
+    return this._fetch(`${this._url}bzz-raw:/`, {
       body: body,
       headers: headers,
       method: 'POST',

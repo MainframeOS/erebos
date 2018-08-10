@@ -12,6 +12,11 @@ describe('bzz-node', () => {
   let uploadContent
   const url = 'http://localhost:8500/'
   const bzz = new Bzz(url)
+  const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
+
+  beforeEach(() => {
+    fs.removeSync(tempDirPath)
+  })
 
   beforeEach(() => {
     uploadContent = Math.random()
@@ -95,8 +100,14 @@ describe('bzz-node', () => {
 
   it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+        contentType: 'plain/text',
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+        contentType: 'plain/text',
+      },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.downloadRawText(dirHash)
@@ -105,7 +116,7 @@ describe('bzz-node', () => {
       entries.map(entry => bzz.downloadRawText(entry.hash)),
     )
     const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = { data: downloaded[i] }
+      acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
       return acc
     }, {})
     expect(dir).toEqual(downloadedDir)
@@ -113,8 +124,12 @@ describe('bzz-node', () => {
 
   it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
     const dir = {
-      'foo2.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar2.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const response = await bzz.downloadDirectoryData(dirHash)
@@ -130,8 +145,12 @@ describe('bzz-node', () => {
 
   it('upload directory data using uploadTarData()', async () => {
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
     const dirHash = await bzz.uploadTarData(dir)
 
@@ -148,18 +167,27 @@ describe('bzz-node', () => {
 
   it('upload tar file using uploadTarFile()', async () => {
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
 
-    const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
     const tempFilePath = path.join(tempDirPath, 'test-data.tar')
     await fs.ensureDir(tempDirPath)
     const tarFile = fs.createWriteStream(tempFilePath)
 
     const pack = tar.pack()
-    pack.entry({ name: 'foo.txt' }, `this is foo.txt - ${uploadContent}`)
-    pack.entry({ name: 'bar.txt' }, `this is bar.txt - ${uploadContent}`)
+    pack.entry(
+      { name: `foo-${uploadContent}.txt` },
+      `this is foo-${uploadContent}.txt`,
+    )
+    pack.entry(
+      { name: `bar-${uploadContent}.txt` },
+      `this is bar-${uploadContent}.txt`,
+    )
     pack.finalize()
     pack.pipe(tarFile)
 
@@ -176,27 +204,30 @@ describe('bzz-node', () => {
     await fs.remove(tempDirPath)
   })
 
-  it('upload directory of files using uploadDirectoryTar()', async () => {
+  it('upload directory of files using uploadDirectoryFrom()', async () => {
     jest.setTimeout(10000) // 10 secs
     const dir = {
-      'foo.txt': { data: `this is foo.txt - ${uploadContent}` },
-      'bar.txt': { data: `this is bar.txt - ${uploadContent}` },
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
     }
 
-    const tempDirPath = path.join(os.tmpdir(), 'erebos-test-temp')
     await fs.ensureDir(tempDirPath)
     Promise.all([
       fs.outputFile(
-        path.join(tempDirPath, 'foo.txt'),
-        `this is foo.txt - ${uploadContent}`,
+        path.join(tempDirPath, `foo-${uploadContent}.txt`),
+        `this is foo-${uploadContent}.txt`,
       ),
       fs.outputFile(
-        path.join(tempDirPath, 'bar.txt'),
-        `this is bar.txt - ${uploadContent}`,
+        path.join(tempDirPath, `bar-${uploadContent}.txt`),
+        `this is bar-${uploadContent}.txt`,
       ),
     ])
 
-    const dirHash = await bzz.uploadDirectoryTar(tempDirPath)
+    const dirHash = await bzz.uploadDirectoryFrom(tempDirPath)
     const response = await bzz.downloadDirectoryData(dirHash)
     const downloadedDir = Object.keys(response).reduce(
       (prev, current) => ({
@@ -207,5 +238,29 @@ describe('bzz-node', () => {
     )
     expect(dir).toEqual(downloadedDir)
     await fs.remove(tempDirPath)
+  })
+
+  it('download directory of files using downloadDirectoryTo()', async () => {
+    const dir = {
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
+    }
+
+    const dirHash = await bzz.uploadDirectory(dir)
+    const numberOfFiles = await bzz.downloadDirectoryTo(dirHash, tempDirPath)
+    expect(Object.keys(dir)).toHaveLength(numberOfFiles)
+    const downloadedFileNames = fs.readdirSync(tempDirPath)
+    expect(Object.keys(dir).sort()).toEqual(downloadedFileNames.sort())
+
+    const file1Path = path.join(tempDirPath, `foo-${uploadContent}.txt`)
+    const file1Content = fs.readFileSync(file1Path, { encoding: 'utf8' })
+    const file2Path = path.join(tempDirPath, `bar-${uploadContent}.txt`)
+    const file2Content = fs.readFileSync(file2Path, { encoding: 'utf8' })
+    expect(dir[`foo-${uploadContent}.txt`].data).toEqual(file1Content)
+    expect(dir[`bar-${uploadContent}.txt`].data).toEqual(file2Content)
   })
 })

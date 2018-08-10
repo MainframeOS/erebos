@@ -84,10 +84,12 @@ export default class Bzz extends BaseBzz {
   uploadDirectory(directory: DirectoryData): Promise<string> {
     const form = new this._FormData()
     Object.keys(directory).forEach(function(key) {
-      form.append(key, directory[key].data)
+      form.append(key, directory[key].data, {
+        contentType: directory[key].contentType,
+      })
     })
 
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: form,
       headers: form.getHeaders(),
@@ -103,7 +105,7 @@ export default class Bzz extends BaseBzz {
     })
     pack.finalize()
 
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: pack,
       headers: {
@@ -115,7 +117,7 @@ export default class Bzz extends BaseBzz {
   }
 
   uploadTarFile(path: string): Promise<string> {
-    return this._fetch(`${this._url}bzz:`, {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: fs.createReadStream(path),
       headers: {
@@ -126,8 +128,8 @@ export default class Bzz extends BaseBzz {
     )
   }
 
-  uploadDirectoryTar(path: string): Promise<string> {
-    return this._fetch(`${this._url}bzz:`, {
+  uploadDirectoryFrom(path: string): Promise<string> {
+    return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: tarFs.pack(path),
       headers: {
