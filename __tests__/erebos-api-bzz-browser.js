@@ -10,6 +10,12 @@ describe('bzz-browser', () => {
   const bzz = new Bzz(url)
   bzz._fetch = fetch // Injected by extending class
 
+  it('upload() called with Object as an argument calls uploadDirectory()', async () => {
+    const dir = {}
+    const uploadRequest = bzz.upload(dir)
+    expect(uploadRequest).rejects.toThrow('Not Implemented')
+  })
+
   it('uploadDirectory() is not implemented for the browser yet', async () => {
     const dir = {}
     const uploadRequest = bzz.uploadDirectory(dir)

@@ -239,4 +239,28 @@ describe('bzz-node', () => {
     expect(dir).toEqual(downloadedDir)
     await fs.remove(tempDirPath)
   })
+
+  it('download directory of files using downloadDirectoryTo()', async () => {
+    const dir = {
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+      },
+    }
+
+    const dirHash = await bzz.uploadDirectory(dir)
+    const numberOfFiles = await bzz.downloadDirectoryTo(dirHash, tempDirPath)
+    expect(Object.keys(dir)).toHaveLength(numberOfFiles)
+    const downloadedFileNames = fs.readdirSync(tempDirPath)
+    expect(Object.keys(dir).sort()).toEqual(downloadedFileNames.sort())
+
+    const file1Path = path.join(tempDirPath, `foo-${uploadContent}.txt`)
+    const file1Content = fs.readFileSync(file1Path, { encoding: 'utf8' })
+    const file2Path = path.join(tempDirPath, `bar-${uploadContent}.txt`)
+    const file2Content = fs.readFileSync(file2Path, { encoding: 'utf8' })
+    expect(dir[`foo-${uploadContent}.txt`].data).toEqual(file1Content)
+    expect(dir[`bar-${uploadContent}.txt`].data).toEqual(file2Content)
+  })
 })
