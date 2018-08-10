@@ -7,7 +7,6 @@ import Bzz from '../packages/erebos-api-bzz-browser'
 describe('bzz-browser', () => {
   const url = 'http://localhost:8500/'
   const bzz = new Bzz(url)
-  bzz._fetch = fetch // Injected by extending class
 
   it('upload() called with Object as an argument calls uploadDirectory()', async () => {
     const dir = {}
