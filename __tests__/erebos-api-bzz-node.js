@@ -16,9 +16,7 @@ describe('bzz-node', () => {
 
   beforeEach(() => {
     fs.removeSync(tempDirPath)
-  })
 
-  beforeEach(() => {
     uploadContent = Math.random()
       .toString(36)
       .slice(2)
