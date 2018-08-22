@@ -1,5 +1,5 @@
 # Use our docker image with prebuilt swarm and geth binaries
-FROM mainframehq/swarm
+FROM swarm
 
 # Start swarm node
 CMD ["/bin/bash", "./start_swarm_node.sh", "tmp"]
