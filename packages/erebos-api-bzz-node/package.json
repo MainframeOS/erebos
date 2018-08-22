@@ -1,6 +1,6 @@
 {
   "name": "erebos-api-bzz-node",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "Bzz API for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
