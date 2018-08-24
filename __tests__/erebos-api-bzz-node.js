@@ -117,7 +117,7 @@ describe('bzz-node', () => {
       acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
       return acc
     }, {})
-    expect(dir).toEqual(downloadedDir)
+    expect(downloadedDir).toEqual(dir)
   })
 
   it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
@@ -138,7 +138,7 @@ describe('bzz-node', () => {
       }),
       {},
     )
-    expect(dir).toEqual(downloadedDir)
+    expect(downloadedDir).toEqual(dir)
   })
 
   it('upload directory data using uploadTarData()', async () => {
@@ -160,7 +160,7 @@ describe('bzz-node', () => {
       }),
       {},
     )
-    expect(dir).toEqual(downloadedDir)
+    expect(downloadedDir).toEqual(dir)
   })
 
   it('upload tar file using uploadTarFile()', async () => {
@@ -198,7 +198,7 @@ describe('bzz-node', () => {
       }),
       {},
     )
-    expect(dir).toEqual(downloadedDir)
+    expect(downloadedDir).toEqual(dir)
     await fs.remove(tempDirPath)
   })
 
@@ -234,7 +234,7 @@ describe('bzz-node', () => {
       }),
       {},
     )
-    expect(dir).toEqual(downloadedDir)
+    expect(downloadedDir).toEqual(dir)
     await fs.remove(tempDirPath)
   })
 
@@ -250,16 +250,16 @@ describe('bzz-node', () => {
 
     const dirHash = await bzz.uploadDirectory(dir)
     const numberOfFiles = await bzz.downloadDirectoryTo(dirHash, tempDirPath)
-    expect(Object.keys(dir)).toHaveLength(numberOfFiles)
+    expect(numberOfFiles).toHaveLength(Object.keys(dir))
     const downloadedFileNames = fs.readdirSync(tempDirPath)
-    expect(Object.keys(dir).sort()).toEqual(downloadedFileNames.sort())
+    expect(downloadedFileNames.sort()).toEqual(Object.keys(dir).sort())
 
     const file1Path = path.join(tempDirPath, `foo-${uploadContent}.txt`)
     const file1Content = fs.readFileSync(file1Path, { encoding: 'utf8' })
     const file2Path = path.join(tempDirPath, `bar-${uploadContent}.txt`)
     const file2Content = fs.readFileSync(file2Path, { encoding: 'utf8' })
-    expect(dir[`foo-${uploadContent}.txt`].data).toEqual(file1Content)
-    expect(dir[`bar-${uploadContent}.txt`].data).toEqual(file2Content)
+    expect(file1Content).toEqual(dir[`foo-${uploadContent}.txt`].data)
+    expect(file2Content).toEqual(dir[`bar-${uploadContent}.txt`].data)
   })
 
   it('lists directories and files', async () => {
@@ -293,6 +293,6 @@ describe('bzz-node', () => {
     }, {})
     expect(files).toEqual(downloadedDir)
     const commonPrefixes = Object.values(JSON.parse(manifest).common_prefixes)
-    expect(expectedCommonPrefixes).toEqual(commonPrefixes)
+    expect(commonPrefixes).toEqual(expectedCommonPrefixes)
   })
 })
