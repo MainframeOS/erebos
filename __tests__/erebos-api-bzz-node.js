@@ -262,17 +262,25 @@ describe('bzz-node', () => {
     expect(dir[`bar-${uploadContent}.txt`].data).toEqual(file2Content)
   })
 
-  it('lists the file in the directory', async () => {
-    const dir = {
-      [`foo-${uploadContent}.txt`]: {
+  it('lists directories and files', async () => {
+    const expectedCommonPrefixes = ['dir1/', 'dir2/']
+    const dirs = {
+      [`dir1/foo-${uploadContent}.txt`]: {
         data: `this is foo-${uploadContent}.txt`,
         contentType: 'plain/text',
       },
-      [`bar-${uploadContent}.txt`]: {
+      [`dir2/bar-${uploadContent}.txt`]: {
         data: `this is bar-${uploadContent}.txt`,
         contentType: 'plain/text',
       },
     }
+    const files = {
+      [`baz-${uploadContent}.txt`]: {
+        data: `this is baz-${uploadContent}.txt`,
+        contentType: 'plain/text',
+      },
+    }
+    const dir = { ...dirs, ...files }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.listDirectory(dirHash)
     const entries = Object.values(JSON.parse(manifest).entries)
@@ -283,6 +291,8 @@ describe('bzz-node', () => {
       acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
       return acc
     }, {})
-    expect(dir).toEqual(downloadedDir)
+    expect(files).toEqual(downloadedDir)
+    const commonPrefixes = Object.values(JSON.parse(manifest).common_prefixes)
+    expect(expectedCommonPrefixes).toEqual(commonPrefixes)
   })
 })
