@@ -250,7 +250,7 @@ describe('bzz-node', () => {
 
     const dirHash = await bzz.uploadDirectory(dir)
     const numberOfFiles = await bzz.downloadDirectoryTo(dirHash, tempDirPath)
-    expect(numberOfFiles).toHaveLength(Object.keys(dir))
+    expect(numberOfFiles).toBe(Object.keys(dir).length)
     const downloadedFileNames = fs.readdirSync(tempDirPath)
     expect(downloadedFileNames.sort()).toEqual(Object.keys(dir).sort())
 
