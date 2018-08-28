@@ -282,7 +282,8 @@ describe('bzz-node', () => {
     }
     const dir = { ...dirs, ...files }
     const dirHash = await bzz.uploadDirectory(dir)
-    const manifest = await bzz.listDirectory(dirHash)
+    const response = await bzz.listDirectory(dirHash)
+    const manifest = await response.text()
     const entries = Object.values(JSON.parse(manifest).entries)
     const downloaded = await Promise.all(
       entries.map(entry => bzz.downloadRawText(entry.hash)),

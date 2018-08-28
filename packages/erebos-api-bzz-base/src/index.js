@@ -80,7 +80,7 @@ export default class BaseBzz {
 
   listDirectory(hash: string): Promise<string> {
     return this._fetch(`${this._url}bzz-list:/${hash}`).then(
-      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+      res => (res.ok ? res : Promise.reject(new Error(res.statusText))),
     )
   }
 
