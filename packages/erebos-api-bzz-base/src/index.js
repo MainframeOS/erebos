@@ -83,4 +83,10 @@ export default class BaseBzz {
       res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
     )
   }
+
+  getHash(url: string): Promise<string> {
+    return this._fetch(`${this._url}bzz-hash:/${url}`).then(
+      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
+    )
+  }
 }
