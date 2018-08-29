@@ -78,9 +78,9 @@ export default class BaseBzz {
     return this.downloadRaw(hash).then(res => res.text())
   }
 
-  listDirectory(hash: string): Promise<*> {
+  listDirectory(hash: string): Promise<JSON> {
     return this._fetch(`${this._url}bzz-list:/${hash}`).then(
-      res => (res.ok ? res : Promise.reject(new Error(res.statusText))),
+      res => (res.ok ? res.json() : Promise.reject(new Error(res.statusText))),
     )
   }
 

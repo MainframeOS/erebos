@@ -282,9 +282,8 @@ describe('bzz-node', () => {
     }
     const dir = { ...dirs, ...files }
     const dirHash = await bzz.uploadDirectory(dir)
-    const response = await bzz.listDirectory(dirHash)
-    const manifest = await response.text()
-    const entries = Object.values(JSON.parse(manifest).entries)
+    const manifest = await bzz.listDirectory(dirHash)
+    const entries = Object.values(manifest.entries)
     const downloaded = await Promise.all(
       entries.map(entry => bzz.downloadRawText(entry.hash)),
     )
@@ -293,7 +292,7 @@ describe('bzz-node', () => {
       return acc
     }, {})
     expect(files).toEqual(downloadedDir)
-    const commonPrefixes = Object.values(JSON.parse(manifest).common_prefixes)
+    const commonPrefixes = Object.values(manifest.common_prefixes)
     expect(commonPrefixes).toEqual(expectedCommonPrefixes)
   })
 })
