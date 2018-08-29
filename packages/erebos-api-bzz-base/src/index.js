@@ -10,6 +10,19 @@ export type FileEntry = {
   size?: number,
 }
 
+export type ListEntry = {
+  hash: string,
+  path: string,
+  contentType: string,
+  size: number,
+  mod_time: string,
+}
+
+export type ListResult = {
+  common_prefixes?: Array<string>,
+  entries?: Array<ListEntry>,
+}
+
 export default class BaseBzz {
   _fetch: *
   _FormData: *
@@ -78,7 +91,7 @@ export default class BaseBzz {
     return this.downloadRaw(hash).then(res => res.text())
   }
 
-  listDirectory(hash: string): Promise<JSON> {
+  listDirectory(hash: string): Promise<ListResult> {
     return this._fetch(`${this._url}bzz-list:/${hash}`).then(
       res => (res.ok ? res.json() : Promise.reject(new Error(res.statusText))),
     )
