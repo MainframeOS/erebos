@@ -106,4 +106,17 @@ describe('bzz-base', () => {
     const [fetchUrl] = fetch.mock.calls[0]
     expect(fetchUrl).toBe(`${url}bzz:/${hash}`)
   })
+
+  it('returns the correct hash for a url', async () => {
+    const expectedHash =
+      '7a90587bfc04ac4c64aeb1a96bc84f053d3d84cefc79012c9a07dd5230dc1fa4'
+    fetch.mockResponseOnce(expectedHash)
+    const bzzUrl = 'theswarm.test'
+    const response = await bzz.getHash(bzzUrl)
+
+    expect(response).toBe(expectedHash)
+    expect(fetch.mock.calls).toHaveLength(1)
+    const [fetchUrl] = fetch.mock.calls[0]
+    expect(fetchUrl).toBe(`${url}bzz-hash:/${bzzUrl}`)
+  })
 })
