@@ -1,7 +1,7 @@
 # Postal Services over Swarm (PSS) API
 
 ```js
-import Pss from 'erebos-api-pss'
+import Pss from '@erebos/api-pss'
 ```
 
 ### new Pss()

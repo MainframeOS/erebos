@@ -1,7 +1,7 @@
 # Net API
 
 ```js
-import Net from 'erebos-api-net'
+import Net from '@erebos/api-net'
 ```
 
 ### new Net()

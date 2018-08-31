@@ -1,1 +1,1 @@
-module.exports = require('erebos-browser')
+module.exports = require('@erebos/browser')

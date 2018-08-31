@@ -1,7 +1,7 @@
 # Whisper (SHH) API
 
 ```js
-import Shh from 'erebos-api-shh'
+import Shh from '@erebos/api-shh'
 ```
 
 ## Types

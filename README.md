@@ -11,8 +11,8 @@ APIs are likely to be changed and even removed between releases without prior no
 ## Installation
 
 ```sh
-yarn add erebos-browser # browser-only
-yarn add erebos-node # node-only
+yarn add @erebos/browser # browser-only
+yarn add @erebos/node # node-only
 yarn add erebos # universal
 ```
 
@@ -40,19 +40,19 @@ yarn add erebos # universal
 | ---- | ------- | ----------- |
 | **Clients**
 | [`erebos`](/packages/erebos) | [![npm version](https://img.shields.io/npm/v/erebos.svg)](https://www.npmjs.com/package/erebos) | Universal Erebos library
-| [`erebos-browser`](/packages/erebos-browser) | [![npm version](https://img.shields.io/npm/v/erebos-browser.svg)](https://www.npmjs.com/package/erebos-browser) | Browser-only Erebos library
-| [`erebos-node`](/packages/erebos-node) | [![npm version](https://img.shields.io/npm/v/erebos-node.svg)](https://www.npmjs.com/package/erebos-node) | Node-only Erebos library
+| [`@erebos/browser`](/packages/browser) | [![npm version](https://img.shields.io/npm/v/@erebos/browser.svg)](https://www.npmjs.com/package/@erebos/browser) | Browser-only Erebos library
+| [`@erebos/node`](/packages/node) | [![npm version](https://img.shields.io/npm/v/@erebos/node.svg)](https://www.npmjs.com/package/@erebos/node) | Node-only Erebos library
 | **Standalone APIs**
-| [`erebos-api-bzz-browser`](/packages/erebos-api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/erebos-api-bzz-browser.svg)](https://www.npmjs.com/package/erebos-api-bzz-browser) | Browser-only Swarm (BZZ) APIs
-| [`erebos-api-bzz-node`](/packages/erebos-api-bzz-node) | [![npm version](https://img.shields.io/npm/v/erebos-api-bzz-node.svg)](https://www.npmjs.com/package/erebos-api-bzz-node) | Node-only Swarm (BZZ) APIs
-| [`erebos-api-eth`](/packages/erebos-api-eth) | [![npm version](https://img.shields.io/npm/v/erebos-api-eth.svg)](https://www.npmjs.com/package/erebos-api-eth) | Ethereum (eth) APIs
-| [`erebos-api-net`](/packages/erebos-api-net) | [![npm version](https://img.shields.io/npm/v/erebos-api-net.svg)](https://www.npmjs.com/package/erebos-api-net) | Net APIs
-| [`erebos-api-pss`](/packages/erebos-api-pss) | [![npm version](https://img.shields.io/npm/v/erebos-api-pss.svg)](https://www.npmjs.com/package/erebos-api-pss) | Postal Services over Swarm (PSS) APIs
-| [`erebos-api-shh`](/packages/erebos-api-shh) | [![npm version](https://img.shields.io/npm/v/erebos-api-shh.svg)](https://www.npmjs.com/package/erebos-api-shh) | Whisper (SHH) APIs
-| [`erebos-api-web3`](/packages/erebos-api-web3) | [![npm version](https://img.shields.io/npm/v/erebos-api-web3.svg)](https://www.npmjs.com/package/erebos-api-eth) | Web3 APIs
+| [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
+| [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs
+| [`@erebos/api-eth`](/packages/api-eth) | [![npm version](https://img.shields.io/npm/v/@erebos/api-eth.svg)](https://www.npmjs.com/package/@erebos/api-eth) | Ethereum (eth) APIs
+| [`@erebos/api-net`](/packages/api-net) | [![npm version](https://img.shields.io/npm/v/@erebos/api-net.svg)](https://www.npmjs.com/package/@erebos/api-net) | Net APIs
+| [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs
+| [`@erebos/api-shh`](/packages/api-shh) | [![npm version](https://img.shields.io/npm/v/@erebos/api-shh.svg)](https://www.npmjs.com/package/@erebos/api-shh) | Whisper (SHH) APIs
+| [`@erebos/api-web3`](/packages/api-web3) | [![npm version](https://img.shields.io/npm/v/@erebos/api-web3.svg)](https://www.npmjs.com/package/@erebos/api-eth) | Web3 APIs
 | **Base classes**
-| [`erebos-api-bzz-base`](/packages/erebos-api-bzz-base) | [![npm version](https://img.shields.io/npm/v/erebos-api-bzz-base.svg)](https://www.npmjs.com/package/erebos-api-bzz-base) | Shared logic for Swarm (BZZ) APIs
-| [`erebos-client-base`](/packages/erebos-client-base) | [![npm version](https://img.shields.io/npm/v/erebos-client-base.svg)](https://www.npmjs.com/package/erebos-client-base) | Shared logic for Client APIs
+| [`@erebos/api-bzz-base`](/packages/api-bzz-base) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-base.svg)](https://www.npmjs.com/package/@erebos/api-bzz-base) | Shared logic for Swarm (BZZ) APIs
+| [`@erebos/client-base`](/packages/client-base) | [![npm version](https://img.shields.io/npm/v/@erebos/client-base.svg)](https://www.npmjs.com/package/@erebos/client-base) | Shared logic for Client APIs
 
 ## Development
 

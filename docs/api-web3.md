@@ -1,7 +1,7 @@
 # Web3 API
 
 ```js
-import Web3 from 'erebos-api-web3'
+import Web3 from '@erebos/api-web3'
 ```
 
 ### new Web3()

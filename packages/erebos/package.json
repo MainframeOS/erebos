@@ -12,7 +12,7 @@
     "browser.js"
   ],
   "dependencies": {
-    "erebos-browser": "^0.3.0",
-    "erebos-node": "^0.3.0"
+    "@erebos/browser": "^0.3.0",
+    "@erebos/node": "^0.3.0"
   }
 }
