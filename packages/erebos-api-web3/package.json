@@ -19,5 +19,8 @@
     "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
     "build": "yarn clean && yarn build:js && yarn build:flow",
     "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0"
   }
 }

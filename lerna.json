@@ -1,12 +1,8 @@
 {
-  "lerna": "2.10.1",
+  "lerna": "3.2.1",
   "version": "0.3.0",
   "npmClient": "yarn",
-  "npmClientArgs": [
-    "--ignore-engines"
-  ],
+  "npmClientArgs": ["--ignore-engines"],
   "useWorkspaces": true,
-  "packages": [
-    "packages/*"
-  ]
+  "packages": ["packages/*"]
 }
