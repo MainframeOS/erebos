@@ -1,7 +1,6 @@
 // @flow
 
 import { resolve } from 'path'
-
 import { Client } from '@erebos/node'
 import { Command as Cmd, flags } from '@oclif/command'
 import ora from 'ora'
