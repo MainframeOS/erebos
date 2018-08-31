@@ -14,7 +14,6 @@
     "build:js": "BABEL_ENV=node babel src --out-dir lib",
     "build:flow": "flow-copy-source src lib",
     "build": "yarn clean && yarn build:js && yarn build:flow",
-    "test": "flow check",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {

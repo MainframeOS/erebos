@@ -17,8 +17,7 @@
     "test:flow": "flow check",
     "test:project": "jest --config jest.config.js",
     "test:ci": "jest --ci --config jest.config.ci.js --runInBand",
-    "test:packages": "lerna run test",
-    "test": "yarn test:flow && yarn test:packages && yarn test:project",
+    "test": "yarn test:flow && yarn test:project",
     "test:all": "yarn lint && yarn test",
     "build": "lerna run build",
     "start": "yarn test && yarn build"

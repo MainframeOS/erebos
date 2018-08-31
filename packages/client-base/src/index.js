@@ -108,4 +108,11 @@ export default class BaseClient {
     }
     return this._web3
   }
+
+  disconnect() {
+    // $FlowFixMe: disconnect method is only present in StreamRPC
+    if (this._rpc != null && typeof this._rpc.disconnect === 'function') {
+      this._rpc.disconnect()
+    }
+  }
 }

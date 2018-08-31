@@ -5,6 +5,7 @@
 <PROJECT_ROOT>/packages/*/lib/.*
 external_deps
 .*/node_modules/config-chain/test/.*
+.*/node_modules/oboe/test/.*
 
 [include]
 

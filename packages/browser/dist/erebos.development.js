@@ -4,6 +4,12 @@
   (factory((global.Erebos = {})));
 }(this, (function (exports) { 'use strict';
 
+  {
+    if (typeof self === 'undefined' || !self.crypto && !self.msCrypto) {
+      throw new Error('Your browser does not have secure random generator. ' + 'If you don’t need unpredictable IDs, you can use nanoid/non-secure.');
+    }
+  }
+
   var crypto = self.crypto || self.msCrypto;
   var url = '_~getRandomVcryp0123456789bfhijklqsuvwxzABCDEFGHIJKLMNOPQSTUWXYZ';
 
@@ -5032,6 +5038,15 @@
 
       this._web3 = instantiateAPI(config.web3, Web3);
     }
+
+    var _proto = BaseClient.prototype;
+
+    _proto.disconnect = function disconnect() {
+      // $FlowFixMe: disconnect method is only present in StreamRPC
+      if (this._rpc != null && typeof this._rpc.disconnect === 'function') {
+        this._rpc.disconnect();
+      }
+    };
 
     _createClass$2(BaseClient, [{
       key: "rpc",
