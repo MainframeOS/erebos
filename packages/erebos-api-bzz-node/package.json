@@ -20,6 +20,7 @@
     "rxjs": "^6.2.0"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0",
     "erebos-api-bzz-base": "^0.3.1",
     "form-data": "^2.3.2",
     "fs-extra": "^7.0.0",
@@ -28,7 +29,7 @@
     "tar-stream": "^1.6.1"
   },
   "devDependencies": {
-    "flow-bin": "^0.78.0",
-    "rxjs": "^6.2.2"
+    "flow-bin": "^0.79.1",
+    "rxjs": "^6.3.0"
   }
 }

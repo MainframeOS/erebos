@@ -1,10 +1,15 @@
 {
-  "presets": ["flow"],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-transform-runtime"
+  ],
+  "presets": ["@babel/preset-flow"],
   "env": {
     "browser-cjs": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
               "browsers": ["last 2 versions"]
@@ -13,13 +18,15 @@
             "loose": true
           }
         ]
-      ],
-      "plugins": ["syntax-class-properties", "transform-class-properties"]
+      ]
     },
     "browser-esm": {
+      "plugins": [
+        ["@babel/plugin-transform-runtime", { "useESModules": true }]
+      ],
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
               "browsers": ["last 2 versions"]
@@ -28,13 +35,25 @@
             "loose": true
           }
         ]
-      ],
-      "plugins": ["syntax-class-properties", "transform-class-properties"]
+      ]
+    },
+    "electron-renderer": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "electron": "2.0"
+            },
+            "loose": true
+          }
+        ]
+      ]
     },
     "node": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
               "node": 8
@@ -43,21 +62,20 @@
             "loose": true
           }
         ]
-      ],
-      "plugins": ["syntax-class-properties", "transform-class-properties"]
+      ]
     },
     "test": {
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
               "node": "current"
-            }
+            },
+            "modules": "commonjs"
           }
         ]
-      ],
-      "plugins": ["syntax-class-properties", "transform-class-properties"]
+      ]
     }
   }
 }

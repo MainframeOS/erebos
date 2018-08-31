@@ -21,13 +21,14 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0",
     "@mainframe/utils-hex": "^0.1.1"
   },
   "peerDependencies": {
     "rxjs": "^6.2.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.78.0",
-    "rxjs": "^6.2.2"
+    "flow-bin": "^0.79.1",
+    "rxjs": "^6.3.0"
   }
 }
