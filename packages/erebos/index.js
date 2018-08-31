@@ -1,1 +1,1 @@
-module.exports = require('erebos-node')
+module.exports = require('@erebos/node')

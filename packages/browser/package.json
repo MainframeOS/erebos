@@ -1,0 +1,47 @@
+{
+  "name": "@erebos/browser",
+  "version": "0.3.0",
+  "description": "Ethereum and Swarm client for browser",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "browser": "umd/erebos.js",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "cjs/*",
+    "esm/*",
+    "umd/*"
+  ],
+  "scripts": {
+    "clean": "del cjs esm umd",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:umd": "BABEL_ENV='browser-esm' NODE_ENV=development rollup -c",
+    "build:umd:min": "BABEL_ENV='browser-esm' NODE_ENV=production rollup -c",
+    "build:js": "yarn build:cjs && yarn build:esm && yarn build:umd && yarn build:umd:min",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
+    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0",
+    "@erebos/api-bzz-browser": "^0.3.0",
+    "@erebos/api-eth": "^0.3.0",
+    "@erebos/api-net": "^0.3.0",
+    "@erebos/api-pss": "^0.3.0",
+    "@erebos/api-shh": "^0.3.0",
+    "@erebos/api-web3": "^0.3.0",
+    "@erebos/client-base": "^0.3.0",
+    "@mainframe/rpc-browser": "^0.2.1",
+    "@mainframe/utils-hex": "^0.1.1",
+    "rxjs": "^6.3.0"
+  },
+  "devDependencies": {
+    "rollup": "^0.65.0",
+    "rollup-plugin-babel": "^4.0.2",
+    "rollup-plugin-commonjs": "^9.1.6",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^5.0.2"
+  }
+}

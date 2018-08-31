@@ -3,9 +3,9 @@
 The Erebos `Client` class provides an unified way of interacting with the various APIs based on a provided configuration, or simply a server endpoint.
 
 ```js
-import { Client } from 'erebos-browser' // browser
+import { Client } from '@erebos/browser' // browser
 // or
-import { Client } from 'erebos-node' // node
+import { Client } from '@erebos/node' // node
 // or
 import { Client } from 'erebos' // universal
 ```

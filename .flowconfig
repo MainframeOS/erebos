@@ -1,6 +1,8 @@
 [ignore]
-packages/*/dist/.*
-packages/*/lib/.*
+<PROJECT_ROOT>/packages/*/cjs/.*
+<PROJECT_ROOT>/packages/*/dist/.*
+<PROJECT_ROOT>/packages/*/esm/.*
+<PROJECT_ROOT>/packages/*/lib/.*
 external_deps
 .*/node_modules/config-chain/test/.*
 
