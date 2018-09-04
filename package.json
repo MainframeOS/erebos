@@ -19,7 +19,7 @@
     "test:ci": "jest --ci --config jest.config.ci.js --runInBand",
     "test": "yarn test:flow && yarn test:project",
     "test:all": "yarn lint && yarn test",
-    "build": "lerna run build",
+    "build": "lerna run build && cd packages/browser && yarn build:dist",
     "start": "yarn test && yarn build"
   },
   "devDependencies": {
@@ -34,14 +34,16 @@
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
     "del-cli": "^1.1.0",
-    "eslint": "^5.4.0",
-    "eslint-config-mainframe": "^2.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-mainframe": "^2.1.0",
     "flow-bin": "^0.79.1",
     "flow-copy-source": "^2.0.2",
     "jest": "^23.5.0",
     "jest-fetch-mock": "^1.6.5",
     "jest-junit": "^5.1.0",
+    "jest-puppeteer": "^3.3.1",
     "lerna": "^3.2.1",
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.2",
+    "puppeteer": "^1.7.0"
   }
 }

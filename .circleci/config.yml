@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:10-browsers
       - image: mainframehq/swarm
         command: [./start_swarm_node.sh, tmp]
 

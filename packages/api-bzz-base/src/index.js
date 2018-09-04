@@ -23,6 +23,21 @@ export type ListResult = {
   entries?: Array<ListEntry>,
 }
 
+export const resOrError = (res: *) => {
+  return res.ok
+    ? Promise.resolve(res)
+    : Promise.reject(new Error(res.statusText))
+}
+
+export const parseJSON = (res: *) => resOrError(res).then(r => r.json())
+export const parseText = (res: *) => resOrError(res).then(r => r.text())
+
+export type BzzParams = {
+  fetch: *,
+  FormData: *,
+  url: string,
+}
+
 export default class BaseBzz {
   _fetch: *
   _FormData: *
@@ -59,9 +74,7 @@ export default class BaseBzz {
       body: body,
       headers: headers,
       method: 'POST',
-    }).then(
-      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
-    )
+    }).then(parseText)
   }
 
   uploadRaw(data: string | Buffer, headers?: Object = {}): Promise<string> {
@@ -71,7 +84,7 @@ export default class BaseBzz {
       body: body,
       headers: headers,
       method: 'POST',
-    }).then(res => res.text())
+    }).then(parseText)
   }
 
   download(hash: string, path?: string = ''): Promise<*> {
@@ -80,7 +93,7 @@ export default class BaseBzz {
   }
 
   downloadText(hash: string, path?: string = ''): Promise<string> {
-    return this.download(hash, path).then(res => res.text())
+    return this.download(hash, path).then(parseText)
   }
 
   downloadRaw(hash: string): Promise<*> {
@@ -88,18 +101,14 @@ export default class BaseBzz {
   }
 
   downloadRawText(hash: string): Promise<string> {
-    return this.downloadRaw(hash).then(res => res.text())
+    return this.downloadRaw(hash).then(parseText)
   }
 
   listDirectory(hash: string): Promise<ListResult> {
-    return this._fetch(`${this._url}bzz-list:/${hash}`).then(
-      res => (res.ok ? res.json() : Promise.reject(new Error(res.statusText))),
-    )
+    return this._fetch(`${this._url}bzz-list:/${hash}`).then(parseJSON)
   }
 
   getHash(url: string): Promise<string> {
-    return this._fetch(`${this._url}bzz-hash:/${url}`).then(
-      res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
-    )
+    return this._fetch(`${this._url}bzz-hash:/${url}`).then(parseText)
   }
 }

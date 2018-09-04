@@ -22,4 +22,5 @@ KEY=$(jq --raw-output '.address' $DATADIR/keystore/*)
     --bzzaccount $KEY \
     --httpaddr 0.0.0.0 \
     --nat none \
+    --corsdomain "*" \
     --nodiscover

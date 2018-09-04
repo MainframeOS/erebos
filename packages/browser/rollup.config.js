@@ -1,5 +1,6 @@
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
+import globals from 'rollup-plugin-node-globals'
 import resolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
 import { uglify } from 'rollup-plugin-uglify'
@@ -22,10 +23,11 @@ const config = {
       exclude: '**/node_modules/**',
       runtimeHelpers: true,
     }),
+    commonjs(),
+    globals(),
     replace({
       'process.env.NODE_ENV': JSON.stringify(env),
     }),
-    commonjs(),
   ],
 }
 
