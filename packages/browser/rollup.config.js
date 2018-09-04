@@ -1,5 +1,6 @@
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
+import globals from 'rollup-plugin-node-globals'
 import resolve from 'rollup-plugin-node-resolve'
 import { uglify } from 'rollup-plugin-uglify'
 
@@ -17,6 +18,7 @@ const config = {
       browser: true,
       jsnext: true,
     }),
+    globals(),
     babel({
       exclude: '**/node_modules/**',
       runtimeHelpers: true,
