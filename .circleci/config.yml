@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:10-browsers
       - image: mainframehq/swarm
         command: [./start_swarm_node.sh, tmp]
 
@@ -29,6 +29,6 @@ jobs:
           name: Project tests
           command: yarn test:ci
           environment:
-            JEST_JUNIT_OUTPUT: "/tmp/test-reports/jest/results.xml"
+            JEST_JUNIT_OUTPUT: '/tmp/test-reports/jest/results.xml'
       - store_test_results:
           path: /tmp/test-reports

@@ -3,17 +3,17 @@
     "default": {
       "packages": [
         "package.json",
-        "packages/erebos-api-bzz-base/package.json",
-        "packages/erebos-api-bzz-browser/package.json",
-        "packages/erebos-api-bzz-node/package.json",
-        "packages/erebos-api-eth/package.json",
-        "packages/erebos-api-net/package.json",
-        "packages/erebos-api-pss/package.json",
-        "packages/erebos-api-shh/package.json",
-        "packages/erebos-api-web3/package.json",
-        "packages/erebos-browser/package.json",
-        "packages/erebos-client-base/package.json",
-        "packages/erebos-node/package.json",
+        "packages/api-bzz-base/package.json",
+        "packages/api-bzz-browser/package.json",
+        "packages/api-bzz-node/package.json",
+        "packages/api-eth/package.json",
+        "packages/api-net/package.json",
+        "packages/api-pss/package.json",
+        "packages/api-shh/package.json",
+        "packages/api-web3/package.json",
+        "packages/browser/package.json",
+        "packages/client-base/package.json",
+        "packages/node/package.json",
         "packages/erebos/package.json"
       ]
     }

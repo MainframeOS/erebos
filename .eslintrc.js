@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['mainframe', 'mainframe/jest'],
+  extends: ['mainframe', 'mainframe/jest-puppeteer'],
 }
