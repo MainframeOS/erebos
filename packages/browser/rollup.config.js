@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import globals from 'rollup-plugin-node-globals'
 import resolve from 'rollup-plugin-node-resolve'
+import replace from 'rollup-plugin-replace'
 import { uglify } from 'rollup-plugin-uglify'
 
 const env = process.env.NODE_ENV
@@ -9,7 +10,7 @@ const env = process.env.NODE_ENV
 const config = {
   input: 'src/index.js',
   output: {
-    file: env === 'production' ? 'dist/erebos.min.js' : 'dist/erebos.js',
+    file: `dist/erebos.${env}.js`,
     format: 'umd',
     name: 'Erebos',
   },
@@ -18,12 +19,15 @@ const config = {
       browser: true,
       jsnext: true,
     }),
-    globals(),
     babel({
       exclude: '**/node_modules/**',
       runtimeHelpers: true,
     }),
     commonjs(),
+    globals(),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify(env),
+    }),
   ],
 }
 

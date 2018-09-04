@@ -8,7 +8,7 @@ The Erebos library exposes modules split into 3 layers:
 
 Additional [utilities](https://github.com/MainframeHQ/js-tools/tree/master/packages/utils-hex#utils-hex) are also provided to convert value to and from the `hex` type (hexadecimal-encoded `string` prefixed with `0x`) used in the library.
 
-### Client usage examples
+## Client usage examples
 
 ```js
 import { Client, PssAPI, createRPC } from 'erebos'
@@ -36,3 +36,7 @@ async function pssOnly() {
 ```
 
 Additional examples are provided in the [`examples` folder](../examples) of the repository.
+
+### CLI
+
+Erebos also provides a [command-line interface](cli.md) with the `@erebos/cli` package.
