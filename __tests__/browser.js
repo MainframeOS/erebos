@@ -7,7 +7,10 @@ describe('browser', () => {
 
   beforeAll(async () => {
     await page.addScriptTag({
-      path: resolve(__dirname, '../packages/browser/dist/erebos.js'),
+      path: resolve(
+        __dirname,
+        '../packages/browser/dist/erebos.development.js',
+      ),
     })
     const clientHandle = await page.evaluateHandle(
       () => new Erebos.Client({ http: 'http://localhost:8500' }),

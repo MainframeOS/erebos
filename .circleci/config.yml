@@ -24,7 +24,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: Build and check
-          command: yarn build && yarn lint && yarn test:packages
+          command: yarn build && yarn lint
       - run:
           name: Project tests
           command: yarn test:ci
