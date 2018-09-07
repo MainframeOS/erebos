@@ -4,6 +4,13 @@ import { resolve } from 'path'
 
 describe('browser', () => {
   let evalClient
+  let uploadContent
+
+  beforeEach(() => {
+    uploadContent = Math.random()
+      .toString(36)
+      .slice(2)
+  })
 
   beforeAll(async () => {
     await page.addScriptTag({
@@ -15,7 +22,11 @@ describe('browser', () => {
     const clientHandle = await page.evaluateHandle(
       () => new Erebos.Client({ http: 'http://localhost:8500' }),
     )
-    evalClient = exec => page.evaluate(exec, clientHandle)
+    page.on('console', msg => {
+      for (let i = 0; i < msg.args().length; ++i)
+        console.log(`${i}: ${msg.args()[i]}`);
+    });
+    evalClient = (exec, ...args) => page.evaluate(exec, clientHandle, ...args)
   })
 
   describe('bzz', () => {
@@ -50,6 +61,23 @@ describe('browser', () => {
         }
       })
       expect(errMessage).toBe('Not Found')
+    })
+
+    it('uploads/downloads the file using bzz-raw', async () => {
+      let evalResponse
+      const manifestHash = await evalClient(async (client, uploadContent) => {
+        return await client.bzz.uploadRaw(uploadContent)
+      }, uploadContent)
+      evalResponse = await evalClient(async (client, manifestHash) => {
+        const response = await client.bzz.downloadRaw(manifestHash)
+        console.log(JSON.stringify(response), 'response')
+        return response
+      }, manifestHash)
+      expect(await evalResponse.text()).toBe(uploadContent)
+      evalResponse = await evalClient(async (client, manifestHash) => {
+        return await client.bzz.downloadText(manifestHash)
+      }, manifestHash)
+      expect(await evalResponse).toBe(uploadContent)
     })
   })
 })
