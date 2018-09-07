@@ -1,3 +1,7 @@
+---
+title: Whisper (SHH) API
+---
+
 # Whisper (SHH) API
 
 ```js

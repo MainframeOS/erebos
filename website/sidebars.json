@@ -1,0 +1,15 @@
+{
+  "docs": {
+    "Getting started": [],
+    "API": [
+      "api",
+      "api-bzz",
+      "api-pss",
+      "api-eth",
+      "api-net",
+      "api-web3",
+      "api-shh"
+    ],
+    "Tools": ["cli"]
+  }
+}

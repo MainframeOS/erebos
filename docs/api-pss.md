@@ -1,3 +1,7 @@
+---
+title: Postal Services over Swarm (PSS) API
+---
+
 # Postal Services over Swarm (PSS) API
 
 ```js

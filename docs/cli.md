@@ -1,3 +1,7 @@
+---
+title: CLI
+---
+
 # Erebos CLI
 
 ## Usage
