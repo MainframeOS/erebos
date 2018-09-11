@@ -1,4 +1,5 @@
 /* global Erebos */
+/* eslint-env browser */
 
 import { resolve } from 'path'
 
@@ -24,8 +25,9 @@ describe('browser', () => {
     )
     page.on('console', msg => {
       for (let i = 0; i < msg.args().length; ++i)
-        console.log(`${i}: ${msg.args()[i]}`);
-    });
+        /* eslint-disable-next-line no-console */
+        console.log(`${i}: ${msg.args()[i]}`)
+    })
     evalClient = (exec, ...args) => page.evaluate(exec, clientHandle, ...args)
   })
 
