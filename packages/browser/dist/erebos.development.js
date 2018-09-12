@@ -980,7 +980,7 @@
             }(Subscriber);
 
             function isTrustedSubscriber(obj) {
-              return obj instanceof Subscriber || 'syncErrorThrowable' in obj && obj[rxSubscriber];
+              return obj instanceof Subscriber || '_addParentTeardownLogic' in obj && obj[rxSubscriber];
             }
 
             /** PURE_IMPORTS_START _Subscriber,_symbol_rxSubscriber,_Observer PURE_IMPORTS_END */
@@ -7168,11 +7168,17 @@
                     }
                   }
 
-                  _this = _BaseClient.call(this, config, instantiateAPI) || this; // $FlowFixMe: instance type
+                  _this = _BaseClient.call(this, config, instantiateAPI) || this;
 
                   _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this))), "_bzz", void 0);
 
-                  _this._bzz = instantiateAPI(config.bzz, Bzz);
+                  if (config.bzz != null) {
+                    if (config.bzz instanceof Bzz) {
+                      _this._bzz = config.bzz;
+                    } else if (typeof config.bzz === 'string') {
+                      _this._bzz = new Bzz(config.bzz);
+                    }
+                  }
                 }
 
                 return _assertThisInitialized(_this);
@@ -7182,11 +7188,7 @@
                 key: "bzz",
                 get: function get() {
                   if (this._bzz == null) {
-                    if (this._http == null) {
-                      throw new Error('Missing Bzz instance or HTTP URL');
-                    }
-
-                    this._bzz = new Bzz(this._http);
+                    throw new Error('Missing Bzz instance or HTTP URL');
                   }
 
                   return this._bzz;

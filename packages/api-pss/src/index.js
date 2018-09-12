@@ -5,6 +5,12 @@ import type StreamRPC from '@mainframe/rpc-stream'
 import { hexEmpty, type hex } from '@mainframe/utils-hex'
 import { Observable } from 'rxjs'
 
+export type PssEvent = {
+  Asym: boolean,
+  Key: hex,
+  Msg: hex,
+}
+
 export default class Pss {
   _rpc: StreamRPC
 
@@ -63,7 +69,7 @@ export default class Pss {
     return this._rpc.request('pss_subscribe', ['receive', topic])
   }
 
-  createSubscription(subscription: hex): Observable<Object> {
+  createSubscription(subscription: hex): Observable<PssEvent> {
     return Observable.create(observer => {
       return this._rpc.subscribe({
         next: msg => {
@@ -93,7 +99,7 @@ export default class Pss {
     })
   }
 
-  createTopicSubscription(topic: hex): Promise<Observable<Object>> {
+  createTopicSubscription(topic: hex): Promise<Observable<PssEvent>> {
     return this.subscribeTopic(topic).then(subscription =>
       this.createSubscription(subscription),
     )

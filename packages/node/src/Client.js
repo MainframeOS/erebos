@@ -25,18 +25,22 @@ export default class NodeClient extends BaseClient {
           config.rpc = httpRPC(config.http)
         }
       }
+
       super(config, instantiateAPI)
-      // $FlowFixMe: instance type
-      this._bzz = instantiateAPI(config.bzz, BzzAPI)
+
+      if (config.bzz != null) {
+        if (config.bzz instanceof BzzAPI) {
+          this._bzz = config.bzz
+        } else if (typeof config.bzz === 'string') {
+          this._bzz = new BzzAPI(config.bzz)
+        }
+      }
     }
   }
 
   get bzz(): BzzAPI {
     if (this._bzz == null) {
-      if (this._http == null) {
-        throw new Error('Missing Bzz instance or HTTP URL')
-      }
-      this._bzz = new BzzAPI(this._http)
+      throw new Error('Missing Bzz instance or HTTP URL')
     }
     return this._bzz
   }
