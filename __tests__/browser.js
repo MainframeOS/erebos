@@ -86,7 +86,7 @@ describe('browser', () => {
         const response = await client.bzz.download(manifestHash)
         return response.text()
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         return await client.bzz.downloadText(manifestHash)
       }, manifestHash)
