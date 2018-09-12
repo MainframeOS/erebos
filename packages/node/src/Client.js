@@ -25,9 +25,16 @@ export default class NodeClient extends BaseClient {
           config.rpc = httpRPC(config.http)
         }
       }
+
       super(config, instantiateAPI)
-      // $FlowFixMe: instance type
-      this._bzz = instantiateAPI(config.bzz, BzzAPI)
+
+      if (config.bzz != null) {
+        if (config.bzz instanceof BzzAPI) {
+          this._bzz = config.bzz
+        } else if (typeof config.bzz === 'string') {
+          this._bzz = new BzzAPI(config.bzz)
+        }
+      }
     }
   }
 

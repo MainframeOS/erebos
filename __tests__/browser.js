@@ -21,7 +21,7 @@ describe('browser', () => {
       ),
     })
     const clientHandle = await page.evaluateHandle(
-      () => new Erebos.Client({ http: 'http://localhost:8500' }),
+      () => new Erebos.Client({ bzz: 'http://localhost:8500' }),
     )
     page.on('console', msg => {
       for (let i = 0; i < msg.args().length; ++i)
