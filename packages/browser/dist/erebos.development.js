@@ -6431,15 +6431,23 @@
               return obj;
             }
 
+            var BZZ_MODE_PROTOCOLS = {
+              default: 'bzz:/',
+              immutable: 'bzz-immutable:/',
+              raw: 'bzz-raw:/'
+            };
+            var getModeProtocol = function getModeProtocol(mode) {
+              return mode && BZZ_MODE_PROTOCOLS[mode] || BZZ_MODE_PROTOCOLS.default;
+            };
             var resOrError = function resOrError(res) {
               return res.ok ? Promise.resolve(res) : Promise.reject(new Error(res.statusText));
             };
-            var parseJSON = function parseJSON(res) {
+            var resJSON = function resJSON(res) {
               return resOrError(res).then(function (r) {
                 return r.json();
               });
             };
-            var parseText = function parseText(res) {
+            var resText = function resText(res) {
               return resOrError(res).then(function (r) {
                 return r.text();
               });
@@ -6460,86 +6468,140 @@
 
               var _proto = BaseBzz.prototype;
 
-              _proto.upload = function upload(data, headers) {
+              _proto._getDownloadURL = function _getDownloadURL(hash, options, raw) {
+                if (raw === void 0) {
+                  raw = false;
+                }
+
+                var protocol = raw ? BZZ_MODE_PROTOCOLS.raw : getModeProtocol(options.mode);
+                var url = this._url + protocol + hash;
+
+                if (options.path != null) {
+                  url += "/" + options.path;
+                }
+
+                if (options.mode === 'raw' && options.contentType != null) {
+                  url += "?content_type=" + options.contentType;
+                }
+
+                return url;
+              };
+
+              _proto._getUploadURL = function _getUploadURL(options, raw) {
+                if (raw === void 0) {
+                  raw = false;
+                } // Default URL to creation
+
+
+                var url = this._url + BZZ_MODE_PROTOCOLS[raw ? 'raw' : 'default']; // Manifest update if hash is provided
+
+                if (options.manifestHash != null) {
+                  url += options.manifestHash + "/";
+
+                  if (options.path != null) {
+                    url += options.path;
+                  }
+                }
+
+                return url;
+              };
+
+              _proto.hash = function hash(url) {
+                return this._fetch(this._url + "bzz-hash:/" + url).then(resText);
+              };
+
+              _proto.list = function list(hash, options) {
+                if (options === void 0) {
+                  options = {};
+                }
+
+                var url = this._url + "bzz-list:/" + hash;
+
+                if (options.path != null) {
+                  url += "/{options.path}";
+                }
+
+                return this._fetch(url).then(resJSON);
+              };
+
+              _proto._download = function _download(hash, options, headers) {
                 if (headers === void 0) {
                   headers = {};
                 }
 
-                if (typeof data === 'string' || isBuffer(data)) {
-                  // $FlowFixMe: Flow doesn't understand type refinement with Buffer check
-                  return this.uploadFile(data, headers);
-                } else {
-                  return this.uploadDirectory(data);
+                var url = this._getDownloadURL(hash, options);
+
+                return this._fetch(url, {
+                  headers: headers
+                }).then(resOrError);
+              };
+
+              _proto.download = function download(hash, options) {
+                if (options === void 0) {
+                  options = {};
                 }
+
+                return this._download(hash, options);
               };
 
-              _proto.uploadDirectory = function uploadDirectory(_directory) {
-                return Promise.reject(new Error('Must be implemented in extending class'));
-              };
-
-              _proto.downloadDirectory = function downloadDirectory(_hash) {
-                return Promise.reject(new Error('Must be implemented in extending class'));
-              };
-
-              _proto.uploadFile = function uploadFile(data, headers) {
+              _proto._upload = function _upload(body, options, headers, raw) {
                 if (headers === void 0) {
                   headers = {};
                 }
 
-                var body = typeof data === 'string' ? Buffer.from(data) : data;
-                headers['content-length'] = body.length;
-                return this._fetch(this._url + "bzz:/", {
+                if (raw === void 0) {
+                  raw = false;
+                }
+
+                var url = this._getUploadURL(options, raw);
+
+                return this._fetch(url, {
                   body: body,
                   headers: headers,
                   method: 'POST'
-                }).then(parseText);
+                }).then(resText);
               };
 
-              _proto.uploadRaw = function uploadRaw(data, headers) {
-                if (headers === void 0) {
-                  headers = {};
+              _proto.uploadFile = function uploadFile(data, options) {
+                if (options === void 0) {
+                  options = {};
                 }
 
                 var body = typeof data === 'string' ? Buffer.from(data) : data;
-                headers['content-length'] = body.length;
-                return this._fetch(this._url + "bzz-raw:/", {
-                  body: body,
-                  headers: headers,
-                  method: 'POST'
-                }).then(parseText);
-              };
+                var raw = options.contentType == null;
+                var headers = {
+                  'content-length': body.length
+                };
 
-              _proto.download = function download(hash, path) {
-                if (path === void 0) {
-                  path = '';
+                if (!raw) {
+                  headers['content-type'] = options.contentType;
                 }
 
-                var contentPath = path === '' ? '' : "/" + path;
-                return this._fetch(this._url + "bzz:/" + hash + contentPath);
+                return this._upload(body, options, headers, raw);
               };
 
-              _proto.downloadText = function downloadText(hash, path) {
-                if (path === void 0) {
-                  path = '';
+              _proto.uploadDirectory = function uploadDirectory(_directory, _options) {
+                return Promise.reject(new Error('Must be implemented in extending class'));
+              };
+
+              _proto.upload = function upload(data, options) {
+                if (options === void 0) {
+                  options = {};
                 }
 
-                return this.download(hash, path).then(parseText);
+                return typeof data === 'string' || isBuffer(data) ? // $FlowFixMe: Flow doesn't understand type refinement with Buffer check
+                this.uploadFile(data, options) : this.uploadDirectory(data, options);
               };
 
-              _proto.downloadRaw = function downloadRaw(hash) {
-                return this._fetch(this._url + "bzz-raw:/" + hash);
-              };
+              _proto.deleteResource = function deleteResource(hash, path) {
+                var url = this._getUploadURL({
+                  manifestHash: hash,
+                  path: path
+                });
 
-              _proto.downloadRawText = function downloadRawText(hash) {
-                return this.downloadRaw(hash).then(parseText);
-              };
-
-              _proto.listDirectory = function listDirectory(hash) {
-                return this._fetch(this._url + "bzz-list:/" + hash).then(parseJSON);
-              };
-
-              _proto.getHash = function getHash(url) {
-                return this._fetch(this._url + "bzz-hash:/" + url).then(parseText);
+                return this._fetch(url, {
+                  method: 'DELETE'
+                }).then(resText);
               };
 
               return BaseBzz;
