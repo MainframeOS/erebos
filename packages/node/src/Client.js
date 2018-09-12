@@ -33,10 +33,7 @@ export default class NodeClient extends BaseClient {
 
   get bzz(): BzzAPI {
     if (this._bzz == null) {
-      if (this._http == null) {
-        throw new Error('Missing Bzz instance or HTTP URL')
-      }
-      this._bzz = new BzzAPI(this._http)
+      throw new Error('Missing Bzz instance or HTTP URL')
     }
     return this._bzz
   }
