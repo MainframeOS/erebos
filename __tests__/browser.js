@@ -90,7 +90,7 @@ describe('browser', () => {
       evalResponse = await evalClient(async (client, manifestHash) => {
         return await client.bzz.downloadText(manifestHash)
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
     })
 
     it('uploads/downloads the file using bzz with content path', async () => {
@@ -111,12 +111,12 @@ describe('browser', () => {
         manifestHash,
         entryHash,
       )
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         const response = await client.bzz.downloadText(manifestHash)
         return response
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
     })
 
     it('uploads/downloads the file using bzz-raw', async () => {
@@ -128,11 +128,11 @@ describe('browser', () => {
         const response = await client.bzz.downloadRaw(manifestHash)
         return response.text()
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         return await client.bzz.downloadRawText(manifestHash)
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         const response = await client.bzz.downloadRawBlob(manifestHash)
         const getBlobText = blob => {
@@ -146,7 +146,7 @@ describe('browser', () => {
         }
         return await getBlobText(response)
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
     })
   })
 })
