@@ -19,11 +19,9 @@ export default class Bzz extends BaseBzz {
         contentType: directory[key].contentType,
       })
     })
-
     return this._fetch(`${this._url}bzz:/`, {
       method: 'POST',
       body: form,
-      // headers: form.getHeaders(),
     }).then(
       res => (res.ok ? res.text() : Promise.reject(new Error(res.statusText))),
     )

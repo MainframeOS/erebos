@@ -127,7 +127,7 @@ describe('browser', () => {
       expect(evalResponse).toBe(uploadContent)
     })
 
-    it('lists directories and files', async () => {
+    it('lists common prefixes for nested directories', async () => {
       const expectedCommonPrefixes = ['dir1/', 'dir2/']
       const dirs = {
         [`dir1/foo-${uploadContent}.txt`]: {
@@ -139,21 +139,33 @@ describe('browser', () => {
           contentType: 'plain/text',
         },
       }
-      const files = {
-        [`baz-${uploadContent}.txt`]: {
-          data: `this is baz-${uploadContent}.txt`,
+      const commonPrefixes = await evalClient(async (client, dirs) => {
+        const dirHash = await client.bzz.uploadDirectory(dirs)
+        const manifest = await client.bzz.listDirectory(dirHash)
+        return manifest.common_prefixes
+      }, dirs)
+      expect(commonPrefixes).toEqual(expectedCommonPrefixes)
+    })
+
+    it('lists files in a directory', async () => {
+      const dir = {
+        [`foo-${uploadContent}.txt`]: {
+          data: `this is foo-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+        [`bar-${uploadContent}.txt`]: {
+          data: `this is bar-${uploadContent}.txt`,
           contentType: 'plain/text',
         },
       }
-      const dir = { ...dirs, ...files }
-      const manifest = await evalClient(async (client, dir) => {
+      const directoryList = await evalClient(async (client, dir) => {
         const dirHash = await client.bzz.uploadDirectory(dir)
         const manifest = await client.bzz.listDirectory(dirHash)
         return manifest
       }, dir)
+
       /* eslint-disable-next-line no-console */
-      console.log(manifest, 'manifest')
-      expect(manifest.entries[0].hash).not.toBe('0000000000000000000000000000000000000000000000000000000000000000')
+      console.log(directoryList, 'DirectoryList')
     })
   })
 })
