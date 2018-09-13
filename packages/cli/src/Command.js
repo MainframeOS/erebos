@@ -1,7 +1,7 @@
 // @flow
 
 import { resolve } from 'path'
-import { Client } from '@erebos/node'
+import { SwarmClient } from '@erebos/swarm-node'
 import { Command as Cmd, flags } from '@oclif/command'
 import ora from 'ora'
 
@@ -20,11 +20,11 @@ export default class Command extends Cmd {
     }),
   }
 
-  _client: ?Client
+  _client: ?SwarmClient
 
-  get client(): Client {
+  get client(): SwarmClient {
     if (this._client == null) {
-      this._client = new Client({
+      this._client = new SwarmClient({
         http: this.flags['http-gateway'],
         ipc: this.flags['ipc-path'],
         ws: this.flags['ws-url'],

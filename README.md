@@ -1,6 +1,6 @@
 # Erebos [![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg)](https://circleci.com/gh/MainframeHQ/erebos) [![npm](https://img.shields.io/npm/v/erebos.svg)](https://www.npmjs.com/package/erebos)
 
-JavaScript client for the Ethereum ecosystem, notably Swarm and PSS.
+JavaScript client for [Swarm](https://swarm-gateways.net/bzz:/theswarm.eth/).
 
 ## Disclaimer
 
@@ -11,9 +11,9 @@ APIs are likely to be changed and even removed between releases without prior no
 ## Installation
 
 ```sh
-yarn add @erebos/browser # browser-only
-yarn add @erebos/node # node-only
-yarn add erebos # universal
+yarn add @erebos/swarm-browser # browser-only
+yarn add @erebos/swarm-node # node-only
+yarn add @erebos/swarm # universal
 ```
 
 ## Examples
@@ -26,9 +26,9 @@ yarn add erebos # universal
 - [Client](docs/client.md)
 - [APIs](docs/api.md)
   - [Bzz](docs/api-bzz.md) - file storage
+  - [Pss](docs/api-pss.md) - Postal Services over Swarm
   - [Eth](docs/api-eth.md) - Ethereum blockchain
   - [Net](docs/api-net.md) - network
-  - [Pss](docs/api-pss.md) - Postal Services over Swarm
   - [Shh](docs/api-shh.md) - Whisper
   - [Web3](docs/api-web3.md)
 - RPC client factory for the [browser](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-browser#rpc-browser) or [node](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-node#rpc-node) depending on the package.
@@ -39,9 +39,9 @@ yarn add erebos # universal
 | Name | Version | Description |
 | ---- | ------- | ----------- |
 | **Clients**
-| [`erebos`](/packages/erebos) | [![npm version](https://img.shields.io/npm/v/erebos.svg)](https://www.npmjs.com/package/erebos) | Universal Erebos library
-| [`@erebos/browser`](/packages/browser) | [![npm version](https://img.shields.io/npm/v/@erebos/browser.svg)](https://www.npmjs.com/package/@erebos/browser) | Browser-only Erebos library
-| [`@erebos/node`](/packages/node) | [![npm version](https://img.shields.io/npm/v/@erebos/node.svg)](https://www.npmjs.com/package/@erebos/node) | Node-only Erebos library
+| [`@erebos/swarm`](/packages/swarm) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm.svg)](https://www.npmjs.com/package/@erebos/swarm) | Universal Erebos library for Swarm
+| [`@erebos/swarm-browser`](/packages/swarm-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm-browser.svg)](https://www.npmjs.com/package/@erebos/swarm-browser) | Browser-only Erebos library for Swarm
+| [`@erebos/swarm-node`](/packages/swarm-node) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm-node.svg)](https://www.npmjs.com/package/@erebos/swarm-node) | Node-only Erebos library for Swarm
 | **Standalone APIs**
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs

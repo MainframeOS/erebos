@@ -17,11 +17,11 @@ describe('browser', () => {
     await page.addScriptTag({
       path: resolve(
         __dirname,
-        '../packages/browser/dist/erebos.development.js',
+        '../packages/swarm-browser/dist/erebos.development.js',
       ),
     })
     const clientHandle = await page.evaluateHandle(
-      () => new Erebos.Client({ bzz: 'http://localhost:8500' }),
+      () => new Erebos.SwarmClient('http://localhost:8500'),
     )
     page.on('console', msg => {
       for (let i = 0; i < msg.args().length; ++i)
@@ -90,7 +90,7 @@ describe('browser', () => {
       evalResponse = await evalClient(async (client, manifestHash) => {
         return await client.bzz.downloadText(manifestHash)
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
     })
 
     it('uploads/downloads the file using bzz with content path', async () => {
@@ -111,12 +111,12 @@ describe('browser', () => {
         manifestHash,
         entryHash,
       )
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         const response = await client.bzz.downloadText(manifestHash)
         return response
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
     })
 
     it('uploads/downloads the file using bzz-raw', async () => {
@@ -128,11 +128,11 @@ describe('browser', () => {
         const response = await client.bzz.downloadRaw(manifestHash)
         return response.text()
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         return await client.bzz.downloadRawText(manifestHash)
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
       evalResponse = await evalClient(async (client, manifestHash) => {
         const response = await client.bzz.downloadRawBlob(manifestHash)
         const getBlobText = blob => {
@@ -146,7 +146,7 @@ describe('browser', () => {
         }
         return await getBlobText(response)
       }, manifestHash)
-      expect(await evalResponse).toBe(uploadContent)
+      expect(evalResponse).toBe(uploadContent)
     })
   })
 })

@@ -22,10 +22,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-eth": "^0.3.0",
-    "@erebos/api-net": "^0.3.0",
-    "@erebos/api-pss": "^0.3.0",
-    "@erebos/api-shh": "^0.3.0",
-    "@erebos/api-web3": "^0.3.0"
+    "@mainframe/rpc-base": "^0.1.3"
   }
 }
