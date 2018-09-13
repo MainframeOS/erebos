@@ -6574,218 +6574,6 @@
               return Bzz;
             }(BaseBzz);
 
-            var Eth =
-            /*#__PURE__*/
-            function () {
-              function Eth(rpc) {
-                _defineProperty(this, "_rpc", void 0);
-
-                this._rpc = rpc;
-              }
-
-              var _proto = Eth.prototype;
-
-              _proto.protocolVersion = function protocolVersion() {
-                return this._rpc.request('eth_protocolVersion');
-              };
-
-              _proto.syncing = function syncing() {
-                return this._rpc.request('eth_syncing');
-              };
-
-              _proto.coinbase = function coinbase() {
-                return this._rpc.request('eth_coinbase');
-              };
-
-              _proto.mining = function mining() {
-                return this._rpc.request('eth_mining');
-              };
-
-              _proto.hashrate = function hashrate() {
-                return this._rpc.request('eth_hashrate');
-              };
-
-              _proto.gasPrice = function gasPrice() {
-                return this._rpc.request('eth_gasPrice');
-              };
-
-              _proto.accounts = function accounts() {
-                return this._rpc.request('eth_accounts');
-              };
-
-              _proto.blockNumber = function blockNumber() {
-                return this._rpc.request('eth_blockNumber');
-              };
-
-              _proto.getBalance = function getBalance(address, block) {
-                return this._rpc.request('eth_getBalance', [address, block]);
-              };
-
-              _proto.getStorageAt = function getStorageAt(address, position, block) {
-                return this._rpc.request('eth_getStorageAt', [address, position, block]);
-              };
-
-              _proto.getTransactionCount = function getTransactionCount(address, block) {
-                return this._rpc.request('eth_getTransactionCount', [address, block]);
-              };
-
-              _proto.getBlockTransactionCountByHash = function getBlockTransactionCountByHash(hash) {
-                return this._rpc.request('eth_getBlockTransactionCountByHash', [hash]);
-              };
-
-              _proto.getBlockTransactionCountByNumber = function getBlockTransactionCountByNumber(block) {
-                return this._rpc.request('eth_getBlockTransactionCountByNumber', [block]);
-              };
-
-              _proto.getUncleCountByBlockHash = function getUncleCountByBlockHash(hash) {
-                return this._rpc.request('eth_getUncleCountByBlockHash', [hash]);
-              };
-
-              _proto.getUncleCountByBlockNumber = function getUncleCountByBlockNumber(block) {
-                return this._rpc.request('eth_getUncleCountByBlockNumber', [block]);
-              };
-
-              _proto.getCode = function getCode(address, block) {
-                return this._rpc.request('eth_getCode', [address, block]);
-              };
-
-              _proto.sign = function sign(address, message) {
-                return this._rpc.request('eth_sign', [address, message]);
-              };
-
-              _proto.sendTransaction = function sendTransaction(transaction) {
-                return this._rpc.request('eth_sendTransaction', [transaction]);
-              };
-
-              _proto.sendRawTransaction = function sendRawTransaction(data) {
-                return this._rpc.request('eth_sendRawTransaction', [data]);
-              };
-
-              _proto.call = function call(transaction, block) {
-                return this._rpc.request('eth_call', [transaction, block]);
-              };
-
-              _proto.estimateGas = function estimateGas(transaction) {
-                return this._rpc.request('eth_estimateGas', [transaction]);
-              };
-
-              _proto.getBlockByHash = function getBlockByHash(hash, full) {
-                return this._rpc.request('eth_getBlockByHash', [hash, full]);
-              };
-
-              _proto.getBlockByNumber = function getBlockByNumber(block, full) {
-                return this._rpc.request('eth_getBlockByNumber', [block, full]);
-              };
-
-              _proto.getTransactionByHash = function getTransactionByHash(hash) {
-                return this._rpc.request('eth_getTransactionByHash', [hash]);
-              };
-
-              _proto.getTransactionByBlockHashAndIndex = function getTransactionByBlockHashAndIndex(hash, index) {
-                return this._rpc.request('eth_getTransactionByBlockHashAndIndex', [hash, index]);
-              };
-
-              _proto.getTransactionByBlockNumberAndIndex = function getTransactionByBlockNumberAndIndex(block, index) {
-                return this._rpc.request('eth_getTransactionByBlockNumberAndIndex', [block, index]);
-              };
-
-              _proto.getTransactionReceipt = function getTransactionReceipt(hash) {
-                return this._rpc.request('eth_getTransactionReceipt', [hash]);
-              };
-
-              _proto.getUncleByBlockHashAndIndex = function getUncleByBlockHashAndIndex(hash, index) {
-                return this._rpc.request('eth_getUncleByBlockHashAndIndex', [hash, index]);
-              };
-
-              _proto.getUncleByBlockNumberAndIndex = function getUncleByBlockNumberAndIndex(block, index) {
-                return this._rpc.request('eth_getUncleByBlockNumberAndIndex', [block, index]);
-              };
-
-              _proto.getCompilers = function getCompilers() {
-                return this._rpc.request('eth_getCompilers');
-              };
-
-              _proto.compileSolidity = function compileSolidity(code) {
-                return this._rpc.request('eth_compileSolidity', [code]);
-              };
-
-              _proto.compileLLL = function compileLLL(code) {
-                return this._rpc.request('eth_compileLLL', [code]);
-              };
-
-              _proto.compileSerpent = function compileSerpent(code) {
-                return this._rpc.request('eth_compileSerpent', [code]);
-              };
-
-              _proto.newFilter = function newFilter(options) {
-                return this._rpc.request('eth_newFilter', [options]);
-              };
-
-              _proto.newBlockFilter = function newBlockFilter() {
-                return this._rpc.request('eth_newBlockFilter');
-              };
-
-              _proto.newPendingTransactionFilter = function newPendingTransactionFilter() {
-                return this._rpc.request('eth_newPendingTransactionFilter');
-              };
-
-              _proto.uninstallFilter = function uninstallFilter(id) {
-                return this._rpc.request('eth_uninstallFilter', [id]);
-              };
-
-              _proto.getFilterChanges = function getFilterChanges(id) {
-                return this._rpc.request('eth_getFilterChanges', [id]);
-              };
-
-              _proto.getFilterLogs = function getFilterLogs(id) {
-                return this._rpc.request('eth_getFilterLogs', [id]);
-              };
-
-              _proto.getLogs = function getLogs(options) {
-                return this._rpc.request('eth_getLogs', [options]);
-              };
-
-              _proto.getWork = function getWork() {
-                return this._rpc.request('eth_getWork');
-              };
-
-              _proto.submitWork = function submitWork(nonce, hash, digest) {
-                return this._rpc.request('eth_usubmitWork', [nonce, hash, digest]);
-              };
-
-              _proto.submitHashrate = function submitHashrate(hashRate, id) {
-                return this._rpc.request('eth_submitHashrate', [hashRate, id]);
-              };
-
-              return Eth;
-            }();
-
-            var Net =
-            /*#__PURE__*/
-            function () {
-              function Net(rpc) {
-                _defineProperty(this, "_rpc", void 0);
-
-                this._rpc = rpc;
-              }
-
-              var _proto = Net.prototype;
-
-              _proto.version = function version() {
-                return this._rpc.request('net_version');
-              };
-
-              _proto.listening = function listening() {
-                return this._rpc.request('net_listening');
-              };
-
-              _proto.peerCount = function peerCount() {
-                return this._rpc.request('net_peerCount');
-              };
-
-              return Net;
-            }();
-
             var Pss =
             /*#__PURE__*/
             function () {
@@ -6885,130 +6673,6 @@
               return Pss;
             }();
 
-            var Shh =
-            /*#__PURE__*/
-            function () {
-              function Shh(rpc) {
-                _defineProperty(this, "_rpc", void 0);
-
-                this._rpc = rpc;
-              }
-
-              var _proto = Shh.prototype;
-
-              _proto.version = function version() {
-                return this._rpc.request('shh_version');
-              };
-
-              _proto.info = function info() {
-                return this._rpc.request('shh_info');
-              };
-
-              _proto.setMaxMessageSize = function setMaxMessageSize(size) {
-                return this._rpc.request('shh_setMaxMessageSize', [size]);
-              };
-
-              _proto.setMinPow = function setMinPow(pow) {
-                return this._rpc.request('shh_setMinPow', [pow]);
-              };
-
-              _proto.setBloomFilter = function setBloomFilter(bloom) {
-                return this._rpc.request('shh_setBloomFilter', [bloom]);
-              };
-
-              _proto.markTrustedPeer = function markTrustedPeer(enode) {
-                return this._rpc.request('shh_markTrustedPeer', [enode]);
-              };
-
-              _proto.newKeyPair = function newKeyPair() {
-                return this._rpc.request('shh_newKeyPair');
-              };
-
-              _proto.addPrivateKey = function addPrivateKey(key) {
-                return this._rpc.request('shh_addPrivateKey', [key]);
-              };
-
-              _proto.deleteKeyPair = function deleteKeyPair(id) {
-                return this._rpc.request('shh_deleteKeyPair', [id]);
-              };
-
-              _proto.hasKeyPair = function hasKeyPair(id) {
-                return this._rpc.request('shh_hasKeyPair', [id]);
-              };
-
-              _proto.getPublicKey = function getPublicKey(id) {
-                return this._rpc.request('shh_getPublicKey', [id]);
-              };
-
-              _proto.getPrivateKey = function getPrivateKey(id) {
-                return this._rpc.request('shh_getPrivateKey', [id]);
-              };
-
-              _proto.newSymKey = function newSymKey() {
-                return this._rpc.request('shh_newSymKey');
-              };
-
-              _proto.addSymKey = function addSymKey(key) {
-                return this._rpc.request('shh_addSymKey', [key]);
-              };
-
-              _proto.generateSymKeyFromPassword = function generateSymKeyFromPassword(password) {
-                return this._rpc.request('shh_generateSymKeyFromPassword', [password]);
-              };
-
-              _proto.hasSymKey = function hasSymKey(id) {
-                return this._rpc.request('shh_hasSymKey', [id]);
-              };
-
-              _proto.getSymKey = function getSymKey(id) {
-                return this._rpc.request('shh_getSymKey', [id]);
-              };
-
-              _proto.deleteSymKey = function deleteSymKey(id) {
-                return this._rpc.request('shh_deleteSymKey', [id]);
-              };
-
-              _proto.post = function post(msg) {
-                return this._rpc.request('shh_post', [msg]);
-              };
-
-              _proto.getFilterMessages = function getFilterMessages(id) {
-                return this._rpc.request('shh_getFilterMessages', [id]);
-              };
-
-              _proto.deleteMessageFilter = function deleteMessageFilter(id) {
-                return this._rpc.request('shh_deleteMessageFilter', [id]);
-              };
-
-              _proto.newMessageFilter = function newMessageFilter(criteria) {
-                return this._rpc.request('shh_newMessageFilter', [criteria]);
-              };
-
-              return Shh;
-            }();
-
-            var Web3 =
-            /*#__PURE__*/
-            function () {
-              function Web3(rpc) {
-                _defineProperty(this, "_rpc", void 0);
-
-                this._rpc = rpc;
-              }
-
-              var _proto = Web3.prototype;
-
-              _proto.clientVersion = function clientVersion() {
-                return this._rpc.request('web3_clientVersion');
-              };
-
-              _proto.sha3 = function sha3(data) {
-                return this._rpc.request('web3_sha3', data);
-              };
-
-              return Web3;
-            }();
-
             function _defineProperties(target, props) {
               for (var i = 0; i < props.length; i++) {
                 var descriptor = props[i];
@@ -7045,33 +6709,14 @@
             var BaseClient =
             /*#__PURE__*/
             function () {
-              function BaseClient(config, instantiateAPI) {
-                _defineProperty(this, "_eth", void 0);
-
-                _defineProperty(this, "_http", void 0);
-
-                _defineProperty(this, "_net", void 0);
-
-                _defineProperty(this, "_pss", void 0);
+              function BaseClient(config) {
+                if (config === void 0) {
+                  config = {};
+                }
 
                 _defineProperty(this, "_rpc", void 0);
 
-                _defineProperty(this, "_shh", void 0);
-
-                _defineProperty(this, "_web3", void 0);
-
-                this._http = config.http;
-                this._rpc = config.rpc; // $FlowFixMe: instance type
-
-                this._eth = instantiateAPI(config.eth, Eth); // $FlowFixMe: instance type
-
-                this._net = instantiateAPI(config.net, Net); // $FlowFixMe: instance type
-
-                this._pss = instantiateAPI(config.pss, Pss); // $FlowFixMe: instance type
-
-                this._shh = instantiateAPI(config.shh, Shh); // $FlowFixMe: instance type
-
-                this._web3 = instantiateAPI(config.web3, Web3);
+                this._rpc = config.rpc;
               }
 
               var _proto = BaseClient.prototype;
@@ -7087,56 +6732,10 @@
                 key: "rpc",
                 get: function get() {
                   if (this._rpc == null) {
-                    throw new Error('Could not access rpc: missing "rpc", "http", "ipc" or "ws" parameter provided to client');
+                    throw new Error('Could not access RPC: missing in configuration provided to client');
                   }
 
                   return this._rpc;
-                }
-              }, {
-                key: "eth",
-                get: function get() {
-                  if (this._eth == null) {
-                    this._eth = new Eth(this.rpc);
-                  }
-
-                  return this._eth;
-                }
-              }, {
-                key: "net",
-                get: function get() {
-                  if (this._net == null) {
-                    this._net = new Net(this.rpc);
-                  }
-
-                  return this._net;
-                }
-              }, {
-                key: "pss",
-                get: function get() {
-                  if (this._pss == null) {
-                    // $FlowFixMe: runtime check
-                    this._pss = new Pss(this.rpc);
-                  }
-
-                  return this._pss;
-                }
-              }, {
-                key: "shh",
-                get: function get() {
-                  if (this._shh == null) {
-                    this._shh = new Shh(this.rpc);
-                  }
-
-                  return this._shh;
-                }
-              }, {
-                key: "web3",
-                get: function get() {
-                  if (this._web3 == null) {
-                    this._web3 = new Web3(this.rpc);
-                  }
-
-                  return this._web3;
                 }
               }]);
 
@@ -7153,12 +6752,28 @@
               function BrowserClient(config) {
                 var _this;
 
-                if (config == null || typeof config === 'string') {
-                  _this = _BaseClient.call(this, {
-                    rpc: createRPC(config)
-                  }, instantiateAPI) || this;
+                if (typeof config === 'string') {
+                  var rpc = createRPC(config);
 
-                  _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this))), "_bzz", void 0);
+                  if (rpc instanceof StreamRPC) {
+                    // RPC supports stream
+                    _this = _BaseClient.call(this, {
+                      rpc: rpc
+                    }) || this;
+
+                    _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this)))), "_bzz", void 0);
+
+                    _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this)))), "_pss", void 0);
+                  } else {
+                    // Assume provided URL is HTTP
+                    _this = _BaseClient.call(this) || this;
+
+                    _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this)))), "_bzz", void 0);
+
+                    _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this)))), "_pss", void 0);
+
+                    _this._bzz = new Bzz(config);
+                  }
                 } else {
                   if (config.rpc == null) {
                     if (config.ws != null) {
@@ -7168,17 +6783,24 @@
                     }
                   }
 
-                  _this = _BaseClient.call(this, config, instantiateAPI) || this;
+                  _this = _BaseClient.call(this, config) || this;
 
-                  _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this))), "_bzz", void 0);
+                  _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this)))), "_bzz", void 0);
+
+                  _defineProperty(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_assertThisInitialized(_this)))), "_pss", void 0);
 
                   if (config.bzz != null) {
                     if (config.bzz instanceof Bzz) {
                       _this._bzz = config.bzz;
                     } else if (typeof config.bzz === 'string') {
                       _this._bzz = new Bzz(config.bzz);
+                    } else if (typeof config.http === 'string') {
+                      _this._bzz = new Bzz(config.http);
                     }
-                  }
+                  } // $FlowFixMe: instance type
+
+
+                  _this._pss = instantiateAPI(config.pss, Pss);
                 }
 
                 return _assertThisInitialized(_this);
@@ -7193,6 +6815,16 @@
 
                   return this._bzz;
                 }
+              }, {
+                key: "pss",
+                get: function get() {
+                  if (this._pss == null) {
+                    // $FlowFixMe: runtime check
+                    this._pss = new Pss(this.rpc);
+                  }
+
+                  return this._pss;
+                }
               }]);
 
               return BrowserClient;
@@ -7206,12 +6838,8 @@
             exports.encodeHex = encodeHex;
             exports.decodeHex = decodeHex;
             exports.BzzAPI = Bzz;
-            exports.EthAPI = Eth;
-            exports.NetAPI = Net;
             exports.PssAPI = Pss;
-            exports.ShhAPI = Shh;
-            exports.Web3API = Web3;
-            exports.Client = BrowserClient;
+            exports.SwarmClient = BrowserClient;
 
             Object.defineProperty(exports, '__esModule', { value: true });
 

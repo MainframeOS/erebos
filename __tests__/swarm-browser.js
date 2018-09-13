@@ -17,11 +17,11 @@ describe('browser', () => {
     await page.addScriptTag({
       path: resolve(
         __dirname,
-        '../packages/browser/dist/erebos.development.js',
+        '../packages/swarm-browser/dist/erebos.development.js',
       ),
     })
     const clientHandle = await page.evaluateHandle(
-      () => new Erebos.Client({ bzz: 'http://localhost:8500' }),
+      () => new Erebos.SwarmClient('http://localhost:8500'),
     )
     page.on('console', msg => {
       for (let i = 0; i < msg.args().length; ++i)
