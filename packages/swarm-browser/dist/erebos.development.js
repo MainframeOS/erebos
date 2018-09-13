@@ -2031,6 +2031,98 @@
     return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isFastBuffer(obj.slice(0, 0));
   }
 
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return self;
+  }
+
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+      return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return _getPrototypeOf(o);
+  }
+
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
+
+    return _setPrototypeOf(o, p);
+  }
+
+  function _isNativeFunction(fn) {
+    return Function.toString.call(fn).indexOf("[native code]") !== -1;
+  }
+
+  function isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+
+    try {
+      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function _construct(Parent, args, Class) {
+    if (isNativeReflectConstruct()) {
+      _construct = Reflect.construct;
+    } else {
+      _construct = function _construct(Parent, args, Class) {
+        var a = [null];
+        a.push.apply(a, args);
+        var Constructor = Function.bind.apply(Parent, a);
+        var instance = new Constructor();
+        if (Class) _setPrototypeOf(instance, Class.prototype);
+        return instance;
+      };
+    }
+
+    return _construct.apply(null, arguments);
+  }
+
+  function _wrapNativeSuper(Class) {
+    var _cache = typeof Map === "function" ? new Map() : undefined;
+
+    _wrapNativeSuper = function _wrapNativeSuper(Class) {
+      if (Class === null || !_isNativeFunction(Class)) return Class;
+
+      if (typeof Class !== "function") {
+        throw new TypeError("Super expression must either be null or a function");
+      }
+
+      if (typeof _cache !== "undefined") {
+        if (_cache.has(Class)) return _cache.get(Class);
+
+        _cache.set(Class, Wrapper);
+      }
+
+      function Wrapper() {
+        return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+      }
+
+      Wrapper.prototype = Object.create(Class.prototype, {
+        constructor: {
+          value: Wrapper,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      });
+      return _setPrototypeOf(Wrapper, Class);
+    };
+
+    return _wrapNativeSuper(Class);
+  }
+
   function _defineProperty(obj, key, value) {
     if (key in obj) {
       Object.defineProperty(obj, key, {
@@ -2054,8 +2146,26 @@
   var getModeProtocol = function getModeProtocol(mode) {
     return mode && BZZ_MODE_PROTOCOLS[mode] || BZZ_MODE_PROTOCOLS.default;
   };
+  var HTTPError =
+  /*#__PURE__*/
+  function (_Error) {
+    _inheritsLoose(HTTPError, _Error);
+
+    function HTTPError(status, message) {
+      var _this;
+
+      _this = _Error.call(this, message) || this;
+
+      _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "status", void 0);
+
+      _this.status = status;
+      return _this;
+    }
+
+    return HTTPError;
+  }(_wrapNativeSuper(Error));
   var resOrError = function resOrError(res) {
-    return res.ok ? Promise.resolve(res) : Promise.reject(new Error(res.statusText));
+    return res.ok ? Promise.resolve(res) : Promise.reject(new HTTPError(res.status, res.statusText));
   };
   var resJSON = function resJSON(res) {
     return resOrError(res).then(function (r) {
@@ -2133,7 +2243,7 @@
       var url = this._url + "bzz-list:/" + hash;
 
       if (options.path != null) {
-        url += "/{options.path}";
+        url += "/" + options.path;
       }
 
       return this._fetch(url).then(resJSON);
@@ -2240,12 +2350,6 @@
 
     _proto.uploadDirectory = function uploadDirectory(_directory) {
       return Promise.reject(new Error('Not Implemented'));
-    };
-
-    _proto.downloadRawBlob = function downloadRawBlob(hash) {
-      return this.downloadRaw(hash).then(function (res) {
-        return res.ok ? res.blob() : Promise.reject(new Error(res.statusText));
-      });
     };
 
     return Bzz;
@@ -6749,14 +6853,6 @@
     if (protoProps) _defineProperties(Constructor.prototype, protoProps);
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
-  }
-
-  function _assertThisInitialized(self) {
-    if (self === void 0) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
-
-    return self;
   }
 
   var createInstantiateAPI = function createInstantiateAPI(createRPC) {

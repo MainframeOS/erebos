@@ -50,13 +50,23 @@ export const getModeProtocol = (mode?: ?BzzMode): string => {
   return (mode && BZZ_MODE_PROTOCOLS[mode]) || BZZ_MODE_PROTOCOLS.default
 }
 
+export class HTTPError extends Error {
+  status: number
+
+  constructor(status: number, message: string) {
+    super(message)
+    this.status = status
+  }
+}
+
 export const resOrError = (res: *) => {
   return res.ok
     ? Promise.resolve(res)
-    : Promise.reject(new Error(res.statusText))
+    : Promise.reject(new HTTPError(res.status, res.statusText))
 }
 
 export const resJSON = (res: *) => resOrError(res).then(r => r.json())
+
 export const resText = (res: *) => resOrError(res).then(r => r.text())
 
 export type BzzParams = {
@@ -112,7 +122,7 @@ export default class BaseBzz {
   list(hash: string, options?: DownloadOptions = {}): Promise<ListResult> {
     let url = `${this._url}bzz-list:/${hash}`
     if (options.path != null) {
-      url += `/{options.path}`
+      url += `/${options.path}`
     }
     return this._fetch(url).then(resJSON)
   }
