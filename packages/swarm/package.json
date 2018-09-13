@@ -1,7 +1,7 @@
 {
-  "name": "erebos",
+  "name": "@erebos/swarm",
   "version": "0.3.0",
-  "description": "Ethereum and Swarm client",
+  "description": "Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "index.js",
   "browser": "browser.js",
@@ -12,7 +12,7 @@
     "browser.js"
   ],
   "dependencies": {
-    "@erebos/browser": "^0.3.0",
-    "@erebos/node": "^0.3.0"
+    "@erebos/swarm-browser": "^0.3.0",
+    "@erebos/swarm-node": "^0.3.0"
   }
 }
