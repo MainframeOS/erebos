@@ -32,28 +32,6 @@ describe('browser', () => {
   })
 
   describe('bzz', () => {
-    it('upload() called with Object as an argument calls uploadDirectory()', async () => {
-      const errMessage = await evalClient(async client => {
-        try {
-          await client.bzz.upload({})
-        } catch (err) {
-          return err.message
-        }
-      })
-      expect(errMessage).toBe('Not Implemented')
-    })
-
-    it('uploadDirectory() is not implemented for the browser yet', async () => {
-      const errMessage = await evalClient(async client => {
-        try {
-          await client.bzz.uploadDirectory({})
-        } catch (err) {
-          return err.message
-        }
-      })
-      expect(errMessage).toBe('Not Implemented')
-    })
-
     it('trying to download non-existent hash raises an error', async () => {
       const errMessage = await evalClient(async client => {
         try {
@@ -147,6 +125,47 @@ describe('browser', () => {
         return await getBlobText(response)
       }, manifestHash)
       expect(evalResponse).toBe(uploadContent)
+    })
+
+    it('lists common prefixes for nested directories', async () => {
+      const expectedCommonPrefixes = ['dir1/', 'dir2/']
+      const dirs = {
+        [`dir1/foo-${uploadContent}.txt`]: {
+          data: `this is foo-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+        [`dir2/bar-${uploadContent}.txt`]: {
+          data: `this is bar-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+      }
+      const commonPrefixes = await evalClient(async (client, dirs) => {
+        const dirHash = await client.bzz.uploadDirectory(dirs)
+        const manifest = await client.bzz.listDirectory(dirHash)
+        return manifest.common_prefixes
+      }, dirs)
+      expect(commonPrefixes).toEqual(expectedCommonPrefixes)
+    })
+
+    it('lists files in a directory', async () => {
+      const dir = {
+        [`foo-${uploadContent}.txt`]: {
+          data: `this is foo-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+        [`bar-${uploadContent}.txt`]: {
+          data: `this is bar-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+      }
+      const directoryList = await evalClient(async (client, dir) => {
+        const dirHash = await client.bzz.uploadDirectory(dir)
+        const manifest = await client.bzz.listDirectory(dirHash)
+        return manifest
+      }, dir)
+
+      /* eslint-disable-next-line no-console */
+      console.log(directoryList, 'DirectoryList')
     })
   })
 })
