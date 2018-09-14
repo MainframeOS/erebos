@@ -71,13 +71,11 @@ export const resText = (res: *) => resOrError(res).then(r => r.text())
 
 export type BzzParams = {
   fetch: *,
-  FormData: *,
   url: string,
 }
 
 export default class BaseBzz {
   _fetch: *
-  _FormData: *
   _url: string
 
   constructor(url: string) {

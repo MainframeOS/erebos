@@ -119,7 +119,7 @@ describe('browser', () => {
       }
       const commonPrefixes = await evalClient(async (client, dirs) => {
         const dirHash = await client.bzz.uploadDirectory(dirs)
-        const manifest = await client.bzz.listDirectory(dirHash)
+        const manifest = await client.bzz.list(dirHash)
         return manifest.common_prefixes
       }, dirs)
       expect(commonPrefixes).toEqual(expectedCommonPrefixes)
@@ -138,10 +138,14 @@ describe('browser', () => {
       }
       const directoryList = await evalClient(async (client, dir) => {
         const dirHash = await client.bzz.uploadDirectory(dir)
-        const manifest = await client.bzz.listDirectory(dirHash)
+        const manifest = await client.bzz.list(dirHash)
         const entries = Object.values(manifest.entries)
         const downloaded = await Promise.all(
-          entries.map(entry => client.bzz.downloadRawText(entry.hash)),
+          entries.map(entry =>
+            client.bzz
+              .download(entry.hash, { mode: 'raw' })
+              .then(r => r.text()),
+          ),
         )
         const downloadedDir = entries.reduce((acc, entry, i) => {
           acc[entry.path] = {

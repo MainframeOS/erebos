@@ -21,14 +21,13 @@ export default class Bzz extends BaseBzz {
   constructor(url: string) {
     super(url)
     this._fetch = fetch
-    this._FormData = FormData
   }
 
   async uploadDirectory(
     directory: DirectoryData,
     options?: UploadOptions = {},
   ): Promise<string> {
-    const form = new this._FormData()
+    const form = new FormData()
     Object.keys(directory).forEach(key => {
       form.append(key, directory[key].data, {
         contentType: directory[key].contentType,
