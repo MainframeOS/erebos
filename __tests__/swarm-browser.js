@@ -166,7 +166,10 @@ describe('browser', () => {
           entries.map(entry => client.bzz.downloadRawText(entry.hash)),
         )
         const downloadedDir = entries.reduce((acc, entry, i) => {
-          acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
+          acc[entry.path] = {
+            data: downloaded[i],
+            contentType: entry.contentType,
+          }
           return acc
         }, {})
         return downloadedDir
