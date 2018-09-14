@@ -161,11 +161,18 @@ describe('browser', () => {
       const directoryList = await evalClient(async (client, dir) => {
         const dirHash = await client.bzz.uploadDirectory(dir)
         const manifest = await client.bzz.listDirectory(dirHash)
-        return manifest
+        const entries = Object.values(manifest.entries)
+        const downloaded = await Promise.all(
+          entries.map(entry => client.bzz.downloadRawText(entry.hash)),
+        )
+        const downloadedDir = entries.reduce((acc, entry, i) => {
+          acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
+          return acc
+        }, {})
+        return downloadedDir
       }, dir)
 
-      /* eslint-disable-next-line no-console */
-      console.log(directoryList, 'DirectoryList')
+      expect(directoryList).toEqual(dir)
     })
   })
 })
