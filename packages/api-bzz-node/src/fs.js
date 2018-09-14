@@ -2,7 +2,7 @@
 
 import path from 'path'
 import type { Readable } from 'stream'
-import { createWriteStream, ensureDir, lstat } from 'fs-extra'
+import { createReadStream, createWriteStream, ensureDir, lstat } from 'fs-extra'
 import tarFS from 'tar-fs'
 import tarStream from 'tar-stream'
 
@@ -69,27 +69,21 @@ export const packTarWithDefault = (
   tarPath: string,
   defaultPath: string,
 ): Readable => {
-  let defaultFileStream
-  const pack = tarFS.pack(tarPath, {
+  return tarFS.pack(tarPath, {
     finalize: false,
-    finish: () => {
-      if (defaultFileStream == null) {
-        pack.finalize()
-      } else {
-        const defaultEntry = pack.entry({ name: '' }, () => {
+    finish: async pack => {
+      try {
+        const filePath = path.join(tarPath, defaultPath)
+        const stat = await lstat(filePath)
+        const entry = pack.entry({ name: '', size: stat.size }, () => {
           pack.finalize()
         })
-        defaultFileStream.pipe(defaultEntry)
+        createReadStream(filePath).pipe(entry)
+      } catch (err) {
+        pack.finalize()
       }
-    },
-    mapStream: (fileStream, header) => {
-      if (header.name === defaultPath) {
-        defaultFileStream = fileStream
-      }
-      return fileStream
     },
   })
-  return pack
 }
 
 export const packTar = (

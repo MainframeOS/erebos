@@ -36,10 +36,9 @@ export default class Bzz extends BaseBzz {
     })
     if (options.defaultPath != null) {
       const file = directory[options.defaultPath]
-      if (file == null) {
-        throw new Error('Default path file not found')
+      if (file != null) {
+        form.append('', file.data, { contentType: file.contentType })
       }
-      form.append('', file.data, { contentType: file.contentType })
     }
     return await this._upload(form, options, form.getHeaders())
   }
