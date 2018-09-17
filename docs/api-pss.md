@@ -1,14 +1,34 @@
 ---
-title: Postal Services over Swarm (PSS) API
+title: Postal Services over Swarm (Pss) API
+sidebar_label: Pss API
 ---
 
-# Postal Services over Swarm (PSS) API
+## Standalone import
 
-```js
+```javascripts
 import Pss from '@erebos/api-pss'
 ```
 
-### new Pss()
+## Flow types
+
+### hex
+
+The `hex` type represents a hex-encoded string, as used by Swarm and this PSS API.\
+The [`@mainframe/utils-hex` library](https://github.com/MainframeHQ/js-tools/tree/master/packages/utils-hex) provided utilities to interact with this type.
+
+### PssEvent
+
+```javascript
+type PssEvent = {
+  Asym: boolean,
+  Key: hex,
+  Msg: hex,
+}
+```
+
+## Public API
+
+### Pss class (default export)
 
 Creates a Pss instance with the provided `StreamRPC` instance.
 
@@ -101,9 +121,7 @@ with the provided string and returns the generated topic.
 
 ### .subscribeTopic()
 
-Calls
-[`pss_subscribe`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_subscribe)
-with the provided topic and returns the subscription handle.
+Calls `pss_subscribe` with the provided topic and returns the subscription handle.
 
 **Arguments**
 
@@ -113,20 +131,13 @@ with the provided topic and returns the subscription handle.
 
 ### .createSubscription()
 
-Creates a
-[RxJS Observable](http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html)
-that will emit events matching the provided subscription handle as created by
-calling `subscribeTopic()` once subscribed to.
-
-As documented in
-[PSS API](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_subscribe),
-the received events will be JS Objects.
+Creates a [RxJS Observable](https://rxjs-dev.firebaseapp.com/api/index/class/Observable) that will emit events matching the provided subscription handle as created by calling `subscribeTopic()` once subscribed to.
 
 **Arguments**
 
 1.  `subscription: hex`
 
-**Returns** `Observable<{ Msg: hex, Asymmetric: boolean, Key: string }>`
+**Returns** `Observable<PssEvent>`
 
 ### .createTopicSubscription()
 
@@ -136,4 +147,4 @@ Shortcut for calling `subscribeTopic()` followed by `createSubscription()`.
 
 1.  `topic: hex`
 
-**Returns** `Promise<Observable<{ Msg: hex, Asymmetric: boolean, Key: string }>>`
+**Returns** `Promise<Observable<PssEvent>>`

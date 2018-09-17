@@ -1,8 +1,7 @@
 ---
-title: CLI
+title: Command-line interface
+sidebar_label: CLI
 ---
-
-# Erebos CLI
 
 ## Usage
 

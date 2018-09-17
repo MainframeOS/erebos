@@ -23,18 +23,20 @@ class Help extends React.Component {
     const language = this.props.language || ''
     const supportLinks = [
       {
-        content: `Learn more using the [documentation on this site.](${docUrl(
+        content: `Learn more using the [documentation on this site](${docUrl(
           'doc1.html',
           language,
         )})`,
         title: 'Browse Docs',
       },
       {
-        content: 'Ask questions about the documentation and project',
+        content:
+          'Ask questions about the documentation and project in our [Gitter chat](https://gitter.im/MainframeHQ/erebos)',
         title: 'Join the community',
       },
       {
-        content: "Find out what's new with this project",
+        content:
+          "Find out what's new with this project on our [releases page](https://github.com/MainframeHQ/erebos/releases)",
         title: 'Stay up to date',
       },
     ]

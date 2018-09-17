@@ -77,7 +77,9 @@ class HomeSplash extends React.Component {
     const language = this.props.language || ''
     return (
       <SplashContainer>
-        <Logo img_src={imgUrl('docusaurus.svg')} />
+        <div style={{ color: '#1f3464', fontSize: 180, lineHeight: 1.2 }}>
+          ε
+        </div>
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
@@ -101,19 +103,16 @@ const Block = props => (
 )
 
 const Features = () => (
-  <Block layout="fourColumn">
+  <Block background="light">
     {[
       {
-        content: 'This is the content of my feature',
-        image: imgUrl('docusaurus.svg'),
-        imageAlign: 'top',
-        title: 'Feature One',
+        title: 'Decentralized file storage',
+        content: 'Securely distribute you files accross the entire network',
       },
       {
-        content: 'The content of my second feature',
-        image: imgUrl('docusaurus.svg'),
-        imageAlign: 'top',
-        title: 'Feature Two',
+        title: 'Peer-to-peer communications',
+        content:
+          'Encrypted communications between nodes with no dedicated servers required',
       },
     ]}
   </Block>
@@ -123,8 +122,8 @@ const FeatureCallout = () => (
   <div
     className="productShowcaseSection paddingBottom"
     style={{ textAlign: 'center' }}>
-    <h2>Feature Callout</h2>
-    <MarkdownBlock>These are features of this project</MarkdownBlock>
+    <h2>Your entry point into decentralized apps development</h2>
+    <p>More details here...</p>
   </div>
 )
 
@@ -133,8 +132,6 @@ const LearnHow = () => (
     {[
       {
         content: 'Talk about learning how to use this',
-        image: imgUrl('docusaurus.svg'),
-        imageAlign: 'right',
         title: 'Learn How',
       },
     ]}
@@ -146,8 +143,6 @@ const TryOut = () => (
     {[
       {
         content: 'Talk about trying this out',
-        image: imgUrl('docusaurus.svg'),
-        imageAlign: 'left',
         title: 'Try it Out',
       },
     ]}
@@ -159,8 +154,6 @@ const Description = () => (
     {[
       {
         content: 'This is another description of how this project is useful',
-        image: imgUrl('docusaurus.svg'),
-        imageAlign: 'right',
         title: 'Description',
       },
     ]}
@@ -205,7 +198,7 @@ class Index extends React.Component {
           <LearnHow />
           <TryOut />
           <Description />
-          <Showcase language={language} />
+          {/* <Showcase language={language} /> */}
         </div>
       </div>
     )

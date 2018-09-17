@@ -22,9 +22,9 @@
 
 module.exports = {
   title: 'Erebos', // Title for your website.
-  tagline: 'Swarm and Ethereum JavaScript client and CLI',
-  url: 'https://your-docusaurus-test-site.com', // Your website URL
-  baseUrl: '/', // Base URL for your project */
+  tagline: 'JavaScript client and CLI for Swarm',
+  url: 'https://mainframehq.github.io', // Your website URL
+  baseUrl: '/erebos/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
@@ -38,26 +38,21 @@ module.exports = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    { doc: 'api', label: 'Docs' },
+    { doc: 'introduction', label: 'Docs' },
     { doc: 'api', label: 'API' },
     { page: 'help', label: 'Help' },
     { href: 'https://github.com/MainframeHQ/erebos', label: 'GitHub' },
   ],
 
   /* path to images for header/footer */
-  headerIcon: 'img/docusaurus.svg',
-  footerIcon: 'img/docusaurus.svg',
+  // headerIcon: 'img/docusaurus.svg',
+  // footerIcon: 'img/docusaurus.svg',
   favicon: 'img/favicon.png',
 
   /* Colors for website */
   colors: {
-    primaryColor: '#ff8c00',
-    secondaryColor: '#337ab7',
-  },
-
-  highlight: {
-    defaultLang: 'javascript',
-    theme: 'monokai',
+    primaryColor: '#da1157',
+    secondaryColor: '#1f3464',
   },
 
   /* Custom fonts for website */
@@ -78,8 +73,9 @@ module.exports = {
   copyright: `Copyright © ${new Date().getFullYear()} Mainframe`,
 
   highlight: {
+    defaultLang: 'javascript',
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'default',
+    theme: 'monokai',
   },
 
   // Add custom scripts here that would be placed in <script> tags.
@@ -91,8 +87,8 @@ module.exports = {
   cleanUrl: true,
 
   // Open Graph and Twitter card images.
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  // ogImage: 'img/docusau rus.png',
+  // twitterImage: 'img/docusaurus.png',
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...

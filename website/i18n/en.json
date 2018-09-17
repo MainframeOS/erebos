@@ -3,23 +3,58 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Swarm and Ethereum JavaScript client and CLI",
-    "api-bzz": "BZZ API",
-    "api-eth": "Eth API",
-    "api-net": "Net API",
-    "api-pss": "Postal Services over Swarm (PSS) API",
-    "api-shh": "Whisper (SHH) API",
-    "api-web3": "Web3 API",
-    "api": "Client APIs",
-    "cli": "CLI",
-    "client": "Client",
-    "README": "README",
-    "Docs": "Docs",
-    "API": "API",
-    "Help": "Help",
-    "GitHub": "GitHub",
-    "Getting started": "Getting started",
-    "Tools": "Tools"
+    "tagline": "JavaScript client and CLI for Swarm",
+    "docs": {
+      "api-bzz": {
+        "title": "Bzz API"
+      },
+      "api-eth": {
+        "title": "Eth API"
+      },
+      "api-net": {
+        "title": "Net API"
+      },
+      "api-pss": {
+        "title": "Postal Services over Swarm (Pss) API",
+        "sidebar_label": "Pss API"
+      },
+      "api-shh": {
+        "title": "Whisper (SHH) API"
+      },
+      "api-web3": {
+        "title": "Web3 API"
+      },
+      "api": {
+        "title": "Standalone APIs"
+      },
+      "cli": {
+        "title": "Command-line interface",
+        "sidebar_label": "CLI"
+      },
+      "getting-started": {
+        "title": "Getting started"
+      },
+      "introduction": {
+        "title": "Introduction"
+      },
+      "README": {
+        "title": "README"
+      },
+      "swarm-client": {
+        "title": "Swarm client"
+      }
+    },
+    "links": {
+      "Docs": "Docs",
+      "API": "API",
+      "Help": "Help",
+      "GitHub": "GitHub"
+    },
+    "categories": {
+      "Docs": "Docs",
+      "API": "API",
+      "Tools": "Tools"
+    }
   },
   "pages-strings": {
     "Help Translate|recruit community translators for your project": "Help Translate",

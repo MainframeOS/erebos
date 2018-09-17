@@ -1,10 +1,4 @@
-const {
-  Client,
-  PssAPI,
-  rpc,
-  decodeHex,
-  encodeHex,
-} = require('../packages/erebos')
+const { PssAPI, rpc, decodeHex, encodeHex } = require('../packages/swarm')
 
 const run = async () => {
   // Create PSS clients over WebSocket
