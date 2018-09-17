@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Eth API · Erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="# Eth API"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Eth API · Erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://mainframehq.github.io/erebos/index.html"/><meta property="og:description" content="# Eth API"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/erebos/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/erebos/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/erebos/"><h2 class="headerTitle">Erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/erebos/docs/introduction" target="_self">Docs</a></li><li class=""><a href="/erebos/docs/api" target="_self">API</a></li><li class=""><a href="/erebos/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docMainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Eth API</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="eth-api"></a><a href="#eth-api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Eth API</h1>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> Eth <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/api-eth'</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="types"></a><a href="#types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Types</h2>
+<pre><code class="hljs css language-js">type blockIndex = hex | <span class="hljs-string">'latest'</span> | <span class="hljs-string">'earliest'</span> | <span class="hljs-string">'pending'</span>
+
+type EthBlock = {
+  <span class="hljs-attr">number</span>: ?hex,
+  <span class="hljs-attr">hash</span>: ?hex,
+  <span class="hljs-attr">parentHash</span>: hex,
+  <span class="hljs-attr">nonce</span>: ?hex,
+  <span class="hljs-attr">sha3Uncles</span>: hex,
+  <span class="hljs-attr">logsBloom</span>: ?hex,
+  <span class="hljs-attr">transactionsRoot</span>: hex,
+  <span class="hljs-attr">stateRoot</span>: hex,
+  <span class="hljs-attr">receiptsRoot</span>: hex,
+  <span class="hljs-attr">miner</span>: hex,
+  <span class="hljs-attr">difficulty</span>: hex,
+  <span class="hljs-attr">totalDifficulty</span>: hex,
+  <span class="hljs-attr">extraData</span>: hex,
+  <span class="hljs-attr">size</span>: hex,
+  <span class="hljs-attr">gasLimit</span>: hex,
+  <span class="hljs-attr">gasUsed</span>: hex,
+  <span class="hljs-attr">timestamp</span>: hex,
+  <span class="hljs-attr">transactions</span>: <span class="hljs-built_in">Array</span>&lt;hex&gt; | <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">Object</span>&gt;,
+  <span class="hljs-attr">uncles</span>: <span class="hljs-built_in">Array</span>&lt;hex&gt;,
+}
+
+type EthTransaction = {
+  <span class="hljs-attr">hash</span>: hex,
+  <span class="hljs-attr">nonce</span>: hex,
+  <span class="hljs-attr">blockHash</span>: ?hex,
+  <span class="hljs-attr">blockNumber</span>: ?hex,
+  <span class="hljs-attr">transactionIndex</span>: ?hex,
+  <span class="hljs-attr">from</span>: hex,
+  <span class="hljs-attr">to</span>: ?hex,
+  <span class="hljs-attr">value</span>: hex,
+  <span class="hljs-attr">gasPrice</span>: hex,
+  <span class="hljs-attr">gas</span>: hex,
+  <span class="hljs-attr">input</span>: hex,
+}
+
+type EthTransactionReceiptCommon = {
+  <span class="hljs-attr">transactionHash</span>: hex,
+  <span class="hljs-attr">transactionIndex</span>: hex,
+  <span class="hljs-attr">blockHash</span>: hex,
+  <span class="hljs-attr">blockNumber</span>: hex,
+  <span class="hljs-attr">cumulativeGasUsed</span>: hex,
+  <span class="hljs-attr">gasUsed</span>: hex,
+  <span class="hljs-attr">contractAddress</span>: ?hex,
+  <span class="hljs-attr">logs</span>: <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">Object</span>&gt;,
+  <span class="hljs-attr">logsBloom</span>: hex,
+}
+
+type EthTransactionReceiptPreByzantium = {
+  ...EthTransactionReceiptCommon,
+  <span class="hljs-attr">root</span>: hex,
+}
+
+type EthTransactionReceiptPostByzantium = {
+  ...EthTransactionReceiptCommon,
+  <span class="hljs-attr">status</span>: hex,
+}
+
+type EthTransactionReceipt =
+  | EthTransactionReceiptPreByzantium
+  | EthTransactionReceiptPostByzantium
+
+type EthFilterOptions = {
+  fromBlock?: blockIndex,
+  toBlock?: blockIndex,
+  address?: hex | <span class="hljs-built_in">Array</span>&lt;hex&gt;,
+  topics?: <span class="hljs-built_in">Array</span>&lt;hex&gt;,
+}
+
+type EthLog = {
+  removed?: hex,
+  <span class="hljs-attr">logIndex</span>: hex,
+  <span class="hljs-attr">transactionIndex</span>: ?hex,
+  <span class="hljs-attr">transactionHash</span>: ?hex,
+  <span class="hljs-attr">blockHash</span>: ?hex,
+  <span class="hljs-attr">blockNumber</span>: ?hex,
+  <span class="hljs-attr">address</span>: hex,
+  <span class="hljs-attr">data</span>: hex,
+  <span class="hljs-attr">topics</span>: <span class="hljs-built_in">Array</span>&lt;hex&gt;,
+}
+
+type EthFilterResults = <span class="hljs-built_in">Array</span>&lt;hex&gt; | <span class="hljs-built_in">Array</span>&lt;EthLog&gt;
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="class"></a><a href="#class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class</h2>
+<h3><a class="anchor" aria-hidden="true" id="new-eth"></a><a href="#new-eth" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new Eth()</h3>
+<p>Creates an Eth instance using the provided <code>rpc</code> handler.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>rpc: RPC</code></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="protocolversion"></a><a href="#protocolversion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.protocolVersion()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="syncing"></a><a href="#syncing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.syncing()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;Object | false&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="coinbase"></a><a href="#coinbase" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.coinbase()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="mining"></a><a href="#mining" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.mining()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;boolean&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="hashrate"></a><a href="#hashrate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.hashrate()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gasprice"></a><a href="#gasprice" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.gasPrice()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="accounts"></a><a href="#accounts" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.accounts()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;Array&lt;hex&gt;&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="blocknumber"></a><a href="#blocknumber" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.blockNumber()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getbalance"></a><a href="#getbalance" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getBalance()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>address: hex</code></li>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getstorageat"></a><a href="#getstorageat" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getStorageAt()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>address: hex</code></li>
+<li><code>position: hex</code></li>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gettransactioncount"></a><a href="#gettransactioncount" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getTransactionCount()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>address: hex</code></li>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getblocktransactioncountbyhash"></a><a href="#getblocktransactioncountbyhash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getBlockTransactionCountByHash()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getblocktransactioncountbynumber"></a><a href="#getblocktransactioncountbynumber" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getBlockTransactionCountByNumber()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getunclecountbyblockhash"></a><a href="#getunclecountbyblockhash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getUncleCountByBlockHash()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getunclecountbyblocknumber"></a><a href="#getunclecountbyblocknumber" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getUncleCountByBlockNumber()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getcode"></a><a href="#getcode" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getCode()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>address: hex</code></li>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="sign"></a><a href="#sign" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.sign()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>address: hex</code></li>
+<li><code>message: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="sendtransaction"></a><a href="#sendtransaction" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.sendTransaction()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>transaction: { from: hex, to?: hex, gas?: hex, gasPrice?: hex, value?: hex, data: hex, nonce?: hex, }</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="sendrawtransaction"></a><a href="#sendrawtransaction" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.sendRawTransaction()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>data: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="call"></a><a href="#call" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.call()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>transaction: { from?: hex, to: hex, gas?: hex, gasPrice?: hex, value?: hex, data?: hex, }</code></li>
+<li><code>block: blockIndex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="estimategas"></a><a href="#estimategas" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.estimateGas()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>transaction: { from?: hex, to?: hex, gas?: hex, gasPrice?: hex, value?: hex, data?: hex, }</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getblockbyhash"></a><a href="#getblockbyhash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getBlockByHash()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+<li><code>full: boolean</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthBlock&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getblockbynumber"></a><a href="#getblockbynumber" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getBlockByNumber()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>block: blockIndex</code></li>
+<li><code>full: boolean</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthBlock&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gettransactionbyhash"></a><a href="#gettransactionbyhash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getTransactionByHash()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthTransaction&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gettransactionbyblockhashandindex"></a><a href="#gettransactionbyblockhashandindex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getTransactionByBlockHashAndIndex()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+<li><code>index: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthTransaction&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gettransactionbyblocknumberandindex"></a><a href="#gettransactionbyblocknumberandindex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getTransactionByBlockNumberAndIndex()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>block: blockIndex</code></li>
+<li><code>index: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthTransaction&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gettransactionreceipt"></a><a href="#gettransactionreceipt" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getTransactionReceipt()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthTransactionReceipt&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getunclebyblockhashandindex"></a><a href="#getunclebyblockhashandindex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getUncleByBlockHashAndIndex()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: hex</code></li>
+<li><code>index: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthBlock&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getunclebyblocknumberandindex"></a><a href="#getunclebyblocknumberandindex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getUncleByBlockNumberAndIndex()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>block: blockIndex</code></li>
+<li><code>index: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;?EthBlock&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getcompilers"></a><a href="#getcompilers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getCompilers()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;Array&lt;string&gt;&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="compilesolidity"></a><a href="#compilesolidity" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.compileSolidity()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>code: string</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="compilelll"></a><a href="#compilelll" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.compileLLL()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>code: string</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="compileserpent"></a><a href="#compileserpent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.compileSerpent()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>code: string</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="newfilter"></a><a href="#newfilter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.newFilter()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>options: EthFilterOptions</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="newblockfilter"></a><a href="#newblockfilter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.newBlockFilter()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="newpendingtransactionfilter"></a><a href="#newpendingtransactionfilter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.newPendingTransactionFilter()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;hex&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uninstallfilter"></a><a href="#uninstallfilter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uninstallFilter()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>id: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;boolean&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getfilterchanges"></a><a href="#getfilterchanges" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getFilterChanges()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>id: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;EthFilterResults&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getfilterlogs"></a><a href="#getfilterlogs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getFilterLogs()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>id: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;EthFilterResults&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getlogs"></a><a href="#getlogs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getLogs()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>options: EthFilterOptions</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Array&lt;EthLog&gt;&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getwork"></a><a href="#getwork" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getWork()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;[hex, hex, hex]&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="submitwork"></a><a href="#submitwork" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.submitWork()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>nonce: hex</code></li>
+<li><code>hash: hex</code></li>
+<li><code>digest: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;boolean&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="submithashrate"></a><a href="#submithashrate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.submitHashrate()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashRate: hex</code></li>
+<li><code>id: hex</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;boolean&gt;</code></p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav docOnPageNav"><ul class="toc-headings"><li><a href="#types">Types</a></li><li><a href="#class">Class</a><ul class="toc-headings"><li><a href="#new-eth">new Eth()</a></li><li><a href="#protocolversion">.protocolVersion()</a></li><li><a href="#syncing">.syncing()</a></li><li><a href="#coinbase">.coinbase()</a></li><li><a href="#mining">.mining()</a></li><li><a href="#hashrate">.hashrate()</a></li><li><a href="#gasprice">.gasPrice()</a></li><li><a href="#accounts">.accounts()</a></li><li><a href="#blocknumber">.blockNumber()</a></li><li><a href="#getbalance">.getBalance()</a></li><li><a href="#getstorageat">.getStorageAt()</a></li><li><a href="#gettransactioncount">.getTransactionCount()</a></li><li><a href="#getblocktransactioncountbyhash">.getBlockTransactionCountByHash()</a></li><li><a href="#getblocktransactioncountbynumber">.getBlockTransactionCountByNumber()</a></li><li><a href="#getunclecountbyblockhash">.getUncleCountByBlockHash()</a></li><li><a href="#getunclecountbyblocknumber">.getUncleCountByBlockNumber()</a></li><li><a href="#getcode">.getCode()</a></li><li><a href="#sign">.sign()</a></li><li><a href="#sendtransaction">.sendTransaction()</a></li><li><a href="#sendrawtransaction">.sendRawTransaction()</a></li><li><a href="#call">.call()</a></li><li><a href="#estimategas">.estimateGas()</a></li><li><a href="#getblockbyhash">.getBlockByHash()</a></li><li><a href="#getblockbynumber">.getBlockByNumber()</a></li><li><a href="#gettransactionbyhash">.getTransactionByHash()</a></li><li><a href="#gettransactionbyblockhashandindex">.getTransactionByBlockHashAndIndex()</a></li><li><a href="#gettransactionbyblocknumberandindex">.getTransactionByBlockNumberAndIndex()</a></li><li><a href="#gettransactionreceipt">.getTransactionReceipt()</a></li><li><a href="#getunclebyblockhashandindex">.getUncleByBlockHashAndIndex()</a></li><li><a href="#getunclebyblocknumberandindex">.getUncleByBlockNumberAndIndex()</a></li><li><a href="#getcompilers">.getCompilers()</a></li><li><a href="#compilesolidity">.compileSolidity()</a></li><li><a href="#compilelll">.compileLLL()</a></li><li><a href="#compileserpent">.compileSerpent()</a></li><li><a href="#newfilter">.newFilter()</a></li><li><a href="#newblockfilter">.newBlockFilter()</a></li><li><a href="#newpendingtransactionfilter">.newPendingTransactionFilter()</a></li><li><a href="#uninstallfilter">.uninstallFilter()</a></li><li><a href="#getfilterchanges">.getFilterChanges()</a></li><li><a href="#getfilterlogs">.getFilterLogs()</a></li><li><a href="#getlogs">.getLogs()</a></li><li><a href="#getwork">.getWork()</a></li><li><a href="#submitwork">.submitWork()</a></li><li><a href="#submithashrate">.submitHashrate()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/erebos/" class="nav-home"></a><div><h5>Docs</h5><a href="/erebos/docs/en/getting-started.html">Getting Started</a><a href="/erebos/docs/en/api.html">API Reference</a><a href="/erebos/docs/en/cli.html">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Project Chat</a></div><div><h5>More</h5><a href="https://github.com/">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2018 Mainframe</section></footer></div></body></html>
