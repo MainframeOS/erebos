@@ -37,7 +37,7 @@ class Footer extends React.Component {
             <a href={this.docUrl('getting-started.html', this.props.language)}>
               Getting Started
             </a>
-            <a href={this.docUrl('api.html', this.props.language)}>
+            <a href={this.docUrl('swarm-client.html', this.props.language)}>
               API Reference
             </a>
             <a href={this.docUrl('cli.html', this.props.language)}>CLI</a>
@@ -53,18 +53,15 @@ class Footer extends React.Component {
               rel="noreferrer noopener">
               Stack Overflow
             </a> */}
-            <a href="https://gitter.im/MainframeHQ/erebos">Project Chat</a>
+            {/* <a href={`${this.props.config.baseUrl}blog`}>Blog</a> */}
+            <a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a>
             {/* <a
               href="https://twitter.com/"
               target="_blank"
               rel="noreferrer noopener">
               Twitter
             </a> */}
-          </div>
-          <div>
-            <h5>More</h5>
-            {/* <a href={`${this.props.config.baseUrl}blog`}>Blog</a> */}
-            <a href="https://github.com/">GitHub</a>
+            <a href="https://github.com/">GitHub repository</a>
             <a
               className="github-button"
               href={this.props.config.repoUrl}
@@ -74,6 +71,27 @@ class Footer extends React.Component {
               data-count-aria-label="# stargazers on GitHub"
               aria-label="Star this project on GitHub">
               Star
+            </a>
+          </div>
+          <div>
+            <h5>Swarm</h5>
+            <a
+              href="https://swarm-guide.readthedocs.io/en/latest/index.html"
+              target="_blank"
+              rel="noreferrer noopener">
+              Official doumentation
+            </a>
+            <a
+              href="https://swarm-gateways.net/"
+              target="_blank"
+              rel="noreferrer noopener">
+              HTTP gateway
+            </a>
+            <a
+              href="https://gitter.im/ethereum/swarm"
+              target="_blank"
+              rel="noreferrer noopener">
+              Gitter chat
             </a>
           </div>
         </section>

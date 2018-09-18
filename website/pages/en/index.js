@@ -77,15 +77,16 @@ class HomeSplash extends React.Component {
     const language = this.props.language || ''
     return (
       <SplashContainer>
-        <div style={{ color: '#1f3464', fontSize: 180, lineHeight: 1.2 }}>
-          ε
-        </div>
+        <div style={{ fontSize: 180, lineHeight: 1.2 }}>ε</div>
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-            <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html', language)}>Example Link</Button>
-            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button>
+            <Button href={docUrl('getting-started.html', language)}>
+              Get started
+            </Button>
+            <Button href={docUrl('examples.html', language)}>
+              See examples
+            </Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -107,12 +108,13 @@ const Features = () => (
     {[
       {
         title: 'Decentralized file storage',
-        content: 'Securely distribute you files accross the entire network',
+        content:
+          'Securely distribute you files accross the entire network using the [Bzz APIs](api-bzz.md)',
       },
       {
         title: 'Peer-to-peer communications',
         content:
-          'Encrypted communications between nodes with no dedicated servers required',
+          'Encrypted communications between nodes with no dedicated servers required using the [Pss APIs](api-pss.md)',
       },
     ]}
   </Block>
@@ -121,9 +123,15 @@ const Features = () => (
 const FeatureCallout = () => (
   <div
     className="productShowcaseSection paddingBottom"
-    style={{ textAlign: 'center' }}>
+    style={{ textAlign: 'center', marginTop: 50 }}>
     <h2>Your entry point into decentralized apps development</h2>
-    <p>More details here...</p>
+    <p>
+      Swarm is a distributed storage platform and content distribution network,
+      a native base layer service of the Ethereum web3 stack.
+    </p>
+    <Button href={docUrl('introduction.html')}>
+      Read the full introduction
+    </Button>
   </div>
 )
 
@@ -153,7 +161,8 @@ const Description = () => (
   <Block background="dark">
     {[
       {
-        content: 'This is another description of how this project is useful',
+        content:
+          'Erebos is a JavaScript library and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/latest/index.html), created by the [Mainframe team](https://github.com/MainframeHQ) originally for the [PSS-based Onyx messaging application proof of concept](https://github.com/MainframeHQ/onyx) and now used as a core piece of the [Mainframe platform](https://github.com/MainframeHQ/js-mainframe).',
         title: 'Description',
       },
     ]}
@@ -195,9 +204,9 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          <LearnHow />
-          <TryOut />
-          <Description />
+          {/* <LearnHow /> */}
+          {/* <TryOut /> */}
+          {/* <Description /> */}
           {/* <Showcase language={language} /> */}
         </div>
       </div>

@@ -24,15 +24,18 @@
       "api-web3": {
         "title": "Web3 API"
       },
-      "api": {
-        "title": "Standalone APIs"
-      },
       "cli": {
         "title": "Command-line interface",
         "sidebar_label": "CLI"
       },
+      "examples": {
+        "title": "Examples"
+      },
       "getting-started": {
         "title": "Getting started"
+      },
+      "individual-apis": {
+        "title": "Individual APIs"
       },
       "introduction": {
         "title": "Introduction"

@@ -39,7 +39,7 @@ module.exports = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     { doc: 'introduction', label: 'Docs' },
-    { doc: 'api', label: 'API' },
+    { doc: 'swarm-client', label: 'API' },
     { page: 'help', label: 'Help' },
     { href: 'https://github.com/MainframeHQ/erebos', label: 'GitHub' },
   ],
@@ -51,8 +51,8 @@ module.exports = {
 
   /* Colors for website */
   colors: {
-    primaryColor: '#da1157',
-    secondaryColor: '#1f3464',
+    primaryColor: '#337ab7',
+    secondaryColor: '#ff8c00',
   },
 
   /* Custom fonts for website */
