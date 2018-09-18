@@ -5,7 +5,7 @@ title: Examples
 ## File storage using the official Swarm gateway
 
 ```javascript
-import { SwarmClient } from '@erebos/bzz-browser'
+import { SwarmClient } from '@erebos/swarm-browser'
 
 const client = new SwarmClient('https://swarm-gateways.net')
 
@@ -24,7 +24,7 @@ client.bzz
 
 ```javascript
 import path from 'path'
-import { SwarmClient } from '@erebos/bzz-node'
+import { SwarmClient } from '@erebos/swarm-node'
 
 const client = new SwarmClient('http://localhost:8500')
 

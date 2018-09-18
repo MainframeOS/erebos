@@ -23,8 +23,8 @@
 module.exports = {
   title: 'Erebos', // Title for your website.
   tagline: 'JavaScript client and CLI for Swarm',
-  url: 'https://mainframehq.github.io', // Your website URL
-  baseUrl: '/erebos/', // Base URL for your project */
+  url: 'https://erebos.js.org', // Your website URL
+  baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
