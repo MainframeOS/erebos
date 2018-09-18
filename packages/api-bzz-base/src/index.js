@@ -69,11 +69,6 @@ export const resJSON = (res: *) => resOrError(res).then(r => r.json())
 
 export const resText = (res: *) => resOrError(res).then(r => r.text())
 
-export type BzzParams = {
-  fetch: *,
-  url: string,
-}
-
 export default class BaseBzz {
   _fetch: *
   _url: string
@@ -113,8 +108,8 @@ export default class BaseBzz {
     return url
   }
 
-  hash(url: string): Promise<string> {
-    return this._fetch(`${this._url}bzz-hash:/${url}`).then(resText)
+  hash(domain: string): Promise<string> {
+    return this._fetch(`${this._url}bzz-hash:/${domain}`).then(resText)
   }
 
   list(hash: string, options?: DownloadOptions = {}): Promise<ListResult> {

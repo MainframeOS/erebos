@@ -7,4 +7,5 @@ external_deps
 /packages/*/umd
 /packages/*/dist
 /packages/*/.flowconfig
+/website/build
 *.log

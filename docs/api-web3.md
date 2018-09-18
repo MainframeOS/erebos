@@ -1,3 +1,7 @@
+---
+title: Web3 API
+---
+
 # Web3 API
 
 ```js
