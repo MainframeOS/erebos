@@ -28,6 +28,7 @@ module.exports = {
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
+  cname: 'erebos.js.org',
 
   // Used for publishing and more
   projectName: 'erebos',
