@@ -15,3 +15,9 @@ Erebos can be used both in node and browser environments, and comes in different
 - An "universal" library when using `@erebos/swarm`, assuming you use a tool such as [webpack](https://webpack.js.org/) to bundle your assets.
 - A node-only library using `@erebos/swarm-node`.
 - A browser-only library using `@erebos/swarm-browser`.
+
+All the packages exported by Erebos can be installed from using a npm, example:
+
+```sh
+npm install @erebos/swarm-node
+```

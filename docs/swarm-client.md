@@ -38,6 +38,17 @@ type SwarmConfig = {
 
 1.  `config: string | SwarmConfig`
 
+**Examples**
+
+```javascript
+const client = new SwarmClient('http://localhost:8500') // only client.bzz will be available
+
+const client = new SwarmClient({
+  bzz: 'http://localhost:8500',
+  ipc: '/path/to/swarm.ipc', // will be used to interact with Pss
+})
+```
+
 ### .bzz
 
 **Returns** [`BzzAPI` instance](api-bzz.md), or throws if not provided and could not be created.

@@ -47,9 +47,9 @@ export default class BrowserClient extends BaseClient {
           this._bzz = config.bzz
         } else if (typeof config.bzz === 'string') {
           this._bzz = new BzzAPI(config.bzz)
-        } else if (typeof config.http === 'string') {
-          this._bzz = new BzzAPI(config.http)
         }
+      } else if (typeof config.http === 'string') {
+        this._bzz = new BzzAPI(config.http)
       }
 
       // $FlowFixMe: instance type
