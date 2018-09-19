@@ -1,6 +1,6 @@
 {
   "name": "@erebos/cli",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Ethereum and Swarm command-line interface",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -11,7 +11,8 @@
   },
   "files": [
     "bin/*",
-    "lib/*"
+    "lib/*",
+    "oclif.manifest.json"
   ],
   "oclif": {
     "commands": "./lib/commands",
@@ -24,7 +25,7 @@
     "clean": "del lib",
     "build:js": "BABEL_ENV=node babel src --out-dir lib",
     "build": "yarn clean && yarn build:js",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build && oclif-dev manifest"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
@@ -33,6 +34,10 @@
     "@oclif/config": "^1.7.3",
     "@oclif/plugin-help": "^2.1.0",
     "fs-extra": "^7.0.0",
-    "ora": "^3.0.0"
+    "ora": "^3.0.0",
+    "rxjs": "^6.3.0"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1.18.1"
   }
 }
