@@ -16,8 +16,11 @@ Erebos can be used both in node and browser environments, and comes in different
 - A node-only library using `@erebos/swarm-node`.
 - A browser-only library using `@erebos/swarm-browser`.
 
-All the packages exported by Erebos can be installed from using a npm, example:
+All the packages exported by Erebos can be installed from using a npm, for example:
 
 ```sh
 npm install @erebos/swarm-node
 ```
+
+The standalone browser library can also be loaded directly from [unpkg](https://unpkg.com) in [production](https://unpkg.com/@erebos/swarm-browser/dist/erebos.production.js) and [development](https://unpkg.com/@erebos/swarm-browser/dist/erebos.development.js) builds.\
+The library gets injected as the `window.Erebos` object.

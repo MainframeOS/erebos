@@ -2,20 +2,22 @@
 title: Examples
 ---
 
-## File storage using the official Swarm gateway
+## File storage using the standalone browser library
 
-```javascript
-import { SwarmClient } from '@erebos/swarm-browser'
-
-const client = new SwarmClient('https://swarm-gateways.net')
-
-client.bzz
-  .upload('Hello world!', { contentType: 'text/plain' })
-  .then(hash => client.bzz.download(hash))
-  .then(res => res.text())
-  .then(text => {
-    console.log(text) // "Hello world!"
-  })
+```html
+<html>
+  <script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.production.js"></script>
+  <script>
+    const client = new Erebos.SwarmClient('https://swarm-gateways.net')
+    client.bzz
+      .upload('Hello world!', { contentType: 'text/plain' })
+      .then(hash => client.bzz.download(hash))
+      .then(res => res.text())
+      .then(text => {
+        console.log(text) // "Hello world!"
+      })
+  </script>
+</html>
 ```
 
 [File storage APIs reference](api-bzz.md)
@@ -26,7 +28,7 @@ client.bzz
 import path from 'path'
 import { SwarmClient } from '@erebos/swarm-node'
 
-const client = new SwarmClient('http://localhost:8500')
+const client = new SwarmClient({ bzz: 'http://localhost:8500' })
 
 client.bzz
   .uploadDirectoryFrom(path.join(__dirname, 'my-files'))
@@ -45,8 +47,8 @@ import { SwarmClient, decodeHex, encodeHex } from '@erebos/swarm-node'
 
 const run = async () => {
   // Create PSS clients over WebSocket
-  const alice = new SwarmClient('ws://localhost:8501')
-  const bob = new SwarmClient('ws://localhost:8502')
+  const alice = new SwarmClient({ pss: 'ws://localhost:8501' })
+  const bob = new SwarmClient({ pss: 'ws://localhost:8502' })
 
   // Retrieve Alice's public key and create the topic
   const [key, topic] = await Promise.all([
