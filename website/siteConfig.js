@@ -24,18 +24,12 @@ module.exports = {
   title: 'Erebos', // Title for your website.
   tagline: 'JavaScript client and CLI for Swarm',
   url: 'https://erebos.js.org', // Your website URL
-  baseUrl: '/', // Base URL for your project */
-  // For github.io type URLs, you would set the url and baseUrl like:
-  //   url: 'https://facebook.github.io',
-  //   baseUrl: '/test-site/',
+  baseUrl: '/', // Base URL for your project
   cname: 'erebos.js.org',
 
   // Used for publishing and more
   projectName: 'erebos',
   organizationName: 'MainframeHQ',
-  // For top-level user or org sites, the organization is still the same.
-  // e.g., for the https://JoelMarcey.github.io site, it would be set like...
-  //   organizationName: 'JoelMarcey'
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
@@ -43,6 +37,7 @@ module.exports = {
     { doc: 'swarm-client', label: 'API' },
     { page: 'help', label: 'Help' },
     { href: 'https://github.com/MainframeHQ/erebos', label: 'GitHub' },
+    { search: true },
   ],
 
   /* path to images for header/footer */
@@ -86,6 +81,14 @@ module.exports = {
   onPageNav: 'separate',
   // No .html extensions for paths.
   cleanUrl: true,
+
+  algolia: {
+    apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+    indexName: 'erebos',
+    algoliaOptions: {
+      facetFilters: ['language:en'],
+    },
+  },
 
   // Open Graph and Twitter card images.
   // ogImage: 'img/docusau rus.png',

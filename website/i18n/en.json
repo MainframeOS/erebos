@@ -40,9 +40,6 @@
       "introduction": {
         "title": "Introduction"
       },
-      "README": {
-        "title": "README"
-      },
       "swarm-client": {
         "title": "Swarm client"
       }
