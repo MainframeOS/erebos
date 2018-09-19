@@ -32,11 +32,7 @@ yarn add @erebos/swarm # universal
 | **Standalone APIs**
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs
-| [`@erebos/api-eth`](/packages/api-eth) | [![npm version](https://img.shields.io/npm/v/@erebos/api-eth.svg)](https://www.npmjs.com/package/@erebos/api-eth) | Ethereum (eth) APIs
-| [`@erebos/api-net`](/packages/api-net) | [![npm version](https://img.shields.io/npm/v/@erebos/api-net.svg)](https://www.npmjs.com/package/@erebos/api-net) | Net APIs
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs
-| [`@erebos/api-shh`](/packages/api-shh) | [![npm version](https://img.shields.io/npm/v/@erebos/api-shh.svg)](https://www.npmjs.com/package/@erebos/api-shh) | Whisper (SHH) APIs
-| [`@erebos/api-web3`](/packages/api-web3) | [![npm version](https://img.shields.io/npm/v/@erebos/api-web3.svg)](https://www.npmjs.com/package/@erebos/api-eth) | Web3 APIs
 | **Base classes**
 | [`@erebos/api-bzz-base`](/packages/api-bzz-base) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-base.svg)](https://www.npmjs.com/package/@erebos/api-bzz-base) | Shared logic for Swarm (BZZ) APIs
 | [`@erebos/client-base`](/packages/client-base) | [![npm version](https://img.shields.io/npm/v/@erebos/client-base.svg)](https://www.npmjs.com/package/@erebos/client-base) | Shared logic for Client APIs
