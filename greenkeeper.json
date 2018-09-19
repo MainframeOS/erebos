@@ -11,10 +11,11 @@
         "packages/api-pss/package.json",
         "packages/api-shh/package.json",
         "packages/api-web3/package.json",
-        "packages/browser/package.json",
+        "packages/cli/package.json",
         "packages/client-base/package.json",
-        "packages/node/package.json",
-        "packages/erebos/package.json"
+        "packages/swarm/package.json",
+        "packages/swarm-browser/package.json",
+        "packages/swarm-node/package.json"
       ]
     }
   }

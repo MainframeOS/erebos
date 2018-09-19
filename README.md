@@ -1,6 +1,6 @@
-# Erebos [![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg)](https://circleci.com/gh/MainframeHQ/erebos) [![npm](https://img.shields.io/npm/v/erebos.svg)](https://www.npmjs.com/package/erebos)
+# Erebos [![CircleCI](https://img.shields.io/circleci/project/github/MainframeHQ/erebos.svg)](https://circleci.com/gh/MainframeHQ/erebos) [![Gitter](https://badges.gitter.im/MainframeHQ/erebos.svg)](https://gitter.im/MainframeHQ/erebos)
 
-JavaScript client for [Swarm](https://swarm-gateways.net/bzz:/theswarm.eth/).
+JavaScript client and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/latest/index.html).
 
 ## Disclaimer
 
@@ -16,23 +16,10 @@ yarn add @erebos/swarm-node # node-only
 yarn add @erebos/swarm # universal
 ```
 
-## Examples
+## [Documentation]((https://erebos.js.org)
 
-- [Postal Services over Swarm (PSS)](examples/pss.js)
-- [Whisper (SHH)](examples/shh.js)
-
-## [Documentation](docs/)
-
-- [Client](docs/client.md)
-- [APIs](docs/api.md)
-  - [Bzz](docs/api-bzz.md) - file storage
-  - [Pss](docs/api-pss.md) - Postal Services over Swarm
-  - [Eth](docs/api-eth.md) - Ethereum blockchain
-  - [Net](docs/api-net.md) - network
-  - [Shh](docs/api-shh.md) - Whisper
-  - [Web3](docs/api-web3.md)
-- RPC client factory for the [browser](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-browser#rpc-browser) or [node](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-node#rpc-node) depending on the package.
-- [Hexadecimal-encoding utilities](https://github.com/MainframeHQ/js-tools/tree/master/packages/utils-hex#utils-hex)
+- [Getting started](https://erebos.js.org/docs/getting-started)
+- [API reference](https://erebos.js.org/docs/swarm-client)
 
 ## Packages
 

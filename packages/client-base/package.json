@@ -1,6 +1,6 @@
 {
   "name": "@erebos/client-base",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Client base",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
