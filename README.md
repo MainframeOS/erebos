@@ -2,12 +2,6 @@
 
 JavaScript client and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/latest/index.html).
 
-## Disclaimer
-
-This library is a work-in-progress client for technologies that are still at
-a proof-of-concept stage. It is intended for demonstration purposes only.\
-APIs are likely to be changed and even removed between releases without prior notice.
-
 ## Installation
 
 ```sh
@@ -16,7 +10,7 @@ yarn add @erebos/swarm-node # node-only
 yarn add @erebos/swarm # universal
 ```
 
-## [Documentation]((https://erebos.js.org)
+## [Documentation](https://erebos.js.org)
 
 - [Getting started](https://erebos.js.org/docs/getting-started)
 - [API reference](https://erebos.js.org/docs/swarm-client)
@@ -33,6 +27,8 @@ yarn add @erebos/swarm # universal
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs
+| **CLI**
+| [`@erebos/cli`](/packages/cli) | [![npm version](https://img.shields.io/npm/v/@erebos/cli.svg)](https://www.npmjs.com/package/@erebos/cli) |
 | **Base classes**
 | [`@erebos/api-bzz-base`](/packages/api-bzz-base) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-base.svg)](https://www.npmjs.com/package/@erebos/api-bzz-base) | Shared logic for Swarm (BZZ) APIs
 | [`@erebos/client-base`](/packages/client-base) | [![npm version](https://img.shields.io/npm/v/@erebos/client-base.svg)](https://www.npmjs.com/package/@erebos/client-base) | Shared logic for Client APIs

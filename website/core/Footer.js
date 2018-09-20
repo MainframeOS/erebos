@@ -61,12 +61,14 @@ class Footer extends React.Component {
               rel="noreferrer noopener">
               Twitter
             </a> */}
-            <a href="https://github.com/">GitHub repository</a>
+            <a href="https://github.com/MainframeHQ/erebos">
+              GitHub repository
+            </a>
             <a
               className="github-button"
               href={this.props.config.repoUrl}
               data-icon="octicon-star"
-              data-count-href="/facebook/docusaurus/stargazers"
+              data-count-href="/MainframeHQ/erebos/stargazers"
               data-show-count="true"
               data-count-aria-label="# stargazers on GitHub"
               aria-label="Star this project on GitHub">
@@ -79,7 +81,7 @@ class Footer extends React.Component {
               href="https://swarm-guide.readthedocs.io/en/latest/index.html"
               target="_blank"
               rel="noreferrer noopener">
-              Official doumentation
+              Official documentation
             </a>
             <a
               href="https://swarm-gateways.net/"
