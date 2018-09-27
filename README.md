@@ -4,10 +4,20 @@ JavaScript client and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/late
 
 ## Installation
 
+Node.js v10+ is required to use the Node.js APIs and run the CLI.
+
+### Client library
+
 ```sh
 yarn add @erebos/swarm-browser # browser-only
 yarn add @erebos/swarm-node # node-only
 yarn add @erebos/swarm # universal
+```
+
+### CLI
+
+```sh
+npm install -g @erebos/cli
 ```
 
 ## [Documentation](https://erebos.js.org)
