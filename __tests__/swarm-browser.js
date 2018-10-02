@@ -159,5 +159,45 @@ describe('browser', () => {
 
       expect(directoryList).toEqual(dir)
     })
+
+    it('uploadDirectory() supports the `defaultPath` option', async () => {
+      const dir = {
+        [`foo-${uploadContent}.txt`]: {
+          data: `this is foo-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+        [`bar-${uploadContent}.txt`]: {
+          data: `this is bar-${uploadContent}.txt`,
+          contentType: 'plain/text',
+        },
+      }
+      const defaultPath = `foo-${uploadContent}.txt`
+      const directoryList = await evalClient(
+        async (client, dir, options) => {
+          const dirHash = await client.bzz.uploadDirectory(dir, options)
+          const manifest = await client.bzz.list(dirHash)
+          const entries = Object.values(manifest.entries)
+          const downloaded = await Promise.all(
+            entries.map(entry =>
+              client.bzz
+                .download(entry.hash, { mode: 'raw' })
+                .then(r => r.text()),
+            ),
+          )
+          const downloadedDir = entries.reduce((acc, entry, i) => {
+            acc[entry.path] = {
+              data: downloaded[i],
+              contentType: entry.contentType,
+            }
+            return acc
+          }, {})
+          return downloadedDir
+        },
+        dir,
+        { defaultPath },
+      )
+
+      expect(directoryList).toEqual({ ...dir, '/': dir[defaultPath] })
+    })
   })
 })

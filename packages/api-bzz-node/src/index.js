@@ -1,5 +1,6 @@
 // @flow
 
+import { createReadStream } from 'fs'
 import type { Readable } from 'stream'
 import BaseBzz, {
   type DirectoryData,
@@ -8,7 +9,6 @@ import BaseBzz, {
   type UploadOptions,
 } from '@erebos/api-bzz-base'
 import FormData from 'form-data'
-import { createReadStream } from 'fs-extra'
 import fetch from 'node-fetch'
 import { Observable } from 'rxjs'
 import tarStream from 'tar-stream'

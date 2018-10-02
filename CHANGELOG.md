@@ -1,3 +1,8 @@
+## v0.4.x
+
+- Fix `defaultPath` support for uploads in `api-bzz-browser` and `swarm-client`.
+- Add `--default-path` flag to `bzz:upload` CLI command.
+
 ## v0.4.0 (2018-09-19)
 
 - Use `@erebos` namespace for packages.
