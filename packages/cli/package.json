@@ -1,6 +1,6 @@
 {
   "name": "@erebos/cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Ethereum and Swarm command-line interface",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",

@@ -18,6 +18,9 @@ export default class BzzUploadCommand extends Command {
     'content-type': flags.string({
       description: 'content-type of the file',
     }),
+    'default-path': flags.string({
+      description: 'default path of the folder',
+    }),
   }
 
   async run() {
@@ -25,7 +28,10 @@ export default class BzzUploadCommand extends Command {
     try {
       const hash = await this.client.bzz.uploadFrom(
         this.resolvePath(this.args.path),
-        { contentType: this.flags['content-type'] },
+        {
+          contentType: this.flags['content-type'],
+          defaultPath: this.flags['default-path'],
+        },
       )
       this.spinner.succeed(`Contents successfully uploaded with hash: ${hash}`)
     } catch (err) {

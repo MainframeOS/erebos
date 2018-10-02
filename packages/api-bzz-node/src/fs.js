@@ -1,8 +1,9 @@
 // @flow
 
+import { createReadStream, createWriteStream } from 'fs'
 import path from 'path'
 import type { Readable } from 'stream'
-import { createReadStream, createWriteStream, ensureDir, lstat } from 'fs-extra'
+import { ensureDir, lstat } from 'fs-extra'
 import tarFS from 'tar-fs'
 import tarStream from 'tar-stream'
 

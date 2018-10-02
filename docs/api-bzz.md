@@ -155,6 +155,8 @@ Uploads a single file and returns the hash. If the `contentType` option is provi
 
 Uploads multiple files and returns the hash of the manifest containing these files.
 
+By setting the `defaultPath` option, a file can be defined as the default one when resolving a manifest root, for example a static website could be uploaded with the `index.html` default path so that accessing `bzz://domain.eth` would resolve to `bzz://domain.eth/index.html`.
+
 **Arguments**
 
 1.  `data: DirectoryData`
