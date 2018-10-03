@@ -1410,17 +1410,17 @@
     semver "^5.5.1"
 
 "@oclif/config@^1.7.3", "@oclif/config@^1.7.6":
-  version "1.7.6"
-  resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.7.6.tgz#849e5f79591c8dd29d99dd3aba0914b50e2c2e74"
-  integrity sha512-YHza1dt/oti28CZkr/TlqswmrCoGs5hjDdxGPMmrX77IDEx/RUgD7sRpZfBlTZDY/wYuCSCx8Z6m+hSO8S/FEQ==
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.8.1.tgz#d23b49871c9a52e8e5050cdbd30b36d4774e66d8"
+  integrity sha512-KamkrumohhNSrACpkynJGHM4QfBrWkz4X4mbvhoUMHPORBUVtyUMIJhMnX/ND9DqmBsR3z7aP+QyxJS3aoUU3w==
   dependencies:
     debug "^4.0.1"
     tslib "^1.9.3"
 
 "@oclif/dev-cli@^1.18.1":
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/@oclif/dev-cli/-/dev-cli-1.18.1.tgz#e53a6fa13749262e0fe2495e59e7e2fa38c356d5"
-  integrity sha512-6S/EqlgP5UVDRLwOmRD2PkH79kha48etnGX3pWSYWSWVD83FQahbTco8oQRITVJvwOeCcyKFxpobHdeEc49l6g==
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@oclif/dev-cli/-/dev-cli-1.19.0.tgz#1df38b24ca1d26bce1178d75f2d50b302e353e74"
+  integrity sha512-cGfVuLinmnOYwGYMmi0PXLOJ0ck3KZWlm9+1RMTsFgA2devb5xosh4q+m31ywEVEVyOBZ/5h8OtQNf10zl4Oww==
   dependencies:
     "@oclif/command" "^1.5.1"
     "@oclif/config" "^1.7.6"
@@ -2240,9 +2240,9 @@ camelcase@^4.0.0, camelcase@^4.1.0:
   integrity sha1-1UVjW+HjPFQmScaRc+Xeas+uNN0=
 
 caniuse-lite@^1.0.30000888:
-  version "1.0.30000888"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000888.tgz#22edb50d91dd70612b5898e3b36f460600c6492f"
-  integrity sha512-vftg+5p/lPsQGpnhSo/yBuYL36ai/cyjLvU3dOPJY1kkKrekLWIy8SLm+wzjX0hpCUdFTasC4/ZT7uqw4rKOnQ==
+  version "1.0.30000889"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000889.tgz#53e266c83e725ad3bd2e4a3ea76d5031a8aa4c3e"
+  integrity sha512-MFxcQ6x/LEEoaIhO7Zdb7Eg8YyNONN+WBnS5ERJ0li2yRw51+i4xXUNxnLaveTb/4ZoJqsWKEmlomhG2pYzlQA==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -3213,9 +3213,9 @@ eslint-plugin-import@^2.14.0:
     resolve "^1.6.0"
 
 eslint-plugin-jest@^21.22.0:
-  version "21.24.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.24.0.tgz#4d194e1b6b4c8e5042de17399850ceddf82e25a1"
-  integrity sha512-+sX3LymNWryxVG0kKhwdRCZo2FUHkC/hrhgFhoJ2phNzFNb3Kb4FGinXxkqQy16rUVVcZFhuXCaE8T5DtzPKNg==
+  version "21.24.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.24.1.tgz#aaf3c34e816f07add83d1e9c20696fdc31fac8dc"
+  integrity sha512-+lJ6nvwJtDRQtTumCs/9gMuteiopArpHJbRbWqPaScCzlhTu1pEilWTUlTgDEtY7GOx7FdOMD3BO/mdxFb4yDg==
 
 eslint-plugin-prettier@^2.6.2:
   version "2.7.0"
@@ -5960,9 +5960,9 @@ nan@^2.9.2:
   integrity sha512-iji6k87OSXa0CcrLl9z+ZiYSuR2o+c0bGuNmXdrhTQTakxytAFsC56SArGYoiHlJlFoHSnvmhpceZJaXkVuOtA==
 
 nanoid@^1.0.7:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.2.5.tgz#122bcd6bf185651480369315f20c9ae1519efc35"
-  integrity sha512-mOYdCQS3xdgu81Hg3EQEhORykMk53Pkzg15Y6I+O9T3db9qHPf9z6nXzQBCUaHXlQs57eRKotDTzYlYACL+5uA==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.2.6.tgz#5b9427cabf41f5df1fc371b14c969ffcd3b095aa"
+  integrity sha512-um9vXiM407BaRbBNa0aKPzFBSD2fDbVmmA9TzCWWlxZvEBzTbixM7ss6GDS4G/cNMYeZSNFx5SzAgWoG1uHU9g==
 
 nanomatch@^1.2.9:
   version "1.2.13"
