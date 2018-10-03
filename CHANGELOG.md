@@ -2,6 +2,7 @@
 
 - Fix `defaultPath` support for uploads in `api-bzz-browser` and `swarm-client`.
 - Add `--default-path` flag to `bzz:upload` CLI command.
+- Fix flow types related to `fs-extra` usage.
 
 ## v0.4.0 (2018-09-19)
 
