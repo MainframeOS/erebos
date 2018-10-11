@@ -9,11 +9,11 @@ WORKDIR /app
 # Install dependencies
 RUN apt-get update && apt-get install -y jq
 
-RUN git clone https://github.com/ethersphere/go-ethereum.git
+RUN git clone https://github.com/ethereum/go-ethereum.git
 
 WORKDIR /app/go-ethereum
 
-RUN git fetch origin && git checkout 316fc7ecfc10d06603f1358c1f4c1020ec36dd2a # Swarm v0.3.2
+RUN git fetch origin && git checkout 8bbe72075e4e16442c4e28d999edee12e294329e # Swarm v0.3.5
 
 RUN make geth
 RUN make swarm
