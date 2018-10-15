@@ -23,4 +23,7 @@ KEY=$(jq --raw-output '.address' $DATADIR/keystore/*)
     --httpaddr 0.0.0.0 \
     --nat none \
     --corsdomain "*" \
-    --nodiscover
+    --nodiscover \
+    --ws \
+    --wsaddr 0.0.0.0 \
+    --wsorigins "*"

@@ -9,3 +9,4 @@ external_deps
 /packages/*/.flowconfig
 /website/build
 *.log
+/.idea
