@@ -91,49 +91,49 @@ describe('bzz-base', () => {
   })
 
   describe('Bzz class', () => {
-    it('_getDownloadURL() creates the request URL for downloads', () => {
+    it('getDownloadURL() creates the request URL for downloads', () => {
       // Default behavior
-      expect(bzz._getDownloadURL('test', {})).toBe(`${TEST_URL}bzz:/test`)
+      expect(bzz.getDownloadURL('test', {})).toBe(`${TEST_URL}bzz:/test`)
       // Force raw
-      expect(bzz._getDownloadURL('test', {}, true)).toBe(
+      expect(bzz.getDownloadURL('test', {}, true)).toBe(
         `${TEST_URL}bzz-raw:/test`,
       )
       // Handle `mode` option
-      expect(bzz._getDownloadURL('test', { mode: 'immutable' })).toBe(
+      expect(bzz.getDownloadURL('test', { mode: 'immutable' })).toBe(
         `${TEST_URL}bzz-immutable:/test`,
       )
-      expect(bzz._getDownloadURL('test', { mode: 'raw' })).toBe(
+      expect(bzz.getDownloadURL('test', { mode: 'raw' })).toBe(
         `${TEST_URL}bzz-raw:/test`,
       )
       // Handle `path` option
-      expect(bzz._getDownloadURL('test', { path: 'hello' })).toBe(
+      expect(bzz.getDownloadURL('test', { path: 'hello' })).toBe(
         `${TEST_URL}bzz:/test/hello`,
       )
       // Handle `contentType` option
       expect(
-        bzz._getDownloadURL('test', { mode: 'raw', contentType: 'text/plain' }),
+        bzz.getDownloadURL('test', { mode: 'raw', contentType: 'text/plain' }),
       ).toBe(`${TEST_URL}bzz-raw:/test?content_type=text/plain`)
       // Only set content type in raw mode
-      expect(bzz._getDownloadURL('test', { contentType: 'text/plain' })).toBe(
+      expect(bzz.getDownloadURL('test', { contentType: 'text/plain' })).toBe(
         `${TEST_URL}bzz:/test`,
       )
     })
 
-    it('_getUploadURL() creates the request URL for uploads', () => {
+    it('getUploadURL() creates the request URL for uploads', () => {
       // Default behavior
-      expect(bzz._getUploadURL({})).toBe(`${TEST_URL}bzz:/`)
+      expect(bzz.getUploadURL({})).toBe(`${TEST_URL}bzz:/`)
       // Force raw
-      expect(bzz._getUploadURL({}, true)).toBe(`${TEST_URL}bzz-raw:/`)
+      expect(bzz.getUploadURL({}, true)).toBe(`${TEST_URL}bzz-raw:/`)
       // Handle `manifestHash` option
-      expect(bzz._getUploadURL({ manifestHash: '1234' })).toBe(
+      expect(bzz.getUploadURL({ manifestHash: '1234' })).toBe(
         `${TEST_URL}bzz:/1234/`,
       )
       // Handle `path` option
-      expect(bzz._getUploadURL({ manifestHash: '1234', path: 'test' })).toBe(
+      expect(bzz.getUploadURL({ manifestHash: '1234', path: 'test' })).toBe(
         `${TEST_URL}bzz:/1234/test`,
       )
       // `path` option is ignored if `manifestHash` is not provided
-      expect(bzz._getUploadURL({ path: 'test' })).toBe(`${TEST_URL}bzz:/`)
+      expect(bzz.getUploadURL({ path: 'test' })).toBe(`${TEST_URL}bzz:/`)
     })
 
     it('hash() returns the correct hash for a given URL', async () => {

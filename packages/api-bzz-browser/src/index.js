@@ -2,7 +2,6 @@
 /* eslint-env browser */
 
 import BaseBzz, {
-  resText,
   type DirectoryData,
   type UploadOptions,
 } from '@erebos/api-bzz-base'
@@ -18,6 +17,7 @@ export default class Bzz extends BaseBzz {
   uploadDirectory(
     directory: DirectoryData,
     options?: UploadOptions = {},
+    headers?: Object = {},
   ): Promise<string> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
@@ -33,9 +33,6 @@ export default class Bzz extends BaseBzz {
         form.append('', new Blob([file.data], { type: file.contentType }), '')
       }
     }
-    return this._fetch(`${this._url}bzz:/`, {
-      method: 'POST',
-      body: form,
-    }).then(resText)
+    return this._upload(form, options, headers)
   }
 }

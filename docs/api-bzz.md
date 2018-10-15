@@ -108,6 +108,29 @@ Creates a Bzz instance using the server provided as `url`.
 
 1.  `url: string`
 
+### .getDownloadURL()
+
+Returns the Swarm download URL for a given resource based on the provided arguments.
+
+**Arguments**
+
+1.  `hashOrDomain: string`
+1.  `options?: DownloadOptions`: optional object providing the `path`.
+1.  `raw?: boolean`
+
+**Returns** `string`
+
+### .getUploadURL()
+
+Returns the Swarm upload URL for a given resource based on the provided arguments.
+
+**Arguments**
+
+1.  `options: UploadOptions`
+1.  `raw?: boolean`
+
+**Returns** `string`
+
 ### .hash()
 
 Returns the hash of the provided `domain`.
@@ -115,6 +138,7 @@ Returns the hash of the provided `domain`.
 **Arguments**
 
 1.  `domain: string`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -126,6 +150,7 @@ Returns the manifest data for the provided `hashOrDomain` and optional `path`.
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions`: optional object providing the `path`.
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<ListResult>`
 
@@ -137,6 +162,7 @@ The `download()` method returns a [`Response` instance](https://developer.mozill
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions` optional object providing the `path`, `mode` and `contentType`.
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<Response>`
 
@@ -148,6 +174,7 @@ Uploads a single file and returns the hash. If the `contentType` option is provi
 
 1.  `data: string | Buffer`
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -161,6 +188,7 @@ By setting the `defaultPath` option, a file can be defined as the default one wh
 
 1.  `data: DirectoryData`
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -172,6 +200,7 @@ Calls `uploadFile()` or `uploadDirectory()` based on the provided `data` type.
 
 1.  `data: string | Buffer | DirectoryData`
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -183,6 +212,7 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 1.  `hashOrDomain: string`
 1.  `path: string`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -198,6 +228,7 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Observable<FileEntry>`
 
@@ -207,6 +238,7 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<DirectoryData>`
 
@@ -217,6 +249,7 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 1.  `hashOrDomain: string`
 1.  `path: string`
 1.  `options?: DownloadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<void>`
 
@@ -227,6 +260,7 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 1.  `hashOrDomain: string`
 1.  `path: string`
 1.  `options?: DownloadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<number>` the number of files written.
 
@@ -239,6 +273,7 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 1.  `hashOrDomain: string`
 1.  `path: string`
 1.  `options?: DownloadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<void>`
 
@@ -248,6 +283,7 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 1.  `path: string`: path to an existing tar archive or a directory to pack.
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -257,6 +293,7 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 1.  `path: string`: file to upload.
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -266,6 +303,7 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 1.  `path: string`: directory to upload.
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -277,5 +315,6 @@ Calls `uploadFileFrom()` or `uploadDirectoryFrom()` depending on the provided `p
 
 1.  `path: string`: file or directory to upload.
 1.  `options?: UploadOptions`
+1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
