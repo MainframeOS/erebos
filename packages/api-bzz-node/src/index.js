@@ -23,16 +23,24 @@ export default class Bzz extends BaseBzz {
     this._fetch = fetch
   }
 
-  async _downloadTar(hash: string, options: DownloadOptions): Promise<*> {
-    return await this._download(hash, options, { accept: 'application/x-tar' })
+  async _downloadTar(
+    hash: string,
+    options: DownloadOptions,
+    headers?: Object = {},
+  ): Promise<*> {
+    return await this._download(hash, options, {
+      ...headers,
+      accept: 'application/x-tar',
+    })
   }
 
   downloadObservable(
     hash: string,
     options?: DownloadOptions = {},
+    headers?: Object = {},
   ): Observable<FileEntry> {
     return Observable.create(observer => {
-      this._downloadTar(hash, options).then(
+      this._downloadTar(hash, options, headers).then(
         res => {
           const extract = tarStream.extract()
           extract.on('entry', (header, stream, next) => {
@@ -69,10 +77,11 @@ export default class Bzz extends BaseBzz {
   downloadDirectoryData(
     hash: string,
     options?: DownloadOptions = {},
+    headers?: Object = {},
   ): Promise<DirectoryData> {
     return new Promise((resolve, reject) => {
       const directoryData = {}
-      this.downloadObservable(hash, options).subscribe({
+      this.downloadObservable(hash, options, headers).subscribe({
         next: entry => {
           directoryData[entry.path] = { data: entry.data, size: entry.size }
         },
@@ -90,8 +99,9 @@ export default class Bzz extends BaseBzz {
     hash: string,
     toPath: string,
     options?: DownloadOptions = {},
+    headers?: Object = {},
   ): Promise<void> {
-    const res = await this._download(hash, options)
+    const res = await this._download(hash, options, headers)
     await writeStreamTo(res.body, toPath)
   }
 
@@ -99,8 +109,9 @@ export default class Bzz extends BaseBzz {
     hash: string,
     toPath: string,
     options?: DownloadOptions = {},
+    headers?: Object = {},
   ): Promise<number> {
-    const res = await this._downloadTar(hash, options)
+    const res = await this._downloadTar(hash, options, headers)
     return await extractTarStreamTo(res.body, toPath)
   }
 
@@ -108,17 +119,19 @@ export default class Bzz extends BaseBzz {
     hash: string,
     toPath: string,
     options?: DownloadOptions = {},
+    headers?: Object = {},
   ): Promise<void> {
     if (await isFile(toPath)) {
-      await this.downloadFileTo(hash, toPath, options)
+      await this.downloadFileTo(hash, toPath, options, headers)
     } else {
-      await this.downloadDirectoryTo(hash, toPath, options)
+      await this.downloadDirectoryTo(hash, toPath, options, headers)
     }
   }
 
   async uploadDirectory(
     directory: DirectoryData,
     options?: UploadOptions = {},
+    headers?: Object = {},
   ): Promise<string> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
@@ -132,50 +145,62 @@ export default class Bzz extends BaseBzz {
         form.append('', file.data, { contentType: file.contentType })
       }
     }
-    return await this._upload(form, options, form.getHeaders())
+    return await this._upload(form, options, {
+      ...headers,
+      ...form.getHeaders(),
+    })
   }
 
   async uploadFileFrom(
     path: string,
     options?: UploadOptions = {},
+    headers?: Object = {},
   ): Promise<string> {
     const raw = options.contentType == null
-    const headers = raw ? {} : { 'content-type': options.contentType }
+    if (!raw) headers['content-type'] = options.contentType
     return await this._upload(createReadStream(path), options, headers, raw)
   }
 
   async _uploadTarStream(
     stream: Readable,
     options?: UploadOptions = {},
+    headers?: Object = {},
   ): Promise<string> {
     return await this._upload(stream, options, {
+      ...headers,
       'content-type': 'application/x-tar',
     })
   }
 
   // path must be either a tar archive or a directory
-  async uploadTar(path: string, options?: UploadOptions = {}): Promise<string> {
+  async uploadTar(
+    path: string,
+    options?: UploadOptions = {},
+    headers?: Object = {},
+  ): Promise<string> {
     const stream = (await isFile(path))
       ? createReadStream(path)
       : packTar(path, options)
-    return await this._uploadTarStream(stream, options)
+    return await this._uploadTarStream(stream, options, headers)
   }
 
   async uploadDirectoryFrom(
     path: string,
     options?: UploadOptions = {},
+    headers?: Object = {},
   ): Promise<string> {
-    return await this._uploadTarStream(packTar(path, options), options)
+    return await this._uploadTarStream(packTar(path, options), options, headers)
   }
 
   async uploadFrom(
     path: string,
     options?: UploadOptions = {},
+    headers?: Object = {},
   ): Promise<string> {
     if (await isFile(path)) {
-      return await this.uploadFileFrom(path, options)
+      return await this.uploadFileFrom(path, options, headers)
     } else {
-      return await this.uploadDirectoryFrom(path, options)
+      return await this.uploadDirectoryFrom(path, options, headers)
     }
   }
 }
