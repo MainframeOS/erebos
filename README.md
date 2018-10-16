@@ -65,7 +65,7 @@ docker build --tag erebos --file Dockerfile.erebos .
 In one terminal window run:
 
 ```
-docker run --publish 8500:8500 --interactive --tty erebos
+docker run --publish 8500:8500 --publish 8546:8546 --interactive --tty erebos
 ```
 
 And in the second one run:
