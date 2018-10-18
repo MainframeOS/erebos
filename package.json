@@ -38,6 +38,7 @@
     "eslint-config-mainframe": "^2.2.0",
     "flow-bin": "^0.83.0",
     "flow-copy-source": "^2.0.2",
+    "ganache-cli": "^6.1.8",
     "jest": "^23.5.0",
     "jest-fetch-mock": "^1.6.5",
     "jest-junit": "^5.1.0",
