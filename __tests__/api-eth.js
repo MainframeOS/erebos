@@ -9,7 +9,7 @@ import Eth from '../packages/api-eth'
 describe('api-eth', () => {
   const server = ganache.server()
   const rpc = httpRPC('http://127.0.0.1:9000')
-  const eth = new Eth(rpc: rpc)
+  const eth = new Eth(rpc)
   const ganacheOptions = server.ganacheProvider.options
 
   beforeAll(() => {
@@ -47,7 +47,7 @@ describe('api-eth', () => {
 
   it('number of accounts', async () => {
     const accounts = await eth.accounts()
-    expect(accounts.length).toEqual(ganacheOptions.total_accounts)
+    expect(accounts).toHaveLength(ganacheOptions.total_accounts)
   })
 
   it('coinbase is the first account', async () => {
