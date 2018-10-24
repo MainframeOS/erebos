@@ -45,14 +45,42 @@ describe('api-eth', () => {
     expect(gasPrice).toEqual(ganacheOptions.gasPrice)
   })
 
-  it('number of accounts', async () => {
+  it('sendTransaction - with only required params', async () => {
     const accounts = await eth.accounts()
-    expect(accounts).toHaveLength(ganacheOptions.total_accounts)
+    const from = accounts[0]
+    const transactionHash = await eth.sendTransaction({from})
+
+    const transaction = await eth.getTransactionByHash(transactionHash)
+    expect(transaction.from).toEqual(from)
+    expect(transaction.to).toEqual('0x0')
+    expect(transaction.value).toEqual('0x0')
+    expect(transaction.input).toEqual('0x0')
   })
 
-  it('coinbase is the first account', async () => {
+  it('sendTransaction - with multiple params', async () => {
     const accounts = await eth.accounts()
-    const coinbase = await eth.coinbase()
-    expect(coinbase).toEqual(accounts[0])
+    const from = accounts[0]
+    const to = accounts[1]
+    const value = 200000000000000000 // 0.2 ETH
+    const gas = 22000
+    const transactionHash = await eth.sendTransaction({from, to, gas, value})
+
+    const transaction = await eth.getTransactionByHash(transactionHash)
+    expect(transaction.from).toEqual(from)
+    expect(transaction.to).toEqual(to)
+    expect(transaction.gas).toEqual(`0x${gas.toString(16)}`)
+    expect(transaction.value).toEqual(`0x0${value.toString(16)}`)
+    expect(transaction.input).toEqual('0x0')
+  })
+
+  it('sendTransaction fails with insufficient gas', async () => {
+    const accounts = await eth.accounts()
+    const from = accounts[0]
+    const to = accounts[1]
+    const value = 200000000000000000 // 0.2 ETH
+    const gas = 10
+    const transactionHash = await eth.sendTransaction({from, to, gas, value})
+
+    expect(eth.getTransactionByHash(transactionHash)).rejects.toThrow('Must be implemented in extending class')
   })
 })
