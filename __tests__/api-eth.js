@@ -48,7 +48,7 @@ describe('api-eth', () => {
   it('sendTransaction - with only required params', async () => {
     const accounts = await eth.accounts()
     const from = accounts[0]
-    const transactionHash = await eth.sendTransaction({from})
+    const transactionHash = await eth.sendTransaction({ from })
 
     const transaction = await eth.getTransactionByHash(transactionHash)
     expect(transaction.from).toEqual(from)
@@ -63,7 +63,7 @@ describe('api-eth', () => {
     const to = accounts[1]
     const value = 200000000000000000 // 0.2 ETH
     const gas = 22000
-    const transactionHash = await eth.sendTransaction({from, to, gas, value})
+    const transactionHash = await eth.sendTransaction({ from, to, gas, value })
 
     const transaction = await eth.getTransactionByHash(transactionHash)
     expect(transaction.from).toEqual(from)
@@ -75,12 +75,13 @@ describe('api-eth', () => {
 
   it('sendTransaction fails with insufficient gas', async () => {
     const accounts = await eth.accounts()
-    const from = accounts[0]
-    const to = accounts[1]
-    const value = 200000000000000000 // 0.2 ETH
-    const gas = 10
-    const transactionHash = await eth.sendTransaction({from, to, gas, value})
-
-    expect(eth.getTransactionByHash(transactionHash)).rejects.toThrow('Must be implemented in extending class')
+    await expect(
+      eth.sendTransaction({
+        from: accounts[0],
+        to: accounts[1],
+        gas: 10,
+        value: 200000000000000000, // 0.2 ETH
+      }),
+    ).rejects.toThrow('base fee exceeds gas limit')
   })
 })
