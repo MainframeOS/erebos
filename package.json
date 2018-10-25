@@ -40,6 +40,7 @@
     "flow-bin": "^0.83.0",
     "flow-copy-source": "^2.0.2",
     "ganache-cli": "^6.1.8",
+    "ganache-core": "^2.2.1",
     "jest": "^23.5.0",
     "jest-fetch-mock": "^1.6.5",
     "jest-junit": "^5.1.0",

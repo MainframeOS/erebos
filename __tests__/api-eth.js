@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import ganache from 'ganache-cli'
+import ganache from 'ganache-core'
 import httpRPC from '@mainframe/rpc-http-node'
 import Eth from '../packages/api-eth'
 
