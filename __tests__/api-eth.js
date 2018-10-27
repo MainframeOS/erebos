@@ -2,15 +2,16 @@
  * @jest-environment node
  */
 
-import ganache from 'ganache-core'
+// import ganache from 'ganache-core'
+import ganache from 'ganache-cli'
 import httpRPC from '@mainframe/rpc-http-node'
 import Eth from '../packages/api-eth'
 
-describe('api-eth', () => {
+describe('api-eth, set up ganache server once for all tests', () => {
   const server = ganache.server()
+  const ganacheOptions = server.ganacheProvider.options
   const rpc = httpRPC('http://127.0.0.1:9000')
   const eth = new Eth(rpc)
-  const ganacheOptions = server.ganacheProvider.options
 
   beforeAll(() => {
     server.listen(9000)
@@ -43,6 +44,90 @@ describe('api-eth', () => {
   it('gasPrice is correct', async () => {
     const gasPrice = await eth.gasPrice()
     expect(gasPrice).toEqual(ganacheOptions.gasPrice)
+  })
+
+  it('number of accounts is correct', async () => {
+    const accounts = await eth.accounts()
+    expect(accounts).toHaveLength(ganacheOptions.total_accounts)
+  })
+
+  it('blockNumber is correct', async () => {
+    // NOTE: this returns `0x00` using ganache-cli, `3` using ganache-core
+    const blockNumber = await eth.blockNumber()
+    expect(blockNumber).toEqual('0x00')
+  })
+
+  it('getBalance works correctly', async () => {
+    const blockNumber = await eth.blockNumber()
+    const accounts = await eth.accounts()
+    const address = accounts[0]
+    const expectedBalance = Math.pow(ganacheOptions.default_balance_ether, 10) // 100 ETH
+
+    const balance = await eth.getBalance(address, blockNumber)
+    expect(parseInt(balance, 16)).toEqual(expectedBalance)
+  })
+
+  it('getStorageAt works correctly', async () => {
+    // NOTE: this returns `0x00` using ganache-cli, `0x0` using ganache-core
+    const blockNumber = await eth.blockNumber()
+    const accounts = await eth.accounts()
+    const address = accounts[0]
+
+    const storage = await eth.getStorageAt(address, '0x0', blockNumber)
+    expect(storage).toEqual('0x00')
+  })
+
+  it('getTransactionCount works correctly', async () => {
+    const blockNumber = await eth.blockNumber()
+    const accounts = await eth.accounts()
+    const address = accounts[0]
+
+    const transactionCount = await eth.getTransactionCount(address, blockNumber)
+    expect(transactionCount).toEqual('0x0')
+  })
+
+  it('getBlockTransactionCountByHash works correctly', async () => {
+    const accounts = await eth.accounts()
+    const address = accounts[0]
+
+    const BlockTransactionCount = await eth.getBlockTransactionCountByHash(address)
+    expect(BlockTransactionCount).toEqual(0)
+  })
+
+  it('getBlockTransactionCountByHash works correctly', async () => {
+    const BlockTransactionCount = await eth.getBlockTransactionCountByNumber('0x0')
+    expect(BlockTransactionCount).toEqual(0)
+  })
+
+  xit('getUncleCountByBlockHash works correctly', async () => {
+    // NOTE: method eth_getUncleCountByBlockHash is not supported in ganache-cli 6.1.8
+    const accounts = await eth.accounts()
+    const address = accounts[0]
+
+    const uncleCount = await eth.getUncleCountByBlockHash(address)
+    expect(uncleCount).toEqual(0)
+  })
+
+  xit('getUncleCountByBlockNumber works correctly', async () => {
+    // NOTE: method eth_getUncleCountByBlockNumber is not supported in ganache-cli 6.1.8
+    const uncleCount = await eth.getUncleCountByBlockNumber('0x0')
+    expect(uncleCount).toEqual(0)
+  })
+
+  it('getCode works correctly', async () => {
+    const accounts = await eth.accounts()
+    const address = accounts[0]
+
+    const code = await eth.getCode(address, '0x0')
+    expect(code).toEqual('0x0')
+  })
+
+  it('sign works correctly', async () => {
+    const address = '0xd1ade25ccd3d550a7eb532ac759cac7be09c2719"'
+    const message = 'Schoolbus'
+
+    const signedData = await eth.sign(address, message)
+    console.log(signedData, 'signedData')
   })
 
   it('sendTransaction - with only required params', async () => {
@@ -83,5 +168,26 @@ describe('api-eth', () => {
         value: 200000000000000000, // 0.2 ETH
       }),
     ).rejects.toThrow('base fee exceeds gas limit')
+  })
+})
+
+describe('api-eth, reset ganache server before each test', () => {
+  let server
+  let ganacheOptions
+  const rpc = httpRPC('http://127.0.0.1:9000')
+  const eth = new Eth(rpc)
+
+  beforeEach(() => {
+    server = ganache.server()
+    server.listen(9000)
+    ganacheOptions = server.ganacheProvider.options
+  })
+
+  afterEach(() => {
+    server.close()
+  })
+
+  xit('test scenario', async () => {
+    // TODO
   })
 })
