@@ -1,12 +1,10 @@
 // @flow
 
-import { createReadStream, createWriteStream } from 'fs'
+import { createWriteStream } from 'fs'
 import path from 'path'
 import type { Readable } from 'stream'
 import { ensureDir, lstat } from 'fs-extra'
 import tarStream from 'tar-stream'
-
-import type { UploadOptions } from '@erebos/api-bzz-base'
 
 export const isFile = async (path: string): Promise<boolean> => {
   const stat = await lstat(path)
