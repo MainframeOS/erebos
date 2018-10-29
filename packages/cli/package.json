@@ -38,6 +38,6 @@
     "rxjs": "^6.3.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.19.2"
+    "@oclif/dev-cli": "^1.19.4"
   }
 }

@@ -4,7 +4,6 @@ import { createReadStream, createWriteStream } from 'fs'
 import path from 'path'
 import type { Readable } from 'stream'
 import { ensureDir, lstat } from 'fs-extra'
-import tarFS from 'tar-fs'
 import tarStream from 'tar-stream'
 
 import type { UploadOptions } from '@erebos/api-bzz-base'
@@ -64,34 +63,4 @@ export const extractTarStreamTo = async (
     })
     stream.pipe(extract)
   })
-}
-
-export const packTarWithDefault = (
-  tarPath: string,
-  defaultPath: string,
-): Readable => {
-  return tarFS.pack(tarPath, {
-    finalize: false,
-    finish: async pack => {
-      try {
-        const filePath = path.join(tarPath, defaultPath)
-        const stat = await lstat(filePath)
-        const entry = pack.entry({ name: '', size: stat.size }, () => {
-          pack.finalize()
-        })
-        createReadStream(filePath).pipe(entry)
-      } catch (err) {
-        pack.finalize()
-      }
-    },
-  })
-}
-
-export const packTar = (
-  path: string,
-  options?: UploadOptions = {},
-): Readable => {
-  return options.defaultPath
-    ? packTarWithDefault(path, options.defaultPath)
-    : tarFS.pack(path)
 }

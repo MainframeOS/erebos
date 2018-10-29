@@ -105,6 +105,9 @@ export default class BaseBzz {
         url += options.path
       }
     }
+    if (options.defaultPath != null) {
+      url += `?defaultpath=${options.defaultPath}`
+    }
     return url
   }
 

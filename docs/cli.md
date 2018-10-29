@@ -77,6 +77,7 @@ erebos bzz:download 1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d787880993
 **Flags**
 
 - `--content-type`: content-type header when uploading a single file, if not set the file will be uploaded in raw mode
+- `--default-path`: path of the default entry when resolving the manifest root
 
 **Example**
 

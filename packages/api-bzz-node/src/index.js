@@ -11,9 +11,10 @@ import BaseBzz, {
 import FormData from 'form-data'
 import fetch from 'node-fetch'
 import { Observable } from 'rxjs'
+import tarFS from 'tar-fs'
 import tarStream from 'tar-stream'
 
-import { isFile, writeStreamTo, extractTarStreamTo, packTar } from './fs'
+import { isFile, writeStreamTo, extractTarStreamTo } from './fs'
 
 export type * from '@erebos/api-bzz-base'
 
@@ -180,7 +181,7 @@ export default class Bzz extends BaseBzz {
   ): Promise<string> {
     const stream = (await isFile(path))
       ? createReadStream(path)
-      : packTar(path, options)
+      : tarFS.pack(path)
     return await this._uploadTarStream(stream, options, headers)
   }
 
@@ -189,7 +190,7 @@ export default class Bzz extends BaseBzz {
     options?: UploadOptions = {},
     headers?: Object = {},
   ): Promise<string> {
-    return await this._uploadTarStream(packTar(path, options), options, headers)
+    return await this._uploadTarStream(tarFS.pack(path), options, headers)
   }
 
   async uploadFrom(
