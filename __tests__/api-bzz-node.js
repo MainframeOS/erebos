@@ -7,6 +7,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import tar from 'tar-stream'
 
+import { createKeyPair, pubKeyToAddress } from '../packages/api-bzz-base'
 import Bzz from '../packages/api-bzz-node'
 
 describe('bzz-node', () => {
@@ -399,5 +400,17 @@ describe('bzz-node', () => {
     expect(files).toEqual(downloadedDir)
     const commonPrefixes = Object.values(manifest.common_prefixes)
     expect(commonPrefixes).toEqual(expectedCommonPrefixes)
+  })
+
+  it('supports feeds posting and getting', async () => {
+    const keyPair = createKeyPair(
+      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+    )
+    const address = pubKeyToAddress(keyPair.getPublic())
+    const data = { test: uploadContent }
+    await bzz.postFeedValue(keyPair, data, { name: uploadContent })
+    const res = await bzz.getFeedValue(address, { name: uploadContent })
+    const value = await res.json()
+    expect(value).toEqual(data)
   })
 })

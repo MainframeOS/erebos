@@ -21,6 +21,12 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0"
+    "@babel/runtime": "^7.0.0",
+    "@erebos/hex": "^0.3.0",
+    "elliptic": "^6.4.1",
+    "js-sha3": "^0.8.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.85.0"
   }
 }

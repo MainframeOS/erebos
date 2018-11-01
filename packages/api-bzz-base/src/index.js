@@ -1,5 +1,20 @@
 // @flow
 
+import createHex, { type hexInput, type hexValue } from '@erebos/hex'
+import elliptic from 'elliptic'
+import type EllipticKeyPair from 'elliptic/lib/elliptic/ec/key'
+import sha3 from 'js-sha3'
+
+const FEED_TOPIC_LENGTH = 32
+const FEED_USER_LENGTH = 20
+const FEED_TIME_LENGTH = 7
+const FEED_LEVEL_LENGTH = 1
+const FEED_HEADER_LENGTH = 8
+
+const ec = new elliptic.ec('secp256k1')
+
+export type KeyPair = EllipticKeyPair
+
 export type DirectoryData = {
   [path: string]: { data: string | Buffer, contentType: string, size?: number },
 }
@@ -23,6 +38,18 @@ export type ListResult = {
   entries?: Array<ListEntry>,
 }
 
+export type FeedMetadata = {
+  feed: {
+    topic: string,
+    user: string,
+  },
+  epoch: {
+    time: number,
+    level: number,
+  },
+  protocolVersion: number,
+}
+
 export type BzzMode = 'default' | 'immutable' | 'raw'
 
 export type SharedOptions = {
@@ -40,14 +67,74 @@ export type UploadOptions = SharedOptions & {
   manifestHash?: string,
 }
 
+export type FeedOptions = {
+  level?: number,
+  name?: string,
+  time?: number,
+  topic?: string,
+}
+
 export const BZZ_MODE_PROTOCOLS = {
   default: 'bzz:/',
+  feed: 'bzz-feed:/',
   immutable: 'bzz-immutable:/',
   raw: 'bzz-raw:/',
 }
 
 export const getModeProtocol = (mode?: ?BzzMode): string => {
   return (mode && BZZ_MODE_PROTOCOLS[mode]) || BZZ_MODE_PROTOCOLS.default
+}
+
+export const createFeedDigest = (
+  meta: FeedMetadata,
+  data: string | Buffer,
+): Array<number> => {
+  const topicBuffer = createHex(meta.feed.topic).toBuffer()
+  if (topicBuffer.length !== FEED_TOPIC_LENGTH) {
+    throw new Error('Invalid topic length')
+  }
+  const userBuffer = createHex(meta.feed.user).toBuffer()
+  if (userBuffer.length !== FEED_USER_LENGTH) {
+    throw new Error('Invalid user length')
+  }
+
+  const headerBuffer = Buffer.alloc(FEED_HEADER_LENGTH, 0)
+  headerBuffer.writeInt8(meta.protocolVersion, 0)
+  const timeBuffer = Buffer.alloc(FEED_TIME_LENGTH, 0)
+  timeBuffer.writeUInt32LE(meta.epoch.time, 0)
+  const levelBuffer = Buffer.alloc(FEED_LEVEL_LENGTH, 0)
+  levelBuffer.writeUInt8(meta.epoch.level, 0)
+
+  const dataBuffer = createHex(data).toBuffer()
+
+  const payload = Buffer.concat([
+    headerBuffer,
+    topicBuffer,
+    userBuffer,
+    timeBuffer,
+    levelBuffer,
+    dataBuffer,
+  ])
+  return sha3.keccak256.array(payload)
+}
+
+export const createKeyPair = (priv?: string): KeyPair => {
+  return priv ? ec.keyFromPrivate(priv) : ec.genKeyPair()
+}
+
+export const pubKeyToAddress = (pubKey: Object): hexValue => {
+  const bytes = sha3.keccak256.array(pubKey.encode().slice(1)).slice(12)
+  return '0x' + Buffer.from(bytes).toString('hex')
+}
+
+export const signDigest = (
+  digest: Array<number>,
+  privKey: Object,
+): hexValue => {
+  const sigRaw = ec.sign(digest, privKey, { canonical: true })
+  const signature = sigRaw.r.toArray().concat(sigRaw.s.toArray())
+  signature.push(sigRaw.recoveryParam)
+  return '0x' + Buffer.from(signature).toString('hex')
 }
 
 export class HTTPError extends Error {
@@ -109,6 +196,27 @@ export default class BaseBzz {
       url += `?defaultpath=${options.defaultPath}`
     }
     return url
+  }
+
+  getFeedURL(
+    user: hexValue,
+    options?: FeedOptions = {},
+    meta?: boolean = false,
+  ) {
+    const params = Object.keys(options).reduce(
+      (acc, key) => {
+        const value = options[key]
+        if (value != null) {
+          acc.push(`${key}=${value}`)
+        }
+        return acc
+      },
+      [`user=${user}`],
+    )
+    if (meta) {
+      params.push('meta=1')
+    }
+    return `${this._url}${BZZ_MODE_PROTOCOLS.feed}?${params.join('&')}`
   }
 
   hash(domain: string, headers?: Object = {}): Promise<string> {
@@ -196,5 +304,37 @@ export default class BaseBzz {
   ): Promise<string> {
     const url = this.getUploadURL({ manifestHash: hash, path })
     return this._fetch(url, { method: 'DELETE', headers }).then(resText)
+  }
+
+  getFeedMetadata(
+    user: string,
+    options?: FeedOptions = {},
+  ): Promise<FeedMetadata> {
+    return this._fetch(this.getFeedURL(user, options, true)).then(resJSON)
+  }
+
+  getFeedValue(user: string, options?: FeedOptions = {}): Promise<*> {
+    return this._fetch(this.getFeedURL(user, options)).then(resOrError)
+  }
+
+  postFeedValue(
+    keyPair: KeyPair,
+    data: hexInput,
+    options?: FeedOptions = {},
+  ): Promise<void> {
+    const user = pubKeyToAddress(keyPair.getPublic())
+    return this.getFeedMetadata(user, options).then(meta => {
+      const dataBuffer = createHex(data).toBuffer()
+      const digest = createFeedDigest(meta, dataBuffer)
+      const signature = signDigest(digest, keyPair.getPrivate())
+      const url = this.getFeedURL(user, {
+        ...meta.feed,
+        ...meta.epoch,
+        signature,
+      })
+      return this._fetch(url, { method: 'POST', body: dataBuffer }).then(
+        resOrError,
+      )
+    })
   }
 }
