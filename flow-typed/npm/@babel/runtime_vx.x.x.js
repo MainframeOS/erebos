@@ -1,4 +1,4 @@
-// flow-typed signature: d53f6121482d9ec9c2135cb8319a7541
+// flow-typed signature: d95c86b634ded5412e7555ea41ea6694
 // flow-typed version: <<STUB>>/@babel/runtime_v^7.0.0/flow_v0.85.0
 
 /**
@@ -358,6 +358,10 @@ declare module '@babel/runtime/helpers/esm/toConsumableArray' {
   declare module.exports: any;
 }
 
+declare module '@babel/runtime/helpers/esm/toPrimitive' {
+  declare module.exports: any;
+}
+
 declare module '@babel/runtime/helpers/esm/toPropertyKey' {
   declare module.exports: any;
 }
@@ -515,6 +519,10 @@ declare module '@babel/runtime/helpers/toArray' {
 }
 
 declare module '@babel/runtime/helpers/toConsumableArray' {
+  declare module.exports: any;
+}
+
+declare module '@babel/runtime/helpers/toPrimitive' {
   declare module.exports: any;
 }
 
@@ -791,6 +799,9 @@ declare module '@babel/runtime/helpers/esm/toArray.js' {
 declare module '@babel/runtime/helpers/esm/toConsumableArray.js' {
   declare module.exports: $Exports<'@babel/runtime/helpers/esm/toConsumableArray'>;
 }
+declare module '@babel/runtime/helpers/esm/toPrimitive.js' {
+  declare module.exports: $Exports<'@babel/runtime/helpers/esm/toPrimitive'>;
+}
 declare module '@babel/runtime/helpers/esm/toPropertyKey.js' {
   declare module.exports: $Exports<'@babel/runtime/helpers/esm/toPropertyKey'>;
 }
@@ -910,6 +921,9 @@ declare module '@babel/runtime/helpers/toArray.js' {
 }
 declare module '@babel/runtime/helpers/toConsumableArray.js' {
   declare module.exports: $Exports<'@babel/runtime/helpers/toConsumableArray'>;
+}
+declare module '@babel/runtime/helpers/toPrimitive.js' {
+  declare module.exports: $Exports<'@babel/runtime/helpers/toPrimitive'>;
 }
 declare module '@babel/runtime/helpers/toPropertyKey.js' {
   declare module.exports: $Exports<'@babel/runtime/helpers/toPropertyKey'>;

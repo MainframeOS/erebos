@@ -23,5 +23,8 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@erebos/api-bzz-base": "^0.4.1"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.85.0"
   }
 }

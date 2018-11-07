@@ -1,6 +1,6 @@
 // @flow
 
-export opaque type hexValue = string
+export opaque type hexValue: string = string
 
 export type hexInput = Buffer | hexValue | Object | string
 
@@ -48,7 +48,7 @@ export class Hex {
           '0x' + Buffer.from(JSON.stringify(inputValue)).toString('hex'),
         )
       } else {
-        this._input = { type: 'unknown', value: undefined }
+        throw new Error('Invalid input')
       }
     }
   }

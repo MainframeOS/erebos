@@ -37,6 +37,10 @@ describe('hex', () => {
     expect(otherHex).toBe(hex)
   })
 
+  it('throws when the input is invalid', () => {
+    expect(() => void createHex(0)).toThrow('Invalid input')
+  })
+
   it('provides an hex value from any accepted input', () => {
     // hex value
     const val = '0x' + Buffer.from('test').toString('hex')
@@ -71,8 +75,6 @@ describe('hex', () => {
     expect(
       Buffer.from(JSON.stringify(obj)).equals(createHex(obj).toBuffer()),
     ).toBe(true)
-    // from number (default unhandled value)
-    expect(Buffer.alloc(0).equals(createHex(1).toBuffer())).toBe(true)
   })
 
   it('exposes a toObject() method', () => {
@@ -89,8 +91,6 @@ describe('hex', () => {
     expect(createHex(JSON.stringify(data)).toObject()).toEqual(data)
     // from Object
     expect(createHex(data).toObject()).toEqual(data)
-    // from number (default unhandled value)
-    expect(createHex(1).toObject()).toEqual({})
   })
 
   it('exposes a toString() method', () => {
@@ -104,7 +104,5 @@ describe('hex', () => {
     expect(createHex('test').toString()).toBe('test')
     // from Object
     expect(createHex({ hello: 'world' }).toString()).toBe('{"hello":"world"}')
-    // from number (default unhandled value)
-    expect(createHex(1).toString()).toBe('')
   })
 })

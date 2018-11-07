@@ -1,6 +1,10 @@
 // @flow
 
-import createHex, { type hexInput, type hexValue } from '@erebos/hex'
+import createHex, {
+  hexValueType,
+  type hexInput,
+  type hexValue,
+} from '@erebos/hex'
 import elliptic from 'elliptic'
 import type EllipticKeyPair from 'elliptic/lib/elliptic/ec/key'
 import sha3 from 'js-sha3'
@@ -40,8 +44,8 @@ export type ListResult = {
 
 export type FeedMetadata = {
   feed: {
-    topic: string,
-    user: string,
+    topic: hexValue,
+    user: hexValue,
   },
   epoch: {
     time: number,
@@ -64,14 +68,14 @@ export type DownloadOptions = SharedOptions & {
 export type UploadOptions = SharedOptions & {
   defaultPath?: string,
   encrypt?: boolean,
-  manifestHash?: string,
+  manifestHash?: hexValue | string,
 }
 
 export type FeedOptions = {
   level?: number,
   name?: string,
   time?: number,
-  topic?: string,
+  topic?: hexValue | string,
 }
 
 export const BZZ_MODE_PROTOCOLS = {
@@ -124,7 +128,7 @@ export const createKeyPair = (priv?: string): KeyPair => {
 
 export const pubKeyToAddress = (pubKey: Object): hexValue => {
   const bytes = sha3.keccak256.array(pubKey.encode().slice(1)).slice(12)
-  return '0x' + Buffer.from(bytes).toString('hex')
+  return hexValueType('0x' + Buffer.from(bytes).toString('hex'))
 }
 
 export const signDigest = (
@@ -134,7 +138,7 @@ export const signDigest = (
   const sigRaw = ec.sign(digest, privKey, { canonical: true })
   const signature = sigRaw.r.toArray().concat(sigRaw.s.toArray())
   signature.push(sigRaw.recoveryParam)
-  return '0x' + Buffer.from(signature).toString('hex')
+  return hexValueType('0x' + Buffer.from(signature).toString('hex'))
 }
 
 export class HTTPError extends Error {
@@ -199,34 +203,45 @@ export default class BaseBzz {
   }
 
   getFeedURL(
-    user: hexValue,
+    userOrHash: hexValue | string,
     options?: FeedOptions = {},
-    meta?: boolean = false,
-  ) {
-    const params = Object.keys(options).reduce(
-      (acc, key) => {
-        const value = options[key]
-        if (value != null) {
-          acc.push(`${key}=${value}`)
-        }
-        return acc
-      },
-      [`user=${user}`],
-    )
-    if (meta) {
-      params.push('meta=1')
+    flag?: 'manifest' | 'meta',
+  ): string {
+    let url = this._url + BZZ_MODE_PROTOCOLS.feed
+    let params = []
+
+    if (userOrHash.slice(0, 2) === '0x') {
+      // user
+      params = Object.keys(options).reduce(
+        (acc, key) => {
+          const value = options[key]
+          if (value != null) {
+            acc.push(`${key}=${value}`)
+          }
+          return acc
+        },
+        [`user=${userOrHash}`],
+      )
+    } else {
+      // hash
+      url += userOrHash
     }
-    return `${this._url}${BZZ_MODE_PROTOCOLS.feed}?${params.join('&')}`
+
+    if (flag != null) {
+      params.push(`${flag}=1`)
+    }
+
+    return `${url}?${params.join('&')}`
   }
 
-  hash(domain: string, headers?: Object = {}): Promise<string> {
+  hash(domain: hexValue | string, headers?: Object = {}): Promise<string> {
     return this._fetch(`${this._url}bzz-hash:/${domain}`, { headers }).then(
       resText,
     )
   }
 
   list(
-    hash: string,
+    hash: hexValue | string,
     options?: DownloadOptions = {},
     headers?: Object = {},
   ): Promise<ListResult> {
@@ -238,7 +253,7 @@ export default class BaseBzz {
   }
 
   _download(
-    hash: string,
+    hash: hexValue | string,
     options: DownloadOptions,
     headers?: Object = {},
   ): Promise<*> {
@@ -247,7 +262,7 @@ export default class BaseBzz {
   }
 
   download(
-    hash: string,
+    hash: hexValue | string,
     options?: DownloadOptions = {},
     headers?: Object,
   ): Promise<*> {
@@ -298,7 +313,7 @@ export default class BaseBzz {
   }
 
   deleteResource(
-    hash: string,
+    hash: hexValue | string,
     path: string,
     headers?: Object = {},
   ): Promise<string> {
@@ -306,14 +321,26 @@ export default class BaseBzz {
     return this._fetch(url, { method: 'DELETE', headers }).then(resText)
   }
 
-  getFeedMetadata(
-    user: string,
+  createFeedManifest(
+    user: hexValue | string,
     options?: FeedOptions = {},
-  ): Promise<FeedMetadata> {
-    return this._fetch(this.getFeedURL(user, options, true)).then(resJSON)
+  ): Promise<hexValue> {
+    return this._fetch(this.getFeedURL(user, options, 'manifest'), {
+      method: 'POST',
+    }).then(resJSON)
   }
 
-  getFeedValue(user: string, options?: FeedOptions = {}): Promise<*> {
+  getFeedMetadata(
+    user: hexValue | string,
+    options?: FeedOptions = {},
+  ): Promise<FeedMetadata> {
+    return this._fetch(this.getFeedURL(user, options, 'meta')).then(resJSON)
+  }
+
+  getFeedValue(
+    user: hexValue | string,
+    options?: FeedOptions = {},
+  ): Promise<*> {
     return this._fetch(this.getFeedURL(user, options)).then(resOrError)
   }
 
@@ -323,18 +350,18 @@ export default class BaseBzz {
     options?: FeedOptions = {},
   ): Promise<void> {
     const user = pubKeyToAddress(keyPair.getPublic())
-    return this.getFeedMetadata(user, options).then(meta => {
-      const dataBuffer = createHex(data).toBuffer()
-      const digest = createFeedDigest(meta, dataBuffer)
-      const signature = signDigest(digest, keyPair.getPrivate())
-      const url = this.getFeedURL(user, {
-        ...meta.feed,
-        ...meta.epoch,
-        signature,
+    return this.getFeedMetadata(user, options)
+      .then(meta => {
+        const dataBuffer = createHex(data).toBuffer()
+        const digest = createFeedDigest(meta, dataBuffer)
+        const signature = signDigest(digest, keyPair.getPrivate())
+        const url = this.getFeedURL(user, {
+          ...meta.feed,
+          ...meta.epoch,
+          signature,
+        })
+        return this._fetch(url, { method: 'POST', body: dataBuffer })
       })
-      return this._fetch(url, { method: 'POST', body: dataBuffer }).then(
-        resOrError,
-      )
-    })
+      .then(resOrError)
   }
 }

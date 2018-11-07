@@ -23,7 +23,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@erebos/hex": "^0.3.0",
-    "elliptic": "^6.4.1",
+    "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix",
     "js-sha3": "^0.8.0"
   },
   "devDependencies": {

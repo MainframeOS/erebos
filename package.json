@@ -11,7 +11,8 @@
     ]
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "flow:install": "lerna exec --concurrency 1 -- flow-typed install --ignoreDeps=dev",
+    "bootstrap": "lerna bootstrap && yarn flow:install",
     "lint": "eslint packages/*/src __tests__",
     "lint:fix": "yarn lint --fix",
     "test:flow": "flow check",
@@ -38,12 +39,13 @@
     "eslint-config-mainframe": "^2.2.0",
     "flow-bin": "^0.85.0",
     "flow-copy-source": "^2.0.2",
+    "flow-typed": "^2.5.1",
     "jest": "^23.5.0",
     "jest-fetch-mock": "^1.6.5",
     "jest-junit": "^5.1.0",
-    "jest-puppeteer": "^3.3.1",
+    "jest-puppeteer": "^3.5.0",
     "lerna": "^3.4.3",
     "prettier": "^1.14.2",
-    "puppeteer": "^1.9.0"
+    "puppeteer": "^1.10.0"
   }
 }

@@ -413,4 +413,13 @@ describe('bzz-node', () => {
     const value = await res.json()
     expect(value).toEqual(data)
   })
+
+  it('creates a feed manifest', async () => {
+    const keyPair = createKeyPair(
+      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+    )
+    const address = pubKeyToAddress(keyPair.getPublic())
+    const hash = await bzz.createFeedManifest(address, { name: 'manifest' })
+    expect(hash).toBeDefined()
+  })
 })

@@ -199,5 +199,33 @@ describe('browser', () => {
 
       expect(directoryList).toEqual({ ...dir, '/': dir[defaultPath] })
     })
+
+    it('supports feeds posting and getting', async () => {
+      const data = { test: uploadContent }
+      const value = await evalClient(async (client, data) => {
+        const options = { name: data.uploadContent }
+        const keyPair = Erebos.createKeyPair(
+          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+        )
+        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+        await client.bzz.postFeedValue(keyPair, data, options)
+        const res = await client.bzz.getFeedValue(address, options)
+        return await res.json()
+      }, data)
+      expect(value).toEqual(data)
+    })
+
+    it('creates a feed manifest', async () => {
+      const hash = await evalClient(async client => {
+        const keyPair = Erebos.createKeyPair(
+          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+        )
+        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+        return await client.bzz.createFeedManifest(address, {
+          name: 'manifest',
+        })
+      })
+      expect(hash).toBeDefined()
+    })
   })
 })
