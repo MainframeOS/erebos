@@ -424,16 +424,19 @@ describe('bzz-node', () => {
   })
 
   it('uploads data and update the feed value', async () => {
-    jest.setTimeout(10000)
+    jest.setTimeout(20000)
     const keyPair = createKeyPair(
       'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
     )
     const address = pubKeyToAddress(keyPair.getPublic())
-    const manifestHash = await bzz.createFeedManifest(address, { name: 'test' })
-    const dataHash = await bzz.uploadFile('hello', {
-      contentType: 'text/plain',
+    const manifestHash = await bzz.createFeedManifest(address, {
+      name: uploadContent,
     })
-    await bzz.postFeedValue(keyPair, `0x1b20${dataHash}`, { name: 'test' })
+    const [dataHash, feedMeta] = await Promise.all([
+      bzz.uploadFile('hello', { contentType: 'text/plain' }),
+      bzz.getFeedMetadata(manifestHash),
+    ])
+    await bzz.postFeedValue(keyPair, `0x1b20${dataHash}`, feedMeta.feed)
     const res = await bzz.download(manifestHash)
     const value = await res.text()
     expect(value).toBe('hello')

@@ -59,7 +59,7 @@ export type UploadOptions = SharedOptions & {
 
 export type FeedOptions = {
   level?: number,
-  name?: string,
+  name?: ?string,
   time?: number,
-  topic?: hexValue | string,
+  topic?: ?(hexValue | string),
 }

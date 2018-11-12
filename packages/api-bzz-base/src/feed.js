@@ -61,8 +61,8 @@ export const createFeedDigest = (
   return Buffer.from(sha3.keccak256.array(payload))
 }
 
-export const createKeyPair = (priv?: string): KeyPair => {
-  return priv ? ec.keyFromPrivate(priv) : ec.genKeyPair()
+export const createKeyPair = (priv?: ?string, enc?: string): KeyPair => {
+  return priv ? ec.keyFromPrivate(priv, enc) : ec.genKeyPair()
 }
 
 export const pubKeyToAddress = (pubKey: Object): hexValue => {

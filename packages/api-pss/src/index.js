@@ -12,7 +12,6 @@ import { Observable } from 'rxjs'
 const EMPTY_HEX = hexValueType('0x')
 
 export type PssEvent = {
-  asym: boolean,
   key: hexValue,
   msg: Hex,
 }
@@ -104,7 +103,6 @@ export default class Pss {
             if (result != null) {
               try {
                 observer.next({
-                  asym: result.Asym,
                   key: result.Key,
                   msg: createHex(result.Msg),
                 })
