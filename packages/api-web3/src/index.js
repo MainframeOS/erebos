@@ -1,7 +1,7 @@
 // @flow
 
+import type { hexValue } from '@erebos/hex'
 import type RPC from '@mainframe/rpc-base'
-import type { hex } from '@mainframe/utils-hex'
 
 export default class Web3 {
   _rpc: RPC
@@ -14,7 +14,7 @@ export default class Web3 {
     return this._rpc.request('web3_clientVersion')
   }
 
-  sha3(data: hex): Promise<hex> {
+  sha3(data: hexValue): Promise<hexValue> {
     return this._rpc.request('web3_sha3', data)
   }
 }

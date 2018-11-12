@@ -57,6 +57,10 @@ export class Hex {
     return this._value
   }
 
+  equals(other: hexInput | Hex): boolean {
+    return new Hex(other).value === this._value
+  }
+
   toBuffer(): Buffer {
     switch (this._input.type) {
       case 'buffer':

@@ -5,78 +5,26 @@ import createHex, {
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
-import elliptic from 'elliptic'
-import type EllipticKeyPair from 'elliptic/lib/elliptic/ec/key'
-import sha3 from 'js-sha3'
 
-const FEED_TOPIC_LENGTH = 32
-const FEED_USER_LENGTH = 20
-const FEED_TIME_LENGTH = 7
-const FEED_LEVEL_LENGTH = 1
-const FEED_HEADER_LENGTH = 8
+import {
+  createFeedDigest,
+  getFeedTopic,
+  pubKeyToAddress,
+  signFeedDigest,
+} from './feed'
+import type {
+  BzzMode,
+  DirectoryData,
+  DownloadOptions,
+  FeedMetadata,
+  FeedOptions,
+  KeyPair,
+  ListResult,
+  UploadOptions,
+} from './types'
 
-const ec = new elliptic.ec('secp256k1')
-
-export type KeyPair = EllipticKeyPair
-
-export type DirectoryData = {
-  [path: string]: { data: string | Buffer, contentType: string, size?: number },
-}
-
-export type FileEntry = {
-  data: string | Buffer,
-  path: string,
-  size?: number,
-}
-
-export type ListEntry = {
-  hash: string,
-  path: string,
-  contentType: string,
-  size: number,
-  mod_time: string,
-}
-
-export type ListResult = {
-  common_prefixes?: Array<string>,
-  entries?: Array<ListEntry>,
-}
-
-export type FeedMetadata = {
-  feed: {
-    topic: hexValue,
-    user: hexValue,
-  },
-  epoch: {
-    time: number,
-    level: number,
-  },
-  protocolVersion: number,
-}
-
-export type BzzMode = 'default' | 'immutable' | 'raw'
-
-export type SharedOptions = {
-  contentType?: string,
-  path?: string,
-}
-
-export type DownloadOptions = SharedOptions & {
-  mode?: BzzMode,
-}
-
-export type UploadOptions = SharedOptions & {
-  defaultPath?: string,
-  encrypt?: boolean,
-  manifestHash?: hexValue | string,
-}
-
-export type FeedOptions = {
-  level?: number,
-  name?: string,
-  time?: number,
-  topic?: hexValue | string,
-}
+export * from './feed'
+export * from './types'
 
 export const BZZ_MODE_PROTOCOLS = {
   default: 'bzz:/',
@@ -87,58 +35,6 @@ export const BZZ_MODE_PROTOCOLS = {
 
 export const getModeProtocol = (mode?: ?BzzMode): string => {
   return (mode && BZZ_MODE_PROTOCOLS[mode]) || BZZ_MODE_PROTOCOLS.default
-}
-
-export const createFeedDigest = (
-  meta: FeedMetadata,
-  data: string | Buffer,
-): Array<number> => {
-  const topicBuffer = createHex(meta.feed.topic).toBuffer()
-  if (topicBuffer.length !== FEED_TOPIC_LENGTH) {
-    throw new Error('Invalid topic length')
-  }
-  const userBuffer = createHex(meta.feed.user).toBuffer()
-  if (userBuffer.length !== FEED_USER_LENGTH) {
-    throw new Error('Invalid user length')
-  }
-
-  const headerBuffer = Buffer.alloc(FEED_HEADER_LENGTH, 0)
-  headerBuffer.writeInt8(meta.protocolVersion, 0)
-  const timeBuffer = Buffer.alloc(FEED_TIME_LENGTH, 0)
-  timeBuffer.writeUInt32LE(meta.epoch.time, 0)
-  const levelBuffer = Buffer.alloc(FEED_LEVEL_LENGTH, 0)
-  levelBuffer.writeUInt8(meta.epoch.level, 0)
-
-  const dataBuffer = createHex(data).toBuffer()
-
-  const payload = Buffer.concat([
-    headerBuffer,
-    topicBuffer,
-    userBuffer,
-    timeBuffer,
-    levelBuffer,
-    dataBuffer,
-  ])
-  return sha3.keccak256.array(payload)
-}
-
-export const createKeyPair = (priv?: string): KeyPair => {
-  return priv ? ec.keyFromPrivate(priv) : ec.genKeyPair()
-}
-
-export const pubKeyToAddress = (pubKey: Object): hexValue => {
-  const bytes = sha3.keccak256.array(pubKey.encode().slice(1)).slice(12)
-  return hexValueType('0x' + Buffer.from(bytes).toString('hex'))
-}
-
-export const signDigest = (
-  digest: Array<number>,
-  privKey: Object,
-): hexValue => {
-  const sigRaw = ec.sign(digest, privKey, { canonical: true })
-  const signature = sigRaw.r.toArray().concat(sigRaw.s.toArray())
-  signature.push(sigRaw.recoveryParam)
-  return hexValueType('0x' + Buffer.from(signature).toString('hex'))
 }
 
 export class HTTPError extends Error {
@@ -205,7 +101,7 @@ export default class BaseBzz {
   getFeedURL(
     userOrHash: hexValue | string,
     options?: FeedOptions = {},
-    flag?: 'manifest' | 'meta',
+    flag?: 'meta',
   ): string {
     let url = this._url + BZZ_MODE_PROTOCOLS.feed
     let params = []
@@ -325,9 +221,16 @@ export default class BaseBzz {
     user: hexValue | string,
     options?: FeedOptions = {},
   ): Promise<hexValue> {
-    return this._fetch(this.getFeedURL(user, options, 'manifest'), {
-      method: 'POST',
-    }).then(resJSON)
+    const manifest = {
+      entries: [
+        {
+          contentType: 'application/bzz-feed',
+          mod_time: '0001-01-01T00:00:00Z',
+          feed: { topic: getFeedTopic(options), user },
+        },
+      ],
+    }
+    return this.uploadFile(JSON.stringify(manifest)).then(hexValueType)
   }
 
   getFeedMetadata(
@@ -348,13 +251,13 @@ export default class BaseBzz {
     keyPair: KeyPair,
     data: hexInput,
     options?: FeedOptions = {},
-  ): Promise<void> {
+  ): Promise<*> {
     const user = pubKeyToAddress(keyPair.getPublic())
     return this.getFeedMetadata(user, options)
       .then(meta => {
         const dataBuffer = createHex(data).toBuffer()
         const digest = createFeedDigest(meta, dataBuffer)
-        const signature = signDigest(digest, keyPair.getPrivate())
+        const signature = signFeedDigest(digest, keyPair.getPrivate())
         const url = this.getFeedURL(user, {
           ...meta.feed,
           ...meta.epoch,

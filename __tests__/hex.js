@@ -5,6 +5,7 @@ describe('hex', () => {
     const val = '0x' + Buffer.from('test').toString('hex')
     const hex = createHex(val)
     expect(hex instanceof Hex).toBe(true)
+    expect(hex.equals(val)).toBe(true)
     expect(hex._input).toEqual({ type: 'hex', value: val })
   })
 
@@ -12,6 +13,7 @@ describe('hex', () => {
     const buffer = Buffer.from('hello')
     const hex = createHex(buffer)
     expect(hex instanceof Hex).toBe(true)
+    expect(hex.equals(buffer)).toBe(true)
     expect(hex._input).toEqual({ type: 'buffer', value: buffer })
   })
 
@@ -19,6 +21,7 @@ describe('hex', () => {
     const obj = { hello: 'test' }
     const hex = createHex(obj)
     expect(hex instanceof Hex).toBe(true)
+    expect(hex.equals(obj)).toBe(true)
     expect(hex._input).toEqual({ type: 'object', value: obj })
   })
 
@@ -26,6 +29,7 @@ describe('hex', () => {
     const str = 'hello world'
     const hex = createHex(str)
     expect(hex instanceof Hex).toBe(true)
+    expect(hex.equals(str)).toBe(true)
     expect(hex._input).toEqual({ type: 'string', value: str })
   })
 
@@ -35,6 +39,19 @@ describe('hex', () => {
     const otherHex = createHex(hex)
     expect(otherHex instanceof Hex).toBe(true)
     expect(otherHex).toBe(hex)
+  })
+
+  it('compares by hex value using the equals() method', () => {
+    const data = { hello: 'world' }
+    const str = JSON.stringify(data)
+    const buffer = Buffer.from(str)
+    const fromData = createHex(data)
+    const fromString = createHex(str)
+    const fromBuffer = createHex(buffer)
+    const fromHex = createHex('0x' + buffer.toString('hex'))
+    expect(fromData.equals(fromString)).toBe(true)
+    expect(fromString.equals(fromBuffer)).toBe(true)
+    expect(fromBuffer.equals(fromHex)).toBe(true)
   })
 
   it('throws when the input is invalid', () => {

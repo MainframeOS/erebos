@@ -21,10 +21,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
-    "@mainframe/rpc-stream": "^0.2.0"
+    "@babel/runtime": "^7.0.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.85.0"
+    "flow-bin": "^0.86.0"
   }
 }

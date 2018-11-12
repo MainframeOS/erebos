@@ -6,14 +6,14 @@ sidebar_label: Pss API
 ## Standalone usage
 
 ```javascript
-import Pss from '@erebos/api-pss'
+import PssAPI from '@erebos/api-pss'
 import webSocketRPC from '@mainframe/rpc-ws-browser'
 // or
 import webSocketRPC from '@mainframe/rpc-ws-node'
 // or any other StreamRPC factory
 
 const rpc = webSocketRPC('ws://localhost:8546')
-const pss = new Pss(rpc)
+const pss = new PssAPI(rpc)
 ```
 
 ## Flow types

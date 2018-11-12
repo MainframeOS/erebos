@@ -1,14 +1,20 @@
 // @flow
 
+import createHex, {
+  hexValueType,
+  type Hex,
+  type hexInput,
+  type hexValue,
+} from '@erebos/hex'
 import type StreamRPC from '@mainframe/rpc-stream'
-// eslint-disable-next-line import/named
-import { hexEmpty, type hex } from '@mainframe/utils-hex'
 import { Observable } from 'rxjs'
 
+const EMPTY_HEX = hexValueType('0x')
+
 export type PssEvent = {
-  Asym: boolean,
-  Key: hex,
-  Msg: hex,
+  asym: boolean,
+  key: hexValue,
+  msg: Hex,
 }
 
 export default class Pss {
@@ -23,34 +29,50 @@ export default class Pss {
     this._rpc = rpc
   }
 
-  baseAddr(): Promise<hex> {
+  baseAddr(): Promise<hexValue> {
     return this._rpc.request('pss_baseAddr')
   }
 
-  getPublicKey(): Promise<hex> {
+  getPublicKey(): Promise<hexValue> {
     return this._rpc.request('pss_getPublicKey')
   }
 
-  sendAsym(key: hex, topic: hex, message: hex): Promise<null> {
-    return this._rpc.request('pss_sendAsym', [key, topic, message])
+  sendAsym(
+    key: hexValue,
+    topic: hexValue,
+    message: Hex | hexInput,
+  ): Promise<null> {
+    return this._rpc.request('pss_sendAsym', [
+      key,
+      topic,
+      createHex(message).value,
+    ])
   }
 
-  sendSym(keyID: string, topic: hex, message: hex): Promise<null> {
-    return this._rpc.request('pss_sendSym', [keyID, topic, message])
+  sendSym(
+    keyID: string,
+    topic: hexValue,
+    message: Hex | hexInput,
+  ): Promise<null> {
+    return this._rpc.request('pss_sendSym', [
+      keyID,
+      topic,
+      createHex(message).value,
+    ])
   }
 
   setPeerPublicKey(
-    key: hex,
-    topic: hex,
-    address: hex = hexEmpty,
+    key: hexValue,
+    topic: hexValue,
+    address: hexValue = EMPTY_HEX,
   ): Promise<null> {
     return this._rpc.request('pss_setPeerPublicKey', [key, topic, address])
   }
 
   setSymmetricKey(
-    key: hex,
-    topic: hex,
-    address: hex = hexEmpty,
+    key: hexValue,
+    topic: hexValue,
+    address: hexValue = EMPTY_HEX,
     useForDecryption: boolean = false,
   ): Promise<string> {
     return this._rpc.request('pss_setSymmetricKey', [
@@ -61,15 +83,15 @@ export default class Pss {
     ])
   }
 
-  stringToTopic(str: string): Promise<hex> {
+  stringToTopic(str: string): Promise<hexValue> {
     return this._rpc.request('pss_stringToTopic', [str])
   }
 
-  subscribeTopic(topic: hex): Promise<hex> {
+  subscribeTopic(topic: hexValue): Promise<hexValue> {
     return this._rpc.request('pss_subscribe', ['receive', topic])
   }
 
-  createSubscription(subscription: hex): Observable<PssEvent> {
+  createSubscription(subscription: hexValue): Observable<PssEvent> {
     return Observable.create(observer => {
       return this._rpc.subscribe({
         next: msg => {
@@ -81,7 +103,11 @@ export default class Pss {
             const { result } = msg.params
             if (result != null) {
               try {
-                observer.next(result)
+                observer.next({
+                  asym: result.Asym,
+                  key: result.Key,
+                  msg: createHex(result.Msg),
+                })
               } catch (err) {
                 // eslint-disable-next-line no-console
                 console.warn('Error handling message', result, err)
@@ -99,7 +125,7 @@ export default class Pss {
     })
   }
 
-  createTopicSubscription(topic: hex): Promise<Observable<PssEvent>> {
+  createTopicSubscription(topic: hexValue): Promise<Observable<PssEvent>> {
     return this.subscribeTopic(topic).then(subscription =>
       this.createSubscription(subscription),
     )

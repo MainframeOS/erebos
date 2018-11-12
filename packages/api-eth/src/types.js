@@ -1,69 +1,68 @@
 // @flow
 
+import type { hexValue } from '@erebos/hex'
 import type { default as RPCType } from '@mainframe/rpc-base'
-import type { hex as hexType } from '@mainframe/utils-hex'
 
 export type RPC = RPCType
-export type hex = hexType
 
-export type blockIndex = hex | 'latest' | 'earliest' | 'pending'
+export type blockIndex = hexValue | 'latest' | 'earliest' | 'pending'
 
 export type EthBlock = {
-  number: ?hex,
-  hash: ?hex,
-  parentHash: hex,
-  nonce: ?hex,
-  sha3Uncles: hex,
-  logsBloom: ?hex,
-  transactionsRoot: hex,
-  stateRoot: hex,
-  receiptsRoot: hex,
-  miner: hex,
-  difficulty: hex,
-  totalDifficulty: hex,
-  extraData: hex,
-  size: hex,
-  gasLimit: hex,
-  gasUsed: hex,
-  timestamp: hex,
-  transactions: Array<hex> | Array<Object>,
-  uncles: Array<hex>,
+  number: ?hexValue,
+  hash: ?hexValue,
+  parentHash: hexValue,
+  nonce: ?hexValue,
+  sha3Uncles: hexValue,
+  logsBloom: ?hexValue,
+  transactionsRoot: hexValue,
+  stateRoot: hexValue,
+  receiptsRoot: hexValue,
+  miner: hexValue,
+  difficulty: hexValue,
+  totalDifficulty: hexValue,
+  extraData: hexValue,
+  size: hexValue,
+  gasLimit: hexValue,
+  gasUsed: hexValue,
+  timestamp: hexValue,
+  transactions: Array<hexValue> | Array<Object>,
+  uncles: Array<hexValue>,
 }
 
 export type EthTransaction = {
-  hash: hex,
-  nonce: hex,
-  blockHash: ?hex,
-  blockNumber: ?hex,
-  transactionIndex: ?hex,
-  from: hex,
-  to: ?hex,
-  value: hex,
-  gasPrice: hex,
-  gas: hex,
-  input: hex,
+  hash: hexValue,
+  nonce: hexValue,
+  blockHash: ?hexValue,
+  blockNumber: ?hexValue,
+  transactionIndex: ?hexValue,
+  from: hexValue,
+  to: ?hexValue,
+  value: hexValue,
+  gasPrice: hexValue,
+  gas: hexValue,
+  input: hexValue,
 }
 
 type EthTransactionReceiptCommon = {
-  transactionHash: hex,
-  transactionIndex: hex,
-  blockHash: hex,
-  blockNumber: hex,
-  cumulativeGasUsed: hex,
-  gasUsed: hex,
-  contractAddress: ?hex,
+  transactionHash: hexValue,
+  transactionIndex: hexValue,
+  blockHash: hexValue,
+  blockNumber: hexValue,
+  cumulativeGasUsed: hexValue,
+  gasUsed: hexValue,
+  contractAddress: ?hexValue,
   logs: Array<Object>,
-  logsBloom: hex,
+  logsBloom: hexValue,
 }
 
 export type EthTransactionReceiptPreByzantium = {
   ...EthTransactionReceiptCommon,
-  root: hex,
+  root: hexValue,
 }
 
 export type EthTransactionReceiptPostByzantium = {
   ...EthTransactionReceiptCommon,
-  status: hex,
+  status: hexValue,
 }
 
 export type EthTransactionReceipt =
@@ -73,20 +72,20 @@ export type EthTransactionReceipt =
 export type EthFilterOptions = {
   fromBlock?: blockIndex,
   toBlock?: blockIndex,
-  address?: hex | Array<hex>,
-  topics?: Array<hex>,
+  address?: hexValue | Array<hexValue>,
+  topics?: Array<hexValue>,
 }
 
 export type EthLog = {
-  removed?: hex,
-  logIndex: hex,
-  transactionIndex: ?hex,
-  transactionHash: ?hex,
-  blockHash: ?hex,
-  blockNumber: ?hex,
-  address: hex,
-  data: hex,
-  topics: Array<hex>,
+  removed?: hexValue,
+  logIndex: hexValue,
+  transactionIndex: ?hexValue,
+  transactionHash: ?hexValue,
+  blockHash: ?hexValue,
+  blockNumber: ?hexValue,
+  address: hexValue,
+  data: hexValue,
+  topics: Array<hexValue>,
 }
 
-export type EthFilterResults = Array<hex> | Array<EthLog>
+export type EthFilterResults = Array<hexValue> | Array<EthLog>

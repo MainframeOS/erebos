@@ -1,6 +1,6 @@
 {
   "name": "@erebos/hex",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Hex conversion utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -24,6 +24,6 @@
     "@babel/runtime": "^7.0.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.85.0"
+    "flow-bin": "^0.86.0"
   }
 }

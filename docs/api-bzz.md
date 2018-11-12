@@ -5,11 +5,11 @@ title: Bzz API
 ## Standalone usage
 
 ```javascript
-import Bzz from '@erebos/api-bzz-browser' // browser
+import BzzAPI from '@erebos/api-bzz-browser' // browser
 // or
-import Bzz from '@erebos/api-bzz-node' // node
+import BzzAPI from '@erebos/api-bzz-node' // node
 
-const bzz = new Bzz('http://localhost:8500')
+const bzz = new BzzAPI('http://localhost:8500')
 ```
 
 ## Flow types
