@@ -2,16 +2,12 @@
 
 import createHex, {
   hexValueType,
+  isHexValue,
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
 
-import {
-  createFeedDigest,
-  getFeedTopic,
-  pubKeyToAddress,
-  signFeedDigest,
-} from './feed'
+import { getFeedTopic, pubKeyToAddress, signFeedUpdate } from './feed'
 import type {
   BzzMode,
   DirectoryData,
@@ -99,14 +95,14 @@ export default class BaseBzz {
   }
 
   getFeedURL(
-    userOrHash: hexValue | string,
+    userOrHash: string,
     options?: FeedOptions = {},
     flag?: 'meta',
   ): string {
     let url = this._url + BZZ_MODE_PROTOCOLS.feed
     let params = []
 
-    if (userOrHash.slice(0, 2) === '0x') {
+    if (isHexValue(userOrHash)) {
       // user
       params = Object.keys(options).reduce(
         (acc, key) => {
@@ -130,14 +126,14 @@ export default class BaseBzz {
     return `${url}?${params.join('&')}`
   }
 
-  hash(domain: hexValue | string, headers?: Object = {}): Promise<string> {
+  hash(domain: string, headers?: Object = {}): Promise<hexValue> {
     return this._fetch(`${this._url}bzz-hash:/${domain}`, { headers }).then(
       resText,
     )
   }
 
   list(
-    hash: hexValue | string,
+    hash: string,
     options?: DownloadOptions = {},
     headers?: Object = {},
   ): Promise<ListResult> {
@@ -149,7 +145,7 @@ export default class BaseBzz {
   }
 
   _download(
-    hash: hexValue | string,
+    hash: string,
     options: DownloadOptions,
     headers?: Object = {},
   ): Promise<*> {
@@ -158,7 +154,7 @@ export default class BaseBzz {
   }
 
   download(
-    hash: hexValue | string,
+    hash: string,
     options?: DownloadOptions = {},
     headers?: Object,
   ): Promise<*> {
@@ -170,7 +166,7 @@ export default class BaseBzz {
     options: UploadOptions,
     headers?: Object = {},
     raw?: boolean = false,
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const url = this.getUploadURL(options, raw)
     return this._fetch(url, { body, headers, method: 'POST' }).then(resText)
   }
@@ -179,7 +175,7 @@ export default class BaseBzz {
     data: string | Buffer,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     const raw = options.contentType == null
     headers['content-length'] = body.length
@@ -193,7 +189,7 @@ export default class BaseBzz {
     _directory: DirectoryData,
     _options?: UploadOptions,
     _headers?: Object,
-  ): Promise<string> {
+  ): Promise<hexValue> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
@@ -201,7 +197,7 @@ export default class BaseBzz {
     data: string | Buffer | DirectoryData,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     return typeof data === 'string' || Buffer.isBuffer(data)
       ? // $FlowFixMe: Flow doesn't understand type refinement with Buffer check
         this.uploadFile(data, options, headers)
@@ -209,16 +205,16 @@ export default class BaseBzz {
   }
 
   deleteResource(
-    hash: hexValue | string,
+    hash: string,
     path: string,
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const url = this.getUploadURL({ manifestHash: hash, path })
     return this._fetch(url, { method: 'DELETE', headers }).then(resText)
   }
 
   createFeedManifest(
-    user: hexValue | string,
+    user: string,
     options?: FeedOptions = {},
   ): Promise<hexValue> {
     const manifest = {
@@ -234,16 +230,13 @@ export default class BaseBzz {
   }
 
   getFeedMetadata(
-    user: hexValue | string,
+    user: string,
     options?: FeedOptions = {},
   ): Promise<FeedMetadata> {
     return this._fetch(this.getFeedURL(user, options, 'meta')).then(resJSON)
   }
 
-  getFeedValue(
-    user: hexValue | string,
-    options?: FeedOptions = {},
-  ): Promise<*> {
+  getFeedValue(user: string, options?: FeedOptions = {}): Promise<*> {
     return this._fetch(this.getFeedURL(user, options)).then(resOrError)
   }
 
@@ -255,15 +248,13 @@ export default class BaseBzz {
     const user = pubKeyToAddress(keyPair.getPublic())
     return this.getFeedMetadata(user, options)
       .then(meta => {
-        const dataBuffer = createHex(data).toBuffer()
-        const digest = createFeedDigest(meta, dataBuffer)
-        const signature = signFeedDigest(digest, keyPair.getPrivate())
+        const body = createHex(data).toBuffer()
         const url = this.getFeedURL(user, {
           ...meta.feed,
           ...meta.epoch,
-          signature,
+          signature: signFeedUpdate(meta, body, keyPair.getPrivate()),
         })
-        return this._fetch(url, { method: 'POST', body: dataBuffer })
+        return this._fetch(url, { method: 'POST', body })
       })
       .then(resOrError)
   }

@@ -2,7 +2,7 @@
 
 export opaque type hexValue: string = string
 
-export type hexInput = Buffer | hexValue | Object | string
+export type hexInput = hexValue | string | Object | Buffer
 
 export const hexValueType = (input: any): hexValue => (input: hexValue)
 

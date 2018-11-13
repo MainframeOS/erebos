@@ -423,7 +423,7 @@ describe('bzz-node', () => {
     expect(hash).toBeDefined()
   })
 
-  it('uploads data and update the feed value', async () => {
+  it('uploads data and updates the feed value', async () => {
     jest.setTimeout(20000)
     const keyPair = createKeyPair(
       'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',

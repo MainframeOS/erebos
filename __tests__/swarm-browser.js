@@ -227,5 +227,30 @@ describe('browser', () => {
       })
       expect(hash).toBeDefined()
     })
+
+    it('uploads data and updates the feed value', async () => {
+      jest.setTimeout(20000)
+      const value = await evalClient(async (client, name) => {
+        const keyPair = Erebos.createKeyPair(
+          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+        )
+        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+        const manifestHash = await client.bzz.createFeedManifest(address, {
+          name,
+        })
+        const [dataHash, feedMeta] = await Promise.all([
+          client.bzz.uploadFile('hello', { contentType: 'text/plain' }),
+          client.bzz.getFeedMetadata(manifestHash),
+        ])
+        await client.bzz.postFeedValue(
+          keyPair,
+          `0x1b20${dataHash}`,
+          feedMeta.feed,
+        )
+        const res = await client.bzz.download(manifestHash)
+        return await res.text()
+      }, uploadContent)
+      expect(value).toBe('hello')
+    })
   })
 })

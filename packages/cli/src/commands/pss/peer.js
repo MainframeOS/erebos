@@ -1,6 +1,7 @@
 // @flow
 
 import repl from 'repl'
+import { isHexValue } from '@erebos/hex'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'
@@ -30,10 +31,9 @@ export default class PssPeerCommand extends Command {
 
   async run() {
     try {
-      const topic =
-        this.flags.topic.slice(0, 2) === '0x'
-          ? this.flags.topic
-          : await this.client.pss.stringToTopic(this.flags.topic)
+      const topic = isHexValue(this.flags.topic)
+        ? this.flags.topic
+        : await this.client.pss.stringToTopic(this.flags.topic)
 
       await this.client.pss.setPeerPublicKey(
         this.args.key,

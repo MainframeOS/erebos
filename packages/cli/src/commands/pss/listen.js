@@ -1,5 +1,7 @@
 // @flow
 
+import { isHexValue } from '@erebos/hex'
+
 import Command from '../../Command'
 
 export default class PssListenCommand extends Command {
@@ -16,10 +18,9 @@ export default class PssListenCommand extends Command {
   async run() {
     this.spinner.start()
     try {
-      const topic =
-        this.args.topic.slice(0, 2) === '0x'
-          ? this.args.topic
-          : await this.client.pss.stringToTopic(this.args.topic)
+      const topic = isHexValue(this.args.topic)
+        ? this.args.topic
+        : await this.client.pss.stringToTopic(this.args.topic)
 
       const sub = await this.client.pss.createTopicSubscription(topic)
       sub.subscribe(event => {

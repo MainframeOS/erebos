@@ -1,5 +1,6 @@
 // @flow
 
+import { isHexValue } from '@erebos/hex'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'
@@ -35,10 +36,9 @@ export default class PssSendCommand extends Command {
   async run() {
     this.spinner.start()
     try {
-      const topic =
-        this.flags.topic.slice(0, 2) === '0x'
-          ? this.flags.topic
-          : await this.client.pss.stringToTopic(this.flags.topic)
+      const topic = isHexValue(this.flags.topic)
+        ? this.flags.topic
+        : await this.client.pss.stringToTopic(this.flags.topic)
 
       await this.client.pss.setPeerPublicKey(
         this.flags.key,
