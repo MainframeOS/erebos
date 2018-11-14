@@ -6,30 +6,32 @@ sidebar_label: Pss API
 ## Standalone usage
 
 ```javascript
-import Pss from '@erebos/api-pss'
+import PssAPI from '@erebos/api-pss'
 import webSocketRPC from '@mainframe/rpc-ws-browser'
 // or
 import webSocketRPC from '@mainframe/rpc-ws-node'
 // or any other StreamRPC factory
 
 const rpc = webSocketRPC('ws://localhost:8546')
-const pss = new Pss(rpc)
+const pss = new PssAPI(rpc)
 ```
 
 ## Flow types
 
-### hex
+### hexValue
 
-The `hex` type represents a hex-encoded string, as used by Swarm and this PSS API.\
-The [`@mainframe/utils-hex` library](https://github.com/MainframeHQ/js-tools/tree/master/packages/utils-hex) provided utilities to interact with this type.
+Hexadecimal-encoded string prefixed with `0x`.
+
+### Hex
+
+`Hex` class instance as exported by the `@erebos/hex` package.
 
 ### PssEvent
 
 ```javascript
 type PssEvent = {
-  Asym: boolean,
-  Key: hex,
-  Msg: hex,
+  key: hexValue,
+  msg: Hex,
 }
 ```
 
@@ -48,14 +50,14 @@ Creates a Pss instance with the provided `StreamRPC` instance.
 Calls
 [`pss_baseAddr`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_baseaddr).
 
-**Returns** `Promise<hex>`
+**Returns** `Promise<hexValue>`
 
 ### .getPublicKey()
 
 Calls
 [`pss_getPublicKey`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_getpublickey).
 
-**Returns** `Promise<hex>`
+**Returns** `Promise<hexValue>`
 
 ### .sendAsym()
 
@@ -65,9 +67,9 @@ with the provided arguments:
 
 **Arguments**
 
-1.  `key: hex`: public key of the peer
-1.  `topic: hex`: destination topic
-1.  `message: hex`
+1.  `key: string`: public key of the peer
+1.  `topic: string`: destination topic
+1.  `message: string | Object | Buffer | Hex`
 
 **Returns** `Promise<void>`
 
@@ -79,9 +81,9 @@ with the provided arguments:
 
 **Arguments**
 
-1.  `keyID: hex`: symmetric key ID generated using `setSymmetricKey()`
-1.  `topic: hex`: destination topic
-1.  `message: hex`
+1.  `keyID: hexValue`: symmetric key ID generated using `setSymmetricKey()`
+1.  `topic: hexValue`: destination topic
+1.  `message: string | Object | Buffer | Hex`
 
 **Returns** `Promise<void>`
 
@@ -93,9 +95,9 @@ with the provided arguments:
 
 **Arguments**
 
-1.  `key: hex`: public key of the peer
-1.  `topic: hex`
-1.  `address?: hex = '0x'`
+1.  `key: hexValue`: public key of the peer
+1.  `topic: hexValue`
+1.  `address?: hexValue = '0x'`
 
 **Returns** `Promise<void>`
 
@@ -107,9 +109,9 @@ with the provided arguments:
 
 **Arguments**
 
-1.  `key: hex`: public key of the peer
-1.  `topic: hex`
-1.  `address?: hex = '0x'`
+1.  `key: hexValue`: public key of the peer
+1.  `topic: hexValue`
+1.  `address?: hexValue = '0x'`
 1.  `useForDecryption: boolean = false`
 
 **Returns** `Promise<string>`
@@ -132,9 +134,9 @@ Calls `pss_subscribe` with the provided topic and returns the subscription handl
 
 **Arguments**
 
-1.  `topic: hex`
+1.  `topic: hexValue`
 
-**Returns** `Promise<hex>`
+**Returns** `Promise<hexValue>`
 
 ### .createSubscription()
 
@@ -142,7 +144,7 @@ Creates a [RxJS Observable](https://rxjs-dev.firebaseapp.com/api/index/class/Obs
 
 **Arguments**
 
-1.  `subscription: hex`
+1.  `subscription: hexValue`
 
 **Returns** `Observable<PssEvent>`
 
@@ -152,6 +154,6 @@ Shortcut for calling `subscribeTopic()` followed by `createSubscription()`.
 
 **Arguments**
 
-1.  `topic: hex`
+1.  `topic: hexValue`
 
 **Returns** `Promise<Observable<PssEvent>>`

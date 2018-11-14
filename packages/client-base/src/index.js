@@ -1,11 +1,11 @@
 // @flow
 
-import type RPC from '@mainframe/rpc-base'
+import type StreamRPC from '@mainframe/rpc-stream'
 
 export type ClientConfig = {
   http?: string,
   ipc?: string,
-  rpc?: RPC,
+  rpc?: StreamRPC,
   ws?: string,
 }
 
@@ -29,13 +29,13 @@ export const createInstantiateAPI = (createRPC: Function) => {
 }
 
 export default class BaseClient {
-  _rpc: ?RPC
+  _rpc: ?StreamRPC
 
   constructor(config?: ClientConfig = {}) {
     this._rpc = config.rpc
   }
 
-  get rpc(): RPC {
+  get rpc(): StreamRPC {
     if (this._rpc == null) {
       throw new Error(
         'Could not access RPC: missing in configuration provided to client',

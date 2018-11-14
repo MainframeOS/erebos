@@ -43,7 +43,7 @@ client.bzz
 ## Communication between two nodes
 
 ```javascript
-import { SwarmClient, decodeHex, encodeHex } from '@erebos/swarm-node'
+import { SwarmClient } from '@erebos/swarm-node'
 
 const run = async () => {
   // Create PSS clients over WebSocket
@@ -64,12 +64,13 @@ const run = async () => {
 
   // Actually subscribe to the messages stream
   alice.pss.createSubscription(subscription).subscribe(payload => {
-    const msg = decodeHex(payload.Msg)
-    console.log(`received message from ${payload.Key}: ${msg}`)
+    console.log(
+      `received message from ${payload.key}: ${payload.msg.toString()}`,
+    )
   })
 
   // Send message to Alice
-  bob.pss.sendAsym(key, topic, encodeHex('hello world'))
+  bob.pss.sendAsym(key, topic, 'hello world')
 }
 
 run().catch(console.error)

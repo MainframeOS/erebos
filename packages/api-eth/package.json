@@ -22,5 +22,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.86.0"
   }
 }

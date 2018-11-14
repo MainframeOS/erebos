@@ -1,6 +1,6 @@
 // @flow
 
-import createRPC, { httpRPC, wsRPC } from '@mainframe/rpc-browser'
+import createRPC, { wsRPC } from '@mainframe/rpc-browser'
 import StreamRPC from '@mainframe/rpc-stream'
 import BzzAPI from '@erebos/api-bzz-browser'
 import PssAPI from '@erebos/api-pss'
@@ -33,12 +33,8 @@ export default class BrowserClient extends BaseClient {
         this._bzz = new BzzAPI(config)
       }
     } else {
-      if (config.rpc == null) {
-        if (config.ws != null) {
-          config.rpc = wsRPC(config.ws)
-        } else if (config.http != null) {
-          config.rpc = httpRPC(config.http)
-        }
+      if (config.rpc == null && config.ws != null) {
+        config.rpc = wsRPC(config.ws)
       }
       super(config)
 
@@ -66,7 +62,6 @@ export default class BrowserClient extends BaseClient {
 
   get pss(): PssAPI {
     if (this._pss == null) {
-      // $FlowFixMe: runtime check
       this._pss = new PssAPI(this.rpc)
     }
     return this._pss

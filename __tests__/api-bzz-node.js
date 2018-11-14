@@ -7,6 +7,7 @@ import path from 'path'
 import fs from 'fs-extra'
 import tar from 'tar-stream'
 
+import { createKeyPair, pubKeyToAddress } from '../packages/api-bzz-base'
 import Bzz from '../packages/api-bzz-node'
 
 describe('bzz-node', () => {
@@ -399,5 +400,45 @@ describe('bzz-node', () => {
     expect(files).toEqual(downloadedDir)
     const commonPrefixes = Object.values(manifest.common_prefixes)
     expect(commonPrefixes).toEqual(expectedCommonPrefixes)
+  })
+
+  it('supports feeds posting and getting', async () => {
+    const keyPair = createKeyPair(
+      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+    )
+    const address = pubKeyToAddress(keyPair.getPublic())
+    const data = { test: uploadContent }
+    await bzz.postFeedValue(keyPair, data, { name: uploadContent })
+    const res = await bzz.getFeedValue(address, { name: uploadContent })
+    const value = await res.json()
+    expect(value).toEqual(data)
+  })
+
+  it('creates a feed manifest', async () => {
+    const keyPair = createKeyPair(
+      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+    )
+    const address = pubKeyToAddress(keyPair.getPublic())
+    const hash = await bzz.createFeedManifest(address, { name: 'manifest' })
+    expect(hash).toBeDefined()
+  })
+
+  it('uploads data and updates the feed value', async () => {
+    jest.setTimeout(20000)
+    const keyPair = createKeyPair(
+      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+    )
+    const address = pubKeyToAddress(keyPair.getPublic())
+    const manifestHash = await bzz.createFeedManifest(address, {
+      name: uploadContent,
+    })
+    const [dataHash, feedMeta] = await Promise.all([
+      bzz.uploadFile('hello', { contentType: 'text/plain' }),
+      bzz.getFeedMetadata(manifestHash),
+    ])
+    await bzz.postFeedValue(keyPair, `0x1b20${dataHash}`, feedMeta.feed)
+    const res = await bzz.download(manifestHash)
+    const value = await res.text()
+    expect(value).toBe('hello')
   })
 })

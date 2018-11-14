@@ -1,7 +1,7 @@
 // @flow
 
+import type { hexValue } from '@erebos/hex'
 import type RPC from '@mainframe/rpc-base'
-import type { hex } from '@mainframe/utils-hex'
 
 export default class Net {
   _rpc: RPC
@@ -18,7 +18,7 @@ export default class Net {
     return this._rpc.request('net_listening')
   }
 
-  peerCount(): Promise<hex> {
+  peerCount(): Promise<hexValue> {
     return this._rpc.request('net_peerCount')
   }
 }

@@ -8,6 +8,7 @@ import BaseBzz, {
   type DownloadOptions,
   type UploadOptions,
 } from '@erebos/api-bzz-base'
+import type { hexValue } from '@erebos/hex'
 import FormData from 'form-data'
 import fetch from 'node-fetch'
 import { Observable } from 'rxjs'
@@ -133,7 +134,7 @@ export default class Bzz extends BaseBzz {
     directory: DirectoryData,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
       form.append(key, directory[key].data, {
@@ -156,7 +157,7 @@ export default class Bzz extends BaseBzz {
     path: string,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const raw = options.contentType == null
     if (!raw) headers['content-type'] = options.contentType
     return await this._upload(createReadStream(path), options, headers, raw)
@@ -166,7 +167,7 @@ export default class Bzz extends BaseBzz {
     stream: Readable,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     return await this._upload(stream, options, {
       ...headers,
       'content-type': 'application/x-tar',
@@ -178,7 +179,7 @@ export default class Bzz extends BaseBzz {
     path: string,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const stream = (await isFile(path))
       ? createReadStream(path)
       : tarFS.pack(path)
@@ -189,7 +190,7 @@ export default class Bzz extends BaseBzz {
     path: string,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     return await this._uploadTarStream(tarFS.pack(path), options, headers)
   }
 
@@ -197,7 +198,7 @@ export default class Bzz extends BaseBzz {
     path: string,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     if (await isFile(path)) {
       return await this.uploadFileFrom(path, options, headers)
     } else {

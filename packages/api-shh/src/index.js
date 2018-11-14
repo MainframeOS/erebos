@@ -1,8 +1,9 @@
 // @flow
 
+import type { hexValue } from '@erebos/hex'
+
 import type {
   RPC,
-  hex,
   ShhInfo,
   ShhFilterCriteria,
   ShhPostMessage,
@@ -32,7 +33,7 @@ export default class Shh {
     return this._rpc.request('shh_setMinPow', [pow])
   }
 
-  setBloomFilter(bloom: hex): Promise<boolean> {
+  setBloomFilter(bloom: hexValue): Promise<boolean> {
     return this._rpc.request('shh_setBloomFilter', [bloom])
   }
 
@@ -44,7 +45,7 @@ export default class Shh {
     return this._rpc.request('shh_newKeyPair')
   }
 
-  addPrivateKey(key: hex): Promise<string> {
+  addPrivateKey(key: hexValue): Promise<string> {
     return this._rpc.request('shh_addPrivateKey', [key])
   }
 
@@ -56,11 +57,11 @@ export default class Shh {
     return this._rpc.request('shh_hasKeyPair', [id])
   }
 
-  getPublicKey(id: string): Promise<hex> {
+  getPublicKey(id: string): Promise<hexValue> {
     return this._rpc.request('shh_getPublicKey', [id])
   }
 
-  getPrivateKey(id: string): Promise<hex> {
+  getPrivateKey(id: string): Promise<hexValue> {
     return this._rpc.request('shh_getPrivateKey', [id])
   }
 
@@ -68,7 +69,7 @@ export default class Shh {
     return this._rpc.request('shh_newSymKey')
   }
 
-  addSymKey(key: hex): Promise<string> {
+  addSymKey(key: hexValue): Promise<string> {
     return this._rpc.request('shh_addSymKey', [key])
   }
 
@@ -80,7 +81,7 @@ export default class Shh {
     return this._rpc.request('shh_hasSymKey', [id])
   }
 
-  getSymKey(id: string): Promise<hex> {
+  getSymKey(id: string): Promise<hexValue> {
     return this._rpc.request('shh_getSymKey', [id])
   }
 

@@ -1,5 +1,6 @@
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
+import json from 'rollup-plugin-json'
 import globals from 'rollup-plugin-node-globals'
 import resolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
@@ -24,6 +25,7 @@ const config = {
       runtimeHelpers: true,
     }),
     commonjs(),
+    json(),
     globals(),
     replace({
       'process.env.NODE_ENV': JSON.stringify(env),
