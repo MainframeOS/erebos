@@ -1,10 +1,9 @@
 // @flow
 
+import type { hexValue } from '@erebos/hex'
 import type { default as RPCType } from '@mainframe/rpc-base'
-import type { hex as hexType } from '@mainframe/utils-hex'
 
 export type RPC = RPCType
-export type hex = hexType
 
 export type ShhInfo = {
   memory: number,
@@ -16,33 +15,33 @@ export type ShhInfo = {
 export type ShhFilterCriteria = {
   symKeyID?: string,
   privateKeyID?: string,
-  sig?: hex,
+  sig?: hexValue,
   minPow?: number,
-  topics: Array<hex>,
+  topics: Array<hexValue>,
   allowP2P?: boolean,
 }
 
 export type ShhPostMessage = {
   symKeyID?: string,
-  pubKey?: hex,
+  pubKey?: hexValue,
   sig?: string,
   ttl?: number,
-  topic: hex,
-  payload: hex,
-  padding?: hex,
+  topic: hexValue,
+  payload: hexValue,
+  padding?: hexValue,
   powTime?: number,
   powTarget?: number,
   targetPeer?: string,
 }
 
 export type ShhReceivedMessage = {
-  sig?: hex,
+  sig?: hexValue,
   ttl: number,
   timestamp: number,
-  topic: hex,
-  payload: hex,
-  padding: hex,
+  topic: hexValue,
+  payload: hexValue,
+  padding: hexValue,
   pow: number,
   hash: number,
-  recipientPublicKey?: hex,
+  recipientPublicKey?: hexValue,
 }

@@ -66,7 +66,6 @@ export default class NodeClient extends BaseClient {
 
   get pss(): PssAPI {
     if (this._pss == null) {
-      // $FlowFixMe: runtime check
       this._pss = new PssAPI(this.rpc)
     }
     return this._pss

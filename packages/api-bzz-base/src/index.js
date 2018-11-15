@@ -1,47 +1,30 @@
 // @flow
 
-export type DirectoryData = {
-  [path: string]: { data: string | Buffer, contentType: string, size?: number },
-}
+import createHex, {
+  hexValueType,
+  isHexValue,
+  type hexInput,
+  type hexValue,
+} from '@erebos/hex'
 
-export type FileEntry = {
-  data: string | Buffer,
-  path: string,
-  size?: number,
-}
+import { getFeedTopic, pubKeyToAddress, signFeedUpdate } from './feed'
+import type {
+  BzzMode,
+  DirectoryData,
+  DownloadOptions,
+  FeedMetadata,
+  FeedOptions,
+  KeyPair,
+  ListResult,
+  UploadOptions,
+} from './types'
 
-export type ListEntry = {
-  hash: string,
-  path: string,
-  contentType: string,
-  size: number,
-  mod_time: string,
-}
-
-export type ListResult = {
-  common_prefixes?: Array<string>,
-  entries?: Array<ListEntry>,
-}
-
-export type BzzMode = 'default' | 'immutable' | 'raw'
-
-export type SharedOptions = {
-  contentType?: string,
-  path?: string,
-}
-
-export type DownloadOptions = SharedOptions & {
-  mode?: BzzMode,
-}
-
-export type UploadOptions = SharedOptions & {
-  defaultPath?: string,
-  encrypt?: boolean,
-  manifestHash?: string,
-}
+export * from './feed'
+export * from './types'
 
 export const BZZ_MODE_PROTOCOLS = {
   default: 'bzz:/',
+  feed: 'bzz-feed:/',
   immutable: 'bzz-immutable:/',
   raw: 'bzz-raw:/',
 }
@@ -105,10 +88,45 @@ export default class BaseBzz {
         url += options.path
       }
     }
+    if (options.defaultPath != null) {
+      url += `?defaultpath=${options.defaultPath}`
+    }
     return url
   }
 
-  hash(domain: string, headers?: Object = {}): Promise<string> {
+  getFeedURL(
+    userOrHash: string,
+    options?: FeedOptions = {},
+    flag?: 'meta',
+  ): string {
+    let url = this._url + BZZ_MODE_PROTOCOLS.feed
+    let params = []
+
+    if (isHexValue(userOrHash)) {
+      // user
+      params = Object.keys(options).reduce(
+        (acc, key) => {
+          const value = options[key]
+          if (value != null) {
+            acc.push(`${key}=${value}`)
+          }
+          return acc
+        },
+        [`user=${userOrHash}`],
+      )
+    } else {
+      // hash
+      url += userOrHash
+    }
+
+    if (flag != null) {
+      params.push(`${flag}=1`)
+    }
+
+    return `${url}?${params.join('&')}`
+  }
+
+  hash(domain: string, headers?: Object = {}): Promise<hexValue> {
     return this._fetch(`${this._url}bzz-hash:/${domain}`, { headers }).then(
       resText,
     )
@@ -148,7 +166,7 @@ export default class BaseBzz {
     options: UploadOptions,
     headers?: Object = {},
     raw?: boolean = false,
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const url = this.getUploadURL(options, raw)
     return this._fetch(url, { body, headers, method: 'POST' }).then(resText)
   }
@@ -157,7 +175,7 @@ export default class BaseBzz {
     data: string | Buffer,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     const raw = options.contentType == null
     headers['content-length'] = body.length
@@ -171,7 +189,7 @@ export default class BaseBzz {
     _directory: DirectoryData,
     _options?: UploadOptions,
     _headers?: Object,
-  ): Promise<string> {
+  ): Promise<hexValue> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
@@ -179,7 +197,7 @@ export default class BaseBzz {
     data: string | Buffer | DirectoryData,
     options?: UploadOptions = {},
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     return typeof data === 'string' || Buffer.isBuffer(data)
       ? // $FlowFixMe: Flow doesn't understand type refinement with Buffer check
         this.uploadFile(data, options, headers)
@@ -190,8 +208,54 @@ export default class BaseBzz {
     hash: string,
     path: string,
     headers?: Object = {},
-  ): Promise<string> {
+  ): Promise<hexValue> {
     const url = this.getUploadURL({ manifestHash: hash, path })
     return this._fetch(url, { method: 'DELETE', headers }).then(resText)
+  }
+
+  createFeedManifest(
+    user: string,
+    options?: FeedOptions = {},
+  ): Promise<hexValue> {
+    const manifest = {
+      entries: [
+        {
+          contentType: 'application/bzz-feed',
+          mod_time: '0001-01-01T00:00:00Z',
+          feed: { topic: getFeedTopic(options), user },
+        },
+      ],
+    }
+    return this.uploadFile(JSON.stringify(manifest)).then(hexValueType)
+  }
+
+  getFeedMetadata(
+    user: string,
+    options?: FeedOptions = {},
+  ): Promise<FeedMetadata> {
+    return this._fetch(this.getFeedURL(user, options, 'meta')).then(resJSON)
+  }
+
+  getFeedValue(user: string, options?: FeedOptions = {}): Promise<*> {
+    return this._fetch(this.getFeedURL(user, options)).then(resOrError)
+  }
+
+  postFeedValue(
+    keyPair: KeyPair,
+    data: hexInput,
+    options?: FeedOptions = {},
+  ): Promise<*> {
+    const user = pubKeyToAddress(keyPair.getPublic())
+    return this.getFeedMetadata(user, options)
+      .then(meta => {
+        const body = createHex(data).toBuffer()
+        const url = this.getFeedURL(user, {
+          ...meta.feed,
+          ...meta.epoch,
+          signature: signFeedUpdate(meta, body, keyPair.getPrivate()),
+        })
+        return this._fetch(url, { method: 'POST', body })
+      })
+      .then(resOrError)
   }
 }

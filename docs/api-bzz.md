@@ -5,14 +5,22 @@ title: Bzz API
 ## Standalone usage
 
 ```javascript
-import Bzz from '@erebos/api-bzz-browser' // browser
+import BzzAPI from '@erebos/api-bzz-browser' // browser
 // or
-import Bzz from '@erebos/api-bzz-node' // node
+import BzzAPI from '@erebos/api-bzz-node' // node
 
-const bzz = new Bzz('http://localhost:8500')
+const bzz = new BzzAPI('http://localhost:8500')
 ```
 
 ## Flow types
+
+### hexValue
+
+Hexadecimal-encoded string prefixed with `0x`.
+
+### KeyPair
+
+Export from the `elliptic` library.
 
 ### DirectoryData
 
@@ -53,6 +61,22 @@ type ListResult = {
 }
 ```
 
+### FeedMetadata
+
+```javascript
+type FeedMetadata = {
+  feed: {
+    topic: hexValue,
+    user: hexValue,
+  },
+  epoch: {
+    time: number,
+    level: number,
+  },
+  protocolVersion: number,
+}
+```
+
 ### BzzMode
 
 ```javascript
@@ -86,7 +110,76 @@ type UploadOptions = SharedOptions & {
 }
 ```
 
+### FeedOptions
+
+```javascript
+type FeedOptions = {
+  level?: number,
+  name?: string,
+  signature?: string,
+  time?: number,
+  topic?: string,
+}
+```
+
 ## Public API
+
+### createFeedDigest()
+
+**Arguments**
+
+1.  `meta: FeedMetadata`
+1.  `data: string | Object | Buffer`
+
+**Returns** `Buffer`
+
+### createKeyPair()
+
+Creates an elliptic `KeyPair` object using the `privateKey` if provided or generating a new one.
+
+**Arguments**
+
+1.  `privateKey?: ?string`
+1.  `encoding?: string`
+
+**Returns** `Buffer`
+
+### getFeedTopic()
+
+**Arguments**
+
+1.  `options: FeedOptions`
+
+**Returns** `hexValue`
+
+### pubKeyToAddress()
+
+**Arguments**
+
+1.  `pubKey: Object`
+
+**Returns** `hexValue`
+
+### signFeedDigest()
+
+**Arguments**
+
+1.  `digest: Buffer`
+1.  `privKey: Object`
+
+**Returns** `hexValue`
+
+### signFeedUpdate()
+
+Combines `createFeedDigest()` and `signFeedDigest()`.
+
+**Arguments**
+
+1.  `meta: FeedMetadata`
+1.  `data: string | Object | Buffer`
+1.  `privKey: Object`
+
+**Returns** `hexValue`
 
 ### HTTPError class
 
@@ -128,6 +221,18 @@ Returns the Swarm upload URL for a given resource based on the provided argument
 
 1.  `options: UploadOptions`
 1.  `raw?: boolean`
+
+**Returns** `string`
+
+### .getFeedURL()
+
+Returns the Swarm URL for a feed based on the provided arguments.
+
+**Arguments**
+
+1.  `userOrHash: string`
+1.  `options?: FeedOptions = {}`
+1.  `flag?: 'meta'`
 
 **Returns** `string`
 
@@ -216,11 +321,48 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Returns** `Promise<string>`
 
+### .createFeedManifest()
+
+**Arguments**
+
+1.  `user: string`
+1.  `options?: FeedOptions = {}`
+
+**Returns** `Promise<hexValue>`
+
+### .getFeedMetadata()
+
+**Arguments**
+
+1.  `user: string`
+1.  `options?: FeedOptions = {}`
+
+**Returns** `Promise<FeedMetadata>`
+
+### .getFeedValue()
+
+**Arguments**
+
+1.  `user: string`
+1.  `options?: FeedOptions = {}`
+
+**Returns** `Promise<Response>`
+
+### .postFeedValue()
+
+**Arguments**
+
+1.  `keyPair: KeyPair`
+1.  `data: string | Object | Buffer`
+1.  `options?: FeedOptions = {}`
+
+**Returns** `Promise<Response>`
+
 ## Node-specific APIs
 
-The following methods are only available when using `@erebos/api-bzz-node`.
+The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`.
 
-### .dowloadObservable()
+### .downloadObservable()
 
 Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/Observable) emitting the `FileEntry` objects as they are downloaded.
 

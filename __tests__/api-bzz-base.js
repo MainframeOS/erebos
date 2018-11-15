@@ -134,6 +134,10 @@ describe('bzz-base', () => {
       )
       // `path` option is ignored if `manifestHash` is not provided
       expect(bzz.getUploadURL({ path: 'test' })).toBe(`${TEST_URL}bzz:/`)
+      // Support `defaultPath` option
+      expect(bzz.getUploadURL({ defaultPath: 'index.html' })).toBe(
+        `${TEST_URL}bzz:/?defaultpath=index.html`,
+      )
     })
 
     it('hash() returns the correct hash for a given URL', async () => {

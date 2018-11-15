@@ -1,6 +1,6 @@
 {
   "name": "erebos-project",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Ethereum and Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
@@ -11,7 +11,8 @@
     ]
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "flow:install": "lerna exec --concurrency 1 -- flow-typed install --ignoreDeps=dev",
+    "bootstrap": "lerna bootstrap && yarn flow:install",
     "lint": "eslint packages/*/src __tests__",
     "lint:fix": "yarn lint --fix",
     "test:flow": "flow check",
@@ -35,18 +36,19 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.4.2",
     "del-cli": "^1.1.0",
-    "eslint": "^5.7.0",
+    "eslint": "^5.9.0",
     "eslint-config-mainframe": "^2.2.0",
-    "flow-bin": "^0.83.0",
+    "flow-bin": "^0.86.0",
     "flow-copy-source": "^2.0.2",
     "ganache-cli": "^6.1.8",
     "ganache-core": "^2.2.1",
+    "flow-typed": "^2.5.1",
     "jest": "^23.5.0",
-    "jest-fetch-mock": "^1.6.5",
+    "jest-fetch-mock": "^1.7.4",
     "jest-junit": "^5.1.0",
-    "jest-puppeteer": "^3.3.1",
+    "jest-puppeteer": "^3.5.1",
     "lerna": "^3.4.3",
-    "prettier": "^1.14.2",
-    "puppeteer": "^1.9.0"
+    "prettier": "^1.15.2",
+    "puppeteer": "^1.10.0"
   }
 }

@@ -199,5 +199,58 @@ describe('browser', () => {
 
       expect(directoryList).toEqual({ ...dir, '/': dir[defaultPath] })
     })
+
+    it('supports feeds posting and getting', async () => {
+      const data = { test: uploadContent }
+      const value = await evalClient(async (client, data) => {
+        const options = { name: data.uploadContent }
+        const keyPair = Erebos.createKeyPair(
+          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+        )
+        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+        await client.bzz.postFeedValue(keyPair, data, options)
+        const res = await client.bzz.getFeedValue(address, options)
+        return await res.json()
+      }, data)
+      expect(value).toEqual(data)
+    })
+
+    it('creates a feed manifest', async () => {
+      const hash = await evalClient(async client => {
+        const keyPair = Erebos.createKeyPair(
+          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+        )
+        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+        return await client.bzz.createFeedManifest(address, {
+          name: 'manifest',
+        })
+      })
+      expect(hash).toBeDefined()
+    })
+
+    it('uploads data and updates the feed value', async () => {
+      jest.setTimeout(20000)
+      const value = await evalClient(async (client, name) => {
+        const keyPair = Erebos.createKeyPair(
+          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
+        )
+        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+        const manifestHash = await client.bzz.createFeedManifest(address, {
+          name,
+        })
+        const [dataHash, feedMeta] = await Promise.all([
+          client.bzz.uploadFile('hello', { contentType: 'text/plain' }),
+          client.bzz.getFeedMetadata(manifestHash),
+        ])
+        await client.bzz.postFeedValue(
+          keyPair,
+          `0x1b20${dataHash}`,
+          feedMeta.feed,
+        )
+        const res = await client.bzz.download(manifestHash)
+        return await res.text()
+      }, uploadContent)
+      expect(value).toBe('hello')
+    })
   })
 })
