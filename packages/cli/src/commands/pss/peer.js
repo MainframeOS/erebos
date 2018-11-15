@@ -56,8 +56,10 @@ export default class PssPeerCommand extends Command {
       })
 
       sub.subscribe(event => {
-        this.log('\n-> ' + event.msg.toString())
-        r.displayPrompt(true)
+        if (event.key === this.args.key) {
+          this.log('\n-> ' + event.msg.toString())
+          r.displayPrompt(true)
+        }
       })
 
       await new Promise(resolve => {

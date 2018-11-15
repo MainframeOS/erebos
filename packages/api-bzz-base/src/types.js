@@ -60,6 +60,7 @@ export type UploadOptions = SharedOptions & {
 export type FeedOptions = {
   level?: number,
   name?: string,
+  signature?: string,
   time?: number,
   topic?: string,
 }

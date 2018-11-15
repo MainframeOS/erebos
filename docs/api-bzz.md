@@ -116,6 +116,7 @@ type UploadOptions = SharedOptions & {
 type FeedOptions = {
   level?: number,
   name?: string,
+  signature?: string,
   time?: number,
   topic?: string,
 }
