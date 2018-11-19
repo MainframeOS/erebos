@@ -10,7 +10,7 @@ yarn add @erebos/hex
 
 ## API
 
-TODO
+See the [library documentation](../../docs/hex.md).
 
 ## License
 

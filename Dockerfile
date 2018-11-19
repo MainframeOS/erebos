@@ -13,7 +13,7 @@ RUN git clone https://github.com/ethereum/go-ethereum.git
 
 WORKDIR /app/go-ethereum
 
-RUN git fetch origin && git checkout 53eb4e0b0fffdc105fbe9f5eed671b96de6e2ba1 # Feed support
+RUN git fetch origin && git checkout v1.8.18 # Swarm v0.3.6
 
 RUN make geth
 RUN make swarm

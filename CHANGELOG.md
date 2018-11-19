@@ -1,3 +1,10 @@
+## v0.5.0 (2018-11-19)
+
+- [BREAKING CHANGE] The `PssEvent` object emitted by PSS subscriptions now has a [different shape](https://erebos.js.org/docs/api-pss#pssevent).
+- Add support for [Swarm feeds](https://swarm-guide.readthedocs.io/en/latest/usage.html#feeds) - see the updated [Bzz API documentation](https://erebos.js.org/docs/api-bzz).
+- Add the `@erebos/hex` package to interact with hexadecimal-encoded strings - see [the added documentation](https://erebos.js.org/docs/hex) for more details.
+- Add the `pss` and `website` commands to the CLI - see the updated [CLI documentation](https://erebos.js.org/docs/cli).
+
 ## v0.4.x
 
 - Fix `defaultPath` support for uploads in `api-bzz-browser` and `swarm-client`.
