@@ -79,7 +79,11 @@ export const pubKeyToAddress = (pubKey: Object): hexValue => {
 export const signFeedDigest = (digest: Buffer, privKey: Object): hexValue => {
   const bytes = Array.from(digest.values())
   const sig = ec.sign(bytes, privKey, { canonical: true })
-  const signature = [...sig.r.toArray(), ...sig.s.toArray(), sig.recoveryParam]
+  const signature = [
+    ...sig.r.toArray('be', 32),
+    ...sig.s.toArray('be', 32),
+    sig.recoveryParam,
+  ]
   return toHexValue(signature)
 }
 
