@@ -216,6 +216,7 @@ export default class BaseBzz {
   createFeedManifest(
     user: string,
     options?: FeedOptions = {},
+    headers?: Object = {},
   ): Promise<hexValue> {
     const manifest = {
       entries: [
@@ -226,27 +227,37 @@ export default class BaseBzz {
         },
       ],
     }
-    return this.uploadFile(JSON.stringify(manifest)).then(hexValueType)
+    return this.uploadFile(JSON.stringify(manifest), {}, headers).then(
+      hexValueType,
+    )
   }
 
   getFeedMetadata(
     user: string,
     options?: FeedOptions = {},
+    headers?: Object = {},
   ): Promise<FeedMetadata> {
-    return this._fetch(this.getFeedURL(user, options, 'meta')).then(resJSON)
+    const url = this.getFeedURL(user, options, 'meta')
+    return this._fetch(url, { headers }).then(resJSON)
   }
 
-  getFeedValue(user: string, options?: FeedOptions = {}): Promise<*> {
-    return this._fetch(this.getFeedURL(user, options)).then(resOrError)
+  getFeedValue(
+    user: string,
+    options?: FeedOptions = {},
+    headers?: Object = {},
+  ): Promise<*> {
+    const url = this.getFeedURL(user, options)
+    return this._fetch(url, { headers }).then(resOrError)
   }
 
   postFeedValue(
     keyPair: KeyPair,
     data: hexInput,
     options?: FeedOptions = {},
+    headers?: Object = {},
   ): Promise<*> {
     const user = pubKeyToAddress(keyPair.getPublic())
-    return this.getFeedMetadata(user, options)
+    return this.getFeedMetadata(user, options, headers)
       .then(meta => {
         const body = createHex(data).toBuffer()
         const url = this.getFeedURL(user, {
@@ -254,7 +265,7 @@ export default class BaseBzz {
           ...meta.epoch,
           signature: signFeedUpdate(meta, body, keyPair.getPrivate()),
         })
-        return this._fetch(url, { method: 'POST', body })
+        return this._fetch(url, { method: 'POST', body, headers })
       })
       .then(resOrError)
   }

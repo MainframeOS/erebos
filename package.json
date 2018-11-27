@@ -41,7 +41,7 @@
     "flow-copy-source": "^2.0.2",
     "flow-typed": "^2.5.1",
     "jest": "^23.5.0",
-    "jest-fetch-mock": "^1.7.4",
+    "jest-fetch-mock": "^2.0.0",
     "jest-junit": "^5.1.0",
     "jest-puppeteer": "^3.5.1",
     "lerna": "^3.4.3",
