@@ -242,11 +242,7 @@ describe('browser', () => {
           client.bzz.uploadFile('hello', { contentType: 'text/plain' }),
           client.bzz.getFeedMetadata(manifestHash),
         ])
-        await client.bzz.postFeedValue(
-          keyPair,
-          `0x1b20${dataHash}`,
-          feedMeta.feed,
-        )
+        await client.bzz.postFeedValue(keyPair, `0x${dataHash}`, feedMeta.feed)
         const res = await client.bzz.download(manifestHash)
         return await res.text()
       }, uploadContent)

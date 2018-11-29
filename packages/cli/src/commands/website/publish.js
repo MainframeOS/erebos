@@ -38,7 +38,7 @@ export default class WebsitePublishCommand extends Command {
         this.client.bzz.getFeedMetadata(this.flags.hash),
       ])
 
-      await this.client.bzz.postFeedValue(keyPair, `0x1b20${dataHash}`, {
+      await this.client.bzz.postFeedValue(keyPair, `0x${dataHash}`, {
         topic: feedMeta.feed.topic,
       })
       const url = this.client.bzz.getDownloadURL(this.flags.hash, {

@@ -436,7 +436,7 @@ describe('bzz-node', () => {
       bzz.uploadFile('hello', { contentType: 'text/plain' }),
       bzz.getFeedMetadata(manifestHash),
     ])
-    await bzz.postFeedValue(keyPair, `0x1b20${dataHash}`, feedMeta.feed)
+    await bzz.postFeedValue(keyPair, `0x${dataHash}`, feedMeta.feed)
     const res = await bzz.download(manifestHash)
     const value = await res.text()
     expect(value).toBe('hello')

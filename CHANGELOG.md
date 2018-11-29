@@ -1,3 +1,8 @@
+## v0.5.1 (2018-11-29)
+
+- Fix feed digest signature padding.
+- Remove usage of multihash for feed following its [removal in Swarm](https://github.com/ethereum/go-ethereum/pull/18175).
+
 ## v0.5.0 (2018-11-19)
 
 - [BREAKING CHANGE] The `PssEvent` object emitted by PSS subscriptions now has a [different shape](https://erebos.js.org/docs/api-pss#pssevent).
