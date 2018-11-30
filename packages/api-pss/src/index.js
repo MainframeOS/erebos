@@ -87,7 +87,7 @@ export default class Pss {
   }
 
   subscribeTopic(topic: hexValue): Promise<hexValue> {
-    return this._rpc.request('pss_subscribe', ['receive', topic])
+    return this._rpc.request('pss_subscribe', ['receive', topic, false, false])
   }
 
   createSubscription(subscription: hexValue): Observable<PssEvent> {

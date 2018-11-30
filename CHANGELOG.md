@@ -1,3 +1,8 @@
+## v0.5.2 (2018-11-30)
+
+- Fix RPC instance creation.
+- Fix PSS subscription method for Swarm v0.3.7.
+
 ## v0.5.1 (2018-11-29)
 
 - Fix feed digest signature padding.

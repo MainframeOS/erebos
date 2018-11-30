@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "JavaScript client and CLI for Swarm",
+    "tagline": "JavaScript client and CLI for Swarm v0.3.7",
     "docs": {
       "api-bzz": {
         "title": "Bzz API"

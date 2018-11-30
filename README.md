@@ -1,6 +1,6 @@
 # Erebos [![CircleCI](https://img.shields.io/circleci/project/github/MainframeHQ/erebos.svg)](https://circleci.com/gh/MainframeHQ/erebos) [![Gitter](https://badges.gitter.im/MainframeHQ/erebos.svg)](https://gitter.im/MainframeHQ/erebos)
 
-JavaScript client and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/latest/index.html).
+JavaScript client and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/latest/index.html) v0.3.7.
 
 ## Installation
 

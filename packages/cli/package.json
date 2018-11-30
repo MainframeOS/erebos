@@ -1,6 +1,6 @@
 {
   "name": "@erebos/cli",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Ethereum and Swarm command-line interface",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@erebos/hex": "^0.5.0",
-    "@erebos/swarm-node": "^0.5.1",
+    "@erebos/swarm-node": "^0.5.2",
     "@oclif/command": "^1.5.5",
     "@oclif/config": "^1.9.0",
     "@oclif/plugin-help": "^2.1.4",

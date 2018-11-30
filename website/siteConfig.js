@@ -22,7 +22,7 @@
 
 module.exports = {
   title: 'Erebos', // Title for your website.
-  tagline: 'JavaScript client and CLI for Swarm',
+  tagline: 'JavaScript client and CLI for Swarm v0.3.7',
   url: 'https://erebos.js.org', // Your website URL
   baseUrl: '/', // Base URL for your project
   cname: 'erebos.js.org',

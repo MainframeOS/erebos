@@ -8,6 +8,7 @@ To get started using Swarm and Erebos, you will need to be able to connect to a 
 The Swarm team has deployed a HTTP gateway to [swarm-gateways.net/](https://swarm-gateways.net/), but it only supports file storage (Bzz APIs).\
 If you want to use Pss APIs, you should first [install](https://swarm-guide.readthedocs.io/en/latest/installation.html) and [run](https://swarm-guide.readthedocs.io/en/latest/gettingstarted.html) a Swarm node locally.
 
+Make sure the versions of Swarm and Erebos you are using are compatible - there are potential breaking changes between Swarm patch releases (x.y.z) and Erebos minor releases (x.y.0).
 Node.js v10+ is required to use the Node.js APIs and run the CLI.
 
 ## Installation
