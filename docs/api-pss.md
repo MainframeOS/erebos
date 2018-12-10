@@ -30,7 +30,7 @@ Hexadecimal-encoded string prefixed with `0x`.
 
 ```javascript
 type PssEvent = {
-  key: hexValue,
+  key: ?hexValue,
   msg: Hex,
 }
 ```
@@ -47,23 +47,19 @@ Creates a Pss instance with the provided `StreamRPC` instance.
 
 ### .baseAddr()
 
-Calls
-[`pss_baseAddr`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_baseaddr).
+Calls `pss_baseAddr`.
 
 **Returns** `Promise<hexValue>`
 
 ### .getPublicKey()
 
-Calls
-[`pss_getPublicKey`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_getpublickey).
+Calls `pss_getPublicKey`.
 
 **Returns** `Promise<hexValue>`
 
 ### .sendAsym()
 
-Calls
-[`pss_sendAsym`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_sendasym)
-with the provided arguments:
+Calls `pss_sendAsym` with the provided arguments:
 
 **Arguments**
 
@@ -75,9 +71,7 @@ with the provided arguments:
 
 ### .sendSym()
 
-Calls
-[`pss_sendSym`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_sendsym)
-with the provided arguments:
+Calls `pss_sendSym` with the provided arguments:
 
 **Arguments**
 
@@ -87,11 +81,21 @@ with the provided arguments:
 
 **Returns** `Promise<void>`
 
+### .sendRaw()
+
+Calls `pss_sendRaw` with the provided arguments:
+
+**Arguments**
+
+1.  `address: hexValue`: full or partial peer address
+1.  `topic: hexValue`: destination topic
+1.  `message: string | Object | Buffer | Hex`
+
+**Returns** `Promise<void>`
+
 ### .setPeerPublicKey()
 
-Calls
-[`pss_setPeerPublicKey`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_setpeerpublickey)
-with the provided arguments:
+Calls `pss_setPeerPublicKey` with the provided arguments:
 
 **Arguments**
 
@@ -103,9 +107,7 @@ with the provided arguments:
 
 ### .setSymmetricKey()
 
-Calls
-[`pss_setSymmetricKey`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_setsymmetrickey)
-with the provided arguments:
+Calls `pss_setSymmetricKey` with the provided arguments:
 
 **Arguments**
 
@@ -118,9 +120,7 @@ with the provided arguments:
 
 #### .stringToTopic()
 
-Calls
-[`pss_stringToTopic`](https://github.com/ethersphere/go-ethereum/tree/swarm-network-rewrite-syncer/swarm/pss/README.md#pss_stringtotopic)
-with the provided string and returns the generated topic.
+Calls `pss_stringToTopic` with the provided string and returns the generated topic.
 
 **Arguments**
 
