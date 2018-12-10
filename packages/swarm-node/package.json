@@ -4,6 +4,7 @@
   "description": "Swarm client for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
+  "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
   "files": [

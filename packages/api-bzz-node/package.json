@@ -4,6 +4,7 @@
   "description": "Bzz API for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
+  "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
@@ -19,6 +20,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@erebos/api-bzz-base": "^0.5.1",
+    "@types/node-fetch": "^2.1.4",
     "form-data": "^2.3.3",
     "fs-extra": "^7.0.1",
     "node-fetch": "^2.3.0",

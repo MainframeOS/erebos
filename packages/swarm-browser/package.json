@@ -6,6 +6,7 @@
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "browser": "dist/erebos.production.js",
+  "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
