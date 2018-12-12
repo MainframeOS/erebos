@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    branches:
+      ignore:
+        - gh-pages
+
+    docker:
+      - image: circleci/node:10-browsers
+      - image: mainframehq/swarm
+        command: [./start_swarm_node.sh, tmp]
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Setup
+          command: yarn install && yarn bootstrap
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Build and check
+          command: yarn build && yarn lint
+      - run:
+          name: Project tests
+          command: yarn test:ci
+          environment:
+            JEST_JUNIT_OUTPUT: '/tmp/test-reports/jest/results.xml'
+      - store_test_results:
+          path: /tmp/test-reports
