@@ -10,7 +10,8 @@
   "license": "MIT",
   "files": [
     "cjs/*",
-    "esm/*"
+    "esm/*",
+    "types/*"
   ],
   "scripts": {
     "clean": "del cjs esm",
@@ -23,7 +24,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.5.3"
+    "@erebos/api-bzz-base": "^0.5.4"
   },
   "devDependencies": {
     "flow-bin": "^0.88.0"

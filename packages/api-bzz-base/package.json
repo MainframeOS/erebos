@@ -1,6 +1,6 @@
 {
   "name": "@erebos/api-bzz-base",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Base Bzz API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -10,7 +10,8 @@
   "license": "MIT",
   "files": [
     "cjs/*",
-    "esm/*"
+    "esm/*",
+    "types/*"
   ],
   "scripts": {
     "clean": "del cjs esm",

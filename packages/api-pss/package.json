@@ -10,7 +10,8 @@
   "license": "MIT",
   "files": [
     "cjs/*",
-    "esm/*"
+    "esm/*",
+    "types/*"
   ],
   "scripts": {
     "clean": "del cjs esm",

@@ -8,7 +8,8 @@
   "author": "Mainframe",
   "license": "MIT",
   "files": [
-    "lib/*"
+    "lib/*",
+    "types/*"
   ],
   "scripts": {
     "clean": "del lib",
@@ -19,7 +20,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.5.3",
+    "@erebos/api-bzz-base": "^0.5.4",
     "@erebos/api-bzz-node": "^0.5.3",
     "@erebos/api-pss": "^0.5.3",
     "@erebos/client-base": "^0.5.3",

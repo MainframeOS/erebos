@@ -1,6 +1,6 @@
 {
   "name": "erebos-project",
-  "version": "0.5.0",
+  "version": "0.5.4",
   "description": "Ethereum and Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
