@@ -35,7 +35,7 @@
     "@mainframe/rpc-stream": "^0.2.5"
   },
   "devDependencies": {
-    "flow-bin": "^0.87.0",
+    "flow-bin": "^0.88.0",
     "rollup": "^0.67.3",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",

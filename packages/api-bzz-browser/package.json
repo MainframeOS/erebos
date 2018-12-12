@@ -25,6 +25,6 @@
     "@erebos/api-bzz-base": "^0.5.1"
   },
   "devDependencies": {
-    "flow-bin": "^0.87.0"
+    "flow-bin": "^0.88.0"
   }
 }
