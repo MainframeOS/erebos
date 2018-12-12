@@ -109,6 +109,8 @@ erebos pss:key
 
 ### pss:topic
 
+Displays the 4-byte hexadecimal topic for a given string.
+
 **Arguments**
 
 1. topic string

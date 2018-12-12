@@ -16,6 +16,6 @@
     "@erebos/swarm-node": "^0.5.2"
   },
   "devDependencies": {
-    "flow-bin": "^0.87.0"
+    "flow-bin": "^0.88.0"
   }
 }

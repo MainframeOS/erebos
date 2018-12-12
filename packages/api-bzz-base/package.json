@@ -30,6 +30,6 @@
     "js-sha3": "^0.8.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.87.0"
+    "flow-bin": "^0.88.0"
   }
 }
