@@ -22,6 +22,11 @@ export default class Pss {
     topic: hexValue,
     message: Hex | hexInput,
   ): Promise<null>
+  sendRaw(
+    address: hexValue,
+    topic: hexValue,
+    message: Hex | hexInput,
+  ): Promise<null>
   setPeerPublicKey(
     key: hexValue,
     topic: hexValue,
@@ -34,7 +39,13 @@ export default class Pss {
     useForDecryption?: boolean,
   ): Promise<string>
   stringToTopic(str: string): Promise<hexValue>
-  subscribeTopic(topic: hexValue): Promise<hexValue>
+  subscribeTopic(
+    topic: hexValue,
+    handleRawMessages?: boolean,
+  ): Promise<hexValue>
   createSubscription(subscription: hexValue): Observable<PssEvent>
-  createTopicSubscription(topic: hexValue): Promise<Observable<PssEvent>>
+  createTopicSubscription(
+    topic: hexValue,
+    handleRawMessages?: boolean,
+  ): Promise<Observable<PssEvent>>
 }

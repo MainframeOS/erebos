@@ -135,6 +135,7 @@ Calls `pss_subscribe` with the provided topic and returns the subscription handl
 **Arguments**
 
 1.  `topic: hexValue`
+1.  `handleRawMessages?: boolean = false`
 
 **Returns** `Promise<hexValue>`
 
@@ -155,5 +156,6 @@ Shortcut for calling `subscribeTopic()` followed by `createSubscription()`.
 **Arguments**
 
 1.  `topic: hexValue`
+1.  `handleRawMessages?: boolean`
 
 **Returns** `Promise<Observable<PssEvent>>`

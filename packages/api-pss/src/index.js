@@ -143,9 +143,12 @@ export default class Pss {
     })
   }
 
-  createTopicSubscription(topic: hexValue): Promise<Observable<PssEvent>> {
-    return this.subscribeTopic(topic).then(subscription =>
-      this.createSubscription(subscription),
-    )
+  createTopicSubscription(
+    topic: hexValue,
+    handleRawMessages?: boolean,
+  ): Promise<Observable<PssEvent>> {
+    return this.subscribeTopic(topic, handleRawMessages).then(subscription => {
+      return this.createSubscription(subscription)
+    })
   }
 }
