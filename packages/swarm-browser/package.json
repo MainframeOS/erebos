@@ -1,11 +1,12 @@
 {
   "name": "@erebos/swarm-browser",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Swarm client for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "browser": "dist/erebos.production.js",
+  "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
@@ -27,10 +28,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.5.1",
-    "@erebos/api-bzz-browser": "^0.5.1",
-    "@erebos/api-pss": "^0.5.2",
-    "@erebos/client-base": "^0.5.0",
+    "@erebos/api-bzz-base": "^0.5.3",
+    "@erebos/api-bzz-browser": "^0.5.3",
+    "@erebos/api-pss": "^0.5.3",
+    "@erebos/client-base": "^0.5.3",
     "@mainframe/rpc-browser": "^0.2.2",
     "@mainframe/rpc-stream": "^0.2.5"
   },
