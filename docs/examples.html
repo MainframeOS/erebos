@@ -57,7 +57,7 @@ client.bzz
   })
 </code></pre>
 <p><a href="/docs/api-bzz">File storage APIs reference</a></p>
-<h2><a class="anchor" aria-hidden="true" id="communication-between-two-nodes"></a><a href="#communication-between-two-nodes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Communication between two nodes</h2>
+<h2><a class="anchor" aria-hidden="true" id="communication-between-two-nodes-using-asymmetric-encryption"></a><a href="#communication-between-two-nodes-using-asymmetric-encryption" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Communication between two nodes using asymmetric encryption</h2>
 <pre><code class="hljs css language-javascript"><span class="hljs-keyword">import</span> { SwarmClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/swarm-node'</span>
 
 <span class="hljs-keyword">const</span> run = <span class="hljs-keyword">async</span> () =&gt; {
@@ -91,7 +91,36 @@ client.bzz
 run().catch(<span class="hljs-built_in">console</span>.error)
 </code></pre>
 <p><a href="/docs/api-pss">Messaging APIs reference</a></p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started"><span class="arrow-prev">← </span><span>Getting started</span></a><a class="docs-next button" href="/docs/swarm-client"><span>Swarm client</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#file-storage-using-the-standalone-browser-library">File storage using the standalone browser library</a></li><li><a href="#file-storage-using-a-local-swarm-node">File storage using a local Swarm node</a></li><li><a href="#communication-between-two-nodes">Communication between two nodes</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/getting-started.html">Getting Started</a><a href="/docs/en/swarm-client.html">API Reference</a><a href="/docs/en/cli.html">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://gitter.im/ethereum/swarm" target="_blank" rel="noreferrer noopener">Gitter chat</a></div></section><section class="copyright">Copyright © 2018 Mainframe</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+<h2><a class="anchor" aria-hidden="true" id="communication-between-two-nodes-without-encryption"></a><a href="#communication-between-two-nodes-without-encryption" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Communication between two nodes without encryption</h2>
+<pre><code class="hljs css language-javascript"><span class="hljs-keyword">import</span> { SwarmClient } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/swarm-node'</span>
+
+<span class="hljs-keyword">const</span> run = <span class="hljs-keyword">async</span> () =&gt; {
+  <span class="hljs-comment">// Create PSS clients over WebSocket</span>
+  <span class="hljs-keyword">const</span> alice = <span class="hljs-keyword">new</span> SwarmClient({ <span class="hljs-attr">pss</span>: <span class="hljs-string">'ws://localhost:8501'</span> })
+  <span class="hljs-keyword">const</span> bob = <span class="hljs-keyword">new</span> SwarmClient({ <span class="hljs-attr">pss</span>: <span class="hljs-string">'ws://localhost:8502'</span> })
+
+  <span class="hljs-comment">// Retrieve Alice's node address and create the topic</span>
+  <span class="hljs-keyword">const</span> [address, topic] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
+    alice.pss.baseAddr(),
+    alice.pss.stringToTopic(<span class="hljs-string">'PSS rocks'</span>),
+  ])
+
+  <span class="hljs-comment">// Make Alice subscribe to the created topic</span>
+  <span class="hljs-keyword">const</span> subscription = <span class="hljs-keyword">await</span> alice.pss.subscribeTopic(topic, <span class="hljs-literal">true</span>)
+
+  <span class="hljs-comment">// Actually subscribe to the messages stream</span>
+  alice.pss.createSubscription(subscription).subscribe(<span class="hljs-function"><span class="hljs-params">payload</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`received message: <span class="hljs-subst">${payload.msg.toString()}</span>`</span>)
+  })
+
+  <span class="hljs-comment">// Send message to Alice</span>
+  bob.pss.sendRaw(address, topic, <span class="hljs-string">'hello world'</span>)
+}
+
+run().catch(<span class="hljs-built_in">console</span>.error)
+</code></pre>
+<p><a href="/docs/api-pss">Messaging APIs reference</a></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/getting-started"><span class="arrow-prev">← </span><span>Getting started</span></a><a class="docs-next button" href="/docs/swarm-client"><span>Swarm client</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#file-storage-using-the-standalone-browser-library">File storage using the standalone browser library</a></li><li><a href="#file-storage-using-a-local-swarm-node">File storage using a local Swarm node</a></li><li><a href="#communication-between-two-nodes-using-asymmetric-encryption">Communication between two nodes using asymmetric encryption</a></li><li><a href="#communication-between-two-nodes-without-encryption">Communication between two nodes without encryption</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/getting-started.html">Getting Started</a><a href="/docs/en/swarm-client.html">API Reference</a><a href="/docs/en/cli.html">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://gitter.im/ethereum/swarm" target="_blank" rel="noreferrer noopener">Gitter chat</a></div></section><section class="copyright">Copyright © 2018 Mainframe</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
