@@ -12,7 +12,7 @@ import { Observable } from 'rxjs'
 const EMPTY_HEX = hexValueType('0x')
 
 export type PssEvent = {
-  key: hexValue,
+  key: ?hexValue,
   msg: Hex,
 }
 
@@ -60,6 +60,18 @@ export default class Pss {
     ])
   }
 
+  sendRaw(
+    address: hexValue = EMPTY_HEX,
+    topic: hexValue,
+    message: Hex | hexInput,
+  ): Promise<null> {
+    return this._rpc.request('pss_sendRaw', [
+      address,
+      topic,
+      createHex(message).value,
+    ])
+  }
+
   setPeerPublicKey(
     key: hexValue,
     topic: hexValue,
@@ -86,8 +98,16 @@ export default class Pss {
     return this._rpc.request('pss_stringToTopic', [str])
   }
 
-  subscribeTopic(topic: hexValue): Promise<hexValue> {
-    return this._rpc.request('pss_subscribe', ['receive', topic, false, false])
+  subscribeTopic(
+    topic: hexValue,
+    handleRawMessages?: boolean = false,
+  ): Promise<hexValue> {
+    return this._rpc.request('pss_subscribe', [
+      'receive',
+      topic,
+      handleRawMessages,
+      false,
+    ])
   }
 
   createSubscription(subscription: hexValue): Observable<PssEvent> {
@@ -103,7 +123,7 @@ export default class Pss {
             if (result != null) {
               try {
                 observer.next({
-                  key: result.Key,
+                  key: result.Key && result.Key.length ? result.Key : undefined,
                   msg: createHex(result.Msg),
                 })
               } catch (err) {
