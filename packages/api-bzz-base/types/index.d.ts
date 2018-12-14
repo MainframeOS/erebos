@@ -133,7 +133,7 @@ export default abstract class BaseBzz<T> {
     headers?: Object,
   ): Promise<T>
   postFeedValue(
-    keyPair: KeyPair,
+    keyPair: elliptic.ec.KeyPair,
     data: hexInput,
     options?: FeedOptions,
     headers?: Object,
