@@ -1,6 +1,6 @@
 {
   "name": "@erebos/swarm-node",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Swarm client for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",

@@ -1,11 +1,11 @@
-import Bzz from '@erebos/api-bzz-browser'
+import Bzz from '@erebos/api-bzz-node'
 import Pss, { StreamRPC } from '@erebos/api-pss'
 import BaseClient, { ClientConfig } from '@erebos/client-base'
 
 export { createKeyPair, pubKeyToAddress } from '@erebos/api-bzz-base'
 export { default as createHex, Hex } from '@erebos/hex'
-export const BzzAPI = Bzz
-export const PssAPI = Pss
+export { default as BzzAPI } from '@erebos/api-bzz-node'
+export { default as PssAPI } from '@erebos/api-pss'
 
 export function createRPC(endpoint: string): StreamRPC
 
