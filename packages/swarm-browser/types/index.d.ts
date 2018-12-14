@@ -14,7 +14,7 @@ export interface SwarmConfig extends ClientConfig {
   pss?: string | Pss
 }
 
-export default class SwarmClient extends BaseClient {
+export class SwarmClient extends BaseClient {
   constructor(config: string | SwarmConfig)
   bzz: Bzz
   pss: Pss
