@@ -8,7 +8,7 @@ import createHex, {
 import elliptic from 'elliptic'
 import sha3 from 'js-sha3'
 
-import type { FeedMetadata, FeedOptions, KeyPair } from './types'
+import type { FeedMetadata, FeedParams, KeyPair } from './types'
 
 const FEED_TOPIC_LENGTH = 32
 const FEED_USER_LENGTH = 20
@@ -57,13 +57,13 @@ export const createKeyPair = (priv?: ?string, enc?: string): KeyPair => {
   return priv ? ec.keyFromPrivate(priv, enc) : ec.genKeyPair()
 }
 
-export const getFeedTopic = (options: FeedOptions): hexValue => {
-  const topicHex = createHex(options.topic || Buffer.alloc(32))
-  if (options.name == null) {
+export const getFeedTopic = (params: FeedParams): hexValue => {
+  const topicHex = createHex(params.topic || Buffer.alloc(32))
+  if (params.name == null) {
     return topicHex.value
   }
 
-  const name = Buffer.from(options.name)
+  const name = Buffer.from(params.name)
   const topic = topicHex.toBuffer()
   const bytes = Array(32)
     .fill()

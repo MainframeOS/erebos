@@ -28,7 +28,8 @@
     "@types/bn.js": "^4.11.3",
     "@types/elliptic": "^6.4.0",
     "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix",
-    "js-sha3": "^0.8.0"
+    "js-sha3": "^0.8.0",
+    "rxjs": "^6.3.3"
   },
   "devDependencies": {
     "flow-bin": "^0.88.0"

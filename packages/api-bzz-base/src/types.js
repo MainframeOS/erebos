@@ -42,25 +42,42 @@ export type FeedMetadata = {
 
 export type BzzMode = 'default' | 'immutable' | 'raw'
 
-export type SharedOptions = {
+export type FetchOptions = {
+  headers?: Object,
+  timeout?: ?number,
+}
+
+export type PollOptions = FetchOptions & {
+  errorWhenNotFound?: boolean,
+  interval: number,
+}
+
+export type FileOptions = {
   contentType?: string,
   path?: string,
 }
 
-export type DownloadOptions = SharedOptions & {
-  mode?: BzzMode,
-}
+export type DownloadOptions = FetchOptions &
+  FileOptions & {
+    mode?: BzzMode,
+  }
 
-export type UploadOptions = SharedOptions & {
-  defaultPath?: string,
-  encrypt?: boolean,
-  manifestHash?: hexValue | string,
-}
+export type UploadOptions = FetchOptions &
+  FileOptions & {
+    defaultPath?: string,
+    encrypt?: boolean,
+    manifestHash?: hexValue | string,
+  }
 
-export type FeedOptions = {
+export type FeedParams = {
   level?: number,
   name?: string,
   signature?: string,
   time?: number,
   topic?: string,
+}
+
+export type BzzConfig = {
+  timeout?: number,
+  url: string,
 }

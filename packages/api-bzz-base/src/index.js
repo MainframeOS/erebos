@@ -6,16 +6,21 @@ import createHex, {
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
+import { interval, pipe } from 'rxjs'
+import { flatMap } from 'rxjs/operators'
 
 import { getFeedTopic, pubKeyToAddress, signFeedUpdate } from './feed'
 import type {
+  BzzConfig,
   BzzMode,
   DirectoryData,
   DownloadOptions,
   FeedMetadata,
-  FeedOptions,
+  FeedParams,
+  FetchOptions,
   KeyPair,
   ListResult,
+  PollOptions,
   UploadOptions,
 } from './types'
 
@@ -53,11 +58,40 @@ export const resJSON = (res: *) => resOrError(res).then(r => r.json())
 export const resText = (res: *) => resOrError(res).then(r => r.text())
 
 export default class BaseBzz {
+  _defaultTimeout: number
   _fetch: *
   _url: string
 
-  constructor(url: string) {
+  constructor(config: BzzConfig) {
+    const { url, timeout } = config
+    this.__defaultTimeout = timeout ? timeout : 0
     this._url = new URL(url).toString()
+  }
+
+  _fetchTimeout(
+    url: string,
+    options: FetchOptions,
+    params?: Object = {},
+  ): Promise<*> {
+    const timeout = options.timeout ? options.timeout : this._defaultTimeout
+    if (options.headers != null) {
+      params.headers = options.headers
+    }
+
+    if (timeout === 0) {
+      // No timeout
+      return this._fetch(url, params)
+    }
+
+    return new Promise((resolve, reject) => {
+      const timeoutID = setTimeout(() => {
+        reject(new Error('Timeout'))
+      }, timeout)
+      this._fetch(url, params).then(res => {
+        clearTimeout(timeoutID)
+        resolve(res)
+      })
+    })
   }
 
   getDownloadURL(
@@ -96,17 +130,18 @@ export default class BaseBzz {
 
   getFeedURL(
     userOrHash: string,
-    options?: FeedOptions = {},
+    params?: FeedParams = {},
     flag?: 'meta',
   ): string {
     let url = this._url + BZZ_MODE_PROTOCOLS.feed
-    let params = []
+    let query = []
 
     if (isHexValue(userOrHash)) {
       // user
-      params = Object.keys(options).reduce(
+      const { user: _user, ...otherParams } = params // Use provided user
+      query = Object.keys(otherParams).reduce(
         (acc, key) => {
-          const value = options[key]
+          const value = otherParams[key]
           if (value != null) {
             acc.push(`${key}=${value}`)
           }
@@ -120,75 +155,67 @@ export default class BaseBzz {
     }
 
     if (flag != null) {
-      params.push(`${flag}=1`)
+      query.push(`${flag}=1`)
     }
 
-    return `${url}?${params.join('&')}`
+    return `${url}?${query.join('&')}`
   }
 
-  hash(domain: string, headers?: Object = {}): Promise<hexValue> {
-    return this._fetch(`${this._url}bzz-hash:/${domain}`, { headers }).then(
+  hash(domain: string, options?: FetchOptions = {}): Promise<hexValue> {
+    return this._fetchTimeout(`${this._url}bzz-hash:/${domain}`, options).then(
       resText,
     )
   }
 
-  list(
-    hash: string,
-    options?: DownloadOptions = {},
-    headers?: Object = {},
-  ): Promise<ListResult> {
+  list(hash: string, options?: DownloadOptions = {}): Promise<ListResult> {
     let url = `${this._url}bzz-list:/${hash}`
     if (options.path != null) {
       url += `/${options.path}`
     }
-    return this._fetch(url, { headers }).then(resJSON)
+    return this._fetchTimeout(url, options).then(resJSON)
   }
 
-  _download(
-    hash: string,
-    options: DownloadOptions,
-    headers?: Object = {},
-  ): Promise<*> {
+  _download(hash: string, options: DownloadOptions): Promise<*> {
     const url = this.getDownloadURL(hash, options)
-    return this._fetch(url, { headers }).then(resOrError)
+    return this._fetchTimeout(url, options).then(resOrError)
   }
 
-  download(
-    hash: string,
-    options?: DownloadOptions = {},
-    headers?: Object,
-  ): Promise<*> {
-    return this._download(hash, options, headers)
+  download(hash: string, options?: DownloadOptions = {}): Promise<*> {
+    return this._download(hash, options)
   }
 
   _upload(
     body: mixed,
     options: UploadOptions,
-    headers?: Object = {},
     raw?: boolean = false,
   ): Promise<hexValue> {
     const url = this.getUploadURL(options, raw)
-    return this._fetch(url, { body, headers, method: 'POST' }).then(resText)
+    return this._fetchTimeout(url, options, { body, method: 'POST' }).then(
+      resText,
+    )
   }
 
   uploadFile(
     data: string | Buffer,
     options?: UploadOptions = {},
-    headers?: Object = {},
   ): Promise<hexValue> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     const raw = options.contentType == null
-    headers['content-length'] = body.length
-    if (headers['content-type'] == null && !raw) {
-      headers['content-type'] = options.contentType
+
+    if (options.headers == null) {
+      options.headers = {}
     }
-    return this._upload(body, options, headers, raw)
+    options.headers['content-length'] = body.length
+    if (options.headers['content-type'] == null && !raw) {
+      options.headers['content-type'] = options.contentType
+    }
+
+    return this._upload(body, options, raw)
   }
 
   uploadDirectory(
     _directory: DirectoryData,
     _options?: UploadOptions,
-    _headers?: Object,
   ): Promise<hexValue> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
@@ -196,77 +223,115 @@ export default class BaseBzz {
   upload(
     data: string | Buffer | DirectoryData,
     options?: UploadOptions = {},
-    headers?: Object = {},
   ): Promise<hexValue> {
     return typeof data === 'string' || Buffer.isBuffer(data)
       ? // $FlowFixMe: Flow doesn't understand type refinement with Buffer check
-        this.uploadFile(data, options, headers)
-      : this.uploadDirectory(data, options, headers)
+        this.uploadFile(data, options)
+      : this.uploadDirectory(data, options)
   }
 
   deleteResource(
     hash: string,
     path: string,
-    headers?: Object = {},
+    options?: FetchOptions = {},
   ): Promise<hexValue> {
     const url = this.getUploadURL({ manifestHash: hash, path })
-    return this._fetch(url, { method: 'DELETE', headers }).then(resText)
+    return this._fetchTimeout(url, options, { method: 'DELETE' }).then(resText)
   }
 
   createFeedManifest(
     user: string,
-    options?: FeedOptions = {},
-    headers?: Object = {},
+    params?: FeedParams = {},
+    options?: FetchOptions = {},
   ): Promise<hexValue> {
     const manifest = {
       entries: [
         {
           contentType: 'application/bzz-feed',
           mod_time: '0001-01-01T00:00:00Z',
-          feed: { topic: getFeedTopic(options), user },
+          feed: { topic: getFeedTopic(params), user },
         },
       ],
     }
-    return this.uploadFile(JSON.stringify(manifest), {}, headers).then(
-      hexValueType,
-    )
+    return this.uploadFile(JSON.stringify(manifest), options).then(hexValueType)
   }
 
   getFeedMetadata(
     user: string,
-    options?: FeedOptions = {},
-    headers?: Object = {},
+    params?: FeedParams = {},
+    options?: FetchOptions = {},
   ): Promise<FeedMetadata> {
-    const url = this.getFeedURL(user, options, 'meta')
-    return this._fetch(url, { headers }).then(resJSON)
+    const url = this.getFeedURL(user, params, 'meta')
+    return this._fetchTimeout(url, options).then(resJSON)
   }
 
   getFeedValue(
     user: string,
-    options?: FeedOptions = {},
-    headers?: Object = {},
+    params?: FeedParams = {},
+    options?: FetchOptions = {},
   ): Promise<*> {
-    const url = this.getFeedURL(user, options)
-    return this._fetch(url, { headers }).then(resOrError)
+    const url = this.getFeedURL(user, params)
+    return this._fetchTimeout(url, options).then(resOrError)
+  }
+
+  pollFeedValue(
+    user: string,
+    params?: FeedParams = {},
+    options: PollOptions = {},
+  ): Observable<*> {
+    if (options.errorWhenNotFound) {
+      return pipe(
+        interval(options.interval),
+        flatMap(() => this.getFeedValue(user, params, options)),
+      )
+    }
+
+    const url = this.getFeedURL(user, params)
+    return pipe(
+      interval(options.interval),
+      flatMap(async () => {
+        const res = await this._fetchTimeout(url, options)
+        if (res.status === 404) {
+          return null
+        }
+        if (res.ok) {
+          return res
+        }
+        return new HTTPError(res.status, res.statusText)
+      }),
+    )
+  }
+
+  postSignedFeedValue(
+    user: string,
+    body: Buffer,
+    metadata: FeedMetadata,
+    options?: FetchOptions = {},
+  ): Promise<*> {
+    const url = this.getFeedURL(user, metadata)
+    return this._fetchTimeout(url, options, { method: 'POST', body }).then(
+      resOrError,
+    )
   }
 
   postFeedValue(
     keyPair: KeyPair,
     data: hexInput,
-    options?: FeedOptions = {},
-    headers?: Object = {},
+    params?: FeedParams = {},
+    options?: FetchOptions = {},
+    maybeMetadata?: FeedMetadata,
   ): Promise<*> {
     const user = pubKeyToAddress(keyPair.getPublic())
-    return this.getFeedMetadata(user, options, headers)
-      .then(meta => {
-        const body = createHex(data).toBuffer()
-        const url = this.getFeedURL(user, {
-          ...meta.feed,
-          ...meta.epoch,
-          signature: signFeedUpdate(meta, body, keyPair.getPrivate()),
-        })
-        return this._fetch(url, { method: 'POST', body, headers })
+    const update = meta => {
+      const body = createHex(data).toBuffer()
+      return this.postSignedFeedValue(user, body, {
+        ...meta.feed,
+        ...meta.epoch,
+        signature: signFeedUpdate(meta, body, keyPair.getPrivate()),
       })
-      .then(resOrError)
+    }
+    return maybeMetadata
+      ? update(maybeMetadata)
+      : this.getFeedMetadata(user, params, options).then(update)
   }
 }
