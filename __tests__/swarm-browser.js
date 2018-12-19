@@ -3,32 +3,57 @@
 
 import { resolve } from 'path'
 
+import { pubKeyToAddress } from '../packages/keccak256'
+import { createKeyPair, sign } from '../packages/secp256k1'
+
 describe('browser', () => {
   let evalClient
+  let feedAddress
   let uploadContent
 
-  beforeEach(() => {
-    uploadContent = Math.random()
-      .toString(36)
-      .slice(2)
-  })
-
   beforeAll(async () => {
+    page.on('console', msg => {
+      for (let i = 0; i < msg.args().length; ++i) {
+        /* eslint-disable-next-line no-console */
+        console.log(`${i}: ${msg.args()[i]}`)
+      }
+    })
+
     await page.addScriptTag({
       path: resolve(
         __dirname,
         '../packages/swarm-browser/dist/erebos.development.js',
       ),
     })
-    const clientHandle = await page.evaluateHandle(
-      () => new Erebos.SwarmClient('http://localhost:8500'),
+
+    const keyPair = createKeyPair()
+    feedAddress = pubKeyToAddress(
+      keyPair
+        .getPublic()
+        .encode()
+        .slice(1),
     )
-    page.on('console', msg => {
-      for (let i = 0; i < msg.args().length; ++i)
-        /* eslint-disable-next-line no-console */
-        console.log(`${i}: ${msg.args()[i]}`)
+
+    await page.exposeFunction('signFeedDigest', digest => {
+      return sign(digest, keyPair.getPrivate())
     })
+
+    const clientHandle = await page.evaluateHandle(() => {
+      return new Erebos.SwarmClient({
+        bzz: {
+          signFeedDigest: window.signFeedDigest,
+          url: 'http://localhost:8500',
+        },
+      })
+    })
+
     evalClient = (exec, ...args) => page.evaluate(exec, clientHandle, ...args)
+  })
+
+  beforeEach(() => {
+    uploadContent = Math.random()
+      .toString(36)
+      .slice(2)
   })
 
   describe('bzz', () => {
@@ -201,51 +226,48 @@ describe('browser', () => {
     })
 
     it('supports feeds posting and getting', async () => {
+      jest.setTimeout(20000)
       const data = { test: uploadContent }
-      const value = await evalClient(async (client, data) => {
-        const options = { name: data.uploadContent }
-        const keyPair = Erebos.createKeyPair(
-          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-        )
-        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
-        await client.bzz.postFeedValue(keyPair, data, options)
-        const res = await client.bzz.getFeedValue(address, options)
-        return await res.json()
-      }, data)
+      const value = await evalClient(
+        async (client, address, data) => {
+          const options = { name: data.uploadContent }
+          await client.bzz.updateFeedValue(address, data, options)
+          const res = await client.bzz.getFeedValue(address, options)
+          return await res.json()
+        },
+        feedAddress,
+        data,
+      )
       expect(value).toEqual(data)
     })
 
     it('creates a feed manifest', async () => {
-      const hash = await evalClient(async client => {
-        const keyPair = Erebos.createKeyPair(
-          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-        )
-        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
+      const hash = await evalClient(async (client, address) => {
         return await client.bzz.createFeedManifest(address, {
           name: 'manifest',
         })
-      })
+      }, feedAddress)
       expect(hash).toBeDefined()
     })
 
     it('uploads data and updates the feed value', async () => {
       jest.setTimeout(20000)
-      const value = await evalClient(async (client, name) => {
-        const keyPair = Erebos.createKeyPair(
-          'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-        )
-        const address = Erebos.pubKeyToAddress(keyPair.getPublic())
-        const manifestHash = await client.bzz.createFeedManifest(address, {
-          name,
-        })
-        const [dataHash, feedMeta] = await Promise.all([
-          client.bzz.uploadFile('hello', { contentType: 'text/plain' }),
-          client.bzz.getFeedMetadata(manifestHash),
-        ])
-        await client.bzz.postFeedValue(keyPair, `0x${dataHash}`, feedMeta.feed)
-        const res = await client.bzz.download(manifestHash)
-        return await res.text()
-      }, uploadContent)
+      const value = await evalClient(
+        async (client, address, name) => {
+          const manifestHash = await client.bzz.createFeedManifest(address, {
+            name,
+          })
+          const [dataHash, feedMeta] = await Promise.all([
+            client.bzz.uploadFile('hello', { contentType: 'text/plain' }),
+            client.bzz.getFeedMetadata(manifestHash),
+          ])
+          await client.bzz.postFeedValue(address, `0x${dataHash}`, feedMeta)
+          const res = await client.bzz.download(manifestHash)
+          return await res.text()
+        },
+        feedAddress,
+        uploadContent,
+      )
       expect(value).toBe('hello')
     })
   })

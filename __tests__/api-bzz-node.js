@@ -7,12 +7,25 @@ import path from 'path'
 import fs from 'fs-extra'
 import tar from 'tar-stream'
 
-import { createKeyPair, pubKeyToAddress } from '../packages/api-bzz-base'
 import Bzz from '../packages/api-bzz-node'
+import { pubKeyToAddress } from '../packages/keccak256'
+import { createKeyPair, sign } from '../packages/secp256k1'
 
-describe('bzz-node', () => {
+describe('api-bzz-node', () => {
   const TEMP_DIR = path.join(os.tmpdir(), 'erebos-test-temp')
-  const bzz = new Bzz('http://localhost:8500/')
+
+  const keyPair = createKeyPair()
+  const address = pubKeyToAddress(
+    keyPair
+      .getPublic()
+      .encode()
+      .slice(1),
+  )
+
+  const bzz = new Bzz({
+    signFeedDigest: async digest => sign(digest, keyPair.getPrivate()),
+    url: 'http://localhost:8500/',
+  })
 
   const downloadRawEntries = async entries => {
     return await Promise.all(
@@ -403,32 +416,20 @@ describe('bzz-node', () => {
   })
 
   it('supports feeds posting and getting', async () => {
-    const keyPair = createKeyPair(
-      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-    )
-    const address = pubKeyToAddress(keyPair.getPublic())
     const data = { test: uploadContent }
-    await bzz.postFeedValue(keyPair, data, { name: uploadContent })
+    await bzz.updateFeedValue(address, data, { name: uploadContent })
     const res = await bzz.getFeedValue(address, { name: uploadContent })
     const value = await res.json()
     expect(value).toEqual(data)
   })
 
   it('creates a feed manifest', async () => {
-    const keyPair = createKeyPair(
-      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-    )
-    const address = pubKeyToAddress(keyPair.getPublic())
     const hash = await bzz.createFeedManifest(address, { name: 'manifest' })
     expect(hash).toBeDefined()
   })
 
   it('uploads data and updates the feed value', async () => {
     jest.setTimeout(20000)
-    const keyPair = createKeyPair(
-      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-    )
-    const address = pubKeyToAddress(keyPair.getPublic())
     const manifestHash = await bzz.createFeedManifest(address, {
       name: uploadContent,
     })
@@ -436,7 +437,7 @@ describe('bzz-node', () => {
       bzz.uploadFile('hello', { contentType: 'text/plain' }),
       bzz.getFeedMetadata(manifestHash),
     ])
-    await bzz.postFeedValue(keyPair, `0x${dataHash}`, feedMeta.feed)
+    await bzz.postFeedValue(address, `0x${dataHash}`, feedMeta)
     const res = await bzz.download(manifestHash)
     const value = await res.text()
     expect(value).toBe('hello')

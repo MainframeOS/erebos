@@ -1,7 +1,7 @@
 {
-  "name": "@erebos/api-bzz-browser",
-  "version": "0.5.3",
-  "description": "Bzz API for browser",
+  "name": "@erebos/secp256k1",
+  "version": "0.6.0",
+  "description": "secp256k1 utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
@@ -24,7 +24,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.5.4"
+    "@types/bn.js": "^4.11.3",
+    "@types/elliptic": "^6.4.0",
+    "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix"
   },
   "devDependencies": {
     "flow-bin": "^0.89.0"

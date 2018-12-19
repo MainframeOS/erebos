@@ -8,9 +8,9 @@ import BaseBzz, {
   resText,
 } from '../packages/api-bzz-base'
 
-describe('bzz-base', () => {
+describe('api-bzz-base', () => {
   const TEST_URL = 'https://example.com/swarm-gateways/'
-  const bzz = new BaseBzz(TEST_URL)
+  const bzz = new BaseBzz({ url: TEST_URL })
   bzz._fetch = fetch // Injected by extending class
 
   beforeEach(() => {
@@ -171,11 +171,10 @@ describe('bzz-base', () => {
 
     it('_download() performs the request based on the given parameters and returns the response or error', async () => {
       fetch.mockResponseOnce('OK')
-      const res = await bzz._download(
-        'test',
-        { mode: 'raw' },
-        { accept: 'application/json' },
-      )
+      const res = await bzz._download('test', {
+        headers: { accept: 'application/json' },
+        mode: 'raw',
+      })
       expect(res.body).toBe('OK')
       const [fetchUrl, { headers }] = fetch.mock.calls[0]
       expect(fetchUrl).toBe(`${TEST_URL}bzz-raw:/test`)
@@ -201,8 +200,7 @@ describe('bzz-base', () => {
       fetch.mockResponseOnce('5678')
       const hash = await bzz._upload(
         'test',
-        { manifestHash: '1234' },
-        { 'content-length': 4 },
+        { headers: { 'content-length': 4 }, manifestHash: '1234' },
         true,
       )
       expect(hash).toBe('5678')

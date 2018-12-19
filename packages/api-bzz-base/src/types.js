@@ -1,9 +1,6 @@
 // @flow
 
 import type { hexValue } from '@erebos/hex'
-import type EllipticKeyPair from 'elliptic/lib/elliptic/ec/key'
-
-export type KeyPair = EllipticKeyPair
 
 export type DirectoryData = {
   [path: string]: { data: string | Buffer, contentType: string, size?: number },
@@ -77,7 +74,13 @@ export type FeedParams = {
   topic?: string,
 }
 
+export type SignFeedDigestFunc = (
+  digest: Array<number>,
+  params?: any,
+) => Promise<Array<number>>
+
 export type BzzConfig = {
+  signFeedDigest?: SignFeedDigestFunc,
   timeout?: number,
   url: string,
 }

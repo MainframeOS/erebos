@@ -2,6 +2,7 @@
 /* eslint-env browser */
 
 import BaseBzz, {
+  type BzzConfig,
   type DirectoryData,
   type UploadOptions,
 } from '@erebos/api-bzz-base'
@@ -10,15 +11,15 @@ import type { hexValue } from '@erebos/hex'
 export type * from '@erebos/api-bzz-base'
 
 export default class Bzz extends BaseBzz {
-  constructor(url: string) {
-    super(url)
+  constructor(config: BzzConfig) {
+    const { url, ...cfg } = config
+    super({ ...cfg, url: new URL(url).href })
     this._fetch = window.fetch.bind(window)
   }
 
   uploadDirectory(
     directory: DirectoryData,
     options?: UploadOptions = {},
-    headers?: Object = {},
   ): Promise<hexValue> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
@@ -34,6 +35,6 @@ export default class Bzz extends BaseBzz {
         form.append('', new Blob([file.data], { type: file.contentType }), '')
       }
     }
-    return this._upload(form, options, headers)
+    return this._upload(form, options)
   }
 }

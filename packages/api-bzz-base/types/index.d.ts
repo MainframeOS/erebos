@@ -1,6 +1,4 @@
 import { hexInput, hexValue } from '@erebos/hex'
-import BN = require('bn.js')
-import elliptic = require('elliptic')
 
 export interface DirectoryData {
   [path: string]: { data: string | Buffer; contentType: string; size?: number }
@@ -64,22 +62,9 @@ export interface FeedOptions {
 
 export function createFeedDigest(meta: FeedMetadata, data: hexInput): Buffer
 
-export function createKeyPair(priv?: string, enc?: string): elliptic.ec.KeyPair
-
 export function getFeedTopic(options: FeedOptions): hexValue
 
 export function pubKeyToAddress(pubKey: any): hexValue // pubKey type missing in elliptic definition
-
-export function signFeedDigest(
-  digest: Buffer,
-  privKey: Buffer | BN | string,
-): hexValue
-
-export function signFeedUpdate(
-  meta: FeedMetadata,
-  data: hexInput,
-  privKey: Buffer | BN | string,
-): hexValue
 
 export class HTTPError extends Error {
   status: number

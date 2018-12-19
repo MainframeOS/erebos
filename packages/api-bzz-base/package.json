@@ -25,13 +25,9 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@erebos/hex": "^0.5.3",
-    "@types/bn.js": "^4.11.3",
-    "@types/elliptic": "^6.4.0",
-    "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix",
-    "js-sha3": "^0.8.0",
-    "rxjs": "^6.3.3"
+    "@erebos/keccak256": "^0.6.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.88.0"
+    "flow-bin": "^0.89.0"
   }
 }

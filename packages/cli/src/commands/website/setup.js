@@ -1,6 +1,7 @@
 // @flow
 
-import { createKeyPair, pubKeyToAddress } from '@erebos/swarm-node'
+import { pubKeyToAddress } from '@erebos/keccak256'
+import { createKeyPair } from '@erebos/secp256k1'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'

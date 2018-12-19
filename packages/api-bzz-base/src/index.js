@@ -6,10 +6,10 @@ import createHex, {
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
-import { interval, pipe } from 'rxjs'
-import { flatMap } from 'rxjs/operators'
+import { interval, type Observable } from 'rxjs'
+import { map } from 'rxjs/operators'
 
-import { getFeedTopic, pubKeyToAddress, signFeedUpdate } from './feed'
+import { bytesToHexValue, createFeedDigest, getFeedTopic } from './feed'
 import type {
   BzzConfig,
   BzzMode,
@@ -18,9 +18,9 @@ import type {
   FeedMetadata,
   FeedParams,
   FetchOptions,
-  KeyPair,
   ListResult,
   PollOptions,
+  SignFeedDigestFunc,
   UploadOptions,
 } from './types'
 
@@ -57,15 +57,21 @@ export const resJSON = (res: *) => resOrError(res).then(r => r.json())
 
 export const resText = (res: *) => resOrError(res).then(r => r.text())
 
+const defaultSignFeedDigest = () => {
+  return Promise.reject(new Error('Missing `signFeedDigest()` function'))
+}
+
 export default class BaseBzz {
   _defaultTimeout: number
   _fetch: *
+  _signDigest: SignFeedDigestFunc
   _url: string
 
   constructor(config: BzzConfig) {
     const { url, timeout } = config
-    this.__defaultTimeout = timeout ? timeout : 0
-    this._url = new URL(url).toString()
+    this._defaultTimeout = timeout ? timeout : 0
+    this._signDigest = config.signFeedDigest || defaultSignFeedDigest
+    this._url = url
   }
 
   _fetchTimeout(
@@ -92,6 +98,10 @@ export default class BaseBzz {
         resolve(res)
       })
     })
+  }
+
+  signFeedDigest(digest: Array<number>, params?: any): Promise<hexValue> {
+    return this._signDigest(digest, params).then(bytesToHexValue)
   }
 
   getDownloadURL(
@@ -138,10 +148,9 @@ export default class BaseBzz {
 
     if (isHexValue(userOrHash)) {
       // user
-      const { user: _user, ...otherParams } = params // Use provided user
-      query = Object.keys(otherParams).reduce(
+      query = Object.keys(params).reduce(
         (acc, key) => {
-          const value = otherParams[key]
+          const value = params[key]
           if (value != null) {
             acc.push(`${key}=${value}`)
           }
@@ -206,7 +215,11 @@ export default class BaseBzz {
       options.headers = {}
     }
     options.headers['content-length'] = body.length
-    if (options.headers['content-type'] == null && !raw) {
+    if (
+      options.headers != null &&
+      options.headers['content-type'] == null &&
+      !raw
+    ) {
       options.headers['content-type'] = options.contentType
     }
 
@@ -242,7 +255,7 @@ export default class BaseBzz {
   createFeedManifest(
     user: string,
     params?: FeedParams = {},
-    options?: FetchOptions = {},
+    options?: UploadOptions = {},
   ): Promise<hexValue> {
     const manifest = {
       entries: [
@@ -277,19 +290,15 @@ export default class BaseBzz {
   pollFeedValue(
     user: string,
     params?: FeedParams = {},
-    options: PollOptions = {},
+    options: PollOptions,
   ): Observable<*> {
-    if (options.errorWhenNotFound) {
-      return pipe(
-        interval(options.interval),
-        flatMap(() => this.getFeedValue(user, params, options)),
-      )
-    }
+    let handler
 
-    const url = this.getFeedURL(user, params)
-    return pipe(
-      interval(options.interval),
-      flatMap(async () => {
+    if (options.errorWhenNotFound) {
+      handler = () => this.getFeedValue(user, params, options)
+    } else {
+      const url = this.getFeedURL(user, params)
+      handler = async () => {
         const res = await this._fetchTimeout(url, options)
         if (res.status === 404) {
           return null
@@ -298,40 +307,53 @@ export default class BaseBzz {
           return res
         }
         return new HTTPError(res.status, res.statusText)
-      }),
-    )
+      }
+    }
+
+    return interval(options.interval).pipe(map(handler))
   }
 
   postSignedFeedValue(
     user: string,
     body: Buffer,
-    metadata: FeedMetadata,
+    params: FeedParams,
     options?: FetchOptions = {},
   ): Promise<*> {
-    const url = this.getFeedURL(user, metadata)
+    const url = this.getFeedURL(user, params)
     return this._fetchTimeout(url, options, { method: 'POST', body }).then(
       resOrError,
     )
   }
 
   postFeedValue(
-    keyPair: KeyPair,
+    user: string,
     data: hexInput,
-    params?: FeedParams = {},
-    options?: FetchOptions = {},
-    maybeMetadata?: FeedMetadata,
+    meta: FeedMetadata,
+    options?: FetchOptions,
+    signParams?: any,
   ): Promise<*> {
-    const user = pubKeyToAddress(keyPair.getPublic())
-    const update = meta => {
-      const body = createHex(data).toBuffer()
-      return this.postSignedFeedValue(user, body, {
-        ...meta.feed,
-        ...meta.epoch,
-        signature: signFeedUpdate(meta, body, keyPair.getPrivate()),
-      })
-    }
-    return maybeMetadata
-      ? update(maybeMetadata)
-      : this.getFeedMetadata(user, params, options).then(update)
+    const body = createHex(data).toBuffer()
+    const digest = createFeedDigest(meta, body)
+    return this.signFeedDigest(digest, signParams).then(signature => {
+      const params = {
+        topic: meta.feed.topic,
+        time: meta.epoch.time,
+        level: meta.epoch.level,
+        signature,
+      }
+      return this.postSignedFeedValue(user, body, params, options)
+    })
+  }
+
+  updateFeedValue(
+    user: string,
+    data: hexInput,
+    params?: FeedParams,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<*> {
+    return this.getFeedMetadata(user, params, options).then(meta => {
+      return this.postFeedValue(user, data, meta, options, signParams)
+    })
   }
 }

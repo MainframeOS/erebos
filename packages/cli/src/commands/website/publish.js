@@ -1,6 +1,6 @@
 // @flow
 
-import { createKeyPair } from '@erebos/swarm-node'
+import { createKeyPair } from '@erebos/secp256k1'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'
@@ -38,7 +38,7 @@ export default class WebsitePublishCommand extends Command {
         this.client.bzz.getFeedMetadata(this.flags.hash),
       ])
 
-      await this.client.bzz.postFeedValue(keyPair, `0x${dataHash}`, {
+      await this.client.bzz.updateFeedValue(keyPair, `0x${dataHash}`, {
         topic: feedMeta.feed.topic,
       })
       const url = this.client.bzz.getDownloadURL(this.flags.hash, {
