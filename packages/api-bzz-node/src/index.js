@@ -145,8 +145,8 @@ export default class Bzz extends BaseBzz {
     return await this._upload(form, options)
   }
 
-  async uploadFileFrom(
-    path: string,
+  async uploadFileStream(
+    stream: Readable,
     options?: UploadOptions = {},
   ): Promise<hexValue> {
     const raw = options.contentType == null
@@ -156,7 +156,14 @@ export default class Bzz extends BaseBzz {
       }
       options.headers['content-type'] = options.contentType
     }
-    return await this._upload(createReadStream(path), options, raw)
+    return await this._upload(stream, options, raw)
+  }
+
+  async uploadFileFrom(
+    path: string,
+    options?: UploadOptions,
+  ): Promise<hexValue> {
+    return await this.uploadFileStream(createReadStream(path), options)
   }
 
   async _uploadTarStream(

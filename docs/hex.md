@@ -1,5 +1,5 @@
 ---
-title: Hex utilities
+title: Hexadecimal encoding
 ---
 
 ## Purpose
