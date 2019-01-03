@@ -3,11 +3,12 @@
 import createHex, {
   hexValueType,
   isHexValue,
+  fromArrayBuffer,
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
-import { interval, type Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { interval, merge, type Observable } from 'rxjs'
+import { distinctUntilChanged, flatMap } from 'rxjs/operators'
 
 import { bytesToHexValue, createFeedDigest, getFeedTopic } from './feed'
 import type {
@@ -57,6 +58,12 @@ export const resJSON = (res: *) => resOrError(res).then(r => r.json())
 
 export const resText = (res: *) => resOrError(res).then(r => r.text())
 
+export const resSwarmHash = (res: *) => {
+  return resOrError(res)
+    .then(r => r.arrayBuffer())
+    .then(value => fromArrayBuffer(value).toString('hex'))
+}
+
 const defaultSignFeedDigest = () => {
   return Promise.reject(new Error('Missing `signFeedDigest()` function'))
 }
@@ -79,7 +86,8 @@ export default class BaseBzz {
     options: FetchOptions,
     params?: Object = {},
   ): Promise<*> {
-    const timeout = options.timeout ? options.timeout : this._defaultTimeout
+    const timeout =
+      options.timeout == null ? this._defaultTimeout : options.timeout
     if (options.headers != null) {
       params.headers = options.headers
     }
@@ -292,25 +300,48 @@ export default class BaseBzz {
     params?: FeedParams = {},
     options: PollOptions,
   ): Observable<*> {
-    let handler
+    const scheduled = interval(options.interval)
+    const source = options.immediate ? merge(scheduled, [0]) : scheduled
+    const pipeline = []
 
+    // Handle whether the subscription should fail if the feed doesn't have a value
     if (options.errorWhenNotFound) {
-      handler = () => this.getFeedValue(user, params, options)
+      pipeline.push(flatMap(() => this.getFeedValue(user, params, options)))
     } else {
       const url = this.getFeedURL(user, params)
-      handler = async () => {
-        const res = await this._fetchTimeout(url, options)
-        if (res.status === 404) {
-          return null
-        }
-        if (res.ok) {
-          return res
-        }
-        return new HTTPError(res.status, res.statusText)
+      pipeline.push(
+        flatMap(() => {
+          return this._fetchTimeout(url, options).then(res => {
+            if (res.status === 404) {
+              return null
+            }
+            if (res.ok) {
+              return res
+            }
+            return new HTTPError(res.status, res.statusText)
+          })
+        }),
+      )
+    }
+
+    if (options.mode === 'contentHash' || options.mode === 'contentResponse') {
+      // Parse response as Swarm content hash
+      pipeline.push(
+        flatMap(res => {
+          return res === null ? Promise.resolve(null) : resSwarmHash(res)
+        }),
+      )
+      // Only continue execution when the content hash has changed
+      if (options.changedOnly === true) {
+        pipeline.push(distinctUntilChanged())
+      }
+      // Download contents from the provided hash
+      if (options.mode === 'contentResponse') {
+        pipeline.push(flatMap(hash => this.download(hash)))
       }
     }
 
-    return interval(options.interval).pipe(map(handler))
+    return source.pipe(...pipeline)
   }
 
   postSignedFeedValue(

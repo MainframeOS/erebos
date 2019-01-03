@@ -93,6 +93,7 @@ type FetchOptions = {
 ```javascript
 type PollOptions = FetchOptions & {
   errorWhenNotFound?: boolean,
+  immediate?: boolean,
   interval: number,
 }
 ```

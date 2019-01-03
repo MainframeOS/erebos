@@ -91,6 +91,37 @@ describe('api-bzz-base', () => {
   })
 
   describe('Bzz class', () => {
+    jest.useFakeTimers()
+
+    it('_fetchTimeout() method supports timeout options', async () => {
+      const bzzTimeout = new BaseBzz({ url: TEST_URL, timeout: 5000 })
+      bzzTimeout._fetch = fetch
+
+      // Default (instance) timeout
+      fetch.mockResponseOnce('ok')
+      await bzzTimeout._fetchTimeout('test', {})
+      expect(setTimeout).toHaveBeenCalledTimes(1)
+      expect(setTimeout.mock.calls[0][1]).toBe(5000)
+
+      // Set in options
+      fetch.mockResponseOnce('ok')
+      await bzzTimeout._fetchTimeout('test', { timeout: 2000 })
+      expect(setTimeout).toHaveBeenCalledTimes(2)
+      expect(setTimeout.mock.calls[1][1]).toBe(2000)
+
+      // No timeout (set to 0)
+      fetch.mockResponseOnce('ok')
+      await bzzTimeout._fetchTimeout('test', { timeout: 0 })
+      expect(setTimeout).toHaveBeenCalledTimes(2)
+
+      // Rejects with timeout error
+      fetch.mockResponseOnce(() => new Promise(() => {})) // Never resolves
+      const req = bzzTimeout._fetchTimeout('test', {})
+      expect(setTimeout).toHaveBeenCalledTimes(3)
+      jest.runAllTimers()
+      await expect(req).rejects.toThrow('Timeout')
+    })
+
     it('getDownloadURL() creates the request URL for downloads', () => {
       // Default behavior
       expect(bzz.getDownloadURL('test', {})).toBe(`${TEST_URL}bzz:/test`)

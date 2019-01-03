@@ -44,9 +44,14 @@ export type FetchOptions = {
   timeout?: ?number,
 }
 
+export type PollMode = 'feedResponse' | 'contentHash' | 'contentResponse'
+
 export type PollOptions = FetchOptions & {
+  changedOnly?: boolean,
   errorWhenNotFound?: boolean,
+  immediate?: boolean,
   interval: number,
+  mode?: PollMode,
 }
 
 export type FileOptions = {

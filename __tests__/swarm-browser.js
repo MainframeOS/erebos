@@ -270,5 +270,109 @@ describe('browser', () => {
       )
       expect(value).toBe('hello')
     })
+
+    it('supports feed value polling', async () => {
+      jest.setTimeout(60000)
+
+      await evalClient(
+        async (client, address, name) => {
+          const manifestHash = await client.bzz.createFeedManifest(address, {
+            name,
+          })
+
+          const sleep = async () => {
+            await new Promise(resolve => {
+              setTimeout(resolve, 5000)
+            })
+          }
+
+          const post = async value => {
+            const [dataHash, feedMeta] = await Promise.all([
+              client.bzz.uploadFile(value, { contentType: 'text/plain' }),
+              client.bzz.getFeedMetadata(manifestHash),
+            ])
+            await client.bzz.postFeedValue(address, `0x${dataHash}`, feedMeta)
+            return dataHash
+          }
+
+          let step = '0-idle'
+          let expectedHash
+
+          let completeTest
+          const testPromise = new Promise(resolve => {
+            completeTest = resolve
+          })
+
+          const subscription = client.bzz
+            .pollFeedValue(
+              address,
+              { name },
+              { interval: 2000, immediate: true },
+            )
+            .subscribe(async res => {
+              if (res === null) {
+                if (step === '0-idle') {
+                  step = '1-first-value-post'
+                  expectedHash = await post('hello')
+                  step = '2-first-value-posted'
+                }
+              } else {
+                const value = await res.arrayBuffer()
+                const hash = Erebos.createHex(value)
+                  .toBuffer()
+                  .toString('hex')
+
+                if (step === '2-first-value-posted') {
+                  if (hash !== expectedHash) {
+                    throw new Error('Invalid hash')
+                  }
+                  step = '3-first-value-received'
+                  await sleep()
+                  step = '4-second-value-post'
+                  expectedHash = await post('world')
+                  step = '5-second-value-posted'
+                } else if (step === '5-second-value-posted') {
+                  if (hash !== expectedHash) {
+                    throw new Error('Invalid hash')
+                  }
+                  subscription.unsubscribe()
+                  step = '6-unsubscribed'
+                  await sleep()
+                  completeTest()
+                } else if (step === '6-unsubscribed') {
+                  throw new Error('Event received after unsubscribed')
+                }
+              }
+            })
+
+          await testPromise
+        },
+        feedAddress,
+        uploadContent,
+      )
+    })
+
+    it('feed polling fails on not found error if the option is enabled', async () => {
+      await evalClient(async (client, address) => {
+        await new Promise((resolve, reject) => {
+          client.bzz
+            .pollFeedValue(
+              address,
+              { name: 'notfound' },
+              { errorWhenNotFound: true },
+            )
+            .subscribe({
+              next: () => {
+                reject(
+                  new Error('Subscription should not have emitted a value'),
+                )
+              },
+              error: () => {
+                resolve()
+              },
+            })
+        })
+      })
+    })
   })
 })
