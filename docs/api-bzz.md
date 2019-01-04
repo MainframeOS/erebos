@@ -16,7 +16,7 @@ const bzz = new BzzAPI('http://localhost:8500')
 
 ### hexValue
 
-Hex-encoded string prefixed with `0x` as used in the [`@erebos/hex` package](hex.md).
+Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
 ### DirectoryData
 
@@ -73,12 +73,6 @@ type FeedMetadata = {
 }
 ```
 
-### BzzMode
-
-```javascript
-type BzzMode = 'default' | 'immutable' | 'raw'
-```
-
 ### FetchOptions
 
 ```javascript
@@ -88,43 +82,63 @@ type FetchOptions = {
 }
 ```
 
-### PollOptions
-
-```javascript
-type PollOptions = FetchOptions & {
-  errorWhenNotFound?: boolean,
-  immediate?: boolean,
-  interval: number,
-}
-```
-
 ### FileOptions
 
 ```javascript
-type FileOptions = {
+type FileOptions = FetchOptions & {
   contentType?: string,
   path?: string,
 }
 ```
 
+### BzzMode
+
+```javascript
+type BzzMode = 'default' | 'immutable' | 'raw'
+```
+
 ### DownloadOptions
 
 ```javascript
-type DownloadOptions = FetchOptions &
-  FileOptions & {
-    mode?: BzzMode,
-  }
+type DownloadOptions = FileOptions & {
+  mode?: BzzMode,
+}
 ```
 
 ### UploadOptions
 
 ```javascript
-type UploadOptions = FetchOptions &
-  FileOptions & {
-    defaultPath?: string,
-    encrypt?: boolean,
-    manifestHash?: string,
-  }
+type UploadOptions = FileOptions & {
+  defaultPath?: string,
+  encrypt?: boolean,
+  manifestHash?: string,
+}
+```
+
+### FeedMode
+
+```javascript
+type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
+```
+
+### FeedOptions
+
+```javascript
+type FeedOptions = FetchOptions & {
+  mode?: FeedMode,
+}
+```
+
+### PollOptions
+
+```javascript
+type PollOptions = FeedOptions & {
+  interval: number,
+  immediate?: boolean,
+  whenEmpty?: 'accept' | 'ignore' | 'error',
+  contentChangedOnly?: boolean,
+  trigger?: Observable<void>,
+}
 ```
 
 ### FeedParams
@@ -326,7 +340,7 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Arguments**
 
-1.  `user: string`
+1.  `userOrHash: string`: user address or feed manifest hash
 1.  `params?: FeedParams = {}`
 1.  `options?: FetchOptions = {}`
 
@@ -334,23 +348,34 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 ### .getFeedValue()
 
+Depending on the `mode` option provided, returns the feed HTTP response (in `feed-response` mode, the default one), the content hash (in `content-hash` mode) or the content HTTP response (in `content-response`) mode.
+The `content-hash` and `content-response` modes assume to value of the feed is a Swarm hash pointing to another resource.
+
 **Arguments**
 
-1.  `user: string`
+1.  `userOrHash: string`: user address or feed manifest hash
 1.  `params?: FeedParams = {}`
-1.  `options?: FetchOptions = {}`
+1.  `options?: FeedOptions = {}`
 
-**Returns** `Promise<Response>`
+**Returns** `Promise<Response | string>`
 
 ### .pollFeedValue()
 
-Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `Response` objects as they are downloaded.
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `Response` objects (or a `string` when the `mode` option is set to `content-hash`) as they are downloaded.
 
 **Arguments**
 
-1.  `user: string`
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `options: PollOptions`, see below
 1.  `params?: FeedParams = {}`
-1.  `options: PollOptions = {}`
+
+**Options**
+
+- `interval: number`: the number of milliseconds between each query
+- `immediate?: boolean`: by default, a query will be performed as soon as the returned `Observable` is subscribed to. Set this option to `false` in order to wait for the first `interval` tick to perform the first query.
+- `whenEmpty?: 'accept' | 'ignore' | 'error'`: behaviour to apply when the feed response is an HTTP 404 status: `accept` will push a `null` value to the `Observable`, `ignore` will not push anything, and `error` will push the error response to the Observable, causing it to error
+- `contentChangedOnly?: boolean`: this option is only relevant in the `content-hash` or `content-mode`, set it to `true` in order to only push when the content has changed rather than on every interval tick
+- `trigger?: Observable<void>`: provides an external `Observable` that can be used to execute queries
 
 **Returns** `Observable<Response>`
 
@@ -358,9 +383,9 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `user: string`
-1.  `body: Buffer`
+1.  `user: string`: user address
 1.  `params: FeedParams`
+1.  `body: Buffer`
 1.  `options?: FetchOptions = {}`
 
 **Returns** `Promise<Response>`
@@ -369,9 +394,8 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `user: string`
-1.  `data: string | Object | Buffer`
 1.  `meta: FeedMetadata`
+1.  `data: string | Object | Buffer`
 1.  `options?: FetchOptions = {}`
 1.  `signParams?: any`
 
@@ -381,13 +405,27 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `user: string`
+1.  `userOrHash: string`: user address or feed manifest hash
 1.  `data: string | Object | Buffer`
-1.  `params?: FeedParams`
+1.  `feedParams?: FeedParams`
 1.  `options?: FetchOptions = {}`
 1.  `signParams?: any`
 
 **Returns** `Promise<Response>`
+
+### .uploadFeedValue()
+
+This method implements the flow of uploading the provided `data` and updating the feed identified by the provided `userOrHash` and eventually `feedParams` with the immutable hash of the uploaded contents, and returns this hash.
+
+**Arguments**
+
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `data: string | Object | Buffer`
+1.  `feedParams?: FeedParams`
+1.  `options?: UploadOptions = {}`
+1.  `signParams?: any`
+
+**Returns** `Promise<string>`
 
 ## Node-specific APIs
 

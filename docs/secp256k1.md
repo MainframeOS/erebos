@@ -4,7 +4,13 @@ title: SECP256k1 signing
 
 ## Purpose
 
-TODO: usage for feeds + warn about security / storage of private keys
+This package provides a basic signing functionality for Swarm feeds.
+
+### ⚠️ Security warning
+
+Managing key pairs on behalf of users is the responsibility of your app.
+This library **may not be suited for your needs**, depending on your security constraints.
+It is provided as a convenience but **has not been audited**, use at your own risk.
 
 ## Usage
 
@@ -12,9 +18,8 @@ TODO: usage for feeds + warn about security / storage of private keys
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
 const data = [1, 2, 3]
-
-const kp = createKeyPair()
-const signature = sign(data, kp.getPrivate())
+const keyPair = createKeyPair()
+const signature = sign(data, keyPair.getPrivate())
 ```
 
 ## Flow types

@@ -38,11 +38,26 @@ export type FeedMetadata = {
   protocolVersion: number,
 }
 
-export type BzzMode = 'default' | 'immutable' | 'raw'
-
 export type FetchOptions = {
   headers?: Object,
   timeout?: ?number,
+}
+
+export type FileOptions = FetchOptions & {
+  contentType?: string,
+  path?: string,
+}
+
+export type BzzMode = 'default' | 'immutable' | 'raw'
+
+export type DownloadOptions = FileOptions & {
+  mode?: BzzMode,
+}
+
+export type UploadOptions = FileOptions & {
+  defaultPath?: string,
+  encrypt?: boolean,
+  manifestHash?: hexValue | string,
 }
 
 export type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
@@ -51,32 +66,13 @@ export type FeedOptions = FetchOptions & {
   mode?: FeedMode, // defaults to 'feed-response'
 }
 
-export type PollWhenEmpty = 'accept' | 'ignore' | 'error'
-
 export type PollOptions = FeedOptions & {
   interval: number, // in milliseconds
   immediate?: boolean, // defaults to true
-  whenEmpty?: PollWhenEmpty, // defaults to 'accept'
+  whenEmpty?: 'accept' | 'ignore' | 'error', // defaults to 'accept'
   contentChangedOnly?: boolean, // only relevant when mode is 'content-*'
   trigger?: Observable<void>,
 }
-
-export type FileOptions = {
-  contentType?: string,
-  path?: string,
-}
-
-export type DownloadOptions = FetchOptions &
-  FileOptions & {
-    mode?: BzzMode,
-  }
-
-export type UploadOptions = FetchOptions &
-  FileOptions & {
-    defaultPath?: string,
-    encrypt?: boolean,
-    manifestHash?: hexValue | string,
-  }
 
 export type FeedParams = {
   level?: number,

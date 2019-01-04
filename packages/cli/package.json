@@ -25,14 +25,16 @@
     "clean": "del lib",
     "build:js": "BABEL_ENV=node babel src --out-dir lib",
     "build": "yarn clean && yarn build:js",
-    "prepublishOnly": "yarn build && oclif-dev manifest"
+    "prepublishOnly": "yarn build && oclif-dev manifest",
+    "postpublish": "del oclif.manifest.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/hex": "^0.5.0",
+    "@erebos/api-bzz-node": "^0.6.0",
+    "@erebos/hex": "^0.5.3",
     "@erebos/keccak256": "^0.6.0",
     "@erebos/secp256k1": "^0.6.0",
-    "@erebos/swarm-node": "^0.5.2",
+    "@erebos/swarm-node": "^0.6.0",
     "@oclif/command": "^1.5.5",
     "@oclif/config": "^1.10.4",
     "@oclif/plugin-help": "^2.1.4",

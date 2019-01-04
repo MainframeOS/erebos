@@ -278,20 +278,20 @@ export default class BaseBzz {
   }
 
   getFeedMetadata(
-    user: string,
+    userOrHash: string,
     params?: FeedParams = {},
     options?: FetchOptions = {},
   ): Promise<FeedMetadata> {
-    const url = this.getFeedURL(user, params, 'meta')
+    const url = this.getFeedURL(userOrHash, params, 'meta')
     return this._fetchTimeout(url, options).then(resJSON)
   }
 
   getFeedValue(
-    user: string,
+    userOrHash: string,
     params?: FeedParams = {},
     options?: FeedOptions = {},
   ): Promise<*> {
-    const url = this.getFeedURL(user, params)
+    const url = this.getFeedURL(userOrHash, params)
     return this._fetchTimeout(url, options)
       .then(resOrError)
       .then(res => {
@@ -306,9 +306,9 @@ export default class BaseBzz {
   }
 
   pollFeedValue(
-    user: string,
-    params?: FeedParams = {},
+    userOrHash: string,
     options: PollOptions,
+    params?: FeedParams = {},
   ): Observable<*> {
     const sources = []
 
@@ -326,9 +326,11 @@ export default class BaseBzz {
 
     // Handle whether the subscription should fail if the feed doesn't have a value
     if (options.whenEmpty === 'error') {
-      pipeline.push(flatMap(() => this.getFeedValue(user, params, options)))
+      pipeline.push(
+        flatMap(() => this.getFeedValue(userOrHash, params, options)),
+      )
     } else {
-      const url = this.getFeedURL(user, params)
+      const url = this.getFeedURL(userOrHash, params)
       pipeline.push(
         flatMap(() => {
           return this._fetchTimeout(url, options).then(res => {
@@ -381,8 +383,8 @@ export default class BaseBzz {
 
   postSignedFeedValue(
     user: string,
-    body: Buffer,
     params: FeedParams,
+    body: Buffer,
     options?: FetchOptions = {},
   ): Promise<*> {
     const url = this.getFeedURL(user, params)
@@ -392,9 +394,8 @@ export default class BaseBzz {
   }
 
   postFeedValue(
-    user: string,
-    data: hexInput,
     meta: FeedMetadata,
+    data: hexInput,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<*> {
@@ -407,38 +408,37 @@ export default class BaseBzz {
         level: meta.epoch.level,
         signature,
       }
-      return this.postSignedFeedValue(user, body, params, options)
+      return this.postSignedFeedValue(meta.feed.user, params, body, options)
     })
   }
 
   updateFeedValue(
-    user: string,
+    userOrHash: string,
     data: hexInput,
-    params?: FeedParams,
+    feedParams?: FeedParams,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<*> {
-    return this.getFeedMetadata(user, params, options).then(meta => {
-      return this.postFeedValue(user, data, meta, options, signParams)
+    return this.getFeedMetadata(userOrHash, feedParams, options).then(meta => {
+      return this.postFeedValue(meta, data, options, signParams)
     })
   }
 
   uploadFeedValue(
-    user: string,
+    userOrHash: string,
     data: string | Buffer | DirectoryData,
-    params?: FeedParams,
+    feedParams?: FeedParams,
     options?: UploadOptions = {},
     signParams?: any,
   ): Promise<hexValue> {
     const { contentType: _c, ...feedOptions } = options
     return Promise.all([
       this.upload(data, options),
-      this.getFeedMetadata(user, params, feedOptions),
+      this.getFeedMetadata(userOrHash, feedParams, feedOptions),
     ]).then(([hash, meta]) => {
       return this.postFeedValue(
-        meta.feed.user,
-        `0x${hash}`,
         meta,
+        `0x${hash}`,
         feedOptions,
         signParams,
       ).then(() => hash)

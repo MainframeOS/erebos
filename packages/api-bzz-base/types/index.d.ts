@@ -1,4 +1,5 @@
 import { hexInput, hexValue } from '@erebos/hex'
+import { Observable } from 'rxjs'
 
 export interface DirectoryData {
   [path: string]: { data: string | Buffer; contentType: string; size?: number }
@@ -35,24 +36,43 @@ export interface FeedMetadata {
   protocolVersion: number
 }
 
-export type BzzMode = 'default' | 'immutable' | 'raw'
+export interface FetchOptions {
+  headers?: Object
+  timeout?: number
+}
 
-export interface SharedOptions {
+export interface FileOptions extends FetchOptions {
   contentType?: string
   path?: string
 }
 
-export interface DownloadOptions extends SharedOptions {
+export type BzzMode = 'default' | 'immutable' | 'raw'
+
+export interface DownloadOptions extends FileOptions {
   mode?: BzzMode
 }
 
-export interface UploadOptions extends SharedOptions {
+export interface UploadOptions extends FileOptions {
   defaultPath?: string
   encrypt?: boolean
   manifestHash?: hexValue | string
 }
 
-export interface FeedOptions {
+export type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
+
+export interface FeedOptions extends FetchOptions {
+  mode?: FeedMode
+}
+
+export interface PollOptions extends FeedOptions {
+  interval: number
+  immediate?: boolean
+  whenEmpty?: 'accept' | 'ignore' | 'error'
+  contentChangedOnly?: boolean
+  trigger?: Observable<void>
+}
+
+export interface FeedParams {
   level?: number
   name?: string
   signature?: string
@@ -60,11 +80,20 @@ export interface FeedOptions {
   topic?: string
 }
 
+export type SignFeedDigestFunc = (
+  digest: Array<number>,
+  params?: any,
+) => Promise<Array<number>>
+
+export type BzzConfig = {
+  signFeedDigest?: SignFeedDigestFunc
+  timeout?: number
+  url: string
+}
+
 export function createFeedDigest(meta: FeedMetadata, data: hexInput): Buffer
 
-export function getFeedTopic(options: FeedOptions): hexValue
-
-export function pubKeyToAddress(pubKey: any): hexValue // pubKey type missing in elliptic definition
+export function getFeedTopic(params: FeedParams): hexValue
 
 export class HTTPError extends Error {
   status: number
@@ -72,7 +101,8 @@ export class HTTPError extends Error {
 }
 
 export default abstract class BaseBzz<T> {
-  constructor(url: string)
+  constructor(config: BzzConfig)
+  signFeedDigest(digest: Array<number>, params?: any): Promise<hexValue>
   getDownloadURL(hash: string, options: DownloadOptions, raw?: boolean): string
   getUploadURL(options: UploadOptions, raw?: boolean): string
   getFeedURL(userOrHash: string, options?: FeedOptions, flag?: 'meta'): string
@@ -108,19 +138,44 @@ export default abstract class BaseBzz<T> {
     headers?: Object,
   ): Promise<hexValue>
   getFeedMetadata(
-    user: string,
-    options?: FeedOptions,
-    headers?: Object,
+    userOrHash: string,
+    params?: FeedParams,
+    options?: FetchOptions,
   ): Promise<FeedMetadata>
   getFeedValue(
-    user: string,
+    userOrHash: string,
+    params?: FeedParams,
     options?: FeedOptions,
-    headers?: Object,
+  ): Promise<T | string>
+  pollFeedValue(
+    userOrHash: string,
+    options: PollOptions,
+    params?: FeedParams,
+  ): Observable<T | string>
+  postSignedFeedValue(
+    user: string,
+    params: FeedParams,
+    body: Buffer,
+    options?: FetchOptions,
   ): Promise<T>
   postFeedValue(
-    keyPair: KeyPair,
+    meta: FeedMetadata,
     data: hexInput,
-    options?: FeedOptions,
-    headers?: Object,
+    options?: FetchOptions,
+    signParams?: any,
   ): Promise<T>
+  updateFeedValue(
+    userOrHash: string,
+    data: hexInput,
+    feedParams?: FeedParams,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<T>
+  uploadFeedValue(
+    userOrHash: string,
+    data: string | Buffer | DirectoryData,
+    feedParams?: FeedParams,
+    options?: UploadOptions,
+    signParams?: any,
+  ): Promise<hexValue>
 }

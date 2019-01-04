@@ -28,7 +28,12 @@ export default class WebsiteSetupCommand extends Command {
       const hasKey = keyValue != null && keyValue.length !== 0
       const keyPair = createKeyPair(hasKey ? keyValue : undefined, 'hex')
 
-      const address = pubKeyToAddress(keyPair.getPublic())
+      const address = pubKeyToAddress(
+        keyPair
+          .getPublic()
+          .encode()
+          .slice(1),
+      )
       const hash = await this.client.bzz.createFeedManifest(address, {
         name: this.flags.name,
         topic: this.flags.topic,

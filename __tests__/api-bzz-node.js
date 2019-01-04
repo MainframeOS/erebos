@@ -5,6 +5,7 @@
 import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
+import { Subject } from 'rxjs'
 import tar from 'tar-stream'
 
 import Bzz from '../packages/api-bzz-node'
@@ -471,7 +472,7 @@ describe('api-bzz-node', () => {
   })
 
   it('supports feed value polling', async () => {
-    jest.setTimeout(60000)
+    jest.setTimeout(40000)
 
     let step = '0-idle'
     let expectedValue
@@ -482,7 +483,7 @@ describe('api-bzz-node', () => {
     })
 
     const subscription = bzz
-      .pollFeedValue(address, { name: uploadContent }, { interval: 2000 })
+      .pollFeedValue(address, { interval: 2000 }, { name: uploadContent })
       .subscribe(async res => {
         if (res === null) {
           if (step === '0-idle') {
@@ -517,7 +518,7 @@ describe('api-bzz-node', () => {
   })
 
   it('supports feed value polling in "content-hash" mode', async () => {
-    jest.setTimeout(60000)
+    jest.setTimeout(40000)
 
     const post = async value => {
       return await bzz.uploadFeedValue(
@@ -540,12 +541,12 @@ describe('api-bzz-node', () => {
     const subscription = bzz
       .pollFeedValue(
         address,
-        { name: uploadContent },
         {
           interval: 5000,
           mode: 'content-hash',
           contentChangedOnly: true,
         },
+        { name: uploadContent },
       )
       .subscribe(async value => {
         if (value === null) {
@@ -577,7 +578,7 @@ describe('api-bzz-node', () => {
   })
 
   it('supports feed value polling in "content-response" mode', async () => {
-    jest.setTimeout(60000)
+    jest.setTimeout(40000)
 
     const post = async value => {
       return await bzz.uploadFeedValue(
@@ -599,12 +600,12 @@ describe('api-bzz-node', () => {
     const subscription = bzz
       .pollFeedValue(
         address,
-        { name: uploadContent },
         {
           interval: 5000,
           mode: 'content-response',
           contentChangedOnly: true,
         },
+        { name: uploadContent },
       )
       .subscribe(async res => {
         if (res === null) {
@@ -637,12 +638,14 @@ describe('api-bzz-node', () => {
   })
 
   it('feed polling fails on not found error if the option is enabled', async () => {
+    jest.setTimeout(10000)
+
     await new Promise((resolve, reject) => {
       bzz
         .pollFeedValue(
           address,
+          { interval: 2000, whenEmpty: 'error', immediate: false },
           { name: 'notfound' },
-          { whenEmpty: 'error', immediate: false },
         )
         .subscribe({
           next: () => {
@@ -652,6 +655,23 @@ describe('api-bzz-node', () => {
             resolve()
           },
         })
+    })
+  })
+
+  it('feed polling accepts an external trigger', async () => {
+    const trigger = new Subject()
+    await new Promise(resolve => {
+      bzz
+        .pollFeedValue(
+          address,
+          { interval: 10000, immediate: false, trigger },
+          { name: 'notfound' },
+        )
+        .subscribe(() => {
+          resolve()
+        })
+      // Test should timeout if the trigger is not executed
+      trigger.next()
     })
   })
 })

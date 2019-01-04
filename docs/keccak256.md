@@ -4,21 +4,24 @@ title: Keccak256 hashing
 
 ## Purpose
 
-TODO
+This package provides Keccak256 hashing functions, as used by Ethereum and Swarm.
 
 ## Usage
 
 ```javascript
 import { hash, pubKeyToAddress } from '@erebos/keccak256'
 
-// TODO
+const hashed = hash(Buffer.from('hello'))
+
+const pubKey = Buffer.from('...')
+const address = pubKeyToAddress(pubKey)
 ```
 
 ## Flow types
 
 ### hexValue
 
-Hex-encoded string prefixed with `0x` as used in the [`@erebos/hex` package](hex.md).
+Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
 ## Public API
 

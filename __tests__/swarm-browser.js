@@ -335,7 +335,7 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(address, { name }, { interval: 2000 })
+            .pollFeedValue(address, { interval: 2000 }, { name })
             .subscribe(async res => {
               if (res === null) {
                 if (step === '0-idle') {
@@ -409,12 +409,12 @@ describe('browser', () => {
           const subscription = client.bzz
             .pollFeedValue(
               address,
-              { name },
               {
                 interval: 5000,
                 mode: 'content-hash',
                 contentChangedOnly: true,
               },
+              { name },
             )
             .subscribe(async value => {
               if (value === null) {
@@ -486,12 +486,12 @@ describe('browser', () => {
           const subscription = client.bzz
             .pollFeedValue(
               address,
-              { name },
               {
                 interval: 5000,
                 mode: 'content-response',
                 contentChangedOnly: true,
               },
+              { name },
             )
             .subscribe(async res => {
               if (res === null) {
@@ -537,8 +537,8 @@ describe('browser', () => {
           client.bzz
             .pollFeedValue(
               address,
-              { name: 'notfound' },
               { whenEmpty: 'error', immediate: false },
+              { name: 'notfound' },
             )
             .subscribe({
               next: () => {
