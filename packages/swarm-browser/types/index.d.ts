@@ -1,11 +1,11 @@
-import Bzz from '@erebos/api-bzz-node'
+import Bzz from '@erebos/api-bzz-browser'
 import Pss, { StreamRPC } from '@erebos/api-pss'
 import BaseClient, { ClientConfig } from '@erebos/client-base'
 
 export { createKeyPair, pubKeyToAddress } from '@erebos/api-bzz-base'
 export { default as createHex, Hex } from '@erebos/hex'
-export const BzzAPI = Bzz
-export const PssAPI = Pss
+export { default as BzzAPI } from '@erebos/api-bzz-browser'
+export { default as PssAPI } from '@erebos/api-pss'
 
 export function createRPC(endpoint: string): StreamRPC
 
@@ -14,7 +14,7 @@ export interface SwarmConfig extends ClientConfig {
   pss?: string | Pss
 }
 
-export default class SwarmClient extends BaseClient {
+export class SwarmClient extends BaseClient {
   constructor(config: string | SwarmConfig)
   bzz: Bzz
   pss: Pss

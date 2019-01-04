@@ -44,7 +44,7 @@ export default class WebsiteSetupCommand extends Command {
       if (!hasKey) {
         const privKey = keyPair.getPrivate('hex')
         this.warn(
-          `A new private key has been created to publish this website: ${privKey}. DO NOT loose this key in order to be able to publish the website to this hash.`,
+          `A new private key has been created to publish this website: ${privKey}. DO NOT lose this key in order to be able to publish the website to this hash.`,
         )
       }
     } catch (err) {

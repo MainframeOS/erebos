@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/hex": "^0.5.3",
+    "@erebos/hex": "^0.5.4",
     "js-sha3": "^0.8.0"
   },
   "devDependencies": {

@@ -1,3 +1,7 @@
+## v0.5.5 (2018-12-14)
+
+Fixes for TypeScript definitions.
+
 ## v0.5.3/v0.5.4 (2018-12-12)
 
 - Add support for PSS raw messages introduced in Swarm v0.3.8.
