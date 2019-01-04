@@ -2,16 +2,12 @@
 
 export opaque type hexValue: string = string
 
-export type hexInput = hexValue | string | Object | Buffer | ArrayBuffer
+export type hexInput = hexValue | string | Object | Buffer
 
 export const hexValueType = (input: any): hexValue => (input: hexValue)
 
 export const isHexValue = (value: any): boolean => {
   return typeof value === 'string' && value.slice(0, 2) === '0x'
-}
-
-export const fromArrayBuffer = (input: ArrayBuffer): Buffer => {
-  return Buffer.from(new Uint8Array(input))
 }
 
 export const fromHexValue = (input: hexValue): Buffer => {
@@ -43,10 +39,6 @@ export class Hex {
         this._value = hexValueType(
           '0x' + Buffer.from(inputValue).toString('hex'),
         )
-      } else if (inputValue instanceof ArrayBuffer) {
-        const buffer = fromArrayBuffer(inputValue)
-        this._input = { type: 'buffer', value: buffer }
-        this._value = hexValueType('0x' + buffer.toString('hex'))
       } else if (Buffer.isBuffer(inputValue)) {
         this._input = { type: 'buffer', value: inputValue }
         this._value = hexValueType('0x' + inputValue.toString('hex'))

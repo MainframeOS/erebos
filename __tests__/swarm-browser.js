@@ -47,7 +47,9 @@ describe('browser', () => {
       })
     })
 
-    evalClient = (exec, ...args) => page.evaluate(exec, clientHandle, ...args)
+    evalClient = (exec, ...args) => {
+      return page.evaluate(exec, clientHandle, ...args)
+    }
   })
 
   beforeEach(() => {
@@ -257,12 +259,54 @@ describe('browser', () => {
           const manifestHash = await client.bzz.createFeedManifest(address, {
             name,
           })
-          const [dataHash, feedMeta] = await Promise.all([
-            client.bzz.uploadFile('hello', { contentType: 'text/plain' }),
-            client.bzz.getFeedMetadata(manifestHash),
-          ])
-          await client.bzz.postFeedValue(address, `0x${dataHash}`, feedMeta)
+          await client.bzz.uploadFeedValue(manifestHash, 'hello', undefined, {
+            contentType: 'text/plain',
+          })
           const res = await client.bzz.download(manifestHash)
+          return await res.text()
+        },
+        feedAddress,
+        uploadContent,
+      )
+      expect(value).toBe('hello')
+    })
+
+    it('getFeedValue() supports content modes', async () => {
+      jest.setTimeout(20000)
+
+      const uploadedHash = await evalClient(
+        async (client, address, name) => {
+          return await client.bzz.uploadFeedValue(
+            address,
+            'hello',
+            { name },
+            { contentType: 'text/plain' },
+          )
+        },
+        feedAddress,
+        uploadContent,
+      )
+
+      const contentHash = await evalClient(
+        async (client, address, name) => {
+          return await client.bzz.getFeedValue(
+            address,
+            { name },
+            { mode: 'content-hash' },
+          )
+        },
+        feedAddress,
+        uploadContent,
+      )
+      expect(contentHash).toBe(uploadedHash)
+
+      const value = await evalClient(
+        async (client, address, name) => {
+          const res = await client.bzz.getFeedValue(
+            address,
+            { name },
+            { mode: 'content-response' },
+          )
           return await res.text()
         },
         feedAddress,
@@ -276,27 +320,14 @@ describe('browser', () => {
 
       await evalClient(
         async (client, address, name) => {
-          const manifestHash = await client.bzz.createFeedManifest(address, {
-            name,
-          })
-
           const sleep = async () => {
             await new Promise(resolve => {
               setTimeout(resolve, 5000)
             })
           }
 
-          const post = async value => {
-            const [dataHash, feedMeta] = await Promise.all([
-              client.bzz.uploadFile(value, { contentType: 'text/plain' }),
-              client.bzz.getFeedMetadata(manifestHash),
-            ])
-            await client.bzz.postFeedValue(address, `0x${dataHash}`, feedMeta)
-            return dataHash
-          }
-
           let step = '0-idle'
-          let expectedHash
+          let expectedValue
 
           let completeTest
           const testPromise = new Promise(resolve => {
@@ -304,36 +335,30 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(
-              address,
-              { name },
-              { interval: 2000, immediate: true },
-            )
+            .pollFeedValue(address, { name }, { interval: 2000 })
             .subscribe(async res => {
               if (res === null) {
                 if (step === '0-idle') {
                   step = '1-first-value-post'
-                  expectedHash = await post('hello')
+                  await client.bzz.updateFeedValue(address, 'hello', { name })
+                  expectedValue = 'hello'
                   step = '2-first-value-posted'
                 }
               } else {
-                const value = await res.arrayBuffer()
-                const hash = Erebos.createHex(value)
-                  .toBuffer()
-                  .toString('hex')
-
+                const value = await res.text()
                 if (step === '2-first-value-posted') {
-                  if (hash !== expectedHash) {
-                    throw new Error('Invalid hash')
+                  if (value !== expectedValue) {
+                    throw new Error('Invalid value')
                   }
                   step = '3-first-value-received'
                   await sleep()
                   step = '4-second-value-post'
-                  expectedHash = await post('world')
+                  await client.bzz.updateFeedValue(address, 'world', { name })
+                  expectedValue = 'world'
                   step = '5-second-value-posted'
                 } else if (step === '5-second-value-posted') {
-                  if (hash !== expectedHash) {
-                    throw new Error('Invalid hash')
+                  if (value !== expectedValue) {
+                    throw new Error('Invalid value')
                   }
                   subscription.unsubscribe()
                   step = '6-unsubscribed'
@@ -352,6 +377,160 @@ describe('browser', () => {
       )
     })
 
+    it('supports feed value polling in "content-hash" mode', async () => {
+      jest.setTimeout(60000)
+
+      await evalClient(
+        async (client, address, name) => {
+          const sleep = async () => {
+            await new Promise(resolve => {
+              setTimeout(resolve, 8000)
+            })
+          }
+
+          const post = async value => {
+            return await client.bzz.uploadFeedValue(
+              address,
+              value,
+              { name },
+              { contentType: 'text/plain' },
+            )
+          }
+
+          let step = '0-idle'
+          let expectedHash
+          let previousValue
+
+          let completeTest
+          const testPromise = new Promise(resolve => {
+            completeTest = resolve
+          })
+
+          const subscription = client.bzz
+            .pollFeedValue(
+              address,
+              { name },
+              {
+                interval: 5000,
+                mode: 'content-hash',
+                contentChangedOnly: true,
+              },
+            )
+            .subscribe(async value => {
+              if (value === null) {
+                if (step === '0-idle') {
+                  step = '1-first-value-post'
+                  expectedHash = await post('hello')
+                  step = '2-first-value-posted'
+                }
+              } else {
+                if (value === previousValue) {
+                  throw new Error('Invalid value')
+                }
+                previousValue = value
+
+                if (step === '2-first-value-posted') {
+                  if (value !== expectedHash) {
+                    throw new Error('Invalid hash')
+                  }
+                  step = '3-first-value-received'
+                  await sleep()
+                  step = '4-second-value-post'
+                  expectedHash = await post('world')
+                  step = '5-second-value-posted'
+                } else if (step === '5-second-value-posted') {
+                  if (value !== expectedHash) {
+                    throw new Error('Invalid hash')
+                  }
+                  subscription.unsubscribe()
+                  completeTest()
+                }
+              }
+            })
+
+          await testPromise
+        },
+        feedAddress,
+        uploadContent,
+      )
+    })
+
+    it('supports feed value polling in "content-response" mode', async () => {
+      jest.setTimeout(60000)
+
+      await evalClient(
+        async (client, address, name) => {
+          const sleep = async () => {
+            await new Promise(resolve => {
+              setTimeout(resolve, 8000)
+            })
+          }
+
+          const post = async value => {
+            return await client.bzz.uploadFeedValue(
+              address,
+              value,
+              { name },
+              { contentType: 'text/plain' },
+            )
+          }
+
+          let step = '0-idle'
+          let expectedValue
+
+          let completeTest
+          const testPromise = new Promise(resolve => {
+            completeTest = resolve
+          })
+
+          const subscription = client.bzz
+            .pollFeedValue(
+              address,
+              { name },
+              {
+                interval: 5000,
+                mode: 'content-response',
+                contentChangedOnly: true,
+              },
+            )
+            .subscribe(async res => {
+              if (res === null) {
+                if (step === '0-idle') {
+                  step = '1-first-value-post'
+                  await post('hello')
+                  expectedValue = 'hello'
+                  step = '2-first-value-posted'
+                }
+              } else {
+                const value = await res.text()
+
+                if (step === '2-first-value-posted') {
+                  if (value !== expectedValue) {
+                    throw new Error('Invalid value')
+                  }
+                  step = '3-first-value-received'
+                  await sleep()
+                  step = '4-second-value-post'
+                  await post('world')
+                  expectedValue = 'world'
+                  step = '5-second-value-posted'
+                } else if (step === '5-second-value-posted') {
+                  if (value !== expectedValue) {
+                    throw new Error('Invalid value')
+                  }
+                  subscription.unsubscribe()
+                  completeTest()
+                }
+              }
+            })
+
+          await testPromise
+        },
+        feedAddress,
+        uploadContent,
+      )
+    })
+
     it('feed polling fails on not found error if the option is enabled', async () => {
       await evalClient(async (client, address) => {
         await new Promise((resolve, reject) => {
@@ -359,7 +538,7 @@ describe('browser', () => {
             .pollFeedValue(
               address,
               { name: 'notfound' },
-              { errorWhenNotFound: true },
+              { whenEmpty: 'error', immediate: false },
             )
             .subscribe({
               next: () => {

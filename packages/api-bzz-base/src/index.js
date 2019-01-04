@@ -3,12 +3,11 @@
 import createHex, {
   hexValueType,
   isHexValue,
-  fromArrayBuffer,
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
 import { interval, merge, type Observable } from 'rxjs'
-import { distinctUntilChanged, flatMap } from 'rxjs/operators'
+import { distinctUntilChanged, filter, flatMap } from 'rxjs/operators'
 
 import { bytesToHexValue, createFeedDigest, getFeedTopic } from './feed'
 import type {
@@ -17,6 +16,7 @@ import type {
   DirectoryData,
   DownloadOptions,
   FeedMetadata,
+  FeedOptions,
   FeedParams,
   FetchOptions,
   ListResult,
@@ -61,7 +61,7 @@ export const resText = (res: *) => resOrError(res).then(r => r.text())
 export const resSwarmHash = (res: *) => {
   return resOrError(res)
     .then(r => r.arrayBuffer())
-    .then(value => fromArrayBuffer(value).toString('hex'))
+    .then(value => Buffer.from(new Uint8Array(value)).toString('hex'))
 }
 
 const defaultSignFeedDigest = () => {
@@ -289,10 +289,20 @@ export default class BaseBzz {
   getFeedValue(
     user: string,
     params?: FeedParams = {},
-    options?: FetchOptions = {},
+    options?: FeedOptions = {},
   ): Promise<*> {
     const url = this.getFeedURL(user, params)
-    return this._fetchTimeout(url, options).then(resOrError)
+    return this._fetchTimeout(url, options)
+      .then(resOrError)
+      .then(res => {
+        if (options.mode === 'content-hash') {
+          return resSwarmHash(res)
+        }
+        if (options.mode === 'content-response') {
+          return resSwarmHash(res).then(hash => this.download(hash))
+        }
+        return res
+      })
   }
 
   pollFeedValue(
@@ -300,12 +310,22 @@ export default class BaseBzz {
     params?: FeedParams = {},
     options: PollOptions,
   ): Observable<*> {
-    const scheduled = interval(options.interval)
-    const source = options.immediate ? merge(scheduled, [0]) : scheduled
+    const sources = []
+
+    // Trigger the flow immediately by default
+    if (options.immediate !== false) {
+      sources.push([0])
+    }
+
+    // An external trigger can be provided in the options so the consumer can execute the flow when needed
+    if (options.trigger != null) {
+      sources.push(options.trigger)
+    }
+
     const pipeline = []
 
     // Handle whether the subscription should fail if the feed doesn't have a value
-    if (options.errorWhenNotFound) {
+    if (options.whenEmpty === 'error') {
       pipeline.push(flatMap(() => this.getFeedValue(user, params, options)))
     } else {
       const url = this.getFeedURL(user, params)
@@ -322,26 +342,41 @@ export default class BaseBzz {
           })
         }),
       )
+
+      // Default behavior will emit null values, only omit them when option is set
+      if (options.whenEmpty === 'ignore') {
+        pipeline.push(filter(res => res !== null))
+      }
     }
 
-    if (options.mode === 'contentHash' || options.mode === 'contentResponse') {
+    // In content mode, additional logic can be performed
+    if (
+      options.mode === 'content-hash' ||
+      options.mode === 'content-response'
+    ) {
       // Parse response as Swarm content hash
       pipeline.push(
         flatMap(res => {
           return res === null ? Promise.resolve(null) : resSwarmHash(res)
         }),
       )
+
       // Only continue execution when the content hash has changed
-      if (options.changedOnly === true) {
+      if (options.contentChangedOnly === true) {
         pipeline.push(distinctUntilChanged())
       }
+
       // Download contents from the provided hash
-      if (options.mode === 'contentResponse') {
-        pipeline.push(flatMap(hash => this.download(hash)))
+      if (options.mode === 'content-response') {
+        pipeline.push(
+          flatMap(hash => {
+            return hash === null ? Promise.resolve(null) : this.download(hash)
+          }),
+        )
       }
     }
 
-    return source.pipe(...pipeline)
+    return merge(interval(options.interval), ...sources).pipe(...pipeline)
   }
 
   postSignedFeedValue(
@@ -385,6 +420,28 @@ export default class BaseBzz {
   ): Promise<*> {
     return this.getFeedMetadata(user, params, options).then(meta => {
       return this.postFeedValue(user, data, meta, options, signParams)
+    })
+  }
+
+  uploadFeedValue(
+    user: string,
+    data: string | Buffer | DirectoryData,
+    params?: FeedParams,
+    options?: UploadOptions = {},
+    signParams?: any,
+  ): Promise<hexValue> {
+    const { contentType: _c, ...feedOptions } = options
+    return Promise.all([
+      this.upload(data, options),
+      this.getFeedMetadata(user, params, feedOptions),
+    ]).then(([hash, meta]) => {
+      return this.postFeedValue(
+        meta.feed.user,
+        `0x${hash}`,
+        meta,
+        feedOptions,
+        signParams,
+      ).then(() => hash)
     })
   }
 }

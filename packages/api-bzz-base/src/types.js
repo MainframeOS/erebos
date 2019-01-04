@@ -1,6 +1,7 @@
 // @flow
 
 import type { hexValue } from '@erebos/hex'
+import type { Observable } from 'rxjs'
 
 export type DirectoryData = {
   [path: string]: { data: string | Buffer, contentType: string, size?: number },
@@ -44,14 +45,20 @@ export type FetchOptions = {
   timeout?: ?number,
 }
 
-export type PollMode = 'feedResponse' | 'contentHash' | 'contentResponse'
+export type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
 
-export type PollOptions = FetchOptions & {
-  changedOnly?: boolean,
-  errorWhenNotFound?: boolean,
-  immediate?: boolean,
-  interval: number,
-  mode?: PollMode,
+export type FeedOptions = FetchOptions & {
+  mode?: FeedMode, // defaults to 'feed-response'
+}
+
+export type PollWhenEmpty = 'accept' | 'ignore' | 'error'
+
+export type PollOptions = FeedOptions & {
+  interval: number, // in milliseconds
+  immediate?: boolean, // defaults to true
+  whenEmpty?: PollWhenEmpty, // defaults to 'accept'
+  contentChangedOnly?: boolean, // only relevant when mode is 'content-*'
+  trigger?: Observable<void>,
 }
 
 export type FileOptions = {
