@@ -660,8 +660,10 @@ describe('api-bzz-node', () => {
 
   it('feed polling accepts an external trigger', async () => {
     const trigger = new Subject()
+    let subscription
+
     await new Promise(resolve => {
-      bzz
+      subscription = bzz
         .pollFeedValue(
           address,
           { interval: 10000, immediate: false, trigger },
@@ -673,5 +675,7 @@ describe('api-bzz-node', () => {
       // Test should timeout if the trigger is not executed
       trigger.next()
     })
+
+    subscription.unsubscribe()
   })
 })
