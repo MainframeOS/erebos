@@ -9,7 +9,7 @@ import BzzAPI from '@erebos/api-bzz-browser' // browser
 // or
 import BzzAPI from '@erebos/api-bzz-node' // node
 
-const bzz = new BzzAPI('http://localhost:8500')
+const bzz = new BzzAPI({ url: 'http://localhost:8500' })
 ```
 
 ## Flow types
@@ -74,6 +74,8 @@ type FeedMetadata = {
 ```
 
 ### FetchOptions
+
+Common options to all HTTP requests. The `timeout` value can be set to `0` to prevent applying any timeout, for example if a default timeout is set at the instance level, but a particular request needs to ignore it.
 
 ```javascript
 type FetchOptions = {
@@ -155,6 +157,8 @@ type FeedParams = {
 
 ### SignFeedDigestFunc
 
+Function to provide in order to sign feed updates
+
 ```javascript
 type SignFeedDigestFunc = (
   digest: Array<number>,
@@ -205,11 +209,15 @@ type BzzConfig = {
 
 ### Bzz class (default export)
 
-Creates a Bzz instance using the server provided as `url`.
-
 **Arguments**
 
-1.  `config: BzzConfig`
+1.  `config: BzzConfig`, see below
+
+**Configuration**
+
+- `url: string`: address of the Swarm HTTP gateway
+- `signFeedDigest?: SignFeedDigestFunc`: needed in order to use feed updates APIs
+- `timeout?: number`: default timeout to apply to all requests
 
 ### .getDownloadURL()
 
@@ -373,7 +381,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 - `interval: number`: the number of milliseconds between each query
 - `immediate?: boolean`: by default, a query will be performed as soon as the returned `Observable` is subscribed to. Set this option to `false` in order to wait for the first `interval` tick to perform the first query.
-- `whenEmpty?: 'accept' | 'ignore' | 'error'`: behaviour to apply when the feed response is an HTTP 404 status: `accept` will push a `null` value to the `Observable`, `ignore` will not push anything, and `error` will push the error response to the Observable, causing it to error
+- `whenEmpty?: 'accept' | 'ignore' | 'error'`: behaviour to apply when the feed response is an HTTP 404 status: `accept` (default) will push a `null` value to the subscriber, `ignore` will not push any empty value, and `error` will push the error response to the subscriber, causing it to error
 - `contentChangedOnly?: boolean`: this option is only relevant in the `content-hash` or `content-mode`, set it to `true` in order to only push when the content has changed rather than on every interval tick
 - `trigger?: Observable<void>`: provides an external `Observable` that can be used to execute queries
 

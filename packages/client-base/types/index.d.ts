@@ -8,7 +8,7 @@ export interface ClientConfig {
 }
 
 export default abstract class BaseClient {
-  constructor(config?: ClientConfig)
+  constructor(config: ClientConfig)
   rpc: StreamRPC
   disconnect(): void
 }

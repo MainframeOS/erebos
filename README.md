@@ -39,6 +39,8 @@ npm install -g @erebos/cli
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs
 | **Utilities**
 | [`@erebos/hex`](/packages/hex) | [![npm version](https://img.shields.io/npm/v/@erebos/hex.svg)](https://www.npmjs.com/package/@erebos/hex) | Hexadecimal values encoding and decoding
+| [`@erebos/keccak256`](/packages/keccak256) | [![npm version](https://img.shields.io/npm/v/@erebos/keccak256.svg)](https://www.npmjs.com/package/@erebos/keccak256) | Keccak256 hashing
+| [`@erebos/secp256k1`](/packages/secp256k1) | [![npm version](https://img.shields.io/npm/v/@erebos/secp256k1.svg)](https://www.npmjs.com/package/@erebos/secp256k1) | ECDSA key creation and signing using the SECP256k1 curve
 | **CLI**
 | [`@erebos/cli`](/packages/cli) | [![npm version](https://img.shields.io/npm/v/@erebos/cli.svg)](https://www.npmjs.com/package/@erebos/cli) |
 | **Base classes**
