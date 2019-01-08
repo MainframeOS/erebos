@@ -1,0 +1,32 @@
+{
+  "name": "@erebos/feedlinks",
+  "version": "0.6.0",
+  "description": "Linked-list data structure for Swarm feeds",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "cjs/*",
+    "esm/*",
+    "types/*"
+  ],
+  "scripts": {
+    "clean": "del cjs esm",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:js": "yarn build:cjs && yarn build:esm",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
+    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0",
+    "@erebos/api-bzz-base": "^0.6.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.89.0"
+  }
+}
