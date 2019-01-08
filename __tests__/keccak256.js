@@ -17,4 +17,12 @@ describe('keccak256', () => {
       '0x2650af6057d350c49a7aafe86c355231c431a54c',
     )
   })
+
+  it('pubKeyToAddress() accepts and hex string as input', () => {
+    expect(
+      pubKeyToAddress(
+        '0x26001d76d94641fa3443a664a704c8606916d1d13f3091b12cc8e4f4629b1fbc',
+      ),
+    ).toBe('0x2650af6057d350c49a7aafe86c355231c431a54c')
+  })
 })
