@@ -39,6 +39,6 @@ Returns the Ethereum address from the provided `key`.
 
 **Arguments**
 
-1.  `key: Array<number> | Buffer`
+1.  `key: hexValue | Array<number> | Buffer`
 
 **Returns** `hexValue`

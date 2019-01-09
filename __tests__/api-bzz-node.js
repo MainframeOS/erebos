@@ -22,12 +22,7 @@ describe('api-bzz-node', () => {
   }
 
   const keyPair = createKeyPair()
-  const address = pubKeyToAddress(
-    keyPair
-      .getPublic()
-      .encode()
-      .slice(1),
-  )
+  const address = pubKeyToAddress(keyPair.getPublic().encode())
 
   const bzz = new Bzz({
     signFeedDigest: async digest => sign(digest, keyPair.getPrivate()),

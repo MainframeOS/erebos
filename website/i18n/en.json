@@ -47,7 +47,7 @@
         "title": "Keccak256 hashing"
       },
       "secp256k1": {
-        "title": "SECP256k1 signature"
+        "title": "SECP256k1 signing"
       },
       "swarm-client": {
         "title": "Swarm client"
