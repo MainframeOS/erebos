@@ -20,7 +20,7 @@ const pss = new PssAPI(rpc)
 
 ### hexValue
 
-Hexadecimal-encoded string prefixed with `0x`.
+Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
 ### Hex
 

@@ -1,3 +1,26 @@
+## v0.6.0 (2019-01-08)
+
+This release introduces a large refactoring of feeds interactions, notably to provide some high-level APIs.
+As a result, various breaking changes were needed to keep the APIs consistent and provide more security options, as detailed below.
+
+### Breaking changes
+
+#### The Bzz APIs do not provide built-in feed signing anymore
+
+- The `createFeedDigest()` and `createKeyPair()` functions have been removed from the `@erebos/api-bzz-base` and `@erebos/swarm` packages.
+- The `Bzz` instance constructor now requires to be provided a [`BzzConfig` object](https://erebos.js.org/docs/api-bzz#bzzconfig) rather than only the HTTP gateway `url`.
+- The [`postFeedValue()` method](https://erebos.js.org/docs/api-bzz#postfeedvalue) arguments have changed.
+
+#### HTTP headers must be provided as options
+
+Most Bzz methods arguments have changed, the `headers` that were previously passed as argument must now be provided in the `options` object instead.
+
+### Additional features and APIs
+
+- The [`@erebos/keccak256`](https://erebos.js.org/docs/keccak256) and [`@erebos/secp256k1`](https://erebos.js.org/docs/secp256k1) packages have been added.
+- Bzz requests now support a `timeout` option, and a default `timeout` can optionally be set in the [`BzzConfig` object](https://erebos.js.org/docs/api-bzz#bzzconfig) when creating the instance.
+- Various feed-related APIs and options have been added. Check the updated [Bzz API documentation](https://erebos.js.org/docs/api-bzz) for more details.
+
 ## v0.5.5 (2018-12-14)
 
 Fixes for TypeScript definitions.

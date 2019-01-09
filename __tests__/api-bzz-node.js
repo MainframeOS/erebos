@@ -5,14 +5,29 @@
 import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
+import { Subject } from 'rxjs'
 import tar from 'tar-stream'
 
-import { createKeyPair, pubKeyToAddress } from '../packages/api-bzz-base'
 import Bzz from '../packages/api-bzz-node'
+import { pubKeyToAddress } from '../packages/keccak256'
+import { createKeyPair, sign } from '../packages/secp256k1'
 
-describe('bzz-node', () => {
+describe('api-bzz-node', () => {
   const TEMP_DIR = path.join(os.tmpdir(), 'erebos-test-temp')
-  const bzz = new Bzz('http://localhost:8500/')
+
+  const sleep = async (time = 1000) => {
+    await new Promise(resolve => {
+      setTimeout(resolve, time)
+    })
+  }
+
+  const keyPair = createKeyPair()
+  const address = pubKeyToAddress(keyPair.getPublic().encode())
+
+  const bzz = new Bzz({
+    signFeedDigest: async digest => sign(digest, keyPair.getPrivate()),
+    url: 'http://localhost:8500/',
+  })
 
   const downloadRawEntries = async entries => {
     return await Promise.all(
@@ -403,42 +418,259 @@ describe('bzz-node', () => {
   })
 
   it('supports feeds posting and getting', async () => {
-    const keyPair = createKeyPair(
-      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-    )
-    const address = pubKeyToAddress(keyPair.getPublic())
     const data = { test: uploadContent }
-    await bzz.postFeedValue(keyPair, data, { name: uploadContent })
+    await bzz.updateFeedValue(address, data, { name: uploadContent })
     const res = await bzz.getFeedValue(address, { name: uploadContent })
     const value = await res.json()
     expect(value).toEqual(data)
   })
 
   it('creates a feed manifest', async () => {
-    const keyPair = createKeyPair(
-      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-    )
-    const address = pubKeyToAddress(keyPair.getPublic())
     const hash = await bzz.createFeedManifest(address, { name: 'manifest' })
     expect(hash).toBeDefined()
   })
 
   it('uploads data and updates the feed value', async () => {
     jest.setTimeout(20000)
-    const keyPair = createKeyPair(
-      'feedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeedfeed',
-    )
-    const address = pubKeyToAddress(keyPair.getPublic())
     const manifestHash = await bzz.createFeedManifest(address, {
       name: uploadContent,
     })
-    const [dataHash, feedMeta] = await Promise.all([
-      bzz.uploadFile('hello', { contentType: 'text/plain' }),
-      bzz.getFeedMetadata(manifestHash),
-    ])
-    await bzz.postFeedValue(keyPair, `0x${dataHash}`, feedMeta.feed)
+    await bzz.uploadFeedValue(manifestHash, 'hello', undefined, {
+      contentType: 'text/plain',
+    })
     const res = await bzz.download(manifestHash)
     const value = await res.text()
     expect(value).toBe('hello')
+  })
+
+  it('getFeedValue() supports content modes', async () => {
+    jest.setTimeout(20000)
+
+    const feedParams = { name: uploadContent }
+    const uploadedHash = await bzz.uploadFeedValue(
+      address,
+      'hello',
+      feedParams,
+      { contentType: 'text/plain' },
+    )
+
+    const contentHash = await bzz.getFeedValue(address, feedParams, {
+      mode: 'content-hash',
+    })
+    expect(contentHash).toBe(uploadedHash)
+
+    const contentResponse = await bzz.getFeedValue(address, feedParams, {
+      mode: 'content-response',
+    })
+    const value = await contentResponse.text()
+    expect(value).toBe('hello')
+  })
+
+  it('supports feed value polling', async () => {
+    jest.setTimeout(40000)
+
+    let step = '0-idle'
+    let expectedValue
+
+    let completeTest
+    const testPromise = new Promise(resolve => {
+      completeTest = resolve
+    })
+
+    const subscription = bzz
+      .pollFeedValue(address, { interval: 2000 }, { name: uploadContent })
+      .subscribe(async res => {
+        if (res === null) {
+          if (step === '0-idle') {
+            step = '1-first-value-post'
+            await bzz.updateFeedValue(address, 'hello', { name: uploadContent })
+            expectedValue = 'hello'
+            step = '2-first-value-posted'
+          }
+        } else {
+          const value = await res.text()
+          if (step === '2-first-value-posted') {
+            expect(value).toBe(expectedValue)
+            step = '3-first-value-received'
+            await sleep(5000)
+            step = '4-second-value-post'
+            await bzz.updateFeedValue(address, 'world', { name: uploadContent })
+            expectedValue = 'world'
+            step = '5-second-value-posted'
+          } else if (step === '5-second-value-posted') {
+            expect(value).toBe(expectedValue)
+            subscription.unsubscribe()
+            step = '6-unsubscribed'
+            await sleep(5000)
+            completeTest()
+          } else if (step === '6-unsubscribed') {
+            throw new Error('Event received after unsubscribed')
+          }
+        }
+      })
+
+    await testPromise
+  })
+
+  it('supports feed value polling in "content-hash" mode', async () => {
+    jest.setTimeout(40000)
+
+    const post = async value => {
+      return await bzz.uploadFeedValue(
+        address,
+        value,
+        { name: uploadContent },
+        { contentType: 'text/plain' },
+      )
+    }
+
+    let step = '0-idle'
+    let expectedHash
+    let previousValue
+
+    let completeTest
+    const testPromise = new Promise(resolve => {
+      completeTest = resolve
+    })
+
+    const subscription = bzz
+      .pollFeedValue(
+        address,
+        {
+          interval: 5000,
+          mode: 'content-hash',
+          contentChangedOnly: true,
+        },
+        { name: uploadContent },
+      )
+      .subscribe(async value => {
+        if (value === null) {
+          if (step === '0-idle') {
+            step = '1-first-value-post'
+            expectedHash = await post('hello')
+            step = '2-first-value-posted'
+          }
+        } else {
+          expect(value).not.toBe(previousValue)
+          previousValue = value
+
+          if (step === '2-first-value-posted') {
+            expect(value).toBe(expectedHash)
+            step = '3-first-value-received'
+            await sleep(8000)
+            step = '4-second-value-post'
+            expectedHash = await post('world')
+            step = '5-second-value-posted'
+          } else if (step === '5-second-value-posted') {
+            expect(value).toBe(expectedHash)
+            subscription.unsubscribe()
+            completeTest()
+          }
+        }
+      })
+
+    await testPromise
+  })
+
+  it('supports feed value polling in "content-response" mode', async () => {
+    jest.setTimeout(40000)
+
+    const post = async value => {
+      return await bzz.uploadFeedValue(
+        address,
+        value,
+        { name: uploadContent },
+        { contentType: 'text/plain' },
+      )
+    }
+
+    let step = '0-idle'
+    let expectedValue
+
+    let completeTest
+    const testPromise = new Promise(resolve => {
+      completeTest = resolve
+    })
+
+    const subscription = bzz
+      .pollFeedValue(
+        address,
+        {
+          interval: 5000,
+          mode: 'content-response',
+          contentChangedOnly: true,
+        },
+        { name: uploadContent },
+      )
+      .subscribe(async res => {
+        if (res === null) {
+          if (step === '0-idle') {
+            step = '1-first-value-post'
+            await post('hello')
+            expectedValue = 'hello'
+            step = '2-first-value-posted'
+          }
+        } else {
+          const value = await res.text()
+
+          if (step === '2-first-value-posted') {
+            expect(value).toBe(expectedValue)
+            step = '3-first-value-received'
+            await sleep(8000)
+            step = '4-second-value-post'
+            await post('world')
+            expectedValue = 'world'
+            step = '5-second-value-posted'
+          } else if (step === '5-second-value-posted') {
+            expect(value).toBe(expectedValue)
+            subscription.unsubscribe()
+            completeTest()
+          }
+        }
+      })
+
+    await testPromise
+  })
+
+  it('feed polling fails on not found error if the option is enabled', async () => {
+    jest.setTimeout(10000)
+
+    await new Promise((resolve, reject) => {
+      bzz
+        .pollFeedValue(
+          address,
+          { interval: 2000, whenEmpty: 'error', immediate: false },
+          { name: 'notfound' },
+        )
+        .subscribe({
+          next: () => {
+            reject(new Error('Subscription should not have emitted a value'))
+          },
+          error: () => {
+            resolve()
+          },
+        })
+    })
+  })
+
+  it('feed polling accepts an external trigger', async () => {
+    const trigger = new Subject()
+    let subscription
+
+    await new Promise(resolve => {
+      subscription = bzz
+        .pollFeedValue(
+          address,
+          { interval: 10000, immediate: false, trigger },
+          { name: 'notfound' },
+        )
+        .subscribe(() => {
+          resolve()
+        })
+      // Test should timeout if the trigger is not executed
+      trigger.next()
+    })
+
+    subscription.unsubscribe()
   })
 })

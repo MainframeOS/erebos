@@ -20,12 +20,11 @@ The relevant factory is exported as `createRPC()` and can be used with [standalo
 ## SwarmClient class
 
 Creates a SwarmClient instance based on the provided `config`.\
-If `config` is a string, it will be provided to the `createRPC()` factory function to create a RPC instance used by the various APIs.\
-When `config` is an Object, the SwarmClient will use the provided APIs and transports.
+[`BzzConfig`](api-bzz.md#bzzconfig) is an Object exported by the `@erebos/api-bzz-base` package.
 
 ```javascript
 type SwarmConfig = {
-  bzz?: string | BzzAPI,
+  bzz?: BzzConfig | BzzAPI,
   http?: string,
   ipc?: string,
   pss?: string | PssAPI,
@@ -36,16 +35,14 @@ type SwarmConfig = {
 
 **Arguments**
 
-1.  `config: string | SwarmConfig`
+1.  `config: SwarmConfig`
 
 **Examples**
 
 ```javascript
-const client = new SwarmClient('http://localhost:8500') // only client.bzz will be available
-
 const client = new SwarmClient({
-  bzz: 'http://localhost:8500',
-  ipc: '/path/to/swarm.ipc', // will be used to interact with Pss
+  bzz: { url: 'http://localhost:8500' },
+  ipc: '/path/to/swarm.ipc', // will be used to interact with PSS
 })
 ```
 

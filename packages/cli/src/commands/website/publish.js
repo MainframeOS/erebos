@@ -1,6 +1,7 @@
 // @flow
 
-import { createKeyPair } from '@erebos/swarm-node'
+import BzzAPI from '@erebos/api-bzz-node'
+import { createKeyPair, sign } from '@erebos/secp256k1'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'
@@ -31,20 +32,20 @@ export default class WebsitePublishCommand extends Command {
     this.spinner.start('Publishing website contents...')
     try {
       const keyPair = createKeyPair(process.env[this.flags['key-env']], 'hex')
+      const bzz = new BzzAPI({
+        signFeedDigest: async digest => sign(digest, keyPair.getPrivate()),
+        url: this.flags['http-gateway'],
+      })
+
       const [dataHash, feedMeta] = await Promise.all([
-        this.client.bzz.uploadFrom(this.resolvePath(this.args.path), {
+        bzz.uploadFrom(this.resolvePath(this.args.path), {
           defaultPath: 'index.html',
         }),
-        this.client.bzz.getFeedMetadata(this.flags.hash),
+        bzz.getFeedMetadata(this.flags.hash),
       ])
+      await bzz.postFeedValue(feedMeta, `0x${dataHash}`)
 
-      await this.client.bzz.postFeedValue(keyPair, `0x${dataHash}`, {
-        topic: feedMeta.feed.topic,
-      })
-      const url = this.client.bzz.getDownloadURL(this.flags.hash, {
-        mode: 'default',
-      })
-
+      const url = bzz.getDownloadURL(this.flags.hash, { mode: 'default' })
       this.spinner.succeed(`Website published to: ${url}`)
     } catch (err) {
       this.spinner.fail(err.message)

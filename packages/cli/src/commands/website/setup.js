@@ -1,6 +1,7 @@
 // @flow
 
-import { createKeyPair, pubKeyToAddress } from '@erebos/swarm-node'
+import { pubKeyToAddress } from '@erebos/keccak256'
+import { createKeyPair } from '@erebos/secp256k1'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'
@@ -27,7 +28,7 @@ export default class WebsiteSetupCommand extends Command {
       const hasKey = keyValue != null && keyValue.length !== 0
       const keyPair = createKeyPair(hasKey ? keyValue : undefined, 'hex')
 
-      const address = pubKeyToAddress(keyPair.getPublic())
+      const address = pubKeyToAddress(keyPair.getPublic().encode())
       const hash = await this.client.bzz.createFeedManifest(address, {
         name: this.flags.name,
         topic: this.flags.topic,

@@ -1,8 +1,6 @@
 // @flow
 
 // Re-exports from imported libraries
-export { createKeyPair, pubKeyToAddress } from '@erebos/api-bzz-base'
-export type { KeyPair } from '@erebos/api-bzz-base'
 export { default as BzzAPI } from '@erebos/api-bzz-node'
 export { default as PssAPI } from '@erebos/api-pss'
 export { default as createHex, Hex, hexValueType } from '@erebos/hex'

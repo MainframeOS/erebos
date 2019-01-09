@@ -5,10 +5,9 @@ import createHex, {
   type hexValue,
   hexValueType,
 } from '@erebos/hex'
-import elliptic from 'elliptic'
-import sha3 from 'js-sha3'
+import { hash } from '@erebos/keccak256'
 
-import type { FeedMetadata, FeedOptions, KeyPair } from './types'
+import type { FeedMetadata, FeedParams } from './types'
 
 const FEED_TOPIC_LENGTH = 32
 const FEED_USER_LENGTH = 20
@@ -16,16 +15,14 @@ const FEED_TIME_LENGTH = 7
 const FEED_LEVEL_LENGTH = 1
 const FEED_HEADER_LENGTH = 8
 
-const ec = new elliptic.ec('secp256k1')
-
-const toHexValue = (bytes: Array<number>): hexValue => {
+export const bytesToHexValue = (bytes: Array<number>): hexValue => {
   return hexValueType('0x' + Buffer.from(bytes).toString('hex'))
 }
 
 export const createFeedDigest = (
   meta: FeedMetadata,
   data: hexInput,
-): Buffer => {
+): Array<number> => {
   const topicBuffer = createHex(meta.feed.topic).toBuffer()
   if (topicBuffer.length !== FEED_TOPIC_LENGTH) {
     throw new Error('Invalid topic length')
@@ -50,47 +47,19 @@ export const createFeedDigest = (
     levelBuffer,
     createHex(data).toBuffer(),
   ])
-  return Buffer.from(sha3.keccak256.array(payload))
+  return hash(payload)
 }
 
-export const createKeyPair = (priv?: ?string, enc?: string): KeyPair => {
-  return priv ? ec.keyFromPrivate(priv, enc) : ec.genKeyPair()
-}
-
-export const getFeedTopic = (options: FeedOptions): hexValue => {
-  const topicHex = createHex(options.topic || Buffer.alloc(32))
-  if (options.name == null) {
+export const getFeedTopic = (params: FeedParams): hexValue => {
+  const topicHex = createHex(params.topic || Buffer.alloc(FEED_TOPIC_LENGTH))
+  if (params.name == null) {
     return topicHex.value
   }
 
-  const name = Buffer.from(options.name)
+  const name = Buffer.from(params.name)
   const topic = topicHex.toBuffer()
-  const bytes = Array(32)
+  const bytes = Array(FEED_TOPIC_LENGTH)
     .fill()
     .map((_, i) => topic[i] ^ name[i])
-  return toHexValue(bytes)
-}
-
-export const pubKeyToAddress = (pubKey: Object): hexValue => {
-  const bytes = sha3.keccak256.array(pubKey.encode().slice(1)).slice(12)
-  return toHexValue(bytes)
-}
-
-export const signFeedDigest = (digest: Buffer, privKey: Object): hexValue => {
-  const bytes = Array.from(digest.values())
-  const sig = ec.sign(bytes, privKey, { canonical: true })
-  const signature = [
-    ...sig.r.toArray('be', 32),
-    ...sig.s.toArray('be', 32),
-    sig.recoveryParam,
-  ]
-  return toHexValue(signature)
-}
-
-export const signFeedUpdate = (
-  meta: FeedMetadata,
-  data: hexInput,
-  privKey: Object,
-): hexValue => {
-  return signFeedDigest(createFeedDigest(meta, data), privKey)
+  return bytesToHexValue(bytes)
 }

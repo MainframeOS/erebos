@@ -2,6 +2,7 @@
 
 import createRPC, { wsRPC } from '@mainframe/rpc-browser'
 import StreamRPC from '@mainframe/rpc-stream'
+import type { BzzConfig } from '@erebos/api-bzz-base'
 import BzzAPI from '@erebos/api-bzz-browser'
 import PssAPI from '@erebos/api-pss'
 import BaseClient, {
@@ -10,7 +11,7 @@ import BaseClient, {
 } from '@erebos/client-base'
 
 export type SwarmConfig = ClientConfig & {
-  bzz?: string | BzzAPI,
+  bzz?: BzzConfig | BzzAPI,
   pss?: string | PssAPI,
   rpc?: StreamRPC,
 }
@@ -21,36 +22,24 @@ export default class BrowserClient extends BaseClient {
   _bzz: ?BzzAPI
   _pss: ?PssAPI
 
-  constructor(config: string | SwarmConfig) {
-    if (typeof config === 'string') {
-      const rpc = createRPC(config)
-      if (rpc instanceof StreamRPC) {
-        // RPC supports stream
-        super({ rpc })
-      } else {
-        // Assume provided URL is HTTP
-        super()
-        this._bzz = new BzzAPI(config)
-      }
-    } else {
-      if (config.rpc == null && config.ws != null) {
-        config.rpc = wsRPC(config.ws)
-      }
-      super(config)
-
-      if (config.bzz != null) {
-        if (config.bzz instanceof BzzAPI) {
-          this._bzz = config.bzz
-        } else if (typeof config.bzz === 'string') {
-          this._bzz = new BzzAPI(config.bzz)
-        }
-      } else if (typeof config.http === 'string') {
-        this._bzz = new BzzAPI(config.http)
-      }
-
-      // $FlowFixMe: instance type
-      this._pss = instantiateAPI(config.pss, PssAPI)
+  constructor(config: SwarmConfig) {
+    if (config.rpc == null && config.ws != null) {
+      config.rpc = wsRPC(config.ws)
     }
+    super(config)
+
+    if (config.bzz != null) {
+      if (config.bzz instanceof BzzAPI) {
+        this._bzz = config.bzz
+      } else {
+        this._bzz = new BzzAPI(config.bzz)
+      }
+    } else if (typeof config.http === 'string') {
+      this._bzz = new BzzAPI({ url: config.http })
+    }
+
+    // $FlowFixMe: instance type
+    this._pss = instantiateAPI(config.pss, PssAPI)
   }
 
   get bzz(): BzzAPI {

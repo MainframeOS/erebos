@@ -1,9 +1,7 @@
 // @flow
 
 import type { hexValue } from '@erebos/hex'
-import type EllipticKeyPair from 'elliptic/lib/elliptic/ec/key'
-
-export type KeyPair = EllipticKeyPair
+import type { Observable } from 'rxjs'
 
 export type DirectoryData = {
   [path: string]: { data: string | Buffer, contentType: string, size?: number },
@@ -40,27 +38,57 @@ export type FeedMetadata = {
   protocolVersion: number,
 }
 
-export type BzzMode = 'default' | 'immutable' | 'raw'
+export type FetchOptions = {
+  headers?: Object,
+  timeout?: ?number,
+}
 
-export type SharedOptions = {
+export type FileOptions = FetchOptions & {
   contentType?: string,
   path?: string,
 }
 
-export type DownloadOptions = SharedOptions & {
+export type BzzMode = 'default' | 'immutable' | 'raw'
+
+export type DownloadOptions = FileOptions & {
   mode?: BzzMode,
 }
 
-export type UploadOptions = SharedOptions & {
+export type UploadOptions = FileOptions & {
   defaultPath?: string,
   encrypt?: boolean,
   manifestHash?: hexValue | string,
 }
 
-export type FeedOptions = {
+export type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
+
+export type FeedOptions = FetchOptions & {
+  mode?: FeedMode, // defaults to 'feed-response'
+}
+
+export type PollOptions = FeedOptions & {
+  interval: number, // in milliseconds
+  immediate?: boolean, // defaults to true
+  whenEmpty?: 'accept' | 'ignore' | 'error', // defaults to 'accept'
+  contentChangedOnly?: boolean, // only relevant when mode is 'content-*'
+  trigger?: Observable<void>,
+}
+
+export type FeedParams = {
   level?: number,
   name?: string,
   signature?: string,
   time?: number,
   topic?: string,
+}
+
+export type SignFeedDigestFunc = (
+  digest: Array<number>,
+  params?: any,
+) => Promise<Array<number>>
+
+export type BzzConfig = {
+  signFeedDigest?: SignFeedDigestFunc,
+  timeout?: number,
+  url: string,
 }

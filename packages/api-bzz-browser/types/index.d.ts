@@ -5,6 +5,5 @@ export default class Bzz extends BaseBzz<Response> {
   uploadDirectory(
     directory: DirectoryData,
     options?: UploadOptions,
-    headers?: Object,
   ): Promise<hexValue>
 }

@@ -35,13 +35,19 @@
         "title": "Getting started"
       },
       "hex": {
-        "title": "Hex utilities"
+        "title": "Hexadecimal encoding"
       },
       "individual-apis": {
         "title": "Individual APIs"
       },
       "introduction": {
         "title": "Introduction"
+      },
+      "keccak256": {
+        "title": "Keccak256 hashing"
+      },
+      "secp256k1": {
+        "title": "SECP256k1 signing"
       },
       "swarm-client": {
         "title": "Swarm client"
@@ -56,6 +62,7 @@
     "categories": {
       "Docs": "Docs",
       "API": "API",
+      "Utilities": "Utilities",
       "Tools": "Tools"
     }
   },

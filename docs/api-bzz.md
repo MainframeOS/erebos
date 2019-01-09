@@ -9,18 +9,14 @@ import BzzAPI from '@erebos/api-bzz-browser' // browser
 // or
 import BzzAPI from '@erebos/api-bzz-node' // node
 
-const bzz = new BzzAPI('http://localhost:8500')
+const bzz = new BzzAPI({ url: 'http://localhost:8500' })
 ```
 
 ## Flow types
 
 ### hexValue
 
-Hexadecimal-encoded string prefixed with `0x`.
-
-### KeyPair
-
-Export from the `elliptic` library.
+Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
 ### DirectoryData
 
@@ -77,25 +73,36 @@ type FeedMetadata = {
 }
 ```
 
+### FetchOptions
+
+Common options to all HTTP requests. The `timeout` value can be set to `0` to prevent applying any timeout, for example if a default timeout is set at the instance level, but a particular request needs to ignore it.
+
+```javascript
+type FetchOptions = {
+  headers?: Object,
+  timeout?: ?number,
+}
+```
+
+### FileOptions
+
+```javascript
+type FileOptions = FetchOptions & {
+  contentType?: string,
+  path?: string,
+}
+```
+
 ### BzzMode
 
 ```javascript
 type BzzMode = 'default' | 'immutable' | 'raw'
 ```
 
-### SharedOptions
-
-```javascript
-type SharedOptions = {
-  contentType?: string,
-  path?: string,
-}
-```
-
 ### DownloadOptions
 
 ```javascript
-type DownloadOptions = SharedOptions & {
+type DownloadOptions = FileOptions & {
   mode?: BzzMode,
 }
 ```
@@ -103,22 +110,69 @@ type DownloadOptions = SharedOptions & {
 ### UploadOptions
 
 ```javascript
-type UploadOptions = SharedOptions & {
+type UploadOptions = FileOptions & {
   defaultPath?: string,
   encrypt?: boolean,
   manifestHash?: string,
 }
 ```
 
+### FeedMode
+
+```javascript
+type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
+```
+
 ### FeedOptions
 
 ```javascript
-type FeedOptions = {
+type FeedOptions = FetchOptions & {
+  mode?: FeedMode,
+}
+```
+
+### PollOptions
+
+```javascript
+type PollOptions = FeedOptions & {
+  interval: number,
+  immediate?: boolean,
+  whenEmpty?: 'accept' | 'ignore' | 'error',
+  contentChangedOnly?: boolean,
+  trigger?: Observable<void>,
+}
+```
+
+### FeedParams
+
+```javascript
+type FeedParams = {
   level?: number,
   name?: string,
   signature?: string,
   time?: number,
   topic?: string,
+}
+```
+
+### SignFeedDigestFunc
+
+Function to provide in order to sign feed updates
+
+```javascript
+type SignFeedDigestFunc = (
+  digest: Array<number>,
+  params?: any,
+) => Promise<Array<number>>
+```
+
+### BzzConfig
+
+```javascript
+type BzzConfig = {
+  signFeedDigest?: SignFeedDigestFunc,
+  timeout?: number,
+  url: string,
 }
 ```
 
@@ -133,51 +187,11 @@ type FeedOptions = {
 
 **Returns** `Buffer`
 
-### createKeyPair()
-
-Creates an elliptic `KeyPair` object using the `privateKey` if provided or generating a new one.
-
-**Arguments**
-
-1.  `privateKey?: ?string`
-1.  `encoding?: string`
-
-**Returns** `Buffer`
-
 ### getFeedTopic()
 
 **Arguments**
 
 1.  `options: FeedOptions`
-
-**Returns** `hexValue`
-
-### pubKeyToAddress()
-
-**Arguments**
-
-1.  `pubKey: Object`
-
-**Returns** `hexValue`
-
-### signFeedDigest()
-
-**Arguments**
-
-1.  `digest: Buffer`
-1.  `privKey: Object`
-
-**Returns** `hexValue`
-
-### signFeedUpdate()
-
-Combines `createFeedDigest()` and `signFeedDigest()`.
-
-**Arguments**
-
-1.  `meta: FeedMetadata`
-1.  `data: string | Object | Buffer`
-1.  `privKey: Object`
 
 **Returns** `hexValue`
 
@@ -195,11 +209,15 @@ Combines `createFeedDigest()` and `signFeedDigest()`.
 
 ### Bzz class (default export)
 
-Creates a Bzz instance using the server provided as `url`.
-
 **Arguments**
 
-1.  `url: string`
+1.  `config: BzzConfig`, see below
+
+**Configuration**
+
+- `url: string`: address of the Swarm HTTP gateway
+- `signFeedDigest?: SignFeedDigestFunc`: needed in order to use feed updates APIs
+- `timeout?: number`: default timeout to apply to all requests
 
 ### .getDownloadURL()
 
@@ -243,7 +261,7 @@ Returns the hash of the provided `domain`.
 **Arguments**
 
 1.  `domain: string`
-1.  `headers?: Object`: optional additional request headers.
+1.  `options?: FetchOptions`
 
 **Returns** `Promise<string>`
 
@@ -255,7 +273,6 @@ Returns the manifest data for the provided `hashOrDomain` and optional `path`.
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions`: optional object providing the `path`.
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<ListResult>`
 
@@ -267,7 +284,6 @@ The `download()` method returns a [`Response` instance](https://developer.mozill
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions` optional object providing the `path`, `mode` and `contentType`.
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<Response>`
 
@@ -279,7 +295,6 @@ Uploads a single file and returns the hash. If the `contentType` option is provi
 
 1.  `data: string | Buffer`
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -293,7 +308,6 @@ By setting the `defaultPath` option, a file can be defined as the default one wh
 
 1.  `data: DirectoryData`
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -305,7 +319,6 @@ Calls `uploadFile()` or `uploadDirectory()` based on the provided `data` type.
 
 1.  `data: string | Buffer | DirectoryData`
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -317,7 +330,7 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 1.  `hashOrDomain: string`
 1.  `path: string`
-1.  `headers?: Object`: optional additional request headers.
+1.  `options?: FetchOptions`
 
 **Returns** `Promise<string>`
 
@@ -326,7 +339,8 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 **Arguments**
 
 1.  `user: string`
-1.  `options?: FeedOptions = {}`
+1.  `params?: FeedParams`
+1.  `options?: UploadOptions = {}`
 
 **Returns** `Promise<hexValue>`
 
@@ -334,17 +348,53 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Arguments**
 
-1.  `user: string`
-1.  `options?: FeedOptions = {}`
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `params?: FeedParams = {}`
+1.  `options?: FetchOptions = {}`
 
 **Returns** `Promise<FeedMetadata>`
 
 ### .getFeedValue()
 
+Depending on the `mode` option provided, returns the feed HTTP response (in `feed-response` mode, the default one), the content hash (in `content-hash` mode) or the content HTTP response (in `content-response`) mode.
+The `content-hash` and `content-response` modes assume to value of the feed is a Swarm hash pointing to another resource.
+
 **Arguments**
 
-1.  `user: string`
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `params?: FeedParams = {}`
 1.  `options?: FeedOptions = {}`
+
+**Returns** `Promise<Response | string>`
+
+### .pollFeedValue()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `Response` objects (or a `string` when the `mode` option is set to `content-hash`) as they are downloaded.
+
+**Arguments**
+
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `options: PollOptions`, see below
+1.  `params?: FeedParams = {}`
+
+**Options**
+
+- `interval: number`: the number of milliseconds between each query
+- `immediate?: boolean`: by default, a query will be performed as soon as the returned `Observable` is subscribed to. Set this option to `false` in order to wait for the first `interval` tick to perform the first query.
+- `whenEmpty?: 'accept' | 'ignore' | 'error'`: behaviour to apply when the feed response is an HTTP 404 status: `accept` (default) will push a `null` value to the subscriber, `ignore` will not push any empty value, and `error` will push the error response to the subscriber, causing it to error
+- `contentChangedOnly?: boolean`: this option is only relevant in the `content-hash` or `content-mode`, set it to `true` in order to only push when the content has changed rather than on every interval tick
+- `trigger?: Observable<void>`: provides an external `Observable` that can be used to execute queries
+
+**Returns** `Observable<Response>`
+
+### .postSignedFeedValue()
+
+**Arguments**
+
+1.  `user: string`: user address
+1.  `params: FeedParams`
+1.  `body: Buffer`
+1.  `options?: FetchOptions = {}`
 
 **Returns** `Promise<Response>`
 
@@ -352,11 +402,38 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Arguments**
 
-1.  `keyPair: KeyPair`
+1.  `meta: FeedMetadata`
 1.  `data: string | Object | Buffer`
-1.  `options?: FeedOptions = {}`
+1.  `options?: FetchOptions = {}`
+1.  `signParams?: any`
 
 **Returns** `Promise<Response>`
+
+### .updateFeedValue()
+
+**Arguments**
+
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `data: string | Object | Buffer`
+1.  `feedParams?: FeedParams`
+1.  `options?: FetchOptions = {}`
+1.  `signParams?: any`
+
+**Returns** `Promise<Response>`
+
+### .uploadFeedValue()
+
+This method implements the flow of uploading the provided `data` and updating the feed identified by the provided `userOrHash` and eventually `feedParams` with the immutable hash of the uploaded contents, and returns this hash.
+
+**Arguments**
+
+1.  `userOrHash: string`: user address or feed manifest hash
+1.  `data: string | Object | Buffer`
+1.  `feedParams?: FeedParams`
+1.  `options?: UploadOptions = {}`
+1.  `signParams?: any`
+
+**Returns** `Promise<string>`
 
 ## Node-specific APIs
 
@@ -364,13 +441,12 @@ The following `Bzz` class methods are only available when using `@erebos/api-bzz
 
 ### .downloadObservable()
 
-Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/Observable) emitting the `FileEntry` objects as they are downloaded.
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `FileEntry` objects as they are downloaded.
 
 **Arguments**
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Observable<FileEntry>`
 
@@ -380,7 +456,6 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 
 1.  `hashOrDomain: string`
 1.  `options?: DownloadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<DirectoryData>`
 
@@ -391,7 +466,6 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 1.  `hashOrDomain: string`
 1.  `path: string`
 1.  `options?: DownloadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<void>`
 
@@ -402,7 +476,6 @@ Returns a [RxJS `Observable`](https://rxjs-dev.firebaseapp.com/api/index/class/O
 1.  `hashOrDomain: string`
 1.  `path: string`
 1.  `options?: DownloadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<number>` the number of files written.
 
@@ -415,9 +488,17 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 1.  `hashOrDomain: string`
 1.  `path: string`
 1.  `options?: DownloadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<void>`
+
+### .uploadFileStream()
+
+**Arguments**
+
+1.  `stream: Readable`: Node.js [`Readable stream`](https://nodejs.org/dist/latest-v10.x/docs/api/stream.html#stream_class_stream_readable) instance.
+1.  `options?: UploadOptions`
+
+**Returns** `Promise<string>`
 
 ### .uploadTar()
 
@@ -425,7 +506,6 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 1.  `path: string`: path to an existing tar archive or a directory to pack.
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -435,7 +515,6 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 1.  `path: string`: file to upload.
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -445,7 +524,6 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 1.  `path: string`: directory to upload.
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`
 
@@ -457,6 +535,5 @@ Calls `uploadFileFrom()` or `uploadDirectoryFrom()` depending on the provided `p
 
 1.  `path: string`: file or directory to upload.
 1.  `options?: UploadOptions`
-1.  `headers?: Object`: optional additional request headers.
 
 **Returns** `Promise<string>`

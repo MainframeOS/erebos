@@ -8,7 +8,9 @@ title: Examples
 <html>
   <script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.production.js"></script>
   <script>
-    const client = new Erebos.SwarmClient('https://swarm-gateways.net')
+    const client = new Erebos.SwarmClient({
+      http: 'https://swarm-gateways.net',
+    })
     client.bzz
       .upload('Hello world!', { contentType: 'text/plain' })
       .then(hash => client.bzz.download(hash))
@@ -28,7 +30,7 @@ title: Examples
 import path from 'path'
 import { SwarmClient } from '@erebos/swarm-node'
 
-const client = new SwarmClient({ bzz: 'http://localhost:8500' })
+const client = new SwarmClient({ bzz: { url: 'http://localhost:8500' } })
 
 client.bzz
   .uploadDirectoryFrom(path.join(__dirname, 'my-files'))
