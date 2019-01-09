@@ -1,4 +1,4 @@
-## v0.6.0 (2019-01-08)
+## v0.6.0 (2019-01-09)
 
 This release introduces a large refactoring of feeds interactions, notably to provide some high-level APIs.
 As a result, various breaking changes were needed to keep the APIs consistent and provide more security options, as detailed below.
