@@ -18,11 +18,26 @@ describe('keccak256', () => {
     )
   })
 
+  it('pubKeyToAddress() accepts a 65-byte long public key', () => {
+    const pubKey = Buffer.from(
+      '04140fbfad940377411fb926d3c77aae751625bcf52f3c8f79d318a9b4022a421226b207dc733e75b89dd34fd83a6f036c25f976266ac2607f8acdaf9558c1ea3e',
+      'hex',
+    )
+    expect(pubKeyToAddress(pubKey)).toBe(
+      '0xbd8bd73abea8f798dc0986bd51064fe9b5099370',
+    )
+  })
+
   it('pubKeyToAddress() accepts and hex string as input', () => {
     expect(
       pubKeyToAddress(
         '0x26001d76d94641fa3443a664a704c8606916d1d13f3091b12cc8e4f4629b1fbc',
       ),
     ).toBe('0x2650af6057d350c49a7aafe86c355231c431a54c')
+    expect(
+      pubKeyToAddress(
+        '0x04140fbfad940377411fb926d3c77aae751625bcf52f3c8f79d318a9b4022a421226b207dc733e75b89dd34fd83a6f036c25f976266ac2607f8acdaf9558c1ea3e',
+      ),
+    ).toBe('0xbd8bd73abea8f798dc0986bd51064fe9b5099370')
   })
 })

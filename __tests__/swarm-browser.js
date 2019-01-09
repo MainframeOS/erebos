@@ -27,12 +27,7 @@ describe('browser', () => {
     })
 
     const keyPair = createKeyPair()
-    feedAddress = pubKeyToAddress(
-      keyPair
-        .getPublic()
-        .encode()
-        .slice(1),
-    )
+    feedAddress = pubKeyToAddress(keyPair.getPublic().encode())
 
     await page.exposeFunction('signFeedDigest', digest => {
       return sign(digest, keyPair.getPrivate())
