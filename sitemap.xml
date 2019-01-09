@@ -15,5 +15,7 @@
 <url> <loc>https://erebos.js.org/docs/hex</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/hex" /> </url>
 <url> <loc>https://erebos.js.org/docs/individual-apis</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/individual-apis" /> </url>
 <url> <loc>https://erebos.js.org/docs/introduction</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/introduction" /> </url>
+<url> <loc>https://erebos.js.org/docs/keccak256</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/keccak256" /> </url>
+<url> <loc>https://erebos.js.org/docs/secp256k1</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/secp256k1" /> </url>
 <url> <loc>https://erebos.js.org/docs/swarm-client</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/swarm-client" /> </url>
 </urlset>
