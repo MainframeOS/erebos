@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.6.0"
+    "@erebos/api-bzz-base": "^0.6.0",
+    "rxjs": "^6.3.3"
   },
   "devDependencies": {
     "flow-bin": "^0.89.0"
