@@ -1,6 +1,6 @@
 // @flow
 
-import type Bzz, { FetchOptions } from '@erebos/api-bzz-base'
+import type Bzz, { FetchOptions, UploadOptions } from '@erebos/api-bzz-base'
 import type { Observable } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
 
@@ -27,7 +27,18 @@ export type Feedlink<T = JSONValue> = {
   content: T,
 }
 
-export type LiveOptions = {
+type DecodeFunc = <T>(res: *) => Promise<Feedlink<T>>
+type EncodeFunc = <T>(link: Feedlink<T>) => Promise<string | Buffer>
+
+export type LinkUploadOptions = UploadOptions & {
+  encode?: ?EncodeFunc,
+}
+
+export type LinkLoadOptions = FetchOptions & {
+  decode?: ?DecodeFunc,
+}
+
+export type LinkLiveOptions = LinkLoadOptions & {
   interval: number,
 }
 
@@ -55,116 +66,203 @@ const createLinkFactory = (defaults: $Shape<Feedlink<any>>) => {
   })
 }
 
-const validateLink = <T: Object>(link: T): T => {
+export const validateLink = <T: Object>(link: T): T => {
   if (link.protocol !== PROTOCOL || link.version !== VERSION) {
     throw new Error('Unsupported payload')
   }
   return link
 }
 
+const defaultDecode = async (res: *) => validateLink(await res.json())
+const defaultEncode = async (link: Object) => JSON.stringify(link)
+
+type FeedlinksConfig = {
+  bzz: Bzz,
+  decode?: ?DecodeFunc,
+  encode?: ?EncodeFunc,
+}
+
 export class Feedlinks {
   _bzz: Bzz
+  _decode: DecodeFunc
+  _encode: EncodeFunc
 
-  constructor(bzz: Bzz) {
-    this._bzz = bzz
+  constructor(config: FeedlinksConfig) {
+    this._bzz = config.bzz
+    this._decode = config.decode || defaultDecode
+    this._encode = config.encode || defaultEncode
+  }
+
+  async _decodeWith<T>(res: *, options: LinkLoadOptions): Promise<Feedlink<T>> {
+    const decode = options.decode || this._decode
+    return await decode(res)
+  }
+
+  async _encodeWith<T>(
+    link: Feedlink<T>,
+    options: LinkUploadOptions,
+  ): Promise<string | Buffer> {
+    const encode = options.encode || this._encode
+    return await encode(link)
+  }
+
+  async downloadLink<T>(hash: string, options?: LinkLoadOptions = {}) {
+    const res = await this._bzz.download(hash)
+    return await this._decodeWith<T>(res, options)
   }
 
   async loadHash(
     feedHash: string,
     options?: FetchOptions = {},
   ): Promise<?string> {
-    return this._bzz
-      .getFeedValue(feedHash, {}, { ...options, mode: 'content-hash' })
-      .catch(err => (err.status === 404 ? null : Promise.reject(err)))
+    try {
+      return await this._bzz.getFeedValue(
+        feedHash,
+        {},
+        { ...options, mode: 'content-hash' },
+      )
+    } catch (err) {
+      if (err.status === 404) {
+        return null
+      } else {
+        throw err
+      }
+    }
   }
 
   async loadLink<T>(
     hash: string,
-    options?: FetchOptions = {},
+    options?: LinkLoadOptions = {},
   ): Promise<Feedlink<T>> {
-    return this._bzz
-      .getFeedValue(hash, {}, { ...options, mode: 'content-response' })
-      .then(res => res.json())
-      .then(validateLink)
+    const res = await this._bzz.getFeedValue(
+      hash,
+      {},
+      { ...options, mode: 'content-response' },
+    )
+    return await this._decodeWith<T>(res, options)
   }
 
   async loadUpdate<T>(
     feedHash: string,
-    options?: FetchOptions = {},
+    options?: LinkLoadOptions = {},
   ): Promise<{ hash: string, link: Feedlink<T> }> {
-    return this.loadHash(feedHash, options).then(hash => {
-      return this._bzz
-        .download(hash)
-        .then(res => res.json())
-        .then(validateLink)
-        .then(link => ({ hash, link }))
-    })
+    const hash = await this._bzz.getFeedValue(
+      feedHash,
+      {},
+      { ...options, mode: 'content-hash' },
+    )
+    const link = await this.downloadLink<T>(hash, options)
+    return { hash, link }
   }
 
-  live<T>(feedHash: string, options: LiveOptions): Observable<Feedlink<T>> {
-    // keep track of last know "previous" hash
-    // when new links are pushed, check if "previous" matches
-    // if not, create stack and recursively go back in history, then push stack values
-    return this._bzz
-      .pollFeedValue(feedHash, {
-        ...options,
-        mode: 'content-response', // TODO query hash and keep track
-        whenEmpty: 'ignore',
-        contentChangedOnly: true,
-      })
-      .pipe(flatMap(res => res.json()))
-  }
-
-  async history() {
-    // return async iterable
-  }
-
-  async createIterable<T>(hash: string): AsyncIterable<T> {
-    let nextHash = hash
+  createIterable<T>(
+    initialHash: string,
+    options?: LinkLoadOptions = {},
+  ): AsyncIterator<Feedlink<T>> {
+    let nextHash = initialHash
+    // $FlowFixMe: AsyncIterator
     return {
+      // $FlowFixMe: Flow doesn't support symbols as Object keys
       [Symbol.asyncIterator]() {
         return this
       },
       next: async () => {
-        const link = await this.loadLink(nextHash)
+        if (nextHash == null) {
+          return { done: true }
+        }
+        const link = await this.downloadLink<T>(nextHash, options)
         nextHash = link.previous
-        return { done: nextHash == null, value: link }
+        return { done: false, value: link }
       },
     }
   }
 
-  createUpdater<T>(
+  async createSlice<T>(
+    newestHash: string,
+    oldestHash: string,
+    options?: LinkLoadOptions = {},
+  ): Promise<Array<Feedlink<T>>> {
+    const slice = []
+    for await (const link of this.createIterable<T>(newestHash, options)) {
+      slice.push(link)
+      if (link.previous === oldestHash) {
+        break
+      }
+    }
+    return slice
+  }
+
+  live<T>(
+    feedHash: string,
+    options: LinkLiveOptions,
+  ): Observable<Array<Feedlink<T>>> {
+    let previousKnow
+    return this._bzz
+      .pollFeedValue(feedHash, {
+        ...options,
+        mode: 'content-hash',
+        whenEmpty: 'ignore',
+        contentChangedOnly: true,
+      })
+      .pipe(
+        flatMap(async hash => {
+          const link = await this.downloadLink<T>(hash, options)
+          if (
+            previousKnow === null ||
+            link.previous == null ||
+            link.previous === previousKnow
+          ) {
+            // Single link to push
+            previousKnow = hash
+            return [link]
+          } else {
+            // There has been more than one update during the polling interval
+            const slice = await this.createSlice<T>(
+              link.previous,
+              previousKnow,
+              options,
+            )
+            previousKnow = hash
+            return slice.reverse().concat(link)
+          }
+        }),
+      )
+  }
+
+  async upload<T>(link: Feedlink<T>, options?: LinkUploadOptions = {}) {
+    const encoded = await this._encodeWith<T>(link, options)
+    return await this._bzz.uploadFile(encoded, {
+      contentType: 'application/json',
+      ...options,
+    })
+  }
+
+  async createUpdater<T>(
     feedHash: string,
     linkDefaults?: $Shape<Feedlink<T>> = {},
     defaultSignParams?: any,
+    options?: LinkUploadOptions = {},
   ) {
-    return this.loadHash(feedHash).then(previous => {
-      // `linkDefaults` could be common values for all updates, for example the `author` and `type`
-      const create = createLinkFactory(linkDefaults)
+    let previous = await this.loadHash(feedHash)
+    // `linkDefaults` could be common values for all updates, for example the `author` and `type`
+    const create = createLinkFactory(linkDefaults)
 
-      return (partialLink: Feedlink<T>, signParams?: any) => {
-        // Upload the new feedlink and retrieve feed metadata
-        const link = create<T>({ ...partialLink, previous })
-        return Promise.all([
-          this._bzz.upload(JSON.stringify(link), {
-            contentType: 'application/json',
-          }),
-          this._bzz.getFeedMetadata(feedHash),
-        ]).then(([contentHash, feedMeta]) => {
-          // Update feed value to point to latest feedlink
-          return this._bzz
-            .postFeedValue(
-              feedMeta,
-              `0x${contentHash}`,
-              {},
-              signParams || defaultSignParams,
-            )
-            .then(() => {
-              previous = contentHash
-              return link
-            })
-        })
-      }
-    })
+    return async (partialLink: Feedlink<T>, signParams?: any) => {
+      // Upload the new feedlink and retrieve feed metadata
+      const link = create<T>({ ...partialLink, previous })
+      const [contentHash, feedMeta] = await Promise.all([
+        this.upload<T>(link, options),
+        this._bzz.getFeedMetadata(feedHash),
+      ])
+      // Update feed value to point to latest feedlink
+      await this._bzz.postFeedValue(
+        feedMeta,
+        `0x${contentHash}`,
+        {},
+        signParams || defaultSignParams,
+      )
+      previous = contentHash
+      return link
+    }
   }
 }
