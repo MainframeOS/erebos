@@ -29,6 +29,6 @@
     "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix"
   },
   "devDependencies": {
-    "flow-bin": "^0.89.0"
+    "flow-bin": "^0.90.0"
   }
 }

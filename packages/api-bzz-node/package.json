@@ -1,6 +1,6 @@
 {
   "name": "@erebos/api-bzz-node",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Bzz API for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.6.0",
+    "@erebos/api-bzz-base": "^0.6.1",
     "@types/node-fetch": "^2.1.4",
     "form-data": "^2.3.3",
     "fs-extra": "^7.0.1",
@@ -30,6 +30,6 @@
     "tar-stream": "^1.6.1"
   },
   "devDependencies": {
-    "flow-bin": "^0.89.0"
+    "flow-bin": "^0.90.0"
   }
 }
