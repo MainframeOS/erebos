@@ -1,3 +1,7 @@
+## v0.6.2 (2019-01-14)
+
+Fix `hexValue` return type in `Bzz` upload methods.
+
 ## v0.6.1 (2019-01-11)
 
 Fixes for TypeScript definitions.

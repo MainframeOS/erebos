@@ -207,9 +207,9 @@ export default class BaseBzz {
     raw?: boolean = false,
   ): Promise<hexValue> {
     const url = this.getUploadURL(options, raw)
-    return this._fetchTimeout(url, options, { body, method: 'POST' }).then(
-      resText,
-    )
+    return this._fetchTimeout(url, options, { body, method: 'POST' })
+      .then(resText)
+      .then(hexValueType)
   }
 
   uploadFile(
