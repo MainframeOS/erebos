@@ -29,11 +29,11 @@ export default class Pss {
   }
 
   baseAddr(): Promise<hexValue> {
-    return this._rpc.request('pss_baseAddr')
+    return this._rpc.request('pss_baseAddr').then(hexValueType)
   }
 
   getPublicKey(): Promise<hexValue> {
-    return this._rpc.request('pss_getPublicKey')
+    return this._rpc.request('pss_getPublicKey').then(hexValueType)
   }
 
   sendAsym(
@@ -95,19 +95,16 @@ export default class Pss {
   }
 
   stringToTopic(str: string): Promise<hexValue> {
-    return this._rpc.request('pss_stringToTopic', [str])
+    return this._rpc.request('pss_stringToTopic', [str]).then(hexValueType)
   }
 
   subscribeTopic(
     topic: hexValue,
     handleRawMessages?: boolean = false,
   ): Promise<hexValue> {
-    return this._rpc.request('pss_subscribe', [
-      'receive',
-      topic,
-      handleRawMessages,
-      false,
-    ])
+    return this._rpc
+      .request('pss_subscribe', ['receive', topic, handleRawMessages, false])
+      .then(hexValueType)
   }
 
   createSubscription(subscription: hexValue): Observable<PssEvent> {
