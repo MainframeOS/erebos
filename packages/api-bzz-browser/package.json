@@ -1,6 +1,6 @@
 {
   "name": "@erebos/api-bzz-browser",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "description": "Bzz API for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -24,9 +24,9 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-bzz-base": "^0.6.0"
+    "@erebos/api-bzz-base": "^0.6.2"
   },
   "devDependencies": {
-    "flow-bin": "^0.89.0"
+    "flow-bin": "^0.90.0"
   }
 }

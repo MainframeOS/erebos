@@ -1,6 +1,6 @@
 {
   "name": "erebos-project",
-  "version": "0.5.5",
+  "version": "0.6.2",
   "description": "Ethereum and Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
@@ -37,14 +37,14 @@
     "del-cli": "^1.1.0",
     "eslint": "^5.11.1",
     "eslint-config-mainframe": "^2.3.0",
-    "flow-bin": "^0.89.0",
+    "flow-bin": "^0.90.0",
     "flow-copy-source": "^2.0.2",
     "flow-typed": "^2.5.1",
     "jest": "^23.5.0",
     "jest-fetch-mock": "^2.1.0",
-    "jest-junit": "^5.1.0",
-    "jest-puppeteer": "^3.5.1",
-    "lerna": "^3.8.1",
+    "jest-junit": "^6.0.1",
+    "jest-puppeteer": "^3.8.0",
+    "lerna": "^3.10.5",
     "prettier": "^1.15.3",
     "puppeteer": "^1.11.0"
   }

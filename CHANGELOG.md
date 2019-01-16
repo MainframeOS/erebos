@@ -1,3 +1,11 @@
+## v0.6.2 (2019-01-14)
+
+Fix `hexValue` return type in `Bzz` upload methods.
+
+## v0.6.1 (2019-01-11)
+
+Fixes for TypeScript definitions.
+
 ## v0.6.0 (2019-01-09)
 
 This release introduces a large refactoring of feeds interactions, notably to provide some high-level APIs.

@@ -106,36 +106,23 @@ export default abstract class BaseBzz<T> {
   getDownloadURL(hash: string, options: DownloadOptions, raw?: boolean): string
   getUploadURL(options: UploadOptions, raw?: boolean): string
   getFeedURL(userOrHash: string, options?: FeedOptions, flag?: 'meta'): string
-  hash(domain: string, headers?: Object): Promise<hexValue>
-  list(
-    hash: string,
-    options?: DownloadOptions,
-    headers?: Object,
-  ): Promise<ListResult>
-  download(
-    hash: string,
-    options?: DownloadOptions,
-    headers?: Object,
-  ): Promise<T>
-  uploadFile(
-    data: string | Buffer,
-    options?: UploadOptions,
-    headers?: Object,
-  ): Promise<hexValue>
+  hash(domain: string, options?: FetchOptions): Promise<hexValue>
+  list(hash: string, options?: DownloadOptions): Promise<ListResult>
+  download(hash: string, options?: DownloadOptions): Promise<T>
+  uploadFile(data: string | Buffer, options?: UploadOptions): Promise<hexValue>
   upload(
     data: string | Buffer | DirectoryData,
     options?: UploadOptions,
-    headers?: Object,
   ): Promise<hexValue>
   deleteResource(
     hash: string,
     path: string,
-    headers?: Object,
+    options?: FetchOptions,
   ): Promise<hexValue>
   createFeedManifest(
     user: string,
-    options?: FeedOptions,
-    headers?: Object,
+    params?: FeedParams,
+    options?: UploadOptions,
   ): Promise<hexValue>
   getFeedMetadata(
     userOrHash: string,
