@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@types/bn.js": "^4.11.3",
+    "@types/bn.js": "^4.11.4",
     "@types/elliptic": "^6.4.1",
     "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix"
   },
