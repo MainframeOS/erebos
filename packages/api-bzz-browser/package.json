@@ -23,10 +23,10 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.3.1",
     "@erebos/api-bzz-base": "^0.6.2"
   },
   "devDependencies": {
-    "flow-bin": "^0.90.0"
+    "flow-bin": "^0.91.0"
   }
 }

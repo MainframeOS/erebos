@@ -29,20 +29,20 @@
     "postpublish": "del oclif.manifest.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.3.1",
     "@erebos/api-bzz-node": "^0.6.0",
     "@erebos/hex": "^0.5.4",
     "@erebos/keccak256": "^0.6.0",
     "@erebos/secp256k1": "^0.6.0",
     "@erebos/swarm-node": "^0.6.0",
     "@oclif/command": "^1.5.5",
-    "@oclif/config": "^1.10.4",
+    "@oclif/config": "^1.12.0",
     "@oclif/plugin-help": "^2.1.4",
     "fs-extra": "^7.0.1",
     "ora": "^3.0.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.19.5",
-    "flow-bin": "^0.90.0"
+    "flow-bin": "^0.91.0"
   }
 }

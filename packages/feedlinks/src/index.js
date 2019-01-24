@@ -1,6 +1,7 @@
 // @flow
 
 import type Bzz, { FetchOptions, UploadOptions } from '@erebos/api-bzz-base'
+import type { hexValue } from '@erebos/hex'
 import type { Observable } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
 
@@ -126,7 +127,10 @@ export default class Feedlinks {
     return await this._decodeWith<T>(res, options)
   }
 
-  async upload<T>(link: Feedlink<T>, options?: LinkUploadOptions<T> = {}) {
+  async upload<T>(
+    link: Feedlink<T>,
+    options?: LinkUploadOptions<T> = {},
+  ): Promise<hexValue> {
     const encoded = await this._encodeWith<T>(link, options)
     return await this._bzz.uploadFile(encoded, {
       contentType: 'application/json',
@@ -153,6 +157,21 @@ export default class Feedlinks {
     }
   }
 
+  async updateHash(
+    feedHash: string,
+    linkHash: string,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<void> {
+    await this._bzz.updateFeedValue(
+      feedHash,
+      `0x${linkHash}`,
+      {},
+      options,
+      signParams,
+    )
+  }
+
   async loadLink<T>(
     hash: string,
     options?: LinkLoadOptions<T> = {},
@@ -163,6 +182,25 @@ export default class Feedlinks {
       { ...options, mode: 'content-response' },
     )
     return await this._decodeWith<T>(res, options)
+  }
+
+  async updateLink<T>(
+    feedHash: string,
+    link: Feedlink<T>,
+    options?: LinkUploadOptions<T> = {},
+    signParams?: any,
+  ): Promise<hexValue> {
+    const [contentHash, feedMeta] = await Promise.all([
+      this.upload<T>(link, options),
+      this._bzz.getFeedMetadata(feedHash),
+    ])
+    await this._bzz.postFeedValue(
+      feedMeta,
+      `0x${contentHash}`,
+      { headers: options.headers, timeout: options.timeout },
+      signParams,
+    )
+    return contentHash
   }
 
   async loadUpdate<T>(
@@ -178,7 +216,23 @@ export default class Feedlinks {
     return { hash, link }
   }
 
-  createIterable<T>(
+  async createUpdater<T>(
+    feedHash: string,
+    linkDefaults?: $Shape<Feedlink<T>> = {},
+    options?: LinkUploadOptions<T> = {},
+    signParams?: any,
+  ) {
+    let previous = await this.loadHash(feedHash)
+    const create = createLinkFactory(linkDefaults)
+
+    return async (partialLink: $Shape<Feedlink<T>>): Promise<LinkUpdate<T>> => {
+      const link = create<T>({ ...partialLink, previous })
+      previous = await this.updateLink(feedHash, link, options, signParams)
+      return { hash: previous, link }
+    }
+  }
+
+  createIterator<T>(
     initialHash: string,
     options?: LinkLoadOptions<T> = {},
   ): AsyncIterator<Feedlink<T>> {
@@ -206,7 +260,7 @@ export default class Feedlinks {
     options?: LinkLoadOptions<T> = {},
   ): Promise<Array<Feedlink<T>>> {
     const slice = []
-    for await (const link of this.createIterable<T>(newestHash, options)) {
+    for await (const link of this.createIterator<T>(newestHash, options)) {
       slice.push(link)
       if (link.previous === oldestHash) {
         break
@@ -253,37 +307,5 @@ export default class Feedlinks {
           return links
         }),
       )
-  }
-
-  async createUpdater<T>(
-    feedHash: string,
-    linkDefaults?: $Shape<Feedlink<T>> = {},
-    defaultSignParams?: any,
-    options?: LinkUploadOptions<T> = {},
-  ) {
-    let previous = await this.loadHash(feedHash)
-    // `linkDefaults` could be common values for all updates, for example the `author` and `type`
-    const create = createLinkFactory(linkDefaults)
-
-    return async (
-      partialLink: $Shape<Feedlink<T>>,
-      signParams?: any,
-    ): Promise<Feedlink<T>> => {
-      // Upload the new feedlink and retrieve feed metadata
-      const link = create<T>({ ...partialLink, previous })
-      const [contentHash, feedMeta] = await Promise.all([
-        this.upload<T>(link, options),
-        this._bzz.getFeedMetadata(feedHash),
-      ])
-      // Update feed value to point to latest feedlink
-      await this._bzz.postFeedValue(
-        feedMeta,
-        `0x${contentHash}`,
-        {},
-        signParams || defaultSignParams,
-      )
-      previous = contentHash
-      return link
-    }
   }
 }
