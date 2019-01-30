@@ -120,9 +120,9 @@ export default class BaseBzz {
     const protocol = raw
       ? BZZ_MODE_PROTOCOLS.raw
       : getModeProtocol(options.mode)
-    let url = this._url + protocol + hash
+    let url = `${this._url}${protocol}${hash}/`
     if (options.path != null) {
-      url += `/${options.path}`
+      url += options.path
     }
     if (options.mode === 'raw' && options.contentType != null) {
       url += `?content_type=${options.contentType}`
@@ -168,14 +168,14 @@ export default class BaseBzz {
       )
     } else {
       // hash
-      url += userOrHash
+      url += `${userOrHash}/`
     }
 
     if (flag != null) {
       query.push(`${flag}=1`)
     }
 
-    return `${url}?${query.join('&')}`
+    return query.length > 0 ? `${url}?${query.join('&')}` : url
   }
 
   hash(domain: string, options?: FetchOptions = {}): Promise<hexValue> {
@@ -185,9 +185,9 @@ export default class BaseBzz {
   }
 
   list(hash: string, options?: DownloadOptions = {}): Promise<ListResult> {
-    let url = `${this._url}bzz-list:/${hash}`
+    let url = `${this._url}bzz-list:/${hash}/`
     if (options.path != null) {
-      url += `/${options.path}`
+      url += options.path
     }
     return this._fetchTimeout(url, options).then(resJSON)
   }
