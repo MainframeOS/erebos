@@ -1,16 +1,22 @@
-import { createKeyPair, sign } from '../packages/secp256k1'
+import { createKeyPair, createPublic, sign } from '../packages/secp256k1'
 
 describe('secp256k1', () => {
   it('createKeyPair() creates a new key pair or uses the provided privake key', () => {
     const kp1 = createKeyPair()
-    const kp2 = createKeyPair(kp1.getPrivate('hex'), 'hex')
-    expect(kp1.getPublic().encode('hex')).toBe(kp2.getPublic().encode('hex'))
+    const kp2 = createKeyPair(kp1.getPrivate('hex'))
+    expect(kp1.getPublic('hex')).toBe(kp2.getPublic('hex'))
+  })
+
+  it('createPublic() returns the public key point', () => {
+    const kp = createKeyPair()
+    const pubHex = kp.getPublic('hex')
+    const pubPoint = createPublic(pubHex)
+    expect(pubPoint.encode('hex')).toBe(pubHex)
   })
 
   it('sign() signs the provided data using the private key', () => {
     const kp = createKeyPair(
       '453b9ca3f51d413c86c9b8b0c6d7507c4162825f9e99e9d6ad79d0f25a2f7823',
-      'hex',
     )
     const input = Buffer.from('test')
     const signed = sign(Array.from(input.values()), kp.getPrivate())

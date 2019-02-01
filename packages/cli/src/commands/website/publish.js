@@ -31,7 +31,7 @@ export default class WebsitePublishCommand extends Command {
   async run() {
     this.spinner.start('Publishing website contents...')
     try {
-      const keyPair = createKeyPair(process.env[this.flags['key-env']], 'hex')
+      const keyPair = createKeyPair(process.env[this.flags['key-env']])
       const bzz = new BzzAPI({
         signFeedDigest: async digest => sign(digest, keyPair.getPrivate()),
         url: this.flags['http-gateway'],
