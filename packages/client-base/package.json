@@ -1,6 +1,6 @@
 {
   "name": "@erebos/client-base",
-  "version": "0.5.3",
+  "version": "0.6.3",
   "description": "Client base",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",
-    "@erebos/api-pss": "^0.5.3"
+    "@erebos/api-pss": "^0.6.3"
   },
   "devDependencies": {
     "flow-bin": "^0.90.0"
