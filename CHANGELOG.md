@@ -1,6 +1,5 @@
 ## v0.6.3 (2019-02-04)
 
-Fix `hexValue` return type in `Bzz` upload methods.
 Fix Swarm URLs to avoid unnecessary redirects.
 
 ## v0.6.2 (2019-01-14)

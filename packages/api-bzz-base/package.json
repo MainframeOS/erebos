@@ -28,6 +28,6 @@
     "@erebos/keccak256": "^0.6.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.90.0"
+    "flow-bin": "^0.92.0"
   }
 }
