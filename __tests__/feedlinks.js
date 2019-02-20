@@ -77,6 +77,41 @@ describe('feedlinks', () => {
     expect(downloaded).toEqual(link)
   })
 
+  it('supports custom encoding and decoding functions as method options', async () => {
+    const decode = jest.fn(async res => {
+      const text = await res.text()
+      expect(text.slice(0, 7)).toBe('ENCODED')
+      return JSON.parse(text.slice(7))
+    })
+    const encode = jest.fn(link => {
+      return `ENCODED${JSON.stringify(link)}`
+    })
+    const link = createLink({ content: { ok: true } })
+    const hash = await feed.upload(link, { encode })
+    expect(encode).toHaveBeenCalledTimes(1)
+    const downloaded = await feed.download(hash, { decode })
+    expect(decode).toHaveBeenCalledTimes(1)
+    expect(downloaded).toEqual(link)
+  })
+
+  it('supports custom encoding and decoding functions as instance options', async () => {
+    const decode = jest.fn(async res => {
+      const text = await res.text()
+      expect(text.slice(0, 7)).toBe('ENCODED')
+      return JSON.parse(text.slice(7))
+    })
+    const encode = jest.fn(link => {
+      return `ENCODED${JSON.stringify(link)}`
+    })
+    const testFeed = new Feedlinks({ bzz, decode, encode })
+    const link = createLink({ content: { ok: true } })
+    const hash = await testFeed.upload(link, { encode })
+    expect(encode).toHaveBeenCalledTimes(1)
+    const downloaded = await testFeed.download(hash, { decode })
+    expect(decode).toHaveBeenCalledTimes(1)
+    expect(downloaded).toEqual(link)
+  })
+
   it('updateHash() and loadHash() methods manipulate a feed hash', async () => {
     jest.setTimeout(10000) // 10 secs
     const link = createLink({ content: { ok: true } })

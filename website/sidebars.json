@@ -2,7 +2,8 @@
   "docs": {
     "Docs": ["introduction", "getting-started", "examples"],
     "API": ["swarm-client", "individual-apis", "api-bzz", "api-pss"],
-    "Utilities": ["hex", "keccak256", "secp256k1"],
+    "Utility libraries": ["hex", "keccak256", "secp256k1"],
+    "Advanced usage": ["feedlinks"],
     "Tools": ["cli"]
   }
 }
