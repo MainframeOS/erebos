@@ -25,10 +25,10 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "@types/bn.js": "^4.11.3",
-    "@types/elliptic": "^6.4.1",
+    "@types/elliptic": "^6.4.5",
     "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix"
   },
   "devDependencies": {
-    "flow-bin": "^0.92.0"
+    "flow-bin": "^0.93.0"
   }
 }
