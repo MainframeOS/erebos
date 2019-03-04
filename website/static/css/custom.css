@@ -14,3 +14,37 @@
 
 @media only screen and (min-width: 1500px) {
 }
+
+a {
+  color: #00a7e7;
+}
+
+h2 {
+  color: #000 !important;
+  font-weight: 400;
+}
+.headerTitleWithLogo {
+  display: none !important;
+}
+.erebos-text .blockImage {
+  max-width: 216px;
+  max-height: 49px;
+  margin-bottom: 60px;
+}
+.logo {
+  max-height: 22px;
+}
+
+.blue {
+  color: #00a7e7;
+  border-color: #00a7e7;
+  margin-top: 20px;
+}
+
+.fixedHeaderContainer {
+  background-color: #142543;
+}
+
+.footer {
+  background-color: #142543 !important;
+}

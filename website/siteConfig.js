@@ -21,7 +21,7 @@
 // ]
 
 module.exports = {
-  title: 'Erebos', // Title for your website.
+  title: 'erebos', // Title for your website.
   tagline: 'JavaScript client and CLI for Swarm v0.3.8',
   url: 'https://erebos.js.org', // Your website URL
   baseUrl: '/', // Base URL for your project
@@ -31,6 +31,7 @@ module.exports = {
   projectName: 'erebos',
   organizationName: 'MainframeHQ',
 
+  headerIcon: 'img/erebos-white.png',
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     { doc: 'introduction', label: 'Docs' },
@@ -43,12 +44,12 @@ module.exports = {
   /* path to images for header/footer */
   // headerIcon: 'img/docusaurus.svg',
   // footerIcon: 'img/docusaurus.svg',
-  favicon: 'img/favicon.png',
+  favicon: 'img/favicon-32x32.png',
 
   /* Colors for website */
   colors: {
-    primaryColor: '#337ab7',
-    secondaryColor: '#ff8c00',
+    primaryColor: '#142543',
+    secondaryColor: '#00A7E7',
   },
 
   /* Custom fonts for website */
