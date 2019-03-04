@@ -53,18 +53,11 @@ module.exports = {
   },
 
   /* Custom fonts for website */
-  /*
-  fonts: {
-    myFont: [
-      "Times New Roman",
-      "Serif"
-    ],
-    myOtherFont: [
-      "-apple-system",
-      "system-ui"
-    ]
-  },
-  */
+
+  // fonts: {
+  //   myFont: ['Muli'],
+  //   myOtherFont: ['-apple-system', 'system-ui'],
+  // },
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © ${new Date().getFullYear()} Mainframe`,
@@ -77,6 +70,11 @@ module.exports = {
 
   // Add custom scripts here that would be placed in <script> tags.
   scripts: ['https://buttons.github.io/buttons.js'],
+
+  stylesheets: [
+    'https://fonts.googleapis.com/css?family=Muli',
+    'https://fonts.googleapis.com/css?family=Poppins',
+  ],
 
   // On page navigation for the current documentation page.
   onPageNav: 'separate',

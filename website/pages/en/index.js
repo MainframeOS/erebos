@@ -152,12 +152,9 @@ const Features = () => (
 )
 
 const FeatureCallout = () => (
-  <div
-    className="productShowcaseSection paddingBottom"
-    style={{ textAlign: 'center', marginTop: 50 }}>
+  <Container padding={['top', 'bottom']} className="dapps">
     <GridBlock
       align="center"
-      layout="twoColumn"
       contents={[
         {
           image: '/img/dapps.svg',
@@ -168,10 +165,12 @@ const FeatureCallout = () => (
         },
       ]}
     />
-    <Button href={docUrl('introduction.html')}>
-      Read the full introduction
-    </Button>
-  </div>
+    <div className="center-button">
+      <Button href={docUrl('introduction.html')}>
+        Read the full introduction
+      </Button>
+    </div>
+  </Container>
 )
 
 const LearnHow = () => (

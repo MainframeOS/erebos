@@ -15,24 +15,57 @@
 @media only screen and (min-width: 1500px) {
 }
 
+.buttonWrapper {
+  color: #00a7e7;
+  font-family: 'Poppins';
+  letter-spacing: 1px;
+  padding: 5px;
+  margin: 0 5px;
+}
+
 a {
   color: #00a7e7;
 }
 
-h2 {
-  color: #000 !important;
-  font-weight: 400;
+.blue a:hover {
+  background-color: #00a7e7 !important;
 }
+
+p {
+  font-family: 'Poppins';
+  font-size: 16px;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+}
+
+h2 p {
+  color: #000;
+  font-weight: 400;
+  font-family: 'Muli';
+  font-size: 24px;
+}
+
+.lightBackground .blockContent p {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
 .headerTitleWithLogo {
   display: none !important;
 }
+
 .erebos-text .blockImage {
   max-width: 216px;
   max-height: 49px;
   margin-bottom: 60px;
 }
+
 .logo {
   max-height: 22px;
+  margin-top: -4px;
 }
 
 .blue {
@@ -41,10 +74,31 @@ h2 {
   margin-top: 20px;
 }
 
+small {
+  font-size: 20px;
+  font-family: 'Muli';
+}
+
 .fixedHeaderContainer {
   background-color: #142543;
 }
 
-.footer {
+.dapps p {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.nav-footer {
   background-color: #142543 !important;
+}
+
+.mainframe-logo {
+  width: 150px;
+  height: 19px;
+}
+
+.copyright {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
