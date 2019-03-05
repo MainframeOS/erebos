@@ -1,0 +1,31 @@
+{
+  "name": "@erebos/eth-abi",
+  "version": "0.7.0",
+  "description": "Ethereum ABI utilities",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "cjs/*",
+    "esm/*"
+  ],
+  "scripts": {
+    "clean": "del cjs esm",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:js": "yarn build:cjs && yarn build:esm",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
+    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0",
+    "bn.js": "^4.11.8",
+    "buffer": "^5.2.1"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.93.0"
+  }
+}

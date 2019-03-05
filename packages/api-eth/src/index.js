@@ -13,6 +13,8 @@ import type {
   EthFilterResults,
 } from './types'
 
+export * from './types'
+
 export default class Eth {
   _rpc: RPC
 
@@ -239,7 +241,7 @@ export default class Eth {
     hash: hexValue,
     digest: hexValue,
   ): Promise<boolean> {
-    return this._rpc.request('eth_usubmitWork', [nonce, hash, digest])
+    return this._rpc.request('eth_submitWork', [nonce, hash, digest])
   }
 
   submitHashrate(hashRate: hexValue, id: hexValue): Promise<boolean> {
