@@ -20,6 +20,11 @@
   margin-top: -4px;
 }
 
+nav {
+  font-family: 'Poppins';
+  font-size: 14px;
+}
+
 .erebos-text .blockImage {
   max-width: 216px;
   max-height: 49px;
@@ -69,6 +74,15 @@ h1 {
   font-size: 30px;
 }
 
+h2,
+h3 {
+  color: #000;
+  font-weight: 400;
+  font-family: 'Muli';
+  font-size: 24px;
+}
+
+/* for main page */
 h2 p {
   color: #000;
   font-weight: 400;
