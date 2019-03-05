@@ -47,7 +47,7 @@ module.exports = {
   /* Colors for website */
   colors: {
     primaryColor: '#142543',
-    secondaryColor: '#00A7E7',
+    secondaryColor: '#00a7e7',
   },
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.

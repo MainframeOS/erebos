@@ -128,6 +128,7 @@ const Features = () => (
     <GridBlock
       align="center"
       layout="twoColumn"
+      className="features"
       contents={[
         {
           image: '/img/fileStorage.svg',

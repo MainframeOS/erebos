@@ -93,6 +93,21 @@ h2 p {
   margin: 0 auto;
 }
 
+.features .blockImage {
+  position: relative;
+  min-width: 126px;
+  min-height: 100px;
+  margin-bottom: 0;
+}
+
+.features .blockImage img {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .dapps p {
   max-width: 547px;
   margin: 0 auto;
