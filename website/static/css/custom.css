@@ -67,19 +67,17 @@ p {
   font-size: 16px;
 }
 
-h1 {
-  color: #000;
-  font-weight: 400;
-  font-family: 'Muli';
-  font-size: 30px;
-}
-
+h1,
 h2,
 h3 {
   color: #000;
   font-weight: 400;
   font-family: 'Muli';
   font-size: 24px;
+}
+
+h1 {
+  font-size: 30px;
 }
 
 /* for main page */
@@ -102,7 +100,6 @@ h2 p {
 
 .dapps h2 p {
   max-width: 600px;
-  margin: 0 auto;
 }
 
 .nav-footer {
