@@ -23,15 +23,26 @@
   background-color: #142543;
 }
 
+.logo {
+  max-height: 22px;
+  margin-top: -4px;
+}
+
+.erebos-text .blockImage {
+  max-width: 216px;
+  max-height: 49px;
+  margin-bottom: 50px;
+}
+
+small {
+  font-size: 20px;
+  font-family: 'Muli';
+}
+
 .buttonWrapper {
   font-family: 'Poppins';
   letter-spacing: 1px;
   margin: 0 8px;
-}
-
-.logo {
-  max-height: 22px;
-  margin-top: -4px;
 }
 
 .blue {
@@ -77,23 +88,12 @@ h2 p {
 }
 
 .dapps h2 p {
-  max-width: 600px !important;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.erebos-text .blockImage {
-  max-width: 216px;
-  max-height: 49px;
-  margin-bottom: 60px;
-}
-
-small {
-  font-size: 20px;
-  font-family: 'Muli';
-}
-
 .nav-footer {
-  background-color: #142543 !important;
+  background-color: #142543;
 }
 
 .mainframe-logo {
