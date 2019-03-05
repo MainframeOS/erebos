@@ -152,7 +152,7 @@ const Features = () => (
 )
 
 const FeatureCallout = () => (
-  <Container padding={['top', 'bottom']} className="dapps">
+  <Container padding={['top']} className="dapps">
     <GridBlock
       align="center"
       contents={[

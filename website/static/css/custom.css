@@ -15,30 +15,48 @@
 @media only screen and (min-width: 1500px) {
 }
 
+.headerTitleWithLogo {
+  display: none !important;
+}
+
+.fixedHeaderContainer {
+  background-color: #142543;
+}
+
 .buttonWrapper {
-  color: #00a7e7;
   font-family: 'Poppins';
   letter-spacing: 1px;
-  padding: 5px;
-  margin: 0 5px;
+  margin: 0 8px;
+}
+
+.logo {
+  max-height: 22px;
+  margin-top: -4px;
+}
+
+.blue {
+  color: #00a7e7;
+  border-color: #00a7e7;
+  margin-top: 20px;
 }
 
 a {
   color: #00a7e7;
 }
 
-.blue a:hover {
-  background-color: #00a7e7 !important;
-}
-
-p {
-  font-family: 'Poppins';
-  font-size: 16px;
+a.button.blue:hover {
+  background-color: #00a7e7;
 }
 
 .center-button {
   display: flex;
   justify-content: center;
+  margin-bottom: 30px;
+}
+
+p {
+  font-family: 'Poppins';
+  font-size: 16px;
 }
 
 h2 p {
@@ -53,8 +71,14 @@ h2 p {
   margin: 0 auto;
 }
 
-.headerTitleWithLogo {
-  display: none !important;
+.dapps p {
+  max-width: 547px;
+  margin: 0 auto;
+}
+
+.dapps h2 p {
+  max-width: 600px !important;
+  margin: 0 auto;
 }
 
 .erebos-text .blockImage {
@@ -63,29 +87,9 @@ h2 p {
   margin-bottom: 60px;
 }
 
-.logo {
-  max-height: 22px;
-  margin-top: -4px;
-}
-
-.blue {
-  color: #00a7e7;
-  border-color: #00a7e7;
-  margin-top: 20px;
-}
-
 small {
   font-size: 20px;
   font-family: 'Muli';
-}
-
-.fixedHeaderContainer {
-  background-color: #142543;
-}
-
-.dapps p {
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .nav-footer {
