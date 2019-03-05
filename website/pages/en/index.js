@@ -56,15 +56,32 @@ const SplashContainer = props => (
 
 const Logo = props => (
   <div className="projectLogo">
-    <img src={props.img} alt="Project Logo" />
+    <img src={props.img_src} alt="Project Logo" />
   </div>
 )
 
 const ProjectTitle = () => (
-  <h2 className="projectTitle">
-    {siteConfig.title}
-    <small>{siteConfig.tagline}</small>
-  </h2>
+  <Container padding={'top'}>
+    <GridBlock
+      align="center"
+      contents={[
+        {
+          image: '/img/logo.svg',
+          imageAlign: 'top',
+        },
+      ]}
+    />
+    <GridBlock
+      align="center"
+      className="erebos-text"
+      contents={[
+        {
+          image: '/img/erebos.png',
+          imageAlign: 'top',
+        },
+      ]}
+    />
+  </Container>
 )
 
 const PromoSection = props => (
@@ -81,27 +98,7 @@ class HomeSplash extends React.Component {
     return (
       <SplashContainer>
         <div className="inner">
-          <Container padding={'top'}>
-            <GridBlock
-              align="center"
-              contents={[
-                {
-                  image: '/img/logo.svg',
-                  imageAlign: 'top',
-                },
-              ]}
-            />
-            <GridBlock
-              align="center"
-              className="erebos-text"
-              contents={[
-                {
-                  image: '/img/erebos.png',
-                  imageAlign: 'top',
-                },
-              ]}
-            />
-          </Container>
+          <ProjectTitle />
           <small className="blue">{siteConfig.tagline}</small>
           <PromoSection>
             <Button href={docUrl('getting-started.html', language)}>
@@ -152,7 +149,7 @@ const Features = () => (
 )
 
 const FeatureCallout = () => (
-  <Container padding={['top']} className="dapps">
+  <Container padding={'top'} className="dapps">
     <GridBlock
       align="center"
       contents={[

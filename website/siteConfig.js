@@ -50,13 +50,6 @@ module.exports = {
     secondaryColor: '#00A7E7',
   },
 
-  /* Custom fonts for website */
-
-  // fonts: {
-  //   myFont: ['Muli'],
-  //   myOtherFont: ['-apple-system', 'system-ui'],
-  // },
-
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © ${new Date().getFullYear()} Mainframe`,
 
