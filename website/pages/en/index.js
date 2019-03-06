@@ -66,7 +66,7 @@ const ProjectTitle = () => (
       align="center"
       contents={[
         {
-          image: '/img/logo.svg',
+          image: siteConfig.baseUrl + 'img/logo.svg',
           imageAlign: 'top',
         },
       ]}
@@ -76,7 +76,7 @@ const ProjectTitle = () => (
       className="erebos-text"
       contents={[
         {
-          image: '/img/erebos.png',
+          image: siteConfig.baseUrl + 'img/erebos.png',
           imageAlign: 'top',
         },
       ]}
@@ -131,14 +131,14 @@ const Features = () => (
       className="features"
       contents={[
         {
-          image: '/img/fileStorage.svg',
+          image: siteConfig.baseUrl + 'img/fileStorage.svg',
           imageAlign: 'top',
           title: 'Decentralized file storage',
           content:
             'Securely distribute you files accross the entire network using the [Bzz APIs](api-bzz.md)',
         },
         {
-          image: 'img/comms.svg',
+          image: siteConfig.baseUrl + 'img/comms.svg',
           imageAlign: 'top',
           title: 'Peer-to-peer communications',
           content:
@@ -155,7 +155,7 @@ const FeatureCallout = () => (
       align="center"
       contents={[
         {
-          image: '/img/dapps.svg',
+          image: siteConfig.baseUrl + 'img/dapps.svg',
           imageAlign: 'top',
           title: 'Your entry point into decentralized apps development',
           content:
@@ -235,7 +235,6 @@ const Showcase = props => {
 class Index extends React.Component {
   render() {
     const language = this.props.language || ''
-
     return (
       <div>
         <HomeSplash language={language} />
