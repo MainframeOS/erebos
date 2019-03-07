@@ -37,9 +37,18 @@ Creates a `KeyPair` by using the provided `privateKey` or a new random one.
 **Arguments**
 
 1.  `privateKey?: string`
-1.  `encoding?: hex`
 
 **Returns** `KeyPair`
+
+### createPublic()
+
+Creates a public key point.
+
+**Arguments**
+
+1.  `publicKey: string`
+
+**Returns** `Object`
 
 ### sign()
 

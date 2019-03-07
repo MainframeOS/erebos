@@ -1,6 +1,10 @@
 // @flow
 
-import type Bzz, { FetchOptions, UploadOptions } from '@erebos/api-bzz-base'
+import type Bzz, {
+  FeedParams,
+  FetchOptions,
+  UploadOptions,
+} from '@erebos/api-bzz-base'
 import type { hexValue } from '@erebos/hex'
 import type { Observable } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
@@ -16,88 +20,89 @@ type JSONValue =
   | Array<JSONValue>
   | { [key: string]: JSONValue }
 
-export type Feedlink<T = JSONValue> = {
-  protocol: 'feedlinks',
+export type PartialChapter<T = JSONValue> = {
+  protocol: 'feedlinks', // TODO: rename
   version: 1,
-  id?: ?string,
   timestamp: number,
   references?: ?Array<string>,
   previous?: ?string,
   type: string,
-  author?: ?string,
+  author: string,
   content: T,
+  signature?: string,
 }
 
-export type LinkUpdate<T> = {
-  hash: string,
-  link: Feedlink<T>,
+export type Chapter<T = JSONValue> = PartialChapter<T> & { id: string }
+
+export type DecodeChapter<T> = (res: *) => Promise<Chapter<T>>
+export type EncodeChapter<T> = (
+  chapter: PartialChapter<T>,
+) => Promise<string | Buffer>
+
+export type ChapterUploadOptions<T: *> = UploadOptions & {
+  encode?: ?EncodeChapter<T>,
 }
 
-export type DecodeLink<T> = (res: *) => Promise<Feedlink<T>>
-export type EncodeLink<T> = (link: Feedlink<T>) => Promise<string | Buffer>
-
-export type LinkUploadOptions<T: *> = UploadOptions & {
-  encode?: ?EncodeLink<T>,
+export type ChapterLoadOptions<T: *> = FetchOptions & {
+  decode?: ?DecodeChapter<T>,
 }
 
-export type LinkLoadOptions<T: *> = FetchOptions & {
-  decode?: ?DecodeLink<T>,
-}
-
-export type LinkLiveOptions<T: *> = LinkLoadOptions<T> & {
+export type ChapterLiveOptions<T: *> = ChapterLoadOptions<T> & {
   interval: number,
 }
 
-const LINK_DEFAULTS = {
+const CHAPTER_DEFAULTS = {
   protocol: PROTOCOL,
   version: VERSION,
   type: 'application/json',
 }
 
-// Current timestamp in seconds
-const now = () => Math.floor(Date.now() / 1000)
-
-export const createLink = <T>(link: $Shape<Feedlink<T>>): Feedlink<T> => ({
-  ...LINK_DEFAULTS,
-  timestamp: now(),
-  ...link,
+export const createChapter = <T>(
+  chapter: $Shape<PartialChapter<T>>,
+): PartialChapter<T> => ({
+  ...CHAPTER_DEFAULTS,
+  timestamp: Date.now(),
+  ...chapter,
 })
 
-const createLinkFactory = (defaults: $Shape<Feedlink<any>>) => {
-  const allDefaults = { ...LINK_DEFAULTS, ...defaults }
-  return <T>(link: $Shape<Feedlink<T>>): Feedlink<T> => ({
+const createChapterFactory = (defaults: $Shape<PartialChapter<any>>) => {
+  const allDefaults = { ...CHAPTER_DEFAULTS, ...defaults }
+  return <T>(chapter: $Shape<PartialChapter<T>>): PartialChapter<T> => ({
     ...allDefaults,
-    timestamp: now(),
-    ...link,
+    timestamp: Date.now(),
+    ...chapter,
   })
 }
 
-export const validateLink = <T: Object>(link: T): T => {
-  if (link.protocol !== PROTOCOL || link.version !== VERSION) {
+export const validateChapter = <T: Object>(chapter: T): T => {
+  if (chapter.protocol !== PROTOCOL || chapter.version !== VERSION) {
     throw new Error('Unsupported payload')
   }
-  return link
+  return chapter
 }
 
-const defaultDecode: DecodeLink<*> = async (res: *) => {
-  return validateLink(await res.json())
-}
-const defaultEncode: EncodeLink<*> = async (link: Object) => {
-  return JSON.stringify(link)
+// Should signature support be part of a future release? maybe just adding a test case using encode and decode?
+
+const defaultDecode: DecodeChapter<*> = async (res: *) => {
+  return validateChapter(await res.json())
 }
 
-type FeedlinksConfig = {
+const defaultEncode: EncodeChapter<*> = async (chapter: Object) => {
+  return JSON.stringify(chapter)
+}
+
+type TimelineConfig = {
   bzz: Bzz,
-  decode?: ?DecodeLink<*>,
-  encode?: ?EncodeLink<*>,
+  decode?: ?DecodeChapter<*>,
+  encode?: ?EncodeChapter<*>,
 }
 
-export default class Feedlinks {
+export default class Timeline {
   _bzz: Bzz
-  _decode: DecodeLink<any>
-  _encode: EncodeLink<any>
+  _decode: DecodeChapter<any>
+  _encode: EncodeChapter<any>
 
-  constructor(config: FeedlinksConfig) {
+  constructor(config: TimelineConfig) {
     this._bzz = config.bzz
     this._decode = config.decode || defaultDecode
     this._encode = config.encode || defaultEncode
@@ -105,49 +110,50 @@ export default class Feedlinks {
 
   async _decodeWith<T>(
     res: *,
-    options: LinkLoadOptions<T>,
-  ): Promise<Feedlink<T>> {
+    options: ChapterLoadOptions<T>,
+  ): Promise<Chapter<T>> {
     const decode = options.decode || this._decode
     return await decode(res)
   }
 
   async _encodeWith<T>(
-    link: Feedlink<T>,
-    options: LinkUploadOptions<T>,
+    chapter: PartialChapter<T>,
+    options: ChapterUploadOptions<T>,
   ): Promise<string | Buffer> {
     const encode = options.encode || this._encode
-    return await encode(link)
+    return await encode(chapter)
   }
 
   async download<T>(
     hash: string,
-    options?: LinkLoadOptions<T> = {},
-  ): Promise<Feedlink<T>> {
-    const res = await this._bzz.download(hash)
-    return await this._decodeWith<T>(res, options)
+    options?: ChapterLoadOptions<T> = {},
+  ): Promise<Chapter<T>> {
+    const res = await this._bzz.download(hash, { mode: 'raw' })
+    const chapter = await this._decodeWith<T>(res, options)
+    chapter.id = hash
+    return chapter
   }
 
   async upload<T>(
-    link: Feedlink<T>,
-    options?: LinkUploadOptions<T> = {},
+    chapter: PartialChapter<T>,
+    options?: ChapterUploadOptions<T> = {},
   ): Promise<hexValue> {
-    const encoded = await this._encodeWith<T>(link, options)
+    const encoded = await this._encodeWith<T>(chapter, options)
     return await this._bzz.uploadFile(encoded, {
-      contentType: 'application/json',
       ...options,
+      mode: 'raw',
     })
   }
 
-  async loadHash(
-    feedHash: string,
+  async loadChapterID(
+    hashOrParams: string | FeedParams,
     options?: FetchOptions = {},
   ): Promise<?string> {
     try {
-      return await this._bzz.getFeedValue(
-        feedHash,
-        {},
-        { ...options, mode: 'content-hash' },
-      )
+      return await this._bzz.getFeedValue(hashOrParams, {
+        ...options,
+        mode: 'content-hash',
+      })
     } catch (err) {
       if (err.status === 404) {
         return null
@@ -157,86 +163,80 @@ export default class Feedlinks {
     }
   }
 
-  async updateHash(
-    feedHash: string,
-    linkHash: string,
+  async loadChapter<T>(
+    hashOrParams: string | FeedParams,
+    options?: ChapterLoadOptions<T> = {},
+  ): Promise<?Chapter<T>> {
+    const id = await this.loadChapterID(hashOrParams, options)
+    if (id == null) {
+      return null
+    }
+    const chapter = await this.download<T>(id, options)
+    chapter.id = id
+    return chapter
+  }
+
+  async updateChapterID(
+    hashOrParams: string | FeedParams,
+    chapterID: string,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<void> {
     await this._bzz.updateFeedValue(
-      feedHash,
-      `0x${linkHash}`,
-      {},
+      hashOrParams,
+      `0x${chapterID}`,
       options,
       signParams,
     )
   }
 
-  async loadLink<T>(
-    hash: string,
-    options?: LinkLoadOptions<T> = {},
-  ): Promise<Feedlink<T>> {
-    const res = await this._bzz.getFeedValue(
-      hash,
-      {},
-      { ...options, mode: 'content-response' },
-    )
-    return await this._decodeWith<T>(res, options)
-  }
-
-  async updateLink<T>(
-    feedHash: string,
-    link: Feedlink<T>,
-    options?: LinkUploadOptions<T> = {},
+  async addChapter<T>(
+    hashOrParams: string | FeedParams,
+    chapter: PartialChapter<T>,
+    options?: ChapterUploadOptions<T> = {},
     signParams?: any,
   ): Promise<hexValue> {
-    const [contentHash, feedMeta] = await Promise.all([
-      this.upload<T>(link, options),
-      this._bzz.getFeedMetadata(feedHash),
+    const [chapterID, feedMeta] = await Promise.all([
+      this.upload<T>(chapter, options),
+      this._bzz.getFeedMetadata(hashOrParams),
     ])
     await this._bzz.postFeedValue(
       feedMeta,
-      `0x${contentHash}`,
+      `0x${chapterID}`,
       { headers: options.headers, timeout: options.timeout },
       signParams,
     )
-    return contentHash
-  }
-
-  async loadUpdate<T>(
-    feedHash: string,
-    options?: LinkLoadOptions<T> = {},
-  ): Promise<LinkUpdate<T>> {
-    const hash = await this._bzz.getFeedValue(
-      feedHash,
-      {},
-      { ...options, mode: 'content-hash' },
-    )
-    const link = await this.download<T>(hash, options)
-    return { hash, link }
+    return chapterID
   }
 
   async createUpdater<T>(
-    feedHash: string,
-    linkDefaults?: $Shape<Feedlink<T>> = {},
-    options?: LinkUploadOptions<T> = {},
+    hashOrParams: string | FeedParams,
+    chapterDefaults?: $Shape<PartialChapter<T>> = {},
+    options?: ChapterUploadOptions<T> = {},
     signParams?: any,
   ) {
-    let previous = await this.loadHash(feedHash)
-    const create = createLinkFactory(linkDefaults)
+    let previous = await this.loadChapterID(hashOrParams)
+    const create = createChapterFactory(chapterDefaults)
 
-    return async (partialLink: $Shape<Feedlink<T>>): Promise<LinkUpdate<T>> => {
-      const link = create<T>({ ...partialLink, previous })
-      previous = await this.updateLink(feedHash, link, options, signParams)
-      return { hash: previous, link }
+    return async (
+      partialChapter: $Shape<PartialChapter<T>>,
+    ): Promise<Chapter<T>> => {
+      const chapter = create<T>({ ...partialChapter, previous })
+      previous = await this.addChapter(
+        hashOrParams,
+        chapter,
+        options,
+        signParams,
+      )
+      return { ...chapter, id: previous }
     }
   }
 
   createIterator<T>(
-    initialHash: string,
-    options?: LinkLoadOptions<T> = {},
-  ): AsyncIterator<Feedlink<T>> {
-    let nextHash = initialHash
+    initialID: string,
+    options?: ChapterLoadOptions<T> = {},
+  ): AsyncIterator<Chapter<T>> {
+    let nextID = initialID
     // $FlowFixMe: AsyncIterator
     return {
       // $FlowFixMe: Flow doesn't support symbols as Object keys
@@ -244,25 +244,25 @@ export default class Feedlinks {
         return this
       },
       next: async () => {
-        if (nextHash == null) {
+        if (nextID == null) {
           return { done: true, value: undefined }
         }
-        const link = await this.download<T>(nextHash, options)
-        nextHash = link.previous
-        return { done: false, value: link }
+        const chapter = await this.download<T>(nextID, options)
+        nextID = chapter.previous
+        return { done: false, value: chapter }
       },
     }
   }
 
   async createSlice<T>(
-    newestHash: string, // inclusive
-    oldestHash: string, // exclusive
-    options?: LinkLoadOptions<T> = {},
-  ): Promise<Array<Feedlink<T>>> {
+    newestID: string, // inclusive
+    oldestID: string, // exclusive
+    options?: ChapterLoadOptions<T> = {},
+  ): Promise<Array<Chapter<T>>> {
     const slice = []
-    for await (const link of this.createIterator<T>(newestHash, options)) {
-      slice.push(link)
-      if (link.previous === oldestHash) {
+    for await (const chapter of this.createIterator<T>(newestID, options)) {
+      slice.push(chapter)
+      if (chapter.previous === oldestID) {
         break
       }
     }
@@ -270,41 +270,41 @@ export default class Feedlinks {
   }
 
   live<T>(
-    feedHash: string,
-    options: LinkLiveOptions<T>,
-  ): Observable<Array<Feedlink<T>>> {
+    hashOrParams: string | FeedParams,
+    options: ChapterLiveOptions<T>,
+  ): Observable<Array<Chapter<T>>> {
     let previousKnow
     return this._bzz
-      .pollFeedValue(feedHash, {
+      .pollFeedValue(hashOrParams, {
         ...options,
         mode: 'content-hash',
         whenEmpty: 'ignore',
         contentChangedOnly: true,
       })
       .pipe(
-        flatMap(async hash => {
-          let links
-          const link = await this.download<T>(hash, options)
+        flatMap(async id => {
+          let chapters
+          const chapter = await this.download<T>(id, options)
 
           if (
             previousKnow === null ||
-            link.previous == null ||
-            link.previous === previousKnow
+            chapter.previous == null ||
+            chapter.previous === previousKnow
           ) {
-            // Single link to push
-            links = [link]
+            // Single chapter to push
+            chapters = [chapter]
           } else {
             // There has been more than one update during the polling interval
             const slice = await this.createSlice<T>(
-              link.previous,
+              chapter.previous,
               previousKnow,
               options,
             )
-            links = slice.reverse().concat(link)
+            chapters = slice.reverse().concat(chapter)
           }
 
-          previousKnow = hash
-          return links
+          previousKnow = id
+          return chapters
         }),
       )
   }

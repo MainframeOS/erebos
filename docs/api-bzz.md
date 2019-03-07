@@ -86,8 +86,12 @@ type FetchOptions = {
 
 ### FileOptions
 
+Includes [FetchOptions](#fetchoptions)
+
 ```javascript
-type FileOptions = FetchOptions & {
+type FileOptions = {
+  headers?: Object,
+  timeout?: ?number,
   contentType?: string,
   path?: string,
 }
@@ -101,16 +105,28 @@ type BzzMode = 'default' | 'immutable' | 'raw'
 
 ### DownloadOptions
 
+Includes [FileOptions](#fileoptions)
+
 ```javascript
-type DownloadOptions = FileOptions & {
+type DownloadOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  contentType?: string,
+  path?: string,
   mode?: BzzMode,
 }
 ```
 
 ### UploadOptions
 
+Includes [FileOptions](#fileoptions)
+
 ```javascript
-type UploadOptions = FileOptions & {
+type UploadOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  contentType?: string,
+  path?: string,
   defaultPath?: string,
   encrypt?: boolean,
   manifestHash?: string,
@@ -125,16 +141,29 @@ type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
 
 ### FeedOptions
 
+Includes [FetchOptions](#fetchoptions)
+
 ```javascript
-type FeedOptions = FetchOptions & {
+type FeedOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  contentType?: string,
+  path?: string,
   mode?: FeedMode,
 }
 ```
 
 ### PollOptions
 
+Includes [FeedOptions](#feedoptions)
+
 ```javascript
-type PollOptions = FeedOptions & {
+type PollOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  contentType?: string,
+  path?: string,
+  mode?: FeedMode,
   interval: number,
   immediate?: boolean,
   whenEmpty?: 'accept' | 'ignore' | 'error',
@@ -149,19 +178,29 @@ type PollOptions = FeedOptions & {
 type FeedParams = {
   level?: number,
   name?: string,
-  signature?: string,
   time?: number,
   topic?: string,
 }
 ```
 
-### SignFeedDigestFunc
+### FeedUpdateParams
+
+```javascript
+type FeedUpdateParams = {
+  level: number,
+  time: number,
+  topic: string,
+  signature: string,
+}
+```
+
+### SignBytesFunc
 
 Function to provide in order to sign feed updates
 
 ```javascript
-type SignFeedDigestFunc = (
-  digest: Array<number>,
+type SignBytesFunc = (
+  bytes: Array<number>,
   params?: any,
 ) => Promise<Array<number>>
 ```
@@ -170,7 +209,7 @@ type SignFeedDigestFunc = (
 
 ```javascript
 type BzzConfig = {
-  signFeedDigest?: SignFeedDigestFunc,
+  signBytes?: SignBytesFunc,
   timeout?: number,
   url: string,
 }
@@ -191,7 +230,7 @@ type BzzConfig = {
 
 **Arguments**
 
-1.  `options: FeedOptions`
+1.  [`options?: FeedOptions = {}`](#feedoptions)
 
 **Returns** `hexValue`
 
@@ -216,7 +255,7 @@ type BzzConfig = {
 **Configuration**
 
 - `url: string`: address of the Swarm HTTP gateway
-- `signFeedDigest?: SignFeedDigestFunc`: needed in order to use feed updates APIs
+- [`signBytes?: SignBytesFunc`](#signbytesfunc): needed in order to use feed updates APIs
 - `timeout?: number`: default timeout to apply to all requests
 
 ### .getDownloadURL()
@@ -225,8 +264,8 @@ Returns the Swarm download URL for a given resource based on the provided argume
 
 **Arguments**
 
-1.  `hashOrDomain: string`
-1.  `options?: DownloadOptions`: optional object providing the `path`.
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions): optional object providing the `path`.
 1.  `raw?: boolean`
 
 **Returns** `string`
@@ -237,7 +276,7 @@ Returns the Swarm upload URL for a given resource based on the provided argument
 
 **Arguments**
 
-1.  `options: UploadOptions`
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 1.  `raw?: boolean`
 
 **Returns** `string`
@@ -248,8 +287,7 @@ Returns the Swarm URL for a feed based on the provided arguments.
 
 **Arguments**
 
-1.  `userOrHash: string`
-1.  `options?: FeedOptions = {}`
+1.  `hashOrParams: string | FeedParams | FeedUpdateParams`: ENS name, hash of the feed manifest, [feed parameters](#feedparams) or [feed update parameters](#feedupdateparams)
 1.  `flag?: 'meta'`
 
 **Returns** `string`
@@ -261,7 +299,7 @@ Returns the hash of the provided `domain`.
 **Arguments**
 
 1.  `domain: string`
-1.  `options?: FetchOptions`
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<string>`
 
@@ -271,8 +309,8 @@ Returns the manifest data for the provided `hashOrDomain` and optional `path`.
 
 **Arguments**
 
-1.  `hashOrDomain: string`
-1.  `options?: DownloadOptions`: optional object providing the `path`.
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions): optional object providing the `path`.
 
 **Returns** `Promise<ListResult>`
 
@@ -282,8 +320,8 @@ The `download()` method returns a [`Response` instance](https://developer.mozill
 
 **Arguments**
 
-1.  `hashOrDomain: string`
-1.  `options?: DownloadOptions` optional object providing the `path`, `mode` and `contentType`.
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions) optional object providing the `path`, `mode` and `contentType`.
 
 **Returns** `Promise<Response>`
 
@@ -294,7 +332,7 @@ Uploads a single file and returns the hash. If the `contentType` option is provi
 **Arguments**
 
 1.  `data: string | Buffer`
-1.  `options?: UploadOptions`
+1.  [`options: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
@@ -306,19 +344,19 @@ By setting the `defaultPath` option, a file can be defined as the default one wh
 
 **Arguments**
 
-1.  `data: DirectoryData`
-1.  `options?: UploadOptions`
+1.  [`data: DirectoryData`](#directorydata)
+1.  [`options: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
 ### .upload()
 
-Calls `uploadFile()` or `uploadDirectory()` based on the provided `data` type.
+Calls [`uploadFile()`](#uploadfile) or [`uploadDirectory()`](#uploaddirectory) based on the provided `data` type.
 
 **Arguments**
 
-1.  `data: string | Buffer | DirectoryData`
-1.  `options?: UploadOptions`
+1.  `data: string | Buffer | DirectoryData`: providing a [`DirectoryData`](#directorydata) object uses [`uploadDirectory()`](#uploaddirectory), otherwise [`uploadFile()`](#uploadfile) is used
+1.  [`options: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
@@ -328,9 +366,9 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Arguments**
 
-1.  `hashOrDomain: string`
+1.  `hashOrDomain: string`: ENS name or Swarm hash
 1.  `path: string`
-1.  `options?: FetchOptions`
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<string>`
 
@@ -338,9 +376,8 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Arguments**
 
-1.  `user: string`
-1.  `params?: FeedParams`
-1.  `options?: UploadOptions = {}`
+1.  [`params: FeedParams`](#feedparams)
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<hexValue>`
 
@@ -348,9 +385,8 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Arguments**
 
-1.  `userOrHash: string`: user address or feed manifest hash
-1.  `params?: FeedParams = {}`
-1.  `options?: FetchOptions = {}`
+1.  `hashOrParams: string | FeedParams`: hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<FeedMetadata>`
 
@@ -361,9 +397,8 @@ The `content-hash` and `content-response` modes assume to value of the feed is a
 
 **Arguments**
 
-1.  `userOrHash: string`: user address or feed manifest hash
-1.  `params?: FeedParams = {}`
-1.  `options?: FeedOptions = {}`
+1.  `hashOrParams: string | FeedParams`: : ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`options?: FeedOptions = {}`](#feedoptions)
 
 **Returns** `Promise<Response | string>`
 
@@ -373,9 +408,8 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `userOrHash: string`: user address or feed manifest hash
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
 1.  `options: PollOptions`, see below
-1.  `params?: FeedParams = {}`
 
 **Options**
 
@@ -391,10 +425,9 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `user: string`: user address
-1.  `params: FeedParams`
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
 1.  `body: Buffer`
-1.  `options?: FetchOptions = {}`
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<Response>`
 
@@ -404,7 +437,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 1.  `meta: FeedMetadata`
 1.  `data: string | Object | Buffer`
-1.  `options?: FetchOptions = {}`
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
 **Returns** `Promise<Response>`
@@ -413,10 +446,9 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `userOrHash: string`: user address or feed manifest hash
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
 1.  `data: string | Object | Buffer`
-1.  `feedParams?: FeedParams`
-1.  `options?: FetchOptions = {}`
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
 **Returns** `Promise<Response>`
@@ -427,10 +459,9 @@ This method implements the flow of uploading the provided `data` and updating th
 
 **Arguments**
 
-1.  `userOrHash: string`: user address or feed manifest hash
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
 1.  `data: string | Object | Buffer`
-1.  `feedParams?: FeedParams`
-1.  `options?: UploadOptions = {}`
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 1.  `signParams?: any`
 
 **Returns** `Promise<string>`
@@ -445,8 +476,8 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `hashOrDomain: string`
-1.  `options?: DownloadOptions`
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Observable<FileEntry>`
 
@@ -454,8 +485,8 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `hashOrDomain: string`
-1.  `options?: DownloadOptions`
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Promise<DirectoryData>`
 
@@ -463,9 +494,9 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `hashOrDomain: string`
+1.  `hashOrDomain: string`: ENS name or Swarm hash
 1.  `path: string`
-1.  `options?: DownloadOptions`
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Promise<void>`
 
@@ -473,9 +504,9 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  `hashOrDomain: string`
+1.  `hashOrDomain: string`: ENS name or Swarm hash
 1.  `path: string`
-1.  `options?: DownloadOptions`
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Promise<number>` the number of files written.
 
@@ -485,9 +516,9 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 **Arguments**
 
-1.  `hashOrDomain: string`
+1.  `hashOrDomain: string`: ENS name or Swarm hash
 1.  `path: string`
-1.  `options?: DownloadOptions`
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Promise<void>`
 
@@ -495,8 +526,8 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 **Arguments**
 
-1.  `stream: Readable`: Node.js [`Readable stream`](https://nodejs.org/dist/latest-v10.x/docs/api/stream.html#stream_class_stream_readable) instance.
-1.  `options?: UploadOptions`
+1.  `stream: Readable`: Node.js [`Readable stream`](https://nodejs.org/dist/latest-v10.x/docs/api/stream.html#stream_class_stream_readable) instance
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
@@ -504,8 +535,8 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 **Arguments**
 
-1.  `path: string`: path to an existing tar archive or a directory to pack.
-1.  `options?: UploadOptions`
+1.  `path: string`: path to an existing tar archive or a directory to pack
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
@@ -513,8 +544,8 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 **Arguments**
 
-1.  `path: string`: file to upload.
-1.  `options?: UploadOptions`
+1.  `path: string`: file to upload
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
@@ -522,8 +553,8 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 
 **Arguments**
 
-1.  `path: string`: directory to upload.
-1.  `options?: UploadOptions`
+1.  `path: string`: directory to upload
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
 
@@ -533,7 +564,7 @@ Calls `uploadFileFrom()` or `uploadDirectoryFrom()` depending on the provided `p
 
 **Arguments**
 
-1.  `path: string`: file or directory to upload.
-1.  `options?: UploadOptions`
+1.  `path: string`: file or directory to upload
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`

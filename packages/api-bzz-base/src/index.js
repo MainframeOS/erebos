@@ -2,7 +2,6 @@
 
 import createHex, {
   hexValueType,
-  isHexValue,
   type hexInput,
   type hexValue,
 } from '@erebos/hex'
@@ -18,10 +17,11 @@ import type {
   FeedMetadata,
   FeedOptions,
   FeedParams,
+  FeedUpdateParams,
   FetchOptions,
   ListResult,
   PollOptions,
-  SignFeedDigestFunc,
+  SignBytesFunc,
   UploadOptions,
 } from './types'
 
@@ -64,20 +64,20 @@ export const resSwarmHash = (res: *) => {
     .then(value => Buffer.from(new Uint8Array(value)).toString('hex'))
 }
 
-const defaultSignFeedDigest = () => {
-  return Promise.reject(new Error('Missing `signFeedDigest()` function'))
+const defaultSignBytes = () => {
+  return Promise.reject(new Error('Missing `signBytes()` function'))
 }
 
 export default class BaseBzz {
   _defaultTimeout: number
   _fetch: *
-  _signDigest: SignFeedDigestFunc
+  _signBytes: SignBytesFunc
   _url: string
 
   constructor(config: BzzConfig) {
     const { url, timeout } = config
     this._defaultTimeout = timeout ? timeout : 0
-    this._signDigest = config.signFeedDigest || defaultSignFeedDigest
+    this._signBytes = config.signBytes || defaultSignBytes
     this._url = url
   }
 
@@ -108,13 +108,13 @@ export default class BaseBzz {
     })
   }
 
-  signFeedDigest(digest: Array<number>, params?: any): Promise<hexValue> {
-    return this._signDigest(digest, params).then(bytesToHexValue)
+  sign(bytes: Array<number>, params?: any): Promise<hexValue> {
+    return this._signBytes(bytes, params).then(bytesToHexValue)
   }
 
   getDownloadURL(
     hash: string,
-    options: DownloadOptions,
+    options: DownloadOptions = {},
     raw?: boolean = false,
   ): string {
     const protocol = raw
@@ -130,7 +130,7 @@ export default class BaseBzz {
     return url
   }
 
-  getUploadURL(options: UploadOptions, raw?: boolean = false): string {
+  getUploadURL(options: UploadOptions = {}, raw?: boolean = false): string {
     // Default URL to creation
     let url = this._url + BZZ_MODE_PROTOCOLS[raw ? 'raw' : 'default']
     // Manifest update if hash is provided
@@ -147,28 +147,25 @@ export default class BaseBzz {
   }
 
   getFeedURL(
-    userOrHash: string,
-    params?: FeedParams = {},
+    hashOrParams: string | FeedParams | FeedUpdateParams,
     flag?: 'meta',
   ): string {
     let url = this._url + BZZ_MODE_PROTOCOLS.feed
     let query = []
 
-    if (isHexValue(userOrHash)) {
-      // user
-      query = Object.keys(params).reduce(
-        (acc, key) => {
-          const value = params[key]
-          if (value != null) {
-            acc.push(`${key}=${value}`)
-          }
-          return acc
-        },
-        [`user=${userOrHash}`],
-      )
+    if (typeof hashOrParams === 'string') {
+      // feed hash
+      url += hashOrParams
     } else {
-      // hash
-      url += userOrHash
+      // feed params
+      query = Object.keys(hashOrParams).reduce((acc, key) => {
+        // $FlowFixMe: hashOrParams type
+        const value = hashOrParams[key]
+        if (value != null) {
+          acc.push(`${key}=${value}`)
+        }
+        return acc
+      }, [])
     }
 
     if (flag != null) {
@@ -261,8 +258,7 @@ export default class BaseBzz {
   }
 
   createFeedManifest(
-    user: string,
-    params?: FeedParams = {},
+    params: FeedParams,
     options?: UploadOptions = {},
   ): Promise<hexValue> {
     const manifest = {
@@ -270,7 +266,7 @@ export default class BaseBzz {
         {
           contentType: 'application/bzz-feed',
           mod_time: '0001-01-01T00:00:00Z',
-          feed: { topic: getFeedTopic(params), user },
+          feed: { topic: getFeedTopic(params), user: params.user },
         },
       ],
     }
@@ -278,20 +274,18 @@ export default class BaseBzz {
   }
 
   getFeedMetadata(
-    userOrHash: string,
-    params?: FeedParams = {},
+    hashOrParams: string | FeedParams,
     options?: FetchOptions = {},
   ): Promise<FeedMetadata> {
-    const url = this.getFeedURL(userOrHash, params, 'meta')
+    const url = this.getFeedURL(hashOrParams, 'meta')
     return this._fetchTimeout(url, options).then(resJSON)
   }
 
   getFeedValue(
-    userOrHash: string,
-    params?: FeedParams = {},
+    hashOrParams: string | FeedParams,
     options?: FeedOptions = {},
   ): Promise<*> {
-    const url = this.getFeedURL(userOrHash, params)
+    const url = this.getFeedURL(hashOrParams)
     return this._fetchTimeout(url, options)
       .then(resOrError)
       .then(res => {
@@ -306,9 +300,8 @@ export default class BaseBzz {
   }
 
   pollFeedValue(
-    userOrHash: string,
+    hashOrParams: string | FeedParams,
     options: PollOptions,
-    params?: FeedParams = {},
   ): Observable<*> {
     const sources = []
 
@@ -326,11 +319,9 @@ export default class BaseBzz {
 
     // Handle whether the subscription should fail if the feed doesn't have a value
     if (options.whenEmpty === 'error') {
-      pipeline.push(
-        flatMap(() => this.getFeedValue(userOrHash, params, options)),
-      )
+      pipeline.push(flatMap(() => this.getFeedValue(hashOrParams, options)))
     } else {
-      const url = this.getFeedURL(userOrHash, params)
+      const url = this.getFeedURL(hashOrParams)
       pipeline.push(
         flatMap(() => {
           return this._fetchTimeout(url, options).then(res => {
@@ -382,12 +373,11 @@ export default class BaseBzz {
   }
 
   postSignedFeedValue(
-    user: string,
-    params: FeedParams,
+    params: FeedUpdateParams,
     body: Buffer,
     options?: FetchOptions = {},
   ): Promise<*> {
-    const url = this.getFeedURL(user, params)
+    const url = this.getFeedURL(params)
     return this._fetchTimeout(url, options, { method: 'POST', body }).then(
       resOrError,
     )
@@ -401,40 +391,39 @@ export default class BaseBzz {
   ): Promise<*> {
     const body = createHex(data).toBuffer()
     const digest = createFeedDigest(meta, body)
-    return this.signFeedDigest(digest, signParams).then(signature => {
+    return this.sign(digest, signParams).then(signature => {
       const params = {
+        user: meta.feed.user,
         topic: meta.feed.topic,
         time: meta.epoch.time,
         level: meta.epoch.level,
         signature,
       }
-      return this.postSignedFeedValue(meta.feed.user, params, body, options)
+      return this.postSignedFeedValue(params, body, options)
     })
   }
 
   updateFeedValue(
-    userOrHash: string,
+    hashOrParams: string | FeedParams,
     data: hexInput,
-    feedParams?: FeedParams,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<*> {
-    return this.getFeedMetadata(userOrHash, feedParams, options).then(meta => {
+    return this.getFeedMetadata(hashOrParams, options).then(meta => {
       return this.postFeedValue(meta, data, options, signParams)
     })
   }
 
   uploadFeedValue(
-    userOrHash: string,
+    hashOrParams: string | FeedParams,
     data: string | Buffer | DirectoryData,
-    feedParams?: FeedParams,
     options?: UploadOptions = {},
     signParams?: any,
   ): Promise<hexValue> {
     const { contentType: _c, ...feedOptions } = options
     return Promise.all([
       this.upload(data, options),
-      this.getFeedMetadata(userOrHash, feedParams, feedOptions),
+      this.getFeedMetadata(hashOrParams, feedOptions),
     ]).then(([hash, meta]) => {
       return this.postFeedValue(
         meta,

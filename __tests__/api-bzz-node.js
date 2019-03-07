@@ -22,11 +22,11 @@ describe('api-bzz-node', () => {
   }
 
   const keyPair = createKeyPair()
-  const address = pubKeyToAddress(keyPair.getPublic().encode())
+  const user = pubKeyToAddress(keyPair.getPublic().encode())
 
   const bzz = new Bzz({
-    signFeedDigest: async digest => sign(digest, keyPair.getPrivate()),
-    url: 'http://localhost:8500/',
+    signBytes: async digest => sign(digest, keyPair.getPrivate()),
+    url: 'http://localhost:8500',
   })
 
   const downloadRawEntries = async entries => {
@@ -418,24 +418,26 @@ describe('api-bzz-node', () => {
   })
 
   it('supports feeds posting and getting', async () => {
+    const params = { user, name: uploadContent }
     const data = { test: uploadContent }
-    await bzz.updateFeedValue(address, data, { name: uploadContent })
-    const res = await bzz.getFeedValue(address, { name: uploadContent })
+    await bzz.updateFeedValue(params, data)
+    const res = await bzz.getFeedValue(params)
     const value = await res.json()
     expect(value).toEqual(data)
   })
 
   it('creates a feed manifest', async () => {
-    const hash = await bzz.createFeedManifest(address, { name: 'manifest' })
+    const hash = await bzz.createFeedManifest({ user, name: 'manifest' })
     expect(hash).toBeDefined()
   })
 
   it('uploads data and updates the feed value', async () => {
     jest.setTimeout(20000)
-    const manifestHash = await bzz.createFeedManifest(address, {
+    const manifestHash = await bzz.createFeedManifest({
+      user,
       name: uploadContent,
     })
-    await bzz.uploadFeedValue(manifestHash, 'hello', undefined, {
+    await bzz.uploadFeedValue(manifestHash, 'hello', {
       contentType: 'text/plain',
     })
     const res = await bzz.download(manifestHash)
@@ -446,20 +448,17 @@ describe('api-bzz-node', () => {
   it('getFeedValue() supports content modes', async () => {
     jest.setTimeout(20000)
 
-    const feedParams = { name: uploadContent }
-    const uploadedHash = await bzz.uploadFeedValue(
-      address,
-      'hello',
-      feedParams,
-      { contentType: 'text/plain' },
-    )
+    const feedParams = { user, name: uploadContent }
+    const uploadedHash = await bzz.uploadFeedValue(feedParams, 'hello', {
+      contentType: 'text/plain',
+    })
 
-    const contentHash = await bzz.getFeedValue(address, feedParams, {
+    const contentHash = await bzz.getFeedValue(feedParams, {
       mode: 'content-hash',
     })
     expect(contentHash).toBe(uploadedHash)
 
-    const contentResponse = await bzz.getFeedValue(address, feedParams, {
+    const contentResponse = await bzz.getFeedValue(feedParams, {
       mode: 'content-response',
     })
     const value = await contentResponse.text()
@@ -477,13 +476,14 @@ describe('api-bzz-node', () => {
       completeTest = resolve
     })
 
+    const params = { user, name: uploadContent }
     const subscription = bzz
-      .pollFeedValue(address, { interval: 2000 }, { name: uploadContent })
+      .pollFeedValue(params, { interval: 2000 })
       .subscribe(async res => {
         if (res === null) {
           if (step === '0-idle') {
             step = '1-first-value-post'
-            await bzz.updateFeedValue(address, 'hello', { name: uploadContent })
+            await bzz.updateFeedValue(params, 'hello')
             expectedValue = 'hello'
             step = '2-first-value-posted'
           }
@@ -494,7 +494,7 @@ describe('api-bzz-node', () => {
             step = '3-first-value-received'
             await sleep(5000)
             step = '4-second-value-post'
-            await bzz.updateFeedValue(address, 'world', { name: uploadContent })
+            await bzz.updateFeedValue(params, 'world')
             expectedValue = 'world'
             step = '5-second-value-posted'
           } else if (step === '5-second-value-posted') {
@@ -515,13 +515,11 @@ describe('api-bzz-node', () => {
   it('supports feed value polling in "content-hash" mode', async () => {
     jest.setTimeout(40000)
 
+    const params = { user, name: uploadContent }
     const post = async value => {
-      return await bzz.uploadFeedValue(
-        address,
-        value,
-        { name: uploadContent },
-        { contentType: 'text/plain' },
-      )
+      return await bzz.uploadFeedValue(params, value, {
+        contentType: 'text/plain',
+      })
     }
 
     let step = '0-idle'
@@ -534,15 +532,11 @@ describe('api-bzz-node', () => {
     })
 
     const subscription = bzz
-      .pollFeedValue(
-        address,
-        {
-          interval: 5000,
-          mode: 'content-hash',
-          contentChangedOnly: true,
-        },
-        { name: uploadContent },
-      )
+      .pollFeedValue(params, {
+        interval: 5000,
+        mode: 'content-hash',
+        contentChangedOnly: true,
+      })
       .subscribe(async value => {
         if (value === null) {
           if (step === '0-idle') {
@@ -575,13 +569,11 @@ describe('api-bzz-node', () => {
   it('supports feed value polling in "content-response" mode', async () => {
     jest.setTimeout(40000)
 
+    const params = { user, name: uploadContent }
     const post = async value => {
-      return await bzz.uploadFeedValue(
-        address,
-        value,
-        { name: uploadContent },
-        { contentType: 'text/plain' },
-      )
+      return await bzz.uploadFeedValue(params, value, {
+        contentType: 'text/plain',
+      })
     }
 
     let step = '0-idle'
@@ -593,15 +585,11 @@ describe('api-bzz-node', () => {
     })
 
     const subscription = bzz
-      .pollFeedValue(
-        address,
-        {
-          interval: 5000,
-          mode: 'content-response',
-          contentChangedOnly: true,
-        },
-        { name: uploadContent },
-      )
+      .pollFeedValue(params, {
+        interval: 5000,
+        mode: 'content-response',
+        contentChangedOnly: true,
+      })
       .subscribe(async res => {
         if (res === null) {
           if (step === '0-idle') {
@@ -638,9 +626,8 @@ describe('api-bzz-node', () => {
     await new Promise((resolve, reject) => {
       bzz
         .pollFeedValue(
-          address,
+          { user, name: 'notfound' },
           { interval: 2000, whenEmpty: 'error', immediate: false },
-          { name: 'notfound' },
         )
         .subscribe({
           next: () => {
@@ -660,9 +647,8 @@ describe('api-bzz-node', () => {
     await new Promise(resolve => {
       subscription = bzz
         .pollFeedValue(
-          address,
+          { user, name: 'notfound' },
           { interval: 10000, immediate: false, trigger },
-          { name: 'notfound' },
         )
         .subscribe(() => {
           resolve()

@@ -1,46 +1,8 @@
 ---
-title: Examples
+title: Communications examples
 ---
 
-## File storage using the standalone browser library
-
-```html
-<html>
-  <script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.production.js"></script>
-  <script>
-    const client = new Erebos.SwarmClient({
-      http: 'https://swarm-gateways.net',
-    })
-    client.bzz
-      .upload('Hello world!', { contentType: 'text/plain' })
-      .then(hash => client.bzz.download(hash))
-      .then(res => res.text())
-      .then(text => {
-        console.log(text) // "Hello world!"
-      })
-  </script>
-</html>
-```
-
-[File storage APIs reference](api-bzz.md)
-
-## File storage using a local Swarm node
-
-```javascript
-import path from 'path'
-import { SwarmClient } from '@erebos/swarm-node'
-
-const client = new SwarmClient({ bzz: { url: 'http://localhost:8500' } })
-
-client.bzz
-  .uploadDirectoryFrom(path.join(__dirname, 'my-files'))
-  .then(hash => client.bzz.list(hash))
-  .then(contents => {
-    console.log(contents) // Manifest contents describing the uploaded files
-  })
-```
-
-[File storage APIs reference](api-bzz.md)
+[Communication APIs reference](api-pss.md)
 
 ## Communication between two nodes using asymmetric encryption
 
@@ -78,8 +40,6 @@ const run = async () => {
 run().catch(console.error)
 ```
 
-[Messaging APIs reference](api-pss.md)
-
 ## Communication between two nodes without encryption
 
 ```javascript
@@ -110,5 +70,3 @@ const run = async () => {
 
 run().catch(console.error)
 ```
-
-[Messaging APIs reference](api-pss.md)

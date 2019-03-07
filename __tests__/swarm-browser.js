@@ -29,14 +29,14 @@ describe('browser', () => {
     const keyPair = createKeyPair()
     feedAddress = pubKeyToAddress(keyPair.getPublic().encode())
 
-    await page.exposeFunction('signFeedDigest', digest => {
-      return sign(digest, keyPair.getPrivate())
+    await page.exposeFunction('signBytes', bytes => {
+      return sign(bytes, keyPair.getPrivate())
     })
 
     const clientHandle = await page.evaluateHandle(() => {
       return new Erebos.SwarmClient({
         bzz: {
-          signFeedDigest: window.signFeedDigest,
+          signBytes: window.signBytes,
           url: 'http://localhost:8500',
         },
       })
@@ -226,10 +226,10 @@ describe('browser', () => {
       jest.setTimeout(20000)
       const data = { test: uploadContent }
       const value = await evalClient(
-        async (client, address, data) => {
-          const options = { name: data.uploadContent }
-          await client.bzz.updateFeedValue(address, data, options)
-          const res = await client.bzz.getFeedValue(address, options)
+        async (client, user, data) => {
+          const params = { user, name: data.uploadContent }
+          await client.bzz.updateFeedValue(params, data)
+          const res = await client.bzz.getFeedValue(params)
           return await res.json()
         },
         feedAddress,
@@ -239,8 +239,9 @@ describe('browser', () => {
     })
 
     it('creates a feed manifest', async () => {
-      const hash = await evalClient(async (client, address) => {
-        return await client.bzz.createFeedManifest(address, {
+      const hash = await evalClient(async (client, user) => {
+        return await client.bzz.createFeedManifest({
+          user,
           name: 'manifest',
         })
       }, feedAddress)
@@ -250,11 +251,12 @@ describe('browser', () => {
     it('uploads data and updates the feed value', async () => {
       jest.setTimeout(20000)
       const value = await evalClient(
-        async (client, address, name) => {
-          const manifestHash = await client.bzz.createFeedManifest(address, {
+        async (client, user, name) => {
+          const manifestHash = await client.bzz.createFeedManifest({
+            user,
             name,
           })
-          await client.bzz.uploadFeedValue(manifestHash, 'hello', undefined, {
+          await client.bzz.uploadFeedValue(manifestHash, 'hello', {
             contentType: 'text/plain',
           })
           const res = await client.bzz.download(manifestHash)
@@ -270,23 +272,19 @@ describe('browser', () => {
       jest.setTimeout(20000)
 
       const uploadedHash = await evalClient(
-        async (client, address, name) => {
-          return await client.bzz.uploadFeedValue(
-            address,
-            'hello',
-            { name },
-            { contentType: 'text/plain' },
-          )
+        async (client, user, name) => {
+          return await client.bzz.uploadFeedValue({ user, name }, 'hello', {
+            contentType: 'text/plain',
+          })
         },
         feedAddress,
         uploadContent,
       )
 
       const contentHash = await evalClient(
-        async (client, address, name) => {
+        async (client, user, name) => {
           return await client.bzz.getFeedValue(
-            address,
-            { name },
+            { user, name },
             { mode: 'content-hash' },
           )
         },
@@ -296,10 +294,9 @@ describe('browser', () => {
       expect(contentHash).toBe(uploadedHash)
 
       const value = await evalClient(
-        async (client, address, name) => {
+        async (client, user, name) => {
           const res = await client.bzz.getFeedValue(
-            address,
-            { name },
+            { user, name },
             { mode: 'content-response' },
           )
           return await res.text()
@@ -314,13 +311,14 @@ describe('browser', () => {
       jest.setTimeout(60000)
 
       await evalClient(
-        async (client, address, name) => {
+        async (client, user, name) => {
           const sleep = async () => {
             await new Promise(resolve => {
               setTimeout(resolve, 5000)
             })
           }
 
+          const params = { user, name }
           let step = '0-idle'
           let expectedValue
 
@@ -330,12 +328,12 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(address, { interval: 2000 }, { name })
+            .pollFeedValue(params, { interval: 2000 })
             .subscribe(async res => {
               if (res === null) {
                 if (step === '0-idle') {
                   step = '1-first-value-post'
-                  await client.bzz.updateFeedValue(address, 'hello', { name })
+                  await client.bzz.updateFeedValue(params, 'hello')
                   expectedValue = 'hello'
                   step = '2-first-value-posted'
                 }
@@ -348,7 +346,7 @@ describe('browser', () => {
                   step = '3-first-value-received'
                   await sleep()
                   step = '4-second-value-post'
-                  await client.bzz.updateFeedValue(address, 'world', { name })
+                  await client.bzz.updateFeedValue(params, 'world')
                   expectedValue = 'world'
                   step = '5-second-value-posted'
                 } else if (step === '5-second-value-posted') {
@@ -376,20 +374,18 @@ describe('browser', () => {
       jest.setTimeout(60000)
 
       await evalClient(
-        async (client, address, name) => {
+        async (client, user, name) => {
           const sleep = async () => {
             await new Promise(resolve => {
               setTimeout(resolve, 8000)
             })
           }
 
+          const params = { user, name }
           const post = async value => {
-            return await client.bzz.uploadFeedValue(
-              address,
-              value,
-              { name },
-              { contentType: 'text/plain' },
-            )
+            return await client.bzz.uploadFeedValue(params, value, {
+              contentType: 'text/plain',
+            })
           }
 
           let step = '0-idle'
@@ -402,15 +398,11 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(
-              address,
-              {
-                interval: 5000,
-                mode: 'content-hash',
-                contentChangedOnly: true,
-              },
-              { name },
-            )
+            .pollFeedValue(params, {
+              interval: 5000,
+              mode: 'content-hash',
+              contentChangedOnly: true,
+            })
             .subscribe(async value => {
               if (value === null) {
                 if (step === '0-idle') {
@@ -454,20 +446,18 @@ describe('browser', () => {
       jest.setTimeout(60000)
 
       await evalClient(
-        async (client, address, name) => {
+        async (client, user, name) => {
           const sleep = async () => {
             await new Promise(resolve => {
               setTimeout(resolve, 8000)
             })
           }
 
+          const params = { user, name }
           const post = async value => {
-            return await client.bzz.uploadFeedValue(
-              address,
-              value,
-              { name },
-              { contentType: 'text/plain' },
-            )
+            return await client.bzz.uploadFeedValue(params, value, {
+              contentType: 'text/plain',
+            })
           }
 
           let step = '0-idle'
@@ -479,15 +469,11 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(
-              address,
-              {
-                interval: 5000,
-                mode: 'content-response',
-                contentChangedOnly: true,
-              },
-              { name },
-            )
+            .pollFeedValue(params, {
+              interval: 5000,
+              mode: 'content-response',
+              contentChangedOnly: true,
+            })
             .subscribe(async res => {
               if (res === null) {
                 if (step === '0-idle') {
@@ -527,13 +513,12 @@ describe('browser', () => {
     })
 
     it('feed polling fails on not found error if the option is enabled', async () => {
-      await evalClient(async (client, address) => {
+      await evalClient(async (client, user) => {
         await new Promise((resolve, reject) => {
           client.bzz
             .pollFeedValue(
-              address,
+              { user, name: 'notfound' },
               { whenEmpty: 'error', immediate: false },
-              { name: 'notfound' },
             )
             .subscribe({
               next: () => {

@@ -28,8 +28,14 @@
         "title": "Command-line interface",
         "sidebar_label": "CLI"
       },
-      "examples": {
-        "title": "Examples"
+      "examples-communications": {
+        "title": "Communications examples"
+      },
+      "examples-storage": {
+        "title": "File storage examples"
+      },
+      "feedlinks": {
+        "title": "Feedlinks - linked-list feed"
       },
       "getting-started": {
         "title": "Getting started"
@@ -55,14 +61,17 @@
     },
     "links": {
       "Docs": "Docs",
+      "Examples": "Examples",
       "API": "API",
       "Help": "Help",
       "GitHub": "GitHub"
     },
     "categories": {
       "Docs": "Docs",
+      "Examples": "Examples",
       "API": "API",
-      "Utilities": "Utilities",
+      "Utility libraries": "Utility libraries",
+      "Advanced usage": "Advanced usage",
       "Tools": "Tools"
     }
   },
