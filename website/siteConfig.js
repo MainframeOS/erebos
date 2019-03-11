@@ -57,7 +57,7 @@ module.exports = {
   highlight: {
     defaultLang: 'javascript',
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'monokai',
+    theme: 'mono-blue',
   },
 
   // Add custom scripts here that would be placed in <script> tags.

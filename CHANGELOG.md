@@ -7,11 +7,11 @@
 
 ### Additional features
 
-- TODO: timeline
+The `@erebos/timeline` package has been added, providing an implementation of the [Timeline protocol](https://erebos.js.org/docs/timeline-spec). Its API is available in [the documentation website](https://erebos.js.org/docs/timeline-api).
 
 ### Other changes
 
-- TODO: website
+The website has been redesigned and additional examples have been added: [erebos.js.org](https://erebos.js.org)
 
 ## v0.6.3 (2019-02-04)
 

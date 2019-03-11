@@ -34,13 +34,13 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('getting-started.html', this.props.language)}>
+            <a href={this.docUrl('getting-started', this.props.language)}>
               Getting Started
             </a>
-            <a href={this.docUrl('swarm-client.html', this.props.language)}>
+            <a href={this.docUrl('swarm-client', this.props.language)}>
               API Reference
             </a>
-            <a href={this.docUrl('cli.html', this.props.language)}>CLI</a>
+            <a href={this.docUrl('cli', this.props.language)}>CLI</a>
           </div>
           <div>
             <h5>Community</h5>

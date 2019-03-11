@@ -7,8 +7,8 @@
       "examples-communications"
     ],
     "API": ["swarm-client", "individual-apis", "api-bzz", "api-pss"],
-    "Utility libraries": ["hex", "keccak256", "secp256k1"],
     "Timeline protocol": ["timeline-spec", "timeline-examples", "timeline-api"],
+    "Utility libraries": ["hex", "keccak256", "secp256k1"],
     "Tools": ["cli"]
   }
 }
