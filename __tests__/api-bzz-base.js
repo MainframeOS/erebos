@@ -124,17 +124,17 @@ describe('api-bzz-base', () => {
 
     it('getDownloadURL() creates the request URL for downloads', () => {
       // Default behavior
-      expect(bzz.getDownloadURL('test', {})).toBe(`${TEST_URL}bzz:/test`)
+      expect(bzz.getDownloadURL('test', {})).toBe(`${TEST_URL}bzz:/test/`)
       // Force raw
       expect(bzz.getDownloadURL('test', {}, true)).toBe(
-        `${TEST_URL}bzz-raw:/test`,
+        `${TEST_URL}bzz-raw:/test/`,
       )
       // Handle `mode` option
       expect(bzz.getDownloadURL('test', { mode: 'immutable' })).toBe(
-        `${TEST_URL}bzz-immutable:/test`,
+        `${TEST_URL}bzz-immutable:/test/`,
       )
       expect(bzz.getDownloadURL('test', { mode: 'raw' })).toBe(
-        `${TEST_URL}bzz-raw:/test`,
+        `${TEST_URL}bzz-raw:/test/`,
       )
       // Handle `path` option
       expect(bzz.getDownloadURL('test', { path: 'hello' })).toBe(
@@ -143,10 +143,10 @@ describe('api-bzz-base', () => {
       // Handle `contentType` option
       expect(
         bzz.getDownloadURL('test', { mode: 'raw', contentType: 'text/plain' }),
-      ).toBe(`${TEST_URL}bzz-raw:/test?content_type=text/plain`)
+      ).toBe(`${TEST_URL}bzz-raw:/test/?content_type=text/plain`)
       // Only set content type in raw mode
       expect(bzz.getDownloadURL('test', { contentType: 'text/plain' })).toBe(
-        `${TEST_URL}bzz:/test`,
+        `${TEST_URL}bzz:/test/`,
       )
     })
 
@@ -191,7 +191,7 @@ describe('api-bzz-base', () => {
       const res = await bzz.list('test')
       expect(res).toEqual(expectedData)
       expect(fetch.mock.calls).toHaveLength(1)
-      expect(fetch.mock.calls[0][0]).toBe(`${TEST_URL}bzz-list:/test`)
+      expect(fetch.mock.calls[0][0]).toBe(`${TEST_URL}bzz-list:/test/`)
 
       fetch.mockResponseOnce(mockData)
       const resPath = await bzz.list('test', { path: 'a' })
@@ -208,7 +208,7 @@ describe('api-bzz-base', () => {
       })
       expect(res.body).toBe('OK')
       const [fetchUrl, { headers }] = fetch.mock.calls[0]
-      expect(fetchUrl).toBe(`${TEST_URL}bzz-raw:/test`)
+      expect(fetchUrl).toBe(`${TEST_URL}bzz-raw:/test/`)
       expect(headers).toEqual({ accept: 'application/json' })
 
       const expectedError = new HTTPError(404, 'Not found')
@@ -224,7 +224,7 @@ describe('api-bzz-base', () => {
       fetch.mockResponseOnce('OK')
       const res = await bzz.download('test')
       expect(res.body).toBe('OK')
-      expect(fetch.mock.calls[0][0]).toBe(`${TEST_URL}bzz:/test`)
+      expect(fetch.mock.calls[0][0]).toBe(`${TEST_URL}bzz:/test/`)
     })
 
     it('_upload() performs the request based on the given parameters and returns the response or error', async () => {

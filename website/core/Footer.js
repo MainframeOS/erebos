@@ -98,7 +98,9 @@ class Footer extends React.Component {
           </div>
         </section>
 
-        <section className="copyright">{this.props.config.copyright}</section>
+        <section className="copyright">
+          <img src={'/img/mainframe.png'} className="mainframe-logo" />
+        </section>
       </footer>
     )
   }

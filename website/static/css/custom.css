@@ -1,16 +1,133 @@
-/* your custom css */
-
-@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+@media (max-width: 700px) {
+  .blockImage {
+    margin-top: 40px;
+  }
+  .nav-footer {
+    text-align: center;
+  }
 }
 
-@media only screen and (min-width: 1024px) {
+.headerTitleWithLogo {
+  display: none !important;
 }
 
-@media only screen and (max-width: 1023px) {
+.fixedHeaderContainer {
+  background-color: #142543;
 }
 
-@media only screen and (min-width: 1400px) {
+.logo {
+  max-height: 22px;
+  margin-top: -4px;
 }
 
-@media only screen and (min-width: 1500px) {
+nav {
+  font-family: 'Poppins';
+  font-size: 14px;
+}
+
+.erebos-text .blockImage {
+  max-width: 216px;
+  max-height: 49px;
+  margin-bottom: 50px;
+}
+
+small {
+  font-size: 20px;
+  font-family: 'Muli';
+}
+
+.buttonWrapper {
+  font-family: 'Poppins';
+  letter-spacing: 1px;
+  margin: 0 8px;
+}
+
+.blue {
+  color: #00a7e7;
+  border-color: #00a7e7;
+  margin-top: 20px;
+}
+
+a {
+  color: #00a7e7;
+}
+
+a.button.blue:hover {
+  background-color: #00a7e7;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+p {
+  font-family: 'Poppins';
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3 {
+  color: #000;
+  font-weight: 400;
+  font-family: 'Muli';
+  font-size: 24px;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+/* for main page */
+h2 p {
+  color: #000;
+  font-weight: 400;
+  font-family: 'Muli';
+  font-size: 24px;
+}
+
+.lightBackground .blockContent p {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.features .blockImage {
+  position: relative;
+  min-width: 126px;
+  min-height: 100px;
+  margin-bottom: 0;
+}
+
+.features .blockImage img {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dapps p {
+  max-width: 547px;
+  margin: 0 auto;
+}
+
+.dapps h2 p {
+  max-width: 600px;
+}
+
+.nav-footer {
+  background-color: #142543;
+}
+
+.mainframe-logo {
+  width: 150px;
+  height: 19px;
+}
+
+.copyright {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

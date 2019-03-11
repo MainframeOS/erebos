@@ -31,7 +31,10 @@ class Button extends React.Component {
   render() {
     return (
       <div className="pluginWrapper buttonWrapper">
-        <a className="button" href={this.props.href} target={this.props.target}>
+        <a
+          className="button blue"
+          href={this.props.href}
+          target={this.props.target}>
           {this.props.children}
         </a>
       </div>
@@ -58,10 +61,27 @@ const Logo = props => (
 )
 
 const ProjectTitle = () => (
-  <h2 className="projectTitle">
-    {siteConfig.title}
-    <small>{siteConfig.tagline}</small>
-  </h2>
+  <Container padding={'top'}>
+    <GridBlock
+      align="center"
+      contents={[
+        {
+          image: siteConfig.baseUrl + 'img/logo.svg',
+          imageAlign: 'top',
+        },
+      ]}
+    />
+    <GridBlock
+      align="center"
+      className="erebos-text"
+      contents={[
+        {
+          image: siteConfig.baseUrl + 'img/erebos.png',
+          imageAlign: 'top',
+        },
+      ]}
+    />
+  </Container>
 )
 
 const PromoSection = props => (
@@ -77,9 +97,9 @@ class HomeSplash extends React.Component {
     const language = this.props.language || ''
     return (
       <SplashContainer>
-        <div style={{ fontSize: 180, lineHeight: 1.2 }}>ε</div>
         <div className="inner">
           <ProjectTitle />
+          <small className="blue">{siteConfig.tagline}</small>
           <PromoSection>
             <Button href={docUrl('getting-started.html', language)}>
               Get started
@@ -104,35 +124,51 @@ const Block = props => (
 )
 
 const Features = () => (
-  <Block background="light">
-    {[
-      {
-        title: 'Decentralized file storage',
-        content:
-          'Securely distribute you files accross the entire network using the [Bzz APIs](api-bzz.md)',
-      },
-      {
-        title: 'Peer-to-peer communications',
-        content:
-          'Encrypted communications between nodes with no dedicated servers required using the [Pss APIs](api-pss.md)',
-      },
-    ]}
-  </Block>
+  <Container background="light" padding={['bottom', 'top']}>
+    <GridBlock
+      align="center"
+      layout="twoColumn"
+      className="features"
+      contents={[
+        {
+          image: siteConfig.baseUrl + 'img/fileStorage.svg',
+          imageAlign: 'top',
+          title: 'Decentralized file storage',
+          content:
+            'Securely distribute you files accross the entire network using the [Bzz APIs](api-bzz.md)',
+        },
+        {
+          image: siteConfig.baseUrl + 'img/comms.svg',
+          imageAlign: 'top',
+          title: 'Peer-to-peer communications',
+          content:
+            'Encrypted communications between nodes with no dedicated servers required using the [Pss APIs](api-pss.md)',
+        },
+      ]}
+    />
+  </Container>
 )
 
 const FeatureCallout = () => (
-  <div
-    className="productShowcaseSection paddingBottom"
-    style={{ textAlign: 'center', marginTop: 50 }}>
-    <h2>Your entry point into decentralized apps development</h2>
-    <p>
-      Swarm is a distributed storage platform and content distribution network,
-      a native base layer service of the Ethereum web3 stack.
-    </p>
-    <Button href={docUrl('introduction.html')}>
-      Read the full introduction
-    </Button>
-  </div>
+  <Container padding={'top'} className="dapps">
+    <GridBlock
+      align="center"
+      contents={[
+        {
+          image: siteConfig.baseUrl + 'img/dapps.svg',
+          imageAlign: 'top',
+          title: 'Your entry point into decentralized apps development',
+          content:
+            'Swarm is a distributed storage platform and content distribution network, a native base layer service of the Ethereum web3 stack.',
+        },
+      ]}
+    />
+    <div className="center-button">
+      <Button href={docUrl('introduction.html')}>
+        Read the full introduction
+      </Button>
+    </div>
+  </Container>
 )
 
 const LearnHow = () => (
@@ -174,11 +210,13 @@ const Showcase = props => {
     return null
   }
 
-  const showcase = siteConfig.users.filter(user => user.pinned).map(user => (
-    <a href={user.infoLink} key={user.infoLink}>
-      <img src={user.image} alt={user.caption} title={user.caption} />
-    </a>
-  ))
+  const showcase = siteConfig.users
+    .filter(user => user.pinned)
+    .map(user => (
+      <a href={user.infoLink} key={user.infoLink}>
+        <img src={user.image} alt={user.caption} title={user.caption} />
+      </a>
+    ))
 
   return (
     <div className="productShowcaseSection paddingBottom">
@@ -197,7 +235,6 @@ const Showcase = props => {
 class Index extends React.Component {
   render() {
     const language = this.props.language || ''
-
     return (
       <div>
         <HomeSplash language={language} />

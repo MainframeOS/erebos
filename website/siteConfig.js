@@ -21,7 +21,7 @@
 // ]
 
 module.exports = {
-  title: 'Erebos', // Title for your website.
+  title: 'erebos', // Title for your website.
   tagline: 'JavaScript client and CLI for Swarm v0.3.8',
   url: 'https://erebos.js.org', // Your website URL
   baseUrl: '/', // Base URL for your project
@@ -42,29 +42,14 @@ module.exports = {
   ],
 
   /* path to images for header/footer */
-  // headerIcon: 'img/docusaurus.svg',
-  // footerIcon: 'img/docusaurus.svg',
-  favicon: 'img/favicon.png',
+  headerIcon: 'img/erebos-white.png',
+  favicon: 'img/favicon/favicon.ico',
 
   /* Colors for website */
   colors: {
-    primaryColor: '#337ab7',
-    secondaryColor: '#ff8c00',
+    primaryColor: '#142543',
+    secondaryColor: '#00a7e7',
   },
-
-  /* Custom fonts for website */
-  /*
-  fonts: {
-    myFont: [
-      "Times New Roman",
-      "Serif"
-    ],
-    myOtherFont: [
-      "-apple-system",
-      "system-ui"
-    ]
-  },
-  */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © ${new Date().getFullYear()} Mainframe`,
@@ -77,6 +62,11 @@ module.exports = {
 
   // Add custom scripts here that would be placed in <script> tags.
   scripts: ['https://buttons.github.io/buttons.js'],
+
+  stylesheets: [
+    'https://fonts.googleapis.com/css?family=Muli',
+    'https://fonts.googleapis.com/css?family=Poppins',
+  ],
 
   // On page navigation for the current documentation page.
   onPageNav: 'separate',
