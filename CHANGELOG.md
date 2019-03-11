@@ -1,3 +1,18 @@
+## v0.7.0 (not released)
+
+### Breaking changes
+
+- The [feed parameters object](https://erebos.js.org/docs/api-bzz#feedparams) has been changed to include the required `user` key and remove the `signature` one. The added [feed update parameters object](https://erebos.js.org/docs/api-bzz#feedupdateparams) should be used for feed updates.
+- The feed-related Bzz methods arguments have changed as the result of the feed parameters object change: rather than having a mandatory "user or hash" argument and a separate feed parameters argument, a single "hash or feed parameters" argument is now used. This change affects the [`getFeedURL()`](https://erebos.js.org/docs/api-bzz#getfeedurl), [`createFeedManifest()`](https://erebos.js.org/docs/api-bzz#createfeedmanifest), [`getFeedMetadata()`](https://erebos.js.org/docs/api-bzz#getfeedmetadata), [`getFeedValue()`](https://erebos.js.org/docs/api-bzz#getfeedvalue), [`pollFeedValue()`](https://erebos.js.org/docs/api-bzz#pollfeedvalue), [`postSignedFeedValue()`](https://erebos.js.org/docs/api-bzz#postsignedfeedvalue), [`postFeedValue()`](https://erebos.js.org/docs/api-bzz#postfeedvalue), [`updateFeedValue()`](https://erebos.js.org/docs/api-bzz#updatefeedvalue), [`uploadFeedValue()`](https://erebos.js.org/docs/api-bzz#uploadfeedvalue)
+
+### Additional features
+
+- TODO: timeline
+
+### Other changes
+
+- TODO: website
+
 ## v0.6.2 (2019-01-14)
 
 Fix `hexValue` return type in `Bzz` upload methods.

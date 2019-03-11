@@ -31,11 +31,11 @@
       "examples-communications": {
         "title": "Communications examples"
       },
+      "examples-feeds": {
+        "title": "Feeds examples"
+      },
       "examples-storage": {
         "title": "File storage examples"
-      },
-      "feedlinks": {
-        "title": "Feedlinks - linked-list feed"
       },
       "getting-started": {
         "title": "Getting started"
@@ -57,6 +57,15 @@
       },
       "swarm-client": {
         "title": "Swarm client"
+      },
+      "timeline-api": {
+        "title": "Timeline API"
+      },
+      "timeline-examples": {
+        "title": "Timeline example"
+      },
+      "timeline-spec": {
+        "title": "Timeline specification"
       }
     },
     "links": {
@@ -71,7 +80,7 @@
       "Examples": "Examples",
       "API": "API",
       "Utility libraries": "Utility libraries",
-      "Advanced usage": "Advanced usage",
+      "Timeline protocol": "Timeline protocol",
       "Tools": "Tools"
     }
   },

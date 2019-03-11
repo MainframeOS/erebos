@@ -1,14 +1,15 @@
 import Bzz from '../packages/api-bzz-node'
-import Timeline, {
+import {
   PROTOCOL,
   VERSION,
+  Timeline,
   createChapter,
   validateChapter,
-} from '../packages/feedlinks'
+} from '../packages/timeline'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign } from '../packages/secp256k1'
 
-describe('feedlinks', () => {
+describe('timeline', () => {
   const keyPair = createKeyPair()
   const author = pubKeyToAddress(keyPair.getPublic().encode())
 
@@ -16,10 +17,9 @@ describe('feedlinks', () => {
     signBytes: async digest => sign(digest, keyPair.getPrivate()),
     url: 'http://localhost:8500/',
   })
-  const timeline = new Timeline({ bzz })
 
   it('exports the PROTOCOL and VERSION constants', () => {
-    expect(PROTOCOL).toBe('feedlinks')
+    expect(PROTOCOL).toBe('timeline')
     expect(VERSION).toBe(1)
   })
 
@@ -32,7 +32,7 @@ describe('feedlinks', () => {
       content: 'hello',
     })
     expect(chapter).toEqual({
-      protocol: 'feedlinks',
+      protocol: 'timeline',
       version: 1,
       timestamp: now,
       type: 'text/plain',
@@ -43,10 +43,10 @@ describe('feedlinks', () => {
 
   it('provides a validateChapter() function', () => {
     expect(() => validateChapter({})).toThrow('Unsupported payload')
-    expect(() =>
-      validateChapter({ protocol: 'feedlinks', version: 0 }),
-    ).toThrow('Unsupported payload')
-    const valid = { protocol: 'feedlinks', version: 1 }
+    expect(() => validateChapter({ protocol: 'timeline', version: 0 })).toThrow(
+      'Unsupported payload',
+    )
+    const valid = { protocol: 'timeline', version: 1 }
     expect(validateChapter(valid)).toBe(valid)
   })
 
@@ -54,6 +54,7 @@ describe('feedlinks', () => {
     const now = Date.now()
     Date.now = jest.fn(() => now)
 
+    const timeline = new Timeline({ bzz })
     const chapter = createChapter({ author, content: { ok: true } })
     const [validID, invalidID] = await Promise.all([
       bzz.uploadFile(JSON.stringify(chapter)),
@@ -63,7 +64,7 @@ describe('feedlinks', () => {
     const valid = await timeline.download(validID)
     expect(valid).toEqual({
       id: validID,
-      protocol: 'feedlinks',
+      protocol: 'timeline',
       version: 1,
       timestamp: now,
       type: 'application/json',
@@ -75,16 +76,17 @@ describe('feedlinks', () => {
   })
 
   it('upload() method encodes and uploads the chapter', async () => {
+    const timeline = new Timeline({ bzz })
     const chapter = createChapter({ author, content: { ok: true } })
     const id = await timeline.upload(chapter)
     const downloaded = await timeline.download(id)
     expect(downloaded).toEqual({ ...chapter, id })
   })
 
-  it('supports custom encoding and decoding functions as method options', async () => {
+  it('supports custom encoding and decoding functions', async () => {
     const sign = async data => {
       const bytes = Array.from(Buffer.from(JSON.stringify(data)))
-      return await timeline._bzz.sign(bytes)
+      return await bzz.sign(bytes)
     }
     const decode = jest.fn(async res => {
       const chapter = await res.json()
@@ -97,53 +99,48 @@ describe('feedlinks', () => {
       chapter.signature = await sign(chapter)
       return JSON.stringify(chapter)
     })
+
+    const timeline = new Timeline({ bzz, decode, encode })
     const chapter = createChapter({ author, content: { ok: true } })
-    const id = await timeline.upload(chapter, { encode })
+
+    const id = await timeline.upload(chapter)
     expect(encode).toHaveBeenCalledTimes(1)
-    const downloaded = await timeline.download(id, { decode })
+
+    const downloaded = await timeline.download(id)
     expect(decode).toHaveBeenCalledTimes(1)
     expect(downloaded).toEqual({ ...chapter, id })
   })
 
-  it('supports custom encoding and decoding functions as instance options', async () => {
-    const decode = jest.fn(async res => {
-      const text = await res.text()
-      expect(text.slice(0, 7)).toBe('ENCODED')
-      return JSON.parse(text.slice(7))
-    })
-    const encode = jest.fn(chapter => {
-      return `ENCODED${JSON.stringify(chapter)}`
-    })
-    const testTimeline = new Timeline({ bzz, decode, encode })
-    const chapter = createChapter({ author, content: { ok: true } })
-    const id = await testTimeline.upload(chapter, { encode })
-    expect(encode).toHaveBeenCalledTimes(1)
-    const downloaded = await testTimeline.download(id, { decode })
-    expect(decode).toHaveBeenCalledTimes(1)
-    expect(downloaded).toEqual({ ...chapter, id })
-  })
-
-  it('updateChapterID() and loadChapterID() methods manipulate a feed hash', async () => {
+  it('updateChapterID() and getChapterID() methods manipulate a feed hash', async () => {
     jest.setTimeout(10000) // 10 secs
+
+    const feed = await bzz.createFeedManifest({
+      user: author,
+      name: 'test-hash',
+    })
+    const timeline = new Timeline({ bzz, feed })
+
     const chapter = createChapter({ author, content: { ok: true } })
-    const [feedHash, chapterID] = await Promise.all([
-      bzz.createFeedManifest({ user: author, name: 'test-hash' }),
-      timeline.upload(chapter),
-    ])
-    await timeline.updateChapterID(feedHash, chapterID)
-    const id = await timeline.loadChapterID(feedHash)
+    const chapterID = await timeline.upload(chapter)
+
+    await timeline.updateChapterID(chapterID)
+    const id = await timeline.getChapterID()
     expect(id).toBe(chapterID)
   })
 
   it('addChapter() and loadChapter() methods manipulate a chapter', async () => {
     jest.setTimeout(10000) // 10 secs
-    const chapter = createChapter({ author, content: { ok: true } })
-    const feedHash = await bzz.createFeedManifest({
+
+    const feed = await bzz.createFeedManifest({
       user: author,
       name: 'test-chapter',
     })
-    const chapterID = await timeline.addChapter(feedHash, chapter)
-    const loadedChapter = await timeline.loadChapter(feedHash)
+    const timeline = new Timeline({ bzz, feed })
+
+    const chapter = createChapter({ author, content: { ok: true } })
+    const chapterID = await timeline.addChapter(chapter)
+    const loadedChapter = await timeline.loadChapter()
+
     expect(loadedChapter).toEqual({ ...chapter, id: chapterID })
   })
 
@@ -151,15 +148,19 @@ describe('feedlinks', () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['first update', 'second update', 'third update']
-    const params = { user: author, name: 'test-updater' }
-    const updateTimeline = await timeline.createUpdater(params, {
+
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-updater' },
+    })
+    const updateTimeline = timeline.createUpdater({
       author,
       type: 'text/plain',
     })
 
     for (const content of contents) {
       await updateTimeline({ content })
-      const chapter = await timeline.loadChapter(params)
+      const chapter = await timeline.loadChapter()
       expect(chapter.content).toBe(content)
     }
   })
@@ -168,34 +169,50 @@ describe('feedlinks', () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three']
-    const params = { user: author, name: 'test-iterator' }
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-iterator' },
+    })
 
     // Create the timeline with the given chapters
-    const updateTimeline = await timeline.createUpdater(params, {
+    const updateTimeline = await timeline.createUpdater({
       author,
       type: 'text/plain',
     })
+    const chapterIDs = []
     for (const content of contents) {
-      await updateTimeline({ content })
+      const chapter = await updateTimeline({ content })
+      chapterIDs.push(chapter.id)
     }
 
-    const chapterID = await timeline.loadChapterID(params)
+    // Get all the chapters from the latest (no argument)
     let i = 3
-    for await (const chapter of timeline.createIterator(chapterID)) {
+    for await (const chapter of timeline.createIterator()) {
       // Iteration happens from most recent to oldest
       expect(chapter.content).toBe(contents[--i])
     }
     expect(i).toBe(0)
+
+    // Get all the chapters from the provided chapter ID
+    let j = 2
+    for await (const chapter of timeline.createIterator(chapterIDs[1])) {
+      // Iteration happens from most recent to oldest
+      expect(chapter.content).toBe(contents[--j])
+    }
+    expect(j).toBe(0)
   })
 
-  it('createSlice() returns a list of chapters within the given range', async () => {
+  it('loadChapters() returns an array of chapters within the given range', async () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three', 'four', 'five']
-    const params = { user: author, name: 'test-slice' }
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-slice' },
+    })
 
     // Create the timeline with the given chapters
-    const updateTimeline = await timeline.createUpdater(params, {
+    const updateTimeline = timeline.createUpdater({
       author,
       type: 'text/plain',
     })
@@ -206,15 +223,15 @@ describe('feedlinks', () => {
       chapterIDs.push(chapter.id)
     }
 
-    const slice1 = await timeline.createSlice(chapterIDs[3], chapterIDs[0])
+    const slice1 = await timeline.loadChapters(chapterIDs[3], chapterIDs[0])
     expect(slice1.map(chapter => chapter.content)).toEqual([
       'four',
       'three',
       'two',
     ])
 
-    const latestChapterID = await timeline.loadChapterID(params)
-    const slice2 = await timeline.createSlice(latestChapterID, chapterIDs[1])
+    const latestChapterID = await timeline.getChapterID()
+    const slice2 = await timeline.loadChapters(latestChapterID, chapterIDs[1])
     expect(slice2.map(chapter => chapter.content)).toEqual([
       'five',
       'four',
@@ -226,10 +243,13 @@ describe('feedlinks', () => {
     jest.setTimeout(40000) // 40 secs
 
     const contents = [['one'], ['two', 'three', 'four'], ['five', 'six']]
-    const params = { user: author, name: 'test-live' }
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-live' },
+    })
 
     return new Promise(async (resolve, reject) => {
-      const updateTimeline = await timeline.createUpdater(params, {
+      const updateTimeline = timeline.createUpdater({
         author,
         type: 'text/plain',
       })
@@ -241,7 +261,7 @@ describe('feedlinks', () => {
         }
       }
 
-      const sub = timeline.live(params, { interval: 10000 }).subscribe({
+      const sub = timeline.live({ interval: 10000 }).subscribe({
         next: chapters => {
           expect(chapters.map(l => l.content)).toEqual(contents[i])
           if (++i === 3) {

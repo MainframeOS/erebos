@@ -8,7 +8,7 @@ import { createKeyPair, sign } from '../packages/secp256k1'
 
 describe('browser', () => {
   let evalClient
-  let feedAddress
+  let user
   let uploadContent
 
   beforeAll(async () => {
@@ -25,9 +25,15 @@ describe('browser', () => {
         '../packages/swarm-browser/dist/erebos.development.js',
       ),
     })
+    await page.addScriptTag({
+      path: resolve(
+        __dirname,
+        '../packages/timeline/dist/erebos.timeline.development.js',
+      ),
+    })
 
     const keyPair = createKeyPair()
-    feedAddress = pubKeyToAddress(keyPair.getPublic().encode())
+    user = pubKeyToAddress(keyPair.getPublic().encode())
 
     await page.exposeFunction('signBytes', bytes => {
       return sign(bytes, keyPair.getPrivate())
@@ -53,7 +59,7 @@ describe('browser', () => {
       .slice(2)
   })
 
-  describe('bzz', () => {
+  describe('api-bzz-browser', () => {
     it('trying to download non-existent hash raises an error', async () => {
       const errMessage = await evalClient(async client => {
         try {
@@ -232,7 +238,7 @@ describe('browser', () => {
           const res = await client.bzz.getFeedValue(params)
           return await res.json()
         },
-        feedAddress,
+        user,
         data,
       )
       expect(value).toEqual(data)
@@ -244,7 +250,7 @@ describe('browser', () => {
           user,
           name: 'manifest',
         })
-      }, feedAddress)
+      }, user)
       expect(hash).toBeDefined()
     })
 
@@ -262,7 +268,7 @@ describe('browser', () => {
           const res = await client.bzz.download(manifestHash)
           return await res.text()
         },
-        feedAddress,
+        user,
         uploadContent,
       )
       expect(value).toBe('hello')
@@ -277,7 +283,7 @@ describe('browser', () => {
             contentType: 'text/plain',
           })
         },
-        feedAddress,
+        user,
         uploadContent,
       )
 
@@ -288,7 +294,7 @@ describe('browser', () => {
             { mode: 'content-hash' },
           )
         },
-        feedAddress,
+        user,
         uploadContent,
       )
       expect(contentHash).toBe(uploadedHash)
@@ -301,7 +307,7 @@ describe('browser', () => {
           )
           return await res.text()
         },
-        feedAddress,
+        user,
         uploadContent,
       )
       expect(value).toBe('hello')
@@ -365,7 +371,7 @@ describe('browser', () => {
 
           await testPromise
         },
-        feedAddress,
+        user,
         uploadContent,
       )
     })
@@ -437,7 +443,7 @@ describe('browser', () => {
 
           await testPromise
         },
-        feedAddress,
+        user,
         uploadContent,
       )
     })
@@ -507,7 +513,7 @@ describe('browser', () => {
 
           await testPromise
         },
-        feedAddress,
+        user,
         uploadContent,
       )
     })
@@ -532,6 +538,170 @@ describe('browser', () => {
             })
         })
       })
+    })
+  })
+
+  describe('timeline', () => {
+    it('exports the PROTOCOL and VERSION constants', async () => {
+      const protocol = await page.evaluate(() => {
+        return Erebos.timeline.PROTOCOL
+      })
+      expect(protocol).toBe('timeline')
+
+      const version = await page.evaluate(() => {
+        return Erebos.timeline.VERSION
+      })
+      expect(version).toBe(1)
+    })
+
+    it('provides a createChapter() function', async () => {
+      const timestamp = Date.now()
+      const chapter = await page.evaluate(
+        (author, timestamp) => {
+          return Erebos.timeline.createChapter({
+            author,
+            timestamp,
+            type: 'text/plain',
+            content: 'hello',
+          })
+        },
+        user,
+        timestamp,
+      )
+      expect(chapter).toEqual({
+        protocol: 'timeline',
+        version: 1,
+        timestamp,
+        type: 'text/plain',
+        author: user,
+        content: 'hello',
+      })
+    })
+
+    it('provides a validateChapter() function', async () => {
+      const invalidError1 = await page.evaluate(() => {
+        try {
+          Erebos.timeline.validateChapter({})
+        } catch (err) {
+          return err.message
+        }
+      })
+      expect(invalidError1).toBe('Unsupported payload')
+
+      const invalidError2 = await page.evaluate(() => {
+        try {
+          Erebos.timeline.validateChapter({ protocol: 'timeline', version: 0 })
+        } catch (err) {
+          return err.message
+        }
+      })
+      expect(invalidError2).toBe('Unsupported payload')
+
+      const valid = { protocol: 'timeline', version: 1 }
+      const validated = await page.evaluate(chapter => {
+        return Erebos.timeline.validateChapter(chapter)
+      }, valid)
+      expect(validated).toEqual(valid)
+    })
+
+    it('download() method downloads and decodes the chapter', async () => {
+      const timestamp = Date.now()
+
+      const [validID, invalidID] = await evalClient(
+        async (client, author, timestamp) => {
+          const chapter = Erebos.timeline.createChapter({
+            author,
+            timestamp,
+            content: { ok: true },
+          })
+          return await Promise.all([
+            client.bzz.uploadFile(JSON.stringify(chapter)),
+            client.bzz.uploadFile(JSON.stringify({ ok: false })),
+          ])
+        },
+        user,
+        timestamp,
+      )
+
+      const valid = await evalClient(async (client, id) => {
+        const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
+        return await timeline.download(id)
+      }, validID)
+      expect(valid).toEqual({
+        id: validID,
+        protocol: 'timeline',
+        version: 1,
+        timestamp,
+        type: 'application/json',
+        author: user,
+        content: { ok: true },
+      })
+
+      const invalidError = await evalClient(async (client, id) => {
+        const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
+        try {
+          await timeline.download(id)
+        } catch (err) {
+          return err.message
+        }
+      }, invalidID)
+      expect(invalidError).toBe('Unsupported payload')
+    })
+
+    it('upload() method encodes and uploads the chapter', async () => {
+      const chapter = await page.evaluate(author => {
+        return Erebos.timeline.createChapter({ author, content: { ok: true } })
+      }, user)
+      const [id, downloaded] = await evalClient(async (client, chapter) => {
+        const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
+        const id = await timeline.upload(chapter)
+        const downloaded = await timeline.download(id)
+        return [id, downloaded]
+      }, chapter)
+      expect(downloaded).toEqual({ ...chapter, id })
+    })
+
+    it('updateChapterID() and getChapterID() methods manipulate a feed hash', async () => {
+      jest.setTimeout(10000) // 10 secs
+      const chapter = await page.evaluate(author => {
+        return Erebos.timeline.createChapter({ author, content: { ok: true } })
+      }, user)
+      const [chapterID, loadedID] = await evalClient(
+        async (client, feed, chapter) => {
+          const timeline = new Erebos.timeline.Timeline({
+            bzz: client.bzz,
+            feed,
+          })
+          const chapterID = await timeline.upload(chapter)
+          await timeline.updateChapterID(chapterID)
+          const loadedID = await timeline.getChapterID()
+          return [chapterID, loadedID]
+        },
+        { user, name: uploadContent },
+        chapter,
+      )
+      expect(loadedID).toBe(chapterID)
+    })
+
+    it('addChapter() and loadChapter() methods manipulate a chapter', async () => {
+      jest.setTimeout(10000) // 10 secs
+      const chapter = await page.evaluate(author => {
+        return Erebos.timeline.createChapter({ author, content: { ok: true } })
+      }, user)
+      const [chapterID, loadedChapter] = await evalClient(
+        async (client, feed, chapter) => {
+          const timeline = new Erebos.timeline.Timeline({
+            bzz: client.bzz,
+            feed,
+          })
+          const chapterID = await timeline.addChapter(chapter)
+          const loadedChapter = await timeline.loadChapter()
+          return [chapterID, loadedChapter]
+        },
+        { user, name: uploadContent },
+        chapter,
+      )
+      expect(loadedChapter).toEqual({ ...chapter, id: chapterID })
     })
   })
 })

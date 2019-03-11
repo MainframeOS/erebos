@@ -20,7 +20,7 @@
     "test:ci": "jest --ci --config jest.config.ci.js --runInBand",
     "test": "yarn test:flow && yarn test:project",
     "test:all": "yarn lint && yarn test",
-    "build": "lerna run build && cd packages/swarm-browser && yarn build:dist",
+    "build": "lerna run build && lerna run build:dist",
     "start": "yarn test && yarn build"
   },
   "devDependencies": {

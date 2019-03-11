@@ -1,6 +1,6 @@
 {
   "name": "@erebos/secp256k1",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "secp256k1 utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
