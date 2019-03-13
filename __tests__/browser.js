@@ -542,7 +542,7 @@ describe('browser', () => {
   })
 
   describe('timeline', () => {
-    it('exports the PROTOCOL and VERSION constants', async () => {
+    it('exports the PROTOCOL, VERSION and VERSION_RANGE constants', async () => {
       const protocol = await page.evaluate(() => {
         return Erebos.timeline.PROTOCOL
       })
@@ -551,7 +551,12 @@ describe('browser', () => {
       const version = await page.evaluate(() => {
         return Erebos.timeline.VERSION
       })
-      expect(version).toBe(1)
+      expect(version).toBe('1.0.0')
+
+      const versionRange = await page.evaluate(() => {
+        return Erebos.timeline.VERSION_RANGE
+      })
+      expect(versionRange).toBe('^1.0.0')
     })
 
     it('provides a createChapter() function', async () => {
@@ -570,7 +575,7 @@ describe('browser', () => {
       )
       expect(chapter).toEqual({
         protocol: 'timeline',
-        version: 1,
+        version: '1.0.0',
         timestamp,
         type: 'text/plain',
         author: user,
@@ -579,25 +584,52 @@ describe('browser', () => {
     })
 
     it('provides a validateChapter() function', async () => {
-      const invalidError1 = await page.evaluate(() => {
+      const invalidPayload = await page.evaluate(() => {
         try {
           Erebos.timeline.validateChapter({})
         } catch (err) {
           return err.message
         }
       })
-      expect(invalidError1).toBe('Unsupported payload')
+      expect(invalidPayload).toBe('Invalid payload')
 
-      const invalidError2 = await page.evaluate(() => {
+      const unsupportedProtocol = await page.evaluate(() => {
         try {
-          Erebos.timeline.validateChapter({ protocol: 'timeline', version: 0 })
+          Erebos.timeline.validateChapter({
+            protocol: 'test',
+            version: '1.0.0',
+          })
         } catch (err) {
           return err.message
         }
       })
-      expect(invalidError2).toBe('Unsupported payload')
+      expect(unsupportedProtocol).toBe('Unsupported protocol')
 
-      const valid = { protocol: 'timeline', version: 1 }
+      const unsupportedVersion1 = await page.evaluate(() => {
+        try {
+          Erebos.timeline.validateChapter({
+            protocol: 'timeline',
+            version: 0,
+          })
+        } catch (err) {
+          return err.message
+        }
+      })
+      expect(unsupportedVersion1).toBe('Unsupported protocol version')
+
+      const unsupportedVersion2 = await page.evaluate(() => {
+        try {
+          Erebos.timeline.validateChapter({
+            protocol: 'timeline',
+            version: '2.0.0',
+          })
+        } catch (err) {
+          return err.message
+        }
+      })
+      expect(unsupportedVersion2).toBe('Unsupported protocol version')
+
+      const valid = { protocol: 'timeline', version: '1.0.0' }
       const validated = await page.evaluate(chapter => {
         return Erebos.timeline.validateChapter(chapter)
       }, valid)
@@ -630,7 +662,7 @@ describe('browser', () => {
       expect(valid).toEqual({
         id: validID,
         protocol: 'timeline',
-        version: 1,
+        version: '1.0.0',
         timestamp,
         type: 'application/json',
         author: user,
@@ -645,7 +677,7 @@ describe('browser', () => {
           return err.message
         }
       }, invalidID)
-      expect(invalidError).toBe('Unsupported payload')
+      expect(invalidError).toBe('Invalid payload')
     })
 
     it('upload() method encodes and uploads the chapter', async () => {

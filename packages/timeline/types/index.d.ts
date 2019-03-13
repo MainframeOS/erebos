@@ -3,11 +3,12 @@ import { hexValue } from '@erebos/hex'
 import { Observable } from 'rxjs'
 
 export const PROTOCOL = 'timeline'
-export const VERSION = 1
+export const VERSION = '1.0.0'
+export const VERSION_RANGE = '^1.0.0'
 
 export interface PartialChapter<T = any> {
-  protocol: 'timeline'
-  version: 1
+  protocol: string
+  version: string
   timestamp: number
   references?: Array<string>
   previous?: string
@@ -55,8 +56,8 @@ export class Timeline {
     chapter: PartialChapter<T>,
     options?: UploadOptions,
   ): Promise<hexValue>
-  async getChapterID(options?: FetchOptions = {}): Promise<hexValue | null>
-  async loadChapter<T>(options?: FetchOptions = {}): Promise<Chapter<T> | null>
+  async getChapterID(options: FetchOptions = {}): Promise<hexValue | null>
+  async loadChapter<T>(options: FetchOptions = {}): Promise<Chapter<T> | null>
   async updateChapterID(
     chapterID: string,
     options?: FetchOptions,

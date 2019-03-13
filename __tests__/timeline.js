@@ -1,13 +1,15 @@
 import Bzz from '../packages/api-bzz-node'
+import createHex from '../packages/hex'
+import { pubKeyToAddress } from '../packages/keccak256'
+import { createKeyPair, sign, verify } from '../packages/secp256k1'
 import {
   PROTOCOL,
   VERSION,
+  VERSION_RANGE,
   Timeline,
   createChapter,
   validateChapter,
 } from '../packages/timeline'
-import { pubKeyToAddress } from '../packages/keccak256'
-import { createKeyPair, sign } from '../packages/secp256k1'
 
 describe('timeline', () => {
   const keyPair = createKeyPair()
@@ -18,9 +20,10 @@ describe('timeline', () => {
     url: 'http://localhost:8500/',
   })
 
-  it('exports the PROTOCOL and VERSION constants', () => {
+  it('exports the PROTOCOL, VERSION and VERSION_RANGE constants', () => {
     expect(PROTOCOL).toBe('timeline')
-    expect(VERSION).toBe(1)
+    expect(VERSION).toBe('1.0.0')
+    expect(VERSION_RANGE).toBe('^1.0.0')
   })
 
   it('provides a createChapter() function', () => {
@@ -33,7 +36,7 @@ describe('timeline', () => {
     })
     expect(chapter).toEqual({
       protocol: 'timeline',
-      version: 1,
+      version: '1.0.0',
       timestamp: now,
       type: 'text/plain',
       author,
@@ -42,11 +45,17 @@ describe('timeline', () => {
   })
 
   it('provides a validateChapter() function', () => {
-    expect(() => validateChapter({})).toThrow('Unsupported payload')
+    expect(() => validateChapter({})).toThrow('Invalid payload')
+    expect(() =>
+      validateChapter({ protocol: 'test', version: '1.0.0' }),
+    ).toThrow('Unsupported protocol')
     expect(() => validateChapter({ protocol: 'timeline', version: 0 })).toThrow(
-      'Unsupported payload',
+      'Unsupported protocol version',
     )
-    const valid = { protocol: 'timeline', version: 1 }
+    expect(() =>
+      validateChapter({ protocol: 'timeline', version: '2.0.0' }),
+    ).toThrow('Unsupported protocol version')
+    const valid = { protocol: 'timeline/test', version: '1.0.0' }
     expect(validateChapter(valid)).toBe(valid)
   })
 
@@ -65,14 +74,14 @@ describe('timeline', () => {
     expect(valid).toEqual({
       id: validID,
       protocol: 'timeline',
-      version: 1,
+      version: '1.0.0',
       timestamp: now,
       type: 'application/json',
       author,
       content: { ok: true },
     })
 
-    expect(timeline.download(invalidID)).rejects.toThrow('Unsupported payload')
+    expect(timeline.download(invalidID)).rejects.toThrow('Invalid payload')
   })
 
   it('upload() method encodes and uploads the chapter', async () => {
@@ -91,8 +100,11 @@ describe('timeline', () => {
     const decode = jest.fn(async res => {
       const chapter = await res.json()
       const { signature, ...rest } = chapter
-      const verified = await sign(rest)
-      expect(signature).toBe(verified)
+      const msg = createHex(rest)
+        .toBuffer()
+        .toString('hex')
+      const sig = createHex(signature).toBytesArray()
+      expect(verify(msg, sig, keyPair.getPublic('hex'))).toBe(true)
       return chapter
     })
     const encode = jest.fn(async chapter => {

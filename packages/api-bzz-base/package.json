@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
-    "@erebos/hex": "^0.5.4",
-    "@erebos/keccak256": "^0.6.0"
+    "@erebos/hex": "^0.7.0",
+    "@erebos/keccak256": "^0.7.0"
   },
   "devDependencies": {
     "flow-bin": "^0.94.0"

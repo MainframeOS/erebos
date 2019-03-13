@@ -31,7 +31,7 @@ opaque type hexValue: string = string
 ### hexInput
 
 ```javascript
-type hexInput = hexValue | string | Object | Buffer
+type hexInput = hexValue | string | Object | Buffer | Array<number>
 ```
 
 ## Public API
@@ -73,6 +73,10 @@ type hexInput = hexValue | string | Object | Buffer
 ### .toBuffer()
 
 **Returns** `Buffer`
+
+### .toBytesArray()
+
+**Returns** `Array<number>`
 
 ### .toObject()
 

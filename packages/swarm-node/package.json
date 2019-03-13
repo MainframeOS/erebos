@@ -22,8 +22,8 @@
     "@babel/runtime": "^7.3.4",
     "@erebos/api-bzz-base": "^0.7.0",
     "@erebos/api-bzz-node": "^0.7.0",
-    "@erebos/api-pss": "^0.6.3",
-    "@erebos/client-base": "^0.6.3",
+    "@erebos/api-pss": "^0.7.0",
+    "@erebos/client-base": "^0.7.0",
     "@mainframe/rpc-node": "^0.3.0",
     "@mainframe/rpc-stream": "^0.3.0"
   },

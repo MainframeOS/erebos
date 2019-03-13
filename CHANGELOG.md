@@ -4,10 +4,14 @@
 
 - The [feed parameters object](https://erebos.js.org/docs/api-bzz#feedparams) has been changed to include the required `user` key and remove the `signature` one. The added [feed update parameters object](https://erebos.js.org/docs/api-bzz#feedupdateparams) should be used for feed updates.
 - The feed-related Bzz methods arguments have changed as the result of the feed parameters object change: rather than having a mandatory "user or hash" argument and a separate feed parameters argument, a single "hash or feed parameters" argument is now used. This change affects the [`getFeedURL()`](https://erebos.js.org/docs/api-bzz#getfeedurl), [`createFeedManifest()`](https://erebos.js.org/docs/api-bzz#createfeedmanifest), [`getFeedMetadata()`](https://erebos.js.org/docs/api-bzz#getfeedmetadata), [`getFeedValue()`](https://erebos.js.org/docs/api-bzz#getfeedvalue), [`pollFeedValue()`](https://erebos.js.org/docs/api-bzz#pollfeedvalue), [`postSignedFeedValue()`](https://erebos.js.org/docs/api-bzz#postsignedfeedvalue), [`postFeedValue()`](https://erebos.js.org/docs/api-bzz#postfeedvalue), [`updateFeedValue()`](https://erebos.js.org/docs/api-bzz#updatefeedvalue), [`uploadFeedValue()`](https://erebos.js.org/docs/api-bzz#uploadfeedvalue)
+- The feed digest signing function in the [Bzz class configuration](https://erebos.js.org/docs/api-bzz#bzzconfig) has been renamed from `signFeedDigest` to `signBytes`, to reflect the fact it could be used in other contexts.
+- The second argument of the `createKeyPair()` function in `@erebos/secp256k1` has been removed, as `hex` is the only supported value it is set by default.
 
 ### Additional features
 
-The `@erebos/timeline` package has been added, providing an implementation of the [Timeline protocol](https://erebos.js.org/docs/timeline-spec). Its API is available in [the documentation website](https://erebos.js.org/docs/timeline-api).
+- The `@erebos/hex` now supports bytes array (`Array<number>`) as an input type and output using the [`.toBytesArray()` method](https://erebos.js.org/docs/hex#tobytesarray).
+- The `createPublic()` and `verify()` functions have been added to the [`@erebos/secp256k1` package](https://erebos.js.org/docs/secp256k1).
+- The `@erebos/timeline` package has been added, providing an implementation of the [Timeline protocol](https://erebos.js.org/docs/timeline-spec). Its API is available in [the documentation website](https://erebos.js.org/docs/timeline-api).
 
 ### Other changes
 

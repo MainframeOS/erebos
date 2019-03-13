@@ -8,9 +8,11 @@ import type Bzz, {
 import type { hexValue } from '@erebos/hex'
 import type { Observable } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
+import semver from 'semver'
 
 export const PROTOCOL = 'timeline'
-export const VERSION = 1
+export const VERSION = '1.0.0'
+export const VERSION_RANGE = '^1.0.0'
 
 type JSONValue =
   | null
@@ -21,8 +23,8 @@ type JSONValue =
   | { [key: string]: JSONValue }
 
 export type PartialChapter<T = JSONValue> = {
-  protocol: 'timeline',
-  version: 1,
+  protocol: string,
+  version: string,
   timestamp: number,
   author: string,
   type: string,
@@ -67,8 +69,14 @@ const createChapterFactory = (defaults: $Shape<PartialChapter<any>>) => {
 }
 
 export const validateChapter = <T: Object>(chapter: T): T => {
-  if (chapter.protocol !== PROTOCOL || chapter.version !== VERSION) {
-    throw new Error('Unsupported payload')
+  if (chapter.protocol == null || chapter.version == null) {
+    throw new Error('Invalid payload')
+  }
+  if (!chapter.protocol.startsWith(PROTOCOL)) {
+    throw new Error('Unsupported protocol')
+  }
+  if (!semver.satisfies(chapter.version, VERSION_RANGE)) {
+    throw new Error('Unsupported protocol version')
   }
   return chapter
 }
