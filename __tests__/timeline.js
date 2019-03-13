@@ -103,8 +103,7 @@ describe('timeline', () => {
     })
 
     const encode = jest.fn(async chapter => {
-      const bytes = Array.from(Buffer.from(JSON.stringify(chapter)))
-      chapter.signature = await bzz.sign(bytes)
+      chapter.signature = await bzz.sign(createHex(chapter).toBytesArray())
       return JSON.stringify(chapter)
     })
 

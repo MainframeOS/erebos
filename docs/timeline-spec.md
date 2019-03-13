@@ -12,7 +12,7 @@ It leverages [Swarm feeds](https://swarm-guide.readthedocs.io/en/latest/usage.ht
 A chapter is a JSON object containing the following fields:
 
 - `protocol`: required `string` with value `timeline`, used for sanity check when loading a chapter.
-- `version`: required `integer` with value `1`, the current version of the protocol.
+- `version`: required [valid SemVer `string`](https://semver.org/) with value `1.0.0`, the current version of the protocol.
 - `timestamp`: required `integer`, the UNIX timestamp in milliseconds of the creation of the chapter.
 - `author`: required hexadecimal `string`, the Ethereum address of the author (40 hexadecimal characters prefixed with `0x`).
 - `type`: required `string`, the MIME type of the `content`.
