@@ -93,22 +93,18 @@ describe('timeline', () => {
   })
 
   it('supports custom encoding and decoding functions', async () => {
-    const sign = async data => {
-      const bytes = Array.from(Buffer.from(JSON.stringify(data)))
-      return await bzz.sign(bytes)
-    }
     const decode = jest.fn(async res => {
       const chapter = await res.json()
       const { signature, ...rest } = chapter
-      const msg = createHex(rest)
-        .toBuffer()
-        .toString('hex')
+      const msg = createHex(rest).toBytesArray()
       const sig = createHex(signature).toBytesArray()
       expect(verify(msg, sig, keyPair.getPublic('hex'))).toBe(true)
       return chapter
     })
+
     const encode = jest.fn(async chapter => {
-      chapter.signature = await sign(chapter)
+      const bytes = Array.from(Buffer.from(JSON.stringify(chapter)))
+      chapter.signature = await bzz.sign(bytes)
       return JSON.stringify(chapter)
     })
 
