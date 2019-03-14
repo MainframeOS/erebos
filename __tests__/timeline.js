@@ -55,7 +55,7 @@ describe('timeline', () => {
     expect(() =>
       validateChapter({ protocol: 'timeline', version: '2.0.0' }),
     ).toThrow('Unsupported protocol version')
-    const valid = { protocol: 'timeline/test', version: '1.0.0' }
+    const valid = { protocol: 'timeline', version: '1.0.0' }
     expect(validateChapter(valid)).toBe(valid)
   })
 

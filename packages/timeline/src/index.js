@@ -72,7 +72,7 @@ export const validateChapter = <T: Object>(chapter: T): T => {
   if (chapter.protocol == null || chapter.version == null) {
     throw new Error('Invalid payload')
   }
-  if (!chapter.protocol.startsWith(PROTOCOL)) {
+  if (chapter.protocol !== PROTOCOL) {
     throw new Error('Unsupported protocol')
   }
   if (!semver.satisfies(chapter.version, VERSION_RANGE)) {
@@ -80,8 +80,6 @@ export const validateChapter = <T: Object>(chapter: T): T => {
   }
   return chapter
 }
-
-// Should signature support be part of a future release? maybe just adding a test case using encode and decode?
 
 const defaultDecode: DecodeChapter<*> = async (res: *) => {
   return validateChapter(await res.json())

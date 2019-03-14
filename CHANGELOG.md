@@ -9,7 +9,7 @@
 
 ### Additional features
 
-- The `@erebos/hex` now supports bytes array (`Array<number>`) as an input type and output using the [`.toBytesArray()` method](https://erebos.js.org/docs/hex#tobytesarray).
+- The `@erebos/hex` module now supports bytes array (`Array<number>`) as an input type and output using the [`.toBytesArray()` method](https://erebos.js.org/docs/hex#tobytesarray).
 - The `createPublic()` and `verify()` functions have been added to the [`@erebos/secp256k1` package](https://erebos.js.org/docs/secp256k1).
 - The `@erebos/timeline` package has been added, providing an implementation of the [Timeline protocol](https://erebos.js.org/docs/timeline-spec). Its API is available in [the documentation website](https://erebos.js.org/docs/timeline-api).
 

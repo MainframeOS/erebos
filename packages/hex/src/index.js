@@ -82,37 +82,15 @@ export class Hex {
   }
 
   toBytesArray(): Array<number> {
-    switch (this._input.type) {
-      case 'buffer':
-        return Array.from(this._input.value)
-      case 'bytesArray':
-        return this._input.value
-      case 'string':
-        return Array.from(Buffer.from(this._input.value))
-      case 'hex':
-        return Array.from(fromHexValue(this._input.value))
-      case 'object':
-        return Array.from(Buffer.from(JSON.stringify(this._input.value)))
-      default:
-        return []
-    }
+    return this._input.type === 'bytesArray'
+      ? this._input.value
+      : Array.from(this.toBuffer())
   }
 
   toObject(): Object {
-    switch (this._input.type) {
-      case 'buffer':
-        return JSON.parse(this._input.value.toString())
-      case 'bytesArray':
-        return JSON.parse(Buffer.from(this._input.value).toString())
-      case 'hex':
-        return JSON.parse(fromHexValue(this._input.value).toString())
-      case 'object':
-        return this._input.value
-      case 'string':
-        return JSON.parse(this._input.value)
-      default:
-        return {}
-    }
+    return this._input.type === 'object'
+      ? this._input.value
+      : JSON.parse(this.toString())
   }
 
   toString(): string {
