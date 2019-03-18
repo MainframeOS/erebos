@@ -57,6 +57,15 @@ type ListResult = {
 }
 ```
 
+### FeedTopicParams
+
+```javascript
+type FeedTopicParams = {
+  name?: string,
+  topic?: string,
+}
+```
+
 ### FeedMetadata
 
 ```javascript
@@ -230,7 +239,7 @@ type BzzConfig = {
 
 **Arguments**
 
-1.  [`options?: FeedOptions = {}`](#feedoptions)
+1.  [`params?: FeedTopicParams = {}`](#feedtopicparams)
 
 **Returns** `hexValue`
 

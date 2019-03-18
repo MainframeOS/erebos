@@ -26,6 +26,11 @@ export type ListResult = {
   entries?: Array<ListEntry>,
 }
 
+export type FeedTopicParams = {
+  name?: string,
+  topic?: string,
+}
+
 export type FeedMetadata = {
   feed: {
     topic: hexValue,

@@ -7,7 +7,7 @@ import createHex, {
 } from '@erebos/hex'
 import { hash } from '@erebos/keccak256'
 
-import type { FeedMetadata, FeedParams } from './types'
+import type { FeedMetadata, FeedTopicParams } from './types'
 
 const FEED_TOPIC_LENGTH = 32
 const FEED_USER_LENGTH = 20
@@ -50,7 +50,7 @@ export const createFeedDigest = (
   return hash(payload)
 }
 
-export const getFeedTopic = (params: FeedParams): hexValue => {
+export const getFeedTopic = (params: FeedTopicParams): hexValue => {
   const topicHex = createHex(params.topic || Buffer.alloc(FEED_TOPIC_LENGTH))
   if (params.name == null) {
     return topicHex.value

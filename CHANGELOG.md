@@ -1,3 +1,8 @@
+## v0.7.1 (2019-03-18)
+
+- Add `FeedTopicParams` type to `@erebos/api-bzz-base`.
+- Fix `getFeedTopic()` function in `@erebos/api-bzz-base` to use `FeedTopicParams` as input type.
+
 ## v0.7.0 (2019-03-18)
 
 ### Breaking changes

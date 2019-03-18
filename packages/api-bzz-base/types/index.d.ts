@@ -24,6 +24,11 @@ export interface ListResult {
   entries?: Array<ListEntry>
 }
 
+export interface FeedTopicParams {
+  name?: string
+  topic?: string | Buffer
+}
+
 export interface FeedMetadata {
   feed: {
     topic: hexValue
@@ -100,7 +105,7 @@ export type BzzConfig = {
 
 export function createFeedDigest(meta: FeedMetadata, data: hexInput): Buffer
 
-export function getFeedTopic(params: FeedParams): hexValue
+export function getFeedTopic(params: FeedTopicParams): hexValue
 
 export class HTTPError extends Error {
   status: number

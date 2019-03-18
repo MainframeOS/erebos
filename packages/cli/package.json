@@ -26,7 +26,7 @@
     "build:js": "BABEL_ENV=node babel src --out-dir lib",
     "build": "yarn clean && yarn build:js",
     "prepublishOnly": "yarn build && oclif-dev manifest",
-    "postpublish": "del oclif.manifest.json"
+    "postpublish": "del-cli oclif.manifest.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.21.3",
+    "del-cli": "^1.1.0",
     "flow-bin": "^0.95.1"
   }
 }
