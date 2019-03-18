@@ -37,6 +37,7 @@ npm install -g @erebos/cli
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs
+| [`@erebos/timeline`](/packages/timeline) | [![npm version](https://img.shields.io/npm/v/@erebos/timeline.svg)](https://www.npmjs.com/package/@erebos/timeline) | Feed-based Timeline APIs
 | **Utilities**
 | [`@erebos/hex`](/packages/hex) | [![npm version](https://img.shields.io/npm/v/@erebos/hex.svg)](https://www.npmjs.com/package/@erebos/hex) | Hexadecimal values encoding and decoding
 | [`@erebos/keccak256`](/packages/keccak256) | [![npm version](https://img.shields.io/npm/v/@erebos/keccak256.svg)](https://www.npmjs.com/package/@erebos/keccak256) | Keccak256 hashing

@@ -66,7 +66,7 @@ const ProjectTitle = () => (
       align="center"
       contents={[
         {
-          image: siteConfig.baseUrl + 'img/logo.svg',
+          image: imgUrl('logo.svg'),
           imageAlign: 'top',
         },
       ]}
@@ -76,7 +76,7 @@ const ProjectTitle = () => (
       className="erebos-text"
       contents={[
         {
-          image: siteConfig.baseUrl + 'img/erebos.png',
+          image: imgUrl('erebos.png'),
           imageAlign: 'top',
         },
       ]}
@@ -101,10 +101,10 @@ class HomeSplash extends React.Component {
           <ProjectTitle />
           <small className="blue">{siteConfig.tagline}</small>
           <PromoSection>
-            <Button href={docUrl('getting-started.html', language)}>
+            <Button href={docUrl('getting-started', language)}>
               Get started
             </Button>
-            <Button href={docUrl('examples.html', language)}>
+            <Button href={docUrl('examples-storage', language)}>
               See examples
             </Button>
           </PromoSection>
@@ -131,18 +131,20 @@ const Features = () => (
       className="features"
       contents={[
         {
-          image: siteConfig.baseUrl + 'img/fileStorage.svg',
+          image: imgUrl('fileStorage.svg'),
           imageAlign: 'top',
           title: 'Decentralized file storage',
-          content:
-            'Securely distribute you files accross the entire network using the [Bzz APIs](api-bzz.md)',
+          content: `Securely distribute you files accross the entire network using the [Bzz APIs](${docUrl(
+            'api-bzz',
+          )})`,
         },
         {
-          image: siteConfig.baseUrl + 'img/comms.svg',
+          image: imgUrl('comms.svg'),
           imageAlign: 'top',
           title: 'Peer-to-peer communications',
-          content:
-            'Encrypted communications between nodes with no dedicated servers required using the [Pss APIs](api-pss.md)',
+          content: `Encrypted communications between nodes with no dedicated servers required using the [Pss APIs](${docUrl(
+            'api-pss',
+          )})`,
         },
       ]}
     />
@@ -155,7 +157,7 @@ const FeatureCallout = () => (
       align="center"
       contents={[
         {
-          image: siteConfig.baseUrl + 'img/dapps.svg',
+          image: imgUrl('dapps.svg'),
           imageAlign: 'top',
           title: 'Your entry point into decentralized apps development',
           content:
@@ -164,33 +166,9 @@ const FeatureCallout = () => (
       ]}
     />
     <div className="center-button">
-      <Button href={docUrl('introduction.html')}>
-        Read the full introduction
-      </Button>
+      <Button href={docUrl('introduction')}>Read the full introduction</Button>
     </div>
   </Container>
-)
-
-const LearnHow = () => (
-  <Block background="light">
-    {[
-      {
-        content: 'Talk about learning how to use this',
-        title: 'Learn How',
-      },
-    ]}
-  </Block>
-)
-
-const TryOut = () => (
-  <Block id="try">
-    {[
-      {
-        content: 'Talk about trying this out',
-        title: 'Try it Out',
-      },
-    ]}
-  </Block>
 )
 
 const Description = () => (
@@ -205,32 +183,32 @@ const Description = () => (
   </Block>
 )
 
-const Showcase = props => {
-  if ((siteConfig.users || []).length === 0) {
-    return null
-  }
-
-  const showcase = siteConfig.users
-    .filter(user => user.pinned)
-    .map(user => (
-      <a href={user.infoLink} key={user.infoLink}>
-        <img src={user.image} alt={user.caption} title={user.caption} />
-      </a>
-    ))
-
-  return (
-    <div className="productShowcaseSection paddingBottom">
-      <h2>Who is Using This?</h2>
-      <p>This project is used by all these people</p>
-      <div className="logos">{showcase}</div>
-      <div className="more-users">
-        <a className="button" href={pageUrl('users.html', props.language)}>
-          More {siteConfig.title} Users
-        </a>
-      </div>
-    </div>
-  )
-}
+// const Showcase = props => {
+//   if ((siteConfig.users || []).length === 0) {
+//     return null
+//   }
+//
+//   const showcase = siteConfig.users
+//     .filter(user => user.pinned)
+//     .map(user => (
+//       <a href={user.infoLink} key={user.infoLink}>
+//         <img src={user.image} alt={user.caption} title={user.caption} />
+//       </a>
+//     ))
+//
+//   return (
+//     <div className="productShowcaseSection paddingBottom">
+//       <h2>Who is Using This?</h2>
+//       <p>This project is used by all these people</p>
+//       <div className="logos">{showcase}</div>
+//       <div className="more-users">
+//         <a className="button" href={pageUrl('users', props.language)}>
+//           More {siteConfig.title} Users
+//         </a>
+//       </div>
+//     </div>
+//   )
+// }
 
 class Index extends React.Component {
   render() {
@@ -241,8 +219,6 @@ class Index extends React.Component {
         <div className="mainContainer">
           <Features />
           <FeatureCallout />
-          {/* <LearnHow /> */}
-          {/* <TryOut /> */}
           {/* <Description /> */}
           {/* <Showcase language={language} /> */}
         </div>

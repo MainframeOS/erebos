@@ -1,0 +1,40 @@
+{
+  "name": "@erebos/timeline",
+  "version": "0.7.0",
+  "description": "Linked-list data structure for Swarm feeds",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "browser": "dist/erebos.timeline.production.js",
+  "types": "types/index.d.ts",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "cjs/*",
+    "dist/*",
+    "esm/*",
+    "types/*"
+  ],
+  "scripts": {
+    "clean": "del cjs dist esm",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "build:dist:dev": "BABEL_ENV='browser-esm' NODE_ENV=development rollup -c",
+    "build:dist:prod": "BABEL_ENV='browser-esm' NODE_ENV=production rollup -c",
+    "build:dist": "yarn build:dist:dev && yarn build:dist:prod",
+    "build:js": "yarn build:cjs && yarn build:esm",
+    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
+    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "prepublishOnly": "yarn build && yarn build:dist"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.3.4",
+    "@erebos/api-bzz-base": "^0.7.0",
+    "@erebos/hex": "^0.7.0",
+    "rxjs": "^6.3.3",
+    "semver": "^5.6.0"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.94.0"
+  }
+}

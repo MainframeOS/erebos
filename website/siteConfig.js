@@ -34,6 +34,7 @@ module.exports = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     { doc: 'introduction', label: 'Docs' },
+    { doc: 'examples-storage', label: 'Examples' },
     { doc: 'swarm-client', label: 'API' },
     { page: 'help', label: 'Help' },
     { href: 'https://github.com/MainframeHQ/erebos', label: 'GitHub' },
@@ -56,7 +57,7 @@ module.exports = {
   highlight: {
     defaultLang: 'javascript',
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'monokai',
+    theme: 'mono-blue',
   },
 
   // Add custom scripts here that would be placed in <script> tags.

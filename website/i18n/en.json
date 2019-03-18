@@ -28,8 +28,14 @@
         "title": "Command-line interface",
         "sidebar_label": "CLI"
       },
-      "examples": {
-        "title": "Examples"
+      "examples-communications": {
+        "title": "Communications examples"
+      },
+      "examples-feeds": {
+        "title": "Feeds examples"
+      },
+      "examples-storage": {
+        "title": "File storage examples"
       },
       "getting-started": {
         "title": "Getting started"
@@ -51,18 +57,30 @@
       },
       "swarm-client": {
         "title": "Swarm client"
+      },
+      "timeline-api": {
+        "title": "Timeline API"
+      },
+      "timeline-examples": {
+        "title": "Timeline example"
+      },
+      "timeline-spec": {
+        "title": "Timeline specification"
       }
     },
     "links": {
       "Docs": "Docs",
+      "Examples": "Examples",
       "API": "API",
       "Help": "Help",
       "GitHub": "GitHub"
     },
     "categories": {
       "Docs": "Docs",
+      "Examples": "Examples",
       "API": "API",
-      "Utilities": "Utilities",
+      "Timeline protocol": "Timeline protocol",
+      "Utility libraries": "Utility libraries",
       "Tools": "Tools"
     }
   },

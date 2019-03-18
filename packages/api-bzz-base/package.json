@@ -1,6 +1,6 @@
 {
   "name": "@erebos/api-bzz-base",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "description": "Base Bzz API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -23,11 +23,11 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
-    "@erebos/hex": "^0.5.4",
-    "@erebos/keccak256": "^0.6.0"
+    "@babel/runtime": "^7.3.4",
+    "@erebos/hex": "^0.7.0",
+    "@erebos/keccak256": "^0.7.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.93.0"
+    "flow-bin": "^0.94.0"
   }
 }

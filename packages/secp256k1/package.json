@@ -1,6 +1,6 @@
 {
   "name": "@erebos/secp256k1",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "secp256k1 utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -23,12 +23,12 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.3.4",
     "@types/bn.js": "^4.11.3",
     "@types/elliptic": "^6.4.5",
     "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix"
   },
   "devDependencies": {
-    "flow-bin": "^0.93.0"
+    "flow-bin": "^0.94.0"
   }
 }

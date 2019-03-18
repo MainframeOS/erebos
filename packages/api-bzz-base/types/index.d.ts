@@ -75,18 +75,25 @@ export interface PollOptions extends FeedOptions {
 export interface FeedParams {
   level?: number
   name?: string
-  signature?: string
   time?: number
   topic?: string
 }
 
-export type SignFeedDigestFunc = (
+export interface FeedUpdateParams {
+  user: string
+  level: number
+  time: number
+  topic: string
+  signature: string
+}
+
+export type SignBytesFunc = (
   digest: Array<number>,
   params?: any,
 ) => Promise<Array<number>>
 
 export type BzzConfig = {
-  signFeedDigest?: SignFeedDigestFunc
+  signBytes?: SignBytesFunc
   timeout?: number
   url: string
 }
@@ -102,10 +109,13 @@ export class HTTPError extends Error {
 
 export default abstract class BaseBzz<T> {
   constructor(config: BzzConfig)
-  signFeedDigest(digest: Array<number>, params?: any): Promise<hexValue>
+  sign(bytes: Array<number>, params?: any): Promise<hexValue>
   getDownloadURL(hash: string, options: DownloadOptions, raw?: boolean): string
   getUploadURL(options: UploadOptions, raw?: boolean): string
-  getFeedURL(userOrHash: string, options?: FeedOptions, flag?: 'meta'): string
+  getFeedURL(
+    hashOrParams: string | FeedParams | FeedUpdateParams,
+    flag?: 'meta',
+  ): string
   hash(domain: string, options?: FetchOptions): Promise<hexValue>
   list(hash: string, options?: DownloadOptions): Promise<ListResult>
   download(hash: string, options?: DownloadOptions): Promise<T>
@@ -120,28 +130,23 @@ export default abstract class BaseBzz<T> {
     options?: FetchOptions,
   ): Promise<hexValue>
   createFeedManifest(
-    user: string,
-    params?: FeedParams,
+    params: FeedParams,
     options?: UploadOptions,
   ): Promise<hexValue>
   getFeedMetadata(
-    userOrHash: string,
-    params?: FeedParams,
+    hashOrParams: string | FeedParams,
     options?: FetchOptions,
   ): Promise<FeedMetadata>
   getFeedValue(
-    userOrHash: string,
-    params?: FeedParams,
+    hashOrParams: string | FeedParams,
     options?: FeedOptions,
   ): Promise<T | string>
   pollFeedValue(
-    userOrHash: string,
+    hashOrParams: string | FeedParams,
     options: PollOptions,
-    params?: FeedParams,
   ): Observable<T | string>
   postSignedFeedValue(
-    user: string,
-    params: FeedParams,
+    params: FeedUpdateParams,
     body: Buffer,
     options?: FetchOptions,
   ): Promise<T>
@@ -152,16 +157,14 @@ export default abstract class BaseBzz<T> {
     signParams?: any,
   ): Promise<T>
   updateFeedValue(
-    userOrHash: string,
+    hashOrParams: string | FeedParams,
     data: hexInput,
-    feedParams?: FeedParams,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<T>
   uploadFeedValue(
-    userOrHash: string,
+    hashOrParams: string | FeedParams,
     data: string | Buffer | DirectoryData,
-    feedParams?: FeedParams,
     options?: UploadOptions,
     signParams?: any,
   ): Promise<hexValue>

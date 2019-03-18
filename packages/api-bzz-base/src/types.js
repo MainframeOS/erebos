@@ -75,20 +75,28 @@ export type PollOptions = FeedOptions & {
 }
 
 export type FeedParams = {
+  user: string,
   level?: number,
   name?: string,
-  signature?: string,
   time?: number,
   topic?: string,
 }
 
-export type SignFeedDigestFunc = (
+export type FeedUpdateParams = {
+  user: string,
+  level: number,
+  time: number,
+  topic: string,
+  signature: string,
+}
+
+export type SignBytesFunc = (
   digest: Array<number>,
   params?: any,
 ) => Promise<Array<number>>
 
 export type BzzConfig = {
-  signFeedDigest?: SignFeedDigestFunc,
+  signBytes?: SignBytesFunc,
   timeout?: number,
   url: string,
 }
