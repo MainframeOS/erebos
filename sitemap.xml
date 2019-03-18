@@ -10,7 +10,9 @@
 <url> <loc>https://erebos.js.org/docs/api-shh</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/api-shh" /> </url>
 <url> <loc>https://erebos.js.org/docs/api-web3</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/api-web3" /> </url>
 <url> <loc>https://erebos.js.org/docs/cli</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/cli" /> </url>
-<url> <loc>https://erebos.js.org/docs/examples</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/examples" /> </url>
+<url> <loc>https://erebos.js.org/docs/examples-communications</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/examples-communications" /> </url>
+<url> <loc>https://erebos.js.org/docs/examples-feeds</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/examples-feeds" /> </url>
+<url> <loc>https://erebos.js.org/docs/examples-storage</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/examples-storage" /> </url>
 <url> <loc>https://erebos.js.org/docs/getting-started</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/getting-started" /> </url>
 <url> <loc>https://erebos.js.org/docs/hex</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/hex" /> </url>
 <url> <loc>https://erebos.js.org/docs/individual-apis</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/individual-apis" /> </url>
@@ -18,4 +20,7 @@
 <url> <loc>https://erebos.js.org/docs/keccak256</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/keccak256" /> </url>
 <url> <loc>https://erebos.js.org/docs/secp256k1</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/secp256k1" /> </url>
 <url> <loc>https://erebos.js.org/docs/swarm-client</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/swarm-client" /> </url>
+<url> <loc>https://erebos.js.org/docs/timeline-api</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/timeline-api" /> </url>
+<url> <loc>https://erebos.js.org/docs/timeline-examples</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/timeline-examples" /> </url>
+<url> <loc>https://erebos.js.org/docs/timeline-spec</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://erebos.js.org/docs/timeline-spec" /> </url>
 </urlset>

@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Timeline API · erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;h2&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;usage&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#usage&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Usage&lt;/h2&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Timeline API · erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://erebos.js.org/index.html"/><meta property="og:description" content="&lt;h2&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;usage&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#usage&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Usage&lt;/h2&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/erebos-white.png" alt="erebos"/><h2 class="headerTitleWithLogo">erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/examples-storage" target="_self">Examples</a></li><li class="siteNavGroupActive"><a href="/docs/swarm-client" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Timeline protocol</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started">Getting started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Examples</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/examples-storage">File storage examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-feeds">Feeds examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-communications">Communications examples</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/swarm-client">Swarm client</a></li><li class="navListItem"><a class="navItem" href="/docs/individual-apis">Individual APIs</a></li><li class="navListItem"><a class="navItem" href="/docs/api-bzz">Bzz API</a></li><li class="navListItem"><a class="navItem" href="/docs/api-pss">Pss API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Timeline protocol</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/timeline-spec">Timeline specification</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-examples">Timeline example</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/timeline-api">Timeline API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Utility libraries</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/hex">Hexadecimal encoding</a></li><li class="navListItem"><a class="navItem" href="/docs/keccak256">Keccak256 hashing</a></li><li class="navListItem"><a class="navItem" href="/docs/secp256k1">SECP256k1 signing</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/cli">CLI</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Timeline API</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre><code class="hljs css language-javascript"><span class="hljs-keyword">import</span> BzzAPI <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/api-bzz-node'</span>
+<span class="hljs-keyword">import</span> { Timeline } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/timeline'</span>
+
+<span class="hljs-keyword">const</span> user = <span class="hljs-string">'0x...'</span>
+<span class="hljs-keyword">const</span> bzz = <span class="hljs-keyword">new</span> BzzAPI({ ... }) <span class="hljs-comment">// Check the Bzz API documentation for more details</span>
+<span class="hljs-keyword">const</span> timeline = <span class="hljs-keyword">new</span> Timeline({ bzz, <span class="hljs-attr">feed</span>: { user, <span class="hljs-attr">name</span>: <span class="hljs-string">'hello-timeline'</span> } })
+
+<span class="hljs-keyword">await</span> timeline.addChapter({ <span class="hljs-attr">author</span>: user, <span class="hljs-attr">contents</span>: { <span class="hljs-attr">hello</span>: <span class="hljs-string">'world'</span> } })
+<span class="hljs-keyword">const</span> chapterID = <span class="hljs-keyword">await</span> timeline.getChapterID()
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="flow-types"></a><a href="#flow-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Flow types</h2>
+<h3><a class="anchor" aria-hidden="true" id="hexvalue"></a><a href="#hexvalue" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hexValue</h3>
+<p>Hexadecimal-encoded string prefixed with <code>0x</code>. This type is exported by the <a href="/docs/hex"><code>@erebos/hex</code> package</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="jsonvalue"></a><a href="#jsonvalue" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONValue</h3>
+<pre><code class="hljs css language-js">type JSONValue =
+  | <span class="hljs-literal">null</span>
+  | boolean
+  | number
+  | string
+  | <span class="hljs-built_in">Array</span>&lt;JSONValue&gt;
+  | { [key: string]: JSONValue }
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="partialchapter"></a><a href="#partialchapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PartialChapter</h3>
+<pre><code class="hljs css language-js">type PartialChapter&lt;T = JSONValue&gt; = {
+  <span class="hljs-attr">protocol</span>: <span class="hljs-string">'timeline'</span>,
+  <span class="hljs-attr">version</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">timestamp</span>: number,
+  <span class="hljs-attr">author</span>: string,
+  <span class="hljs-attr">type</span>: string,
+  <span class="hljs-attr">content</span>: T,
+  previous?: ?string,
+  references?: ?<span class="hljs-built_in">Array</span>&lt;string&gt;,
+  signature?: string,
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="chapter"></a><a href="#chapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chapter</h3>
+<pre><code class="hljs css language-js">type Chapter&lt;T = JSONValue&gt; = PartialChapter&lt;T&gt; &amp; { <span class="hljs-attr">id</span>: string }
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="decodechapter"></a><a href="#decodechapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DecodeChapter</h3>
+<pre><code class="hljs css language-js">type DecodeChapter&lt;T&gt; = <span class="hljs-function">(<span class="hljs-params">res: *</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;Chapter&lt;T&gt;&gt;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="encodechapter"></a><a href="#encodechapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EncodeChapter</h3>
+<pre><code class="hljs css language-js">type EncodeChapter&lt;T&gt; = <span class="hljs-function">(<span class="hljs-params">chapter: PartialChapter&lt;T&gt;</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;string | Buffer&gt;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="liveoptions"></a><a href="#liveoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LiveOptions</h3>
+<p>Includes <a href="/docs/api-bzz#fetchoptions">FetchOptions</a></p>
+<pre><code class="hljs css language-js">type LiveOptions = {
+  headers?: <span class="hljs-built_in">Object</span>,
+  timeout?: ?number,
+  <span class="hljs-attr">interval</span>: number,
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="timelineconfig"></a><a href="#timelineconfig" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TimelineConfig</h3>
+<p><code>bzz</code> is a <a href="/docs/api-bzz#bzz-class-default-export">Bzz instance</a> and <code>feed</code> can either be a feed manifest hash or <a href="/docs/api-bzz#feedparams">feed paramters</a>.</p>
+<pre><code class="hljs css language-js">type TimelineConfig = {
+  <span class="hljs-attr">bzz</span>: Bzz,
+  <span class="hljs-attr">feed</span>: string | FeedParams,
+  decode?: ?DecodeChapter&lt;*&gt;,
+  encode?: ?EncodeChapter&lt;*&gt;,
+  signParams?: any,
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="public-api"></a><a href="#public-api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public API</h2>
+<h3><a class="anchor" aria-hidden="true" id="createchapter"></a><a href="#createchapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>createChapter()</h3>
+<p>Creates a <a href="#partialchapter">PartialChapter</a> with the following default fields values:</p>
+<ul>
+<li><code>protocol</code>: <code>timeline</code></li>
+<li><code>version</code>: <code>1</code></li>
+<li><code>type</code>: <code>application/json</code></li>
+<li><code>timestamp</code>: current UNIX timestamp</li>
+</ul>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>chapter: PartialChapter&lt;T&gt;</code></li>
+</ol>
+<p><strong>Returns</strong> <code>PartialChapter&lt;T&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="validatechapter"></a><a href="#validatechapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>validateChapter()</h3>
+<p>Validates that the provided object contains the <code>protocol</code> and <code>version</code> fields with the expected values.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>maybeChapter: T = Object</code></li>
+</ol>
+<p><strong>Returns</strong> <code>T</code></p>
+<h3><a class="anchor" aria-hidden="true" id="timeline-class"></a><a href="#timeline-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Timeline class</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#timelineconfig"><code>config: TimelineConfig</code></a>, see below</li>
+</ol>
+<p><strong>Configuration</strong></p>
+<ul>
+<li><a href="/docs/api-bzz#bzz-class-default-export"><code>bzz: Bzz</code></a>: Bzz instance</li>
+<li><code>feed: string | FeedParams</code>: either a feed manifest hash or <a href="/docs/api-bzz#feedparams">feed parameters</a>.</li>
+<li><a href="#decodechapter"><code>decode?: ?DecodeChapter&lt;*&gt;</code></a>: optional chapter decoding function used when loading any chapter with this timeline instance</li>
+<li><a href="#encodechapter"><code>encode?: ?EncodeChapter&lt;*&gt;</code></a>: optional chapter encoding function used when adding any chapter with this timeline instance</li>
+<li><code>signParams?: any</code>: optional signing parameters provided to the <a href="/docs/api-bzz#signbytesfunc"><code>signBytes() function</code></a> when updating a the timeline feed.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="download"></a><a href="#download" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.download()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>id: string</code>: ID of the chapter (Swarm hash)</li>
+<li><a href="/docs/api-bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Chapter&lt;T&gt;&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="upload"></a><a href="#upload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.upload()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#partialchapter"><code>chapter: PartialChapter&lt;T&gt;</code></a></li>
+<li><a href="/docs/api-bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hexValue&gt;</code> the ID of the uploaded chapter (Swarm hash)</p>
+<h3><a class="anchor" aria-hidden="true" id="getchapterid"></a><a href="#getchapterid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getChapterID()</h3>
+<p>Retrieves the ID of the latest chapter in the timeline.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="/docs/api-bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hexValue | null&gt;</code> the ID of the chapter (Swarm hash) if found, <code>null</code> otherwise</p>
+<h3><a class="anchor" aria-hidden="true" id="loadchapter"></a><a href="#loadchapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.loadChapter()</h3>
+<p>Loads the latest chapter in the timeline.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="/docs/api-bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Chapter&lt;T&gt; | null&gt;</code> the chapter if found, <code>null</code> otherwise</p>
+<h3><a class="anchor" aria-hidden="true" id="updatechapterid"></a><a href="#updatechapterid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.updateChapterID()</h3>
+<p>Updates the ID of the latest chapter in the timeline.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>id: string</code>: the chapter ID (Swarm hash)</li>
+<li><a href="/docs/api-bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="addchapter"></a><a href="#addchapter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.addChapter()</h3>
+<p>Adds a chapter to the timeline. This is equivalent of calling <a href="#upload"><code>upload()</code></a> and <a href="#updatechapterid"><code>updateChapterID()</code></a>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>chapter: PartialChapter&lt;T&gt;</code></li>
+<li><a href="/docs/api-bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;hexValue&gt;</code> the ID of the uploaded chapter (Swarm hash)</p>
+<h3><a class="anchor" aria-hidden="true" id="createupdater"></a><a href="#createupdater" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createUpdater()</h3>
+<p>Creates an updater function that will add a chapter to the timeline every time it is called.</p>
+<p>⚠️ This function only keeps track of the updates it is making, not other possible updates on the timeline (such as performed when calling <a href="#updatechapterid"><code>updateChapterID()</code></a> and <a href="#addchapter"><code>addChapter()</code></a>).<br>
+Make sure all the timeline updates are performed using the created updater function for a given timeline.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#partialchapter"><code>chapterDefaults?: $Shape&lt;PartialChapter&lt;T&gt;&gt; = {}</code></a>: default values for all the chapters that will be added</li>
+<li><a href="/docs/api-bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>(chapter: $Shape&lt;PartialChapter&lt;T&gt;&gt;) =&gt; Promise&lt;Chapter&lt;T&gt;&gt;</code> the updater function</p>
+<h3><a class="anchor" aria-hidden="true" id="createiterator"></a><a href="#createiterator" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createIterator()</h3>
+<p>Creates an async iterator of chapters, from the latest to oldest chapter.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>initialID?: string</code>: optional initial chapter ID, if not provided the latest chapter ID of the timeline will be fetched when the iteration starts</li>
+<li><a href="/docs/api-bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>AsyncIterator&lt;Chapter&lt;T&gt;&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="loadchapters"></a><a href="#loadchapters" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.loadChapters()</h3>
+<p>Loads a range of chapters between the given newest (inclusive) and oldest (exclusive) chapter ID boundaries.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>newestID: string</code>: newest chapter ID to load</li>
+<li><code>oldestID: string</code>: oldest chapter ID, this chapter will <strong>not</strong> be returned in the resulting array</li>
+<li><a href="/docs/api-bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Array&lt;Chapter&lt;T&gt;&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="live"></a><a href="#live" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.live()</h3>
+<p>Returns a <a href="https://rxjs.dev/api/index/class/Observable">RxJS <code>Observable</code></a> emitting an array of chapters added during the provided <code>interval</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#liveoptions"><code>options: LiveOptions</code></a>: providing the <code>interval</code> field with the number of milliseconds between each query to the timeline</li>
+</ol>
+<p><strong>Returns</strong> <code>Observable&lt;Array&lt;Chapter&lt;T&gt;&gt;&gt;</code></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/timeline-examples"><span class="arrow-prev">← </span><span>Timeline example</span></a><a class="docs-next button" href="/docs/hex"><span>Hexadecimal encoding</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#usage">Usage</a></li><li><a href="#flow-types">Flow types</a><ul class="toc-headings"><li><a href="#hexvalue">hexValue</a></li><li><a href="#jsonvalue">JSONValue</a></li><li><a href="#partialchapter">PartialChapter</a></li><li><a href="#chapter">Chapter</a></li><li><a href="#decodechapter">DecodeChapter</a></li><li><a href="#encodechapter">EncodeChapter</a></li><li><a href="#liveoptions">LiveOptions</a></li><li><a href="#timelineconfig">TimelineConfig</a></li></ul></li><li><a href="#public-api">Public API</a><ul class="toc-headings"><li><a href="#createchapter">createChapter()</a></li><li><a href="#validatechapter">validateChapter()</a></li><li><a href="#timeline-class">Timeline class</a></li><li><a href="#download">.download()</a></li><li><a href="#upload">.upload()</a></li><li><a href="#getchapterid">.getChapterID()</a></li><li><a href="#loadchapter">.loadChapter()</a></li><li><a href="#updatechapterid">.updateChapterID()</a></li><li><a href="#addchapter">.addChapter()</a></li><li><a href="#createupdater">.createUpdater()</a></li><li><a href="#createiterator">.createIterator()</a></li><li><a href="#loadchapters">.loadChapters()</a></li><li><a href="#live">.live()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/getting-started">Getting Started</a><a href="/docs/en/swarm-client">API Reference</a><a href="/docs/en/cli">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://gitter.im/ethereum/swarm" target="_blank" rel="noreferrer noopener">Gitter chat</a></div></section><section class="copyright"><img src="/img/mainframe.png" class="mainframe-logo"/></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+                indexName: 'erebos',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {"facetFilters":["language:en"]}
+              });
+            </script></body></html>
