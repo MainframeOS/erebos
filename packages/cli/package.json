@@ -35,7 +35,7 @@
     "@erebos/keccak256": "^0.7.0",
     "@erebos/secp256k1": "^0.7.0",
     "@erebos/swarm-node": "^0.7.0",
-    "@oclif/command": "^1.5.11",
+    "@oclif/command": "^1.5.12",
     "@oclif/config": "^1.12.10",
     "@oclif/plugin-help": "^2.1.4",
     "fs-extra": "^7.0.1",
@@ -43,6 +43,6 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.21.3",
-    "flow-bin": "^0.94.0"
+    "flow-bin": "^0.95.1"
   }
 }

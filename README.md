@@ -33,7 +33,7 @@ npm install -g @erebos/cli
 | [`@erebos/swarm`](/packages/swarm) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm.svg)](https://www.npmjs.com/package/@erebos/swarm) | Universal Erebos library for Swarm
 | [`@erebos/swarm-browser`](/packages/swarm-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm-browser.svg)](https://www.npmjs.com/package/@erebos/swarm-browser) | Browser-only Erebos library for Swarm
 | [`@erebos/swarm-node`](/packages/swarm-node) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm-node.svg)](https://www.npmjs.com/package/@erebos/swarm-node) | Node-only Erebos library for Swarm
-| **Standalone APIs**
+| **Individual APIs**
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs

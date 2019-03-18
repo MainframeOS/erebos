@@ -15,7 +15,8 @@
         "packages/client-base/package.json",
         "packages/swarm/package.json",
         "packages/swarm-browser/package.json",
-        "packages/swarm-node/package.json"
+        "packages/swarm-node/package.json",
+        "packages/timeline/package.json"
       ]
     }
   }
