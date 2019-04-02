@@ -19,9 +19,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.3.4",
+    "@babel/runtime": "^7.4.2",
     "@erebos/api-bzz-base": "^0.7.0",
-    "@types/node-fetch": "^2.1.6",
+    "@types/node-fetch": "^2.1.7",
     "form-data": "^2.3.3",
     "fs-extra": "^7.0.1",
     "node-fetch": "^2.3.0",
@@ -30,6 +30,6 @@
     "tar-stream": "^2.0.1"
   },
   "devDependencies": {
-    "flow-bin": "^0.95.1"
+    "flow-bin": "^0.96.0"
   }
 }

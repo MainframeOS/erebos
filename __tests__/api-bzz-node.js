@@ -25,7 +25,7 @@ describe('api-bzz-node', () => {
   const user = pubKeyToAddress(keyPair.getPublic().encode())
 
   const bzz = new Bzz({
-    signBytes: async digest => sign(digest, keyPair.getPrivate()),
+    signBytes: async bytes => sign(bytes, keyPair.getPrivate()),
     url: 'http://localhost:8500',
   })
 

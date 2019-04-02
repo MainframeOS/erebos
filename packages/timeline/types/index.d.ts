@@ -1,4 +1,8 @@
-import Bzz, { FetchOptions, UploadOptions } from '@erebos/api-bzz-base'
+import Bzz, {
+  FeedParams,
+  FetchOptions,
+  UploadOptions,
+} from '@erebos/api-bzz-base'
 import { hexValue } from '@erebos/hex'
 import { Observable } from 'rxjs'
 
@@ -37,47 +41,39 @@ export function createChapter<T>(
 
 export function validateChapter<T = Object>(chapter: T): T
 
-export function defaultDecode(res: any): Promise<Chapter<T>>
-
-export function defaultEncode(chapter: any): Promise<string | Buffer>
-
-export interface TimelineConfig {
-  bzz: Bzz
+export interface TimelineConfig<C = any, B = any, S = any> {
+  bzz: Bzz<B>
   feed: string | FeedParams
-  decode?: DecodeChapter<any>
-  encode?: EncodeChapter<any>
-  signParams?: any
+  decode?: DecodeChapter<C>
+  encode?: EncodeChapter<C>
+  signParams?: S
 }
 
-export class Timeline {
-  constructor(config: TimelineConfig)
-  async download<T>(id: string, options?: FetchOptions): Promise<Chapter<T>>
-  async upload<T>(
+export class Timeline<T = any> {
+  constructor(config: TimelineConfig<T>)
+  download(id: string, options?: FetchOptions): Promise<Chapter<T>>
+  upload(chapter: PartialChapter<T>, options?: UploadOptions): Promise<hexValue>
+  getChapterID(options?: FetchOptions): Promise<hexValue | null>
+  loadChapter(options?: FetchOptions): Promise<Chapter<T> | null>
+  updateChapterID(chapterID: string, options?: FetchOptions): Promise<void>
+  addChapter(
     chapter: PartialChapter<T>,
     options?: UploadOptions,
   ): Promise<hexValue>
-  async getChapterID(options: FetchOptions = {}): Promise<hexValue | null>
-  async loadChapter<T>(options: FetchOptions = {}): Promise<Chapter<T> | null>
-  async updateChapterID(
-    chapterID: string,
-    options?: FetchOptions,
-  ): Promise<void>
-  async addChapter<T>(
-    chapter: PartialChapter<T>,
-    options?: UploadOptions,
-  ): Promise<hexValue>
-  createUpdater<T>(
+  createUpdater(
     chapterDefaults?: Partial<PartialChapter<T>>,
     options?: UploadOptions,
   ): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>
-  createIterator<T>(
+  createIterator(
     initialID?: string,
     options?: FetchOptions,
-  ): AsyncIterator<Chapter<T>>
-  async loadChapters<T>(
+  ): AsyncIterableIterator<Chapter<T>>
+  loadChapters(
     newestID: string, // inclusive
     oldestID: string, // exclusive
     options?: FetchOptions,
   ): Promise<Array<Chapter<T>>>
-  live<T>(options: LiveOptions): Observable<Array<Chapter<T>>>
+  live(options: LiveOptions): Observable<Array<Chapter<T>>>
 }
+
+export function createTimeline<T = any>(config: TimelineConfig<T>): Timeline<T>

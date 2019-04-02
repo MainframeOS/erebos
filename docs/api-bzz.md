@@ -185,6 +185,7 @@ type PollOptions = {
 
 ```javascript
 type FeedParams = {
+  user: string,
   level?: number,
   name?: string,
   time?: number,

@@ -78,6 +78,7 @@ export interface PollOptions extends FeedOptions {
 }
 
 export interface FeedParams {
+  user: string
   level?: number
   name?: string
   time?: number

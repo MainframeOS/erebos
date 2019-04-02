@@ -282,3 +282,7 @@ export class Timeline {
       )
   }
 }
+
+export const createTimeline = (config: TimelineConfig): Timeline => {
+  return new Timeline(config)
+}

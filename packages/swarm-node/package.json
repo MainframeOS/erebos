@@ -19,7 +19,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.3.4",
+    "@babel/runtime": "^7.4.2",
     "@erebos/api-bzz-base": "^0.7.0",
     "@erebos/api-bzz-node": "^0.7.0",
     "@erebos/api-pss": "^0.7.0",
@@ -28,6 +28,6 @@
     "@mainframe/rpc-stream": "^0.3.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.95.1"
+    "flow-bin": "^0.96.0"
   }
 }
