@@ -1,3 +1,7 @@
+## v0.7.2 (2019-04-15)
+
+Fix `FeedParams` type in `@erebos/api-bzz-base`.
+
 ## v0.7.1 (2019-03-18)
 
 - Add `FeedTopicParams` type to `@erebos/api-bzz-base`.

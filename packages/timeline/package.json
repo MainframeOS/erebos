@@ -28,13 +28,13 @@
     "prepublishOnly": "yarn build && yarn build:dist"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
+    "@babel/runtime": "^7.4.3",
     "@erebos/api-bzz-base": "^0.7.1",
     "@erebos/hex": "^0.7.0",
     "rxjs": "^6.3.3",
     "semver": "^6.0.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.96.0"
+    "flow-bin": "^0.97.0"
   }
 }

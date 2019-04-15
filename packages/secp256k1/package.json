@@ -23,12 +23,12 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
+    "@babel/runtime": "^7.4.3",
     "@types/bn.js": "^4.11.5",
     "@types/elliptic": "^6.4.6",
     "elliptic": "MainframeHQ/elliptic#circular-dependencies-fix"
   },
   "devDependencies": {
-    "flow-bin": "^0.96.0"
+    "flow-bin": "^0.97.0"
   }
 }
