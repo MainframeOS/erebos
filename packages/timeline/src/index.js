@@ -81,30 +81,30 @@ export const validateChapter = <T: Object>(chapter: T): T => {
   return chapter
 }
 
-const defaultDecode: DecodeChapter<*> = async (res: *) => {
+const defaultDecode = async (res: *) => {
   return validateChapter(await res.json())
 }
 
-const defaultEncode: EncodeChapter<*> = async (chapter: Object) => {
+const defaultEncode = async chapter => {
   return JSON.stringify(chapter)
 }
 
-export type TimelineConfig = {
+export type TimelineConfig<T = JSONValue> = {
   bzz: Bzz,
   feed: string | FeedParams,
-  decode?: ?DecodeChapter<*>,
-  encode?: ?EncodeChapter<*>,
+  decode?: ?DecodeChapter<T>,
+  encode?: ?EncodeChapter<T>,
   signParams?: any,
 }
 
-export class Timeline {
+export class Timeline<T = JSONValue> {
   _bzz: Bzz
-  _decode: DecodeChapter<any>
-  _encode: EncodeChapter<any>
+  _decode: DecodeChapter<T>
+  _encode: EncodeChapter<T>
   _feed: string | FeedParams
   _signParams: ?any
 
-  constructor(config: TimelineConfig) {
+  constructor(config: TimelineConfig<T>) {
     this._bzz = config.bzz
     this._decode = config.decode || defaultDecode
     this._encode = config.encode || defaultEncode
@@ -112,17 +112,14 @@ export class Timeline {
     this._signParams = config.signParams
   }
 
-  async download<T>(
-    id: string,
-    options?: FetchOptions = {},
-  ): Promise<Chapter<T>> {
+  async download(id: string, options?: FetchOptions = {}): Promise<Chapter<T>> {
     const res = await this._bzz.download(id, { ...options, mode: 'raw' })
     const chapter = await this._decode(res)
     chapter.id = id
     return chapter
   }
 
-  async upload<T>(
+  async upload(
     chapter: PartialChapter<T>,
     options?: UploadOptions = {},
   ): Promise<hexValue> {
@@ -145,12 +142,12 @@ export class Timeline {
     }
   }
 
-  async loadChapter<T>(options?: FetchOptions = {}): Promise<?Chapter<T>> {
+  async loadChapter(options?: FetchOptions = {}): Promise<?Chapter<T>> {
     const id = await this.getChapterID(options)
     if (id == null) {
       return null
     }
-    return await this.download<T>(id, options)
+    return await this.download(id, options)
   }
 
   async updateChapterID(
@@ -165,12 +162,12 @@ export class Timeline {
     )
   }
 
-  async addChapter<T>(
+  async addChapter(
     chapter: PartialChapter<T>,
     options?: UploadOptions = {},
   ): Promise<hexValue> {
     const [chapterID, feedMeta] = await Promise.all([
-      this.upload<T>(chapter, options),
+      this.upload(chapter, options),
       this._bzz.getFeedMetadata(this._feed),
     ])
     await this._bzz.postFeedValue(
@@ -182,7 +179,7 @@ export class Timeline {
     return chapterID
   }
 
-  createUpdater<T>(
+  createUpdater(
     chapterDefaults?: $Shape<PartialChapter<T>> = {},
     options?: UploadOptions = {},
   ) {
@@ -197,14 +194,14 @@ export class Timeline {
         previous = await previousPromise
         previousPromise = null
       }
-      const chapter = create<T>({ ...partialChapter, previous })
+      const chapter = create({ ...partialChapter, previous })
       previous = await this.addChapter(chapter, options)
       return { ...chapter, id: previous }
     }
   }
 
-  createIterator<T>(
-    initialID?: string,
+  createIterator(
+    initialID?: ?string,
     options?: FetchOptions = {},
   ): AsyncIterator<Chapter<T>> {
     let unitialLoaded = false
@@ -223,20 +220,20 @@ export class Timeline {
         if (nextID == null) {
           return { done: true, value: undefined }
         }
-        const chapter = await this.download<T>(nextID, options)
+        const chapter = await this.download(nextID, options)
         nextID = chapter.previous
         return { done: false, value: chapter }
       },
     }
   }
 
-  async loadChapters<T>(
+  async loadChapters(
     newestID: string, // inclusive
     oldestID: string, // exclusive
     options?: FetchOptions = {},
   ): Promise<Array<Chapter<T>>> {
     const slice = []
-    for await (const chapter of this.createIterator<T>(newestID, options)) {
+    for await (const chapter of this.createIterator(newestID, options)) {
       slice.push(chapter)
       if (chapter.previous === oldestID) {
         break
@@ -245,7 +242,7 @@ export class Timeline {
     return slice
   }
 
-  live<T>(options: LiveOptions): Observable<Array<Chapter<T>>> {
+  live(options: LiveOptions): Observable<Array<Chapter<T>>> {
     let previousKnow
     return this._bzz
       .pollFeedValue(this._feed, {
@@ -257,7 +254,7 @@ export class Timeline {
       .pipe(
         flatMap(async id => {
           let chapters
-          const chapter = await this.download<T>(id, options)
+          const chapter = await this.download(id, options)
 
           if (
             previousKnow === null ||
@@ -268,7 +265,7 @@ export class Timeline {
             chapters = [chapter]
           } else {
             // There has been more than one update during the polling interval
-            const slice = await this.loadChapters<T>(
+            const slice = await this.loadChapters(
               chapter.previous,
               previousKnow,
               options,
@@ -283,6 +280,6 @@ export class Timeline {
   }
 }
 
-export const createTimeline = (config: TimelineConfig): Timeline => {
+export const createTimeline = <T>(config: TimelineConfig<T>): Timeline<T> => {
   return new Timeline(config)
 }

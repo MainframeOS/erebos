@@ -2310,6 +2310,16 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+automerge@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/automerge/-/automerge-0.10.0.tgz#55d8d9a2f5bfc3d7c6bf4364329e39e4088d4c52"
+  integrity sha512-45LzxYF+tNHSiwt01IwpwyT8GWN//ntRbclwMxli1DRAJK0fZUOQqQ0ObFzRgQj1k0B/5KGEmRiLxGmnV5Rh7g==
+  dependencies:
+    immutable "^3.8.2"
+    transit-immutable-js "^0.7.0"
+    transit-js "^0.8.861"
+    uuid "3.1.0"
+
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
@@ -4948,6 +4958,11 @@ ignore@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
+
+immutable@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
+  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
 
 import-fresh@^2.0.0:
   version "2.0.0"
@@ -9013,6 +9028,16 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
+transit-immutable-js@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/transit-immutable-js/-/transit-immutable-js-0.7.0.tgz#993e25089b6311ff402140f556276d6d253005d9"
+  integrity sha1-mT4lCJtjEf9AIUD1VidtbSUwBdk=
+
+transit-js@^0.8.861:
+  version "0.8.861"
+  resolved "https://registry.yarnpkg.com/transit-js/-/transit-js-0.8.861.tgz#829e516b80349a41fff5d59f5e6993b5473f72c9"
+  integrity sha512-4O9OrYPZw6C0M5gMTvaeOp+xYz6EF79JsyxIvqXHlt+pisSrioJWFOE80N8aCPoJLcNaXF442RZrVtdmd4wkDQ==
+
 "traverse@>=0.3.0 <0.4":
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
@@ -9263,6 +9288,11 @@ util.promisify@^1.0.0:
   dependencies:
     define-properties "^1.1.2"
     object.getownpropertydescriptors "^2.0.3"
+
+uuid@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
+  integrity sha512-DIWtzUkw04M4k3bf1IcpS2tngXEL26YUD2M0tMDUpnUrz2hgzUBlD55a4FjdLGPvfHxS6uluGWvaVEqgBcVa+g==
 
 uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.2"
