@@ -1,32 +1,21 @@
-# Use an official golang image for simplicity (and compilation)
-FROM golang:1.10.3-stretch
+FROM golang:1.11-alpine as builder
 
-RUN mkdir /app && mkdir /app/bin
+ARG VERSION=c942700 # Swarm v0.3.8
 
-# Set the working directory to /app
-WORKDIR /app
+RUN apk add --update git gcc g++ linux-headers
+RUN mkdir -p $GOPATH/src/github.com/ethereum && \
+    cd $GOPATH/src/github.com/ethereum && \
+    git clone https://github.com/ethersphere/go-ethereum && \
+    cd $GOPATH/src/github.com/ethereum/go-ethereum && \
+    git checkout ${VERSION} && \
+    go install -ldflags "-X main.gitCommit=${VERSION}" ./cmd/swarm && \
+    go install -ldflags "-X main.gitCommit=${VERSION}" ./cmd/swarm/swarm-smoke && \
+    go install -ldflags "-X main.gitCommit=${VERSION}" ./cmd/swarm/global-store && \
+    go install -ldflags "-X main.gitCommit=${VERSION}" ./cmd/geth
 
-# Install dependencies
-RUN apt-get update && apt-get install -y jq
 
-RUN git clone https://github.com/ethereum/go-ethereum.git
-
-WORKDIR /app/go-ethereum
-
-RUN git fetch origin && git checkout v1.8.20 # Swarm v0.3.8
-
-RUN make geth
-RUN make swarm
-
-# back to the app directory
-WORKDIR /app
-
-# copy the built binaries to a convenient location
-RUN cp /app/go-ethereum/build/bin/geth /app/bin/
-RUN cp /app/go-ethereum/build/bin/swarm /app/bin/
-
-# do not package the source code into the image
-RUN rm -rf /app/go-ethereum/
-
-# Copy script for starting swarm into the container
-COPY ./start_swarm_node.sh /app
+FROM alpine:3.8 as swarm
+WORKDIR /
+COPY --from=builder /go/bin/swarm /go/bin/geth /
+COPY ./start_swarm_node.sh /
+CMD ["./start_swarm_node.sh", "tmp"]
