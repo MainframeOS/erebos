@@ -1,29 +1,23 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-if [[ $# -ne 1 ]]; then
-  echo "Usage: $0 <data-directory>"
-  exit 1
-fi
-
-DATADIR="$1"
+echo $PASSWORD > /password
 
 if [[ ! -e $DATADIR/keystore ]]; then
     mkdir -p $DATADIR
-    echo 'secret' > $DATADIR/password
-    /app/bin/geth --datadir $DATADIR account new --password $DATADIR/password
+    /geth --datadir $DATADIR account new --password /password
 fi
 
-KEY=$(jq --raw-output '.address' $DATADIR/keystore/*)
 
-/app/bin/swarm \
+BZZ_KEY=`/geth account list --datadir $DATADIR | sed "s/.*{\(.*\)}.*/\1/1"`
+
+/swarm \
     --datadir $DATADIR \
-    --password $DATADIR/password \
+    --password /password \
     --verbosity 4 \
-    --bzzaccount $KEY \
+    --bzzaccount $BZZ_KEY \
     --httpaddr 0.0.0.0 \
     --nat none \
     --corsdomain "*" \
-    --nodiscover \
     --ws \
     --wsaddr 0.0.0.0 \
     --wsorigins "*"
