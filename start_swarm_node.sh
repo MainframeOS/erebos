@@ -7,6 +7,7 @@ docker run \
        --volume /tmp/swarm-data:/data \
        --interactive \
        --tty "ethdevops/swarm:v0.3.8" \
+       --maxpeers=0 \
        --verbosity=4 \
        --httpaddr=0.0.0.0 \
        --nat=none \
