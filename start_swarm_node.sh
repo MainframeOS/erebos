@@ -6,7 +6,7 @@ docker run \
        --env PASSWORD=password123 \
        --volume /tmp/swarm-data:/data \
        --interactive \
-       --tty "ethdevops/swarm:v0.3.8" \
+       --tty "ethdevops/swarm:v0.3.11" \
        --maxpeers=0 \
        --verbosity=4 \
        --httpaddr=0.0.0.0 \
