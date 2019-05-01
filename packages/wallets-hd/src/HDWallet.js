@@ -16,22 +16,16 @@ const BASE_PATH = `m/44'/60'/0'/0/`
 
 export default class HDWallet {
   _mnemonic: string
-  _name: ?string
   _wallets: { [index: string]: Wallet } = {}
 
-  static createRandom = (name?: string) => {
+  static createRandom = () => {
     const entropy = utils.randomBytes(16)
     const mnemonic = utils.HDNode.entropyToMnemonic(entropy)
-    return new HDWallet(mnemonic, name)
+    return new HDWallet(mnemonic)
   }
 
-  constructor(
-    mnemonic: string,
-    name?: string,
-    activeIndexes?: Array<string> = ['0'],
-  ) {
+  constructor(mnemonic: string, activeIndexes?: Array<string> = ['0']) {
     this._mnemonic = mnemonic
-    this._name = name
     activeIndexes.forEach(i => {
       const wallet = Wallet.fromMnemonic(mnemonic, BASE_PATH + String(i))
       this._wallets[i] = wallet
@@ -40,19 +34,15 @@ export default class HDWallet {
 
   // Getters
 
-  get name(): ?string {
-    return this._name
-  }
-
   get wallets(): Array<Wallet> {
-    return Object.keys(this._wallets).map(i => this._wallets[i])
+    return Object.values(this._wallets)
   }
 
   get accounts(): Array<string> {
     return this.wallets.map(w => w.address)
   }
 
-  getAccountWallet(address: string) {
+  getAccountWallet(address: string): ?Wallet {
     return this.wallets.find(
       w => w.address.toLowerCase() === address.toLowerCase(),
     )

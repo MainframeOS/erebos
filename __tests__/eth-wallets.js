@@ -1,4 +1,4 @@
-import { HDWallet } from '../packages/eth-wallets'
+import { HDWallet } from '../packages/wallets-hd'
 
 const MNEMONIC =
   'roof kind control velvet proud attack rose hour episode impulse venture manage'

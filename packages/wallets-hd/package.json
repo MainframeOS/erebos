@@ -1,7 +1,7 @@
 {
   "name": "@erebos/eth-wallets",
   "version": "0.3.0",
-  "description": "Ethereum Wallets",
+  "description": "Ethereum HD Wallets",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
