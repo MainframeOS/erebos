@@ -24,11 +24,11 @@ export default class HDWallet {
     return new HDWallet(mnemonic)
   }
 
-  constructor(mnemonic: string, activeIndexes?: Array<string> = ['0']) {
+  constructor(mnemonic: string, activeIndexes?: Array<number> = [0]) {
     this._mnemonic = mnemonic
     activeIndexes.forEach(i => {
-      const wallet = Wallet.fromMnemonic(mnemonic, BASE_PATH + String(i))
-      this._wallets[i] = wallet
+      const wallet = Wallet.fromMnemonic(mnemonic, BASE_PATH + i)
+      this._wallets[String(i)] = wallet
     })
   }
 
