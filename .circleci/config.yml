@@ -7,8 +7,8 @@ jobs:
 
     docker:
       - image: circleci/node:10-browsers
-      - image: mainframehq/swarm
-        command: [./start_swarm_node.sh, tmp]
+      - image: ethdevops/swarm:v0.3.11
+        command: [./start_swarm_node.sh]
 
     working_directory: ~/repo
 
