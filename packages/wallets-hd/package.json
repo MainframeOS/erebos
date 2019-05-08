@@ -1,5 +1,5 @@
 {
-  "name": "@erebos/eth-wallets",
+  "name": "@erebos/wallets-hd",
   "version": "0.3.0",
   "description": "Ethereum HD Wallets",
   "repository": "git@github.com:MainframeHQ/erebos.git",

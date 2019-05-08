@@ -35,6 +35,10 @@ export default class HDWallet {
 
   // Getters
 
+  get mnemonic(): string {
+    return this._mnemonic
+  }
+
   get wallets(): Array<Wallet> {
     return Object.values(this._wallets)
   }
