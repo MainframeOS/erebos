@@ -9,6 +9,9 @@ jobs:
       - image: circleci/node:10-browsers
       - image: ethdevops/swarm:v0.3.11
         command: [./start_swarm_node.sh]
+        ports:
+          - 8500:8500
+          - 8546:8546
         environment:
           DATADIR: /data
           PASSWORD: password123
