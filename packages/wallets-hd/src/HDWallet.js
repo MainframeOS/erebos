@@ -1,6 +1,7 @@
 // @flow
 
 import { Wallet, utils, type Arrayish } from 'ethers'
+import { sign } from '../../secp256k1'
 
 type TransactionParams = {
   from: string,
@@ -84,5 +85,17 @@ export default class HDWallet {
       throw new Error(`Wallet not found for account ${address}`)
     }
     return wallet.signMessage(message)
+  }
+
+  async signBytes(
+    address: string,
+    bytes: Array<number>,
+  ): Promise<Array<number>> {
+    const wallet = this.getAccountWallet(address)
+    if (!wallet) {
+      throw new Error(`Wallet not found for account ${address}`)
+    }
+    const key = wallet.privateKey.substr(2)
+    return sign(bytes, key)
   }
 }
