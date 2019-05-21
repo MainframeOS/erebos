@@ -1,6 +1,7 @@
 // @flow
 
 import { resolve } from 'path'
+import { sign } from '@erebos/secp256k1'
 import { SwarmClient } from '@erebos/swarm-node'
 import { Command as Cmd, flags } from '@oclif/command'
 import ora from 'ora'
@@ -25,7 +26,10 @@ export default class Command extends Cmd {
   get client(): SwarmClient {
     if (this._client == null) {
       this._client = new SwarmClient({
-        http: this.flags['http-gateway'],
+        bzz: {
+          signBytes: async (bytes, key) => sign(bytes, key),
+          url: this.flags['http-gateway'],
+        },
         ipc: this.flags['ipc-path'],
         ws: this.flags['ws-url'],
       })

@@ -234,8 +234,8 @@ describe('browser', () => {
       const value = await evalClient(
         async (client, user, data) => {
           const params = { user, name: data.uploadContent }
-          await client.bzz.updateFeedValue(params, data)
-          const res = await client.bzz.getFeedValue(params)
+          await client.bzz.setFeedChunk(params, data)
+          const res = await client.bzz.getFeedChunk(params)
           return await res.json()
         },
         user,
@@ -254,7 +254,7 @@ describe('browser', () => {
       expect(hash).toBeDefined()
     })
 
-    it('uploads data and updates the feed value', async () => {
+    it('uploads data and updates the feed chunk', async () => {
       jest.setTimeout(20000)
       const value = await evalClient(
         async (client, user, name) => {
@@ -262,7 +262,7 @@ describe('browser', () => {
             user,
             name,
           })
-          await client.bzz.uploadFeedValue(manifestHash, 'hello', {
+          await client.bzz.setFeedContent(manifestHash, 'hello', {
             contentType: 'text/plain',
           })
           const res = await client.bzz.download(manifestHash)
@@ -274,12 +274,12 @@ describe('browser', () => {
       expect(value).toBe('hello')
     })
 
-    it('getFeedValue() supports content modes', async () => {
+    it('getFeedContentHash() returns the feed content hash', async () => {
       jest.setTimeout(20000)
 
       const uploadedHash = await evalClient(
         async (client, user, name) => {
-          return await client.bzz.uploadFeedValue({ user, name }, 'hello', {
+          return await client.bzz.setFeedContent({ user, name }, 'hello', {
             contentType: 'text/plain',
           })
         },
@@ -289,22 +289,30 @@ describe('browser', () => {
 
       const contentHash = await evalClient(
         async (client, user, name) => {
-          return await client.bzz.getFeedValue(
-            { user, name },
-            { mode: 'content-hash' },
-          )
+          return await client.bzz.getFeedContentHash({ user, name })
         },
         user,
         uploadContent,
       )
       expect(contentHash).toBe(uploadedHash)
+    })
+
+    it('getFeedContent() returns the feed content', async () => {
+      jest.setTimeout(20000)
+
+      await evalClient(
+        async (client, user, name) => {
+          return await client.bzz.setFeedContent({ user, name }, 'hello', {
+            contentType: 'text/plain',
+          })
+        },
+        user,
+        uploadContent,
+      )
 
       const value = await evalClient(
         async (client, user, name) => {
-          const res = await client.bzz.getFeedValue(
-            { user, name },
-            { mode: 'content-response' },
-          )
+          const res = await client.bzz.getFeedContent({ user, name })
           return await res.text()
         },
         user,
@@ -313,7 +321,7 @@ describe('browser', () => {
       expect(value).toBe('hello')
     })
 
-    it('supports feed value polling', async () => {
+    it('supports feed chunk polling', async () => {
       jest.setTimeout(60000)
 
       await evalClient(
@@ -334,12 +342,12 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(params, { interval: 2000 })
+            .pollFeedChunk(params, { interval: 2000 })
             .subscribe(async res => {
               if (res === null) {
                 if (step === '0-idle') {
                   step = '1-first-value-post'
-                  await client.bzz.updateFeedValue(params, 'hello')
+                  await client.bzz.setFeedChunk(params, 'hello')
                   expectedValue = 'hello'
                   step = '2-first-value-posted'
                 }
@@ -347,17 +355,21 @@ describe('browser', () => {
                 const value = await res.text()
                 if (step === '2-first-value-posted') {
                   if (value !== expectedValue) {
-                    throw new Error('Invalid value')
+                    throw new Error(
+                      `Invalid value: ${value}, expected: ${expectedValue}`,
+                    )
                   }
                   step = '3-first-value-received'
                   await sleep()
                   step = '4-second-value-post'
-                  await client.bzz.updateFeedValue(params, 'world')
+                  await client.bzz.setFeedChunk(params, 'world')
                   expectedValue = 'world'
                   step = '5-second-value-posted'
                 } else if (step === '5-second-value-posted') {
                   if (value !== expectedValue) {
-                    throw new Error('Invalid value')
+                    throw new Error(
+                      `Invalid value: ${value}, expected: ${expectedValue}`,
+                    )
                   }
                   subscription.unsubscribe()
                   step = '6-unsubscribed'
@@ -376,7 +388,7 @@ describe('browser', () => {
       )
     })
 
-    it('supports feed value polling in "content-hash" mode', async () => {
+    it('supports feed content hash polling', async () => {
       jest.setTimeout(60000)
 
       await evalClient(
@@ -389,7 +401,7 @@ describe('browser', () => {
 
           const params = { user, name }
           const post = async value => {
-            return await client.bzz.uploadFeedValue(params, value, {
+            return await client.bzz.setFeedContent(params, value, {
               contentType: 'text/plain',
             })
           }
@@ -404,10 +416,9 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(params, {
+            .pollFeedContentHash(params, {
               interval: 5000,
-              mode: 'content-hash',
-              contentChangedOnly: true,
+              changedOnly: true,
             })
             .subscribe(async value => {
               if (value === null) {
@@ -448,7 +459,7 @@ describe('browser', () => {
       )
     })
 
-    it('supports feed value polling in "content-response" mode', async () => {
+    it('supports feed content polling', async () => {
       jest.setTimeout(60000)
 
       await evalClient(
@@ -461,7 +472,7 @@ describe('browser', () => {
 
           const params = { user, name }
           const post = async value => {
-            return await client.bzz.uploadFeedValue(params, value, {
+            return await client.bzz.setFeedContent(params, value, {
               contentType: 'text/plain',
             })
           }
@@ -475,10 +486,10 @@ describe('browser', () => {
           })
 
           const subscription = client.bzz
-            .pollFeedValue(params, {
+            .pollFeedContent(params, {
               interval: 5000,
               mode: 'content-response',
-              contentChangedOnly: true,
+              changedOnly: true,
             })
             .subscribe(async res => {
               if (res === null) {
@@ -522,7 +533,7 @@ describe('browser', () => {
       await evalClient(async (client, user) => {
         await new Promise((resolve, reject) => {
           client.bzz
-            .pollFeedValue(
+            .pollFeedChunk(
               { user, name: 'notfound' },
               { whenEmpty: 'error', immediate: false },
             )
@@ -636,7 +647,7 @@ describe('browser', () => {
       expect(validated).toEqual(valid)
     })
 
-    it('download() method downloads and decodes the chapter', async () => {
+    it('downloadChapter() method downloads and decodes the chapter', async () => {
       const timestamp = Date.now()
 
       const [validID, invalidID] = await evalClient(
@@ -657,7 +668,7 @@ describe('browser', () => {
 
       const valid = await evalClient(async (client, id) => {
         const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
-        return await timeline.download(id)
+        return await timeline.downloadChapter(id)
       }, validID)
       expect(valid).toEqual({
         id: validID,
@@ -672,7 +683,7 @@ describe('browser', () => {
       const invalidError = await evalClient(async (client, id) => {
         const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
         try {
-          await timeline.download(id)
+          await timeline.downloadChapter(id)
         } catch (err) {
           return err.message
         }
@@ -680,20 +691,20 @@ describe('browser', () => {
       expect(invalidError).toBe('Invalid payload')
     })
 
-    it('upload() method encodes and uploads the chapter', async () => {
+    it('uploadChapter() method encodes and uploads the chapter', async () => {
       const chapter = await page.evaluate(author => {
         return Erebos.timeline.createChapter({ author, content: { ok: true } })
       }, user)
       const [id, downloaded] = await evalClient(async (client, chapter) => {
         const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
-        const id = await timeline.upload(chapter)
-        const downloaded = await timeline.download(id)
+        const id = await timeline.uploadChapter(chapter)
+        const downloaded = await timeline.downloadChapter(id)
         return [id, downloaded]
       }, chapter)
       expect(downloaded).toEqual({ ...chapter, id })
     })
 
-    it('updateChapterID() and getChapterID() methods manipulate a feed hash', async () => {
+    it('setLatestChapterID() and getLatestChapterID() methods manipulate a feed hash', async () => {
       jest.setTimeout(10000) // 10 secs
       const chapter = await page.evaluate(author => {
         return Erebos.timeline.createChapter({ author, content: { ok: true } })
@@ -704,9 +715,9 @@ describe('browser', () => {
             bzz: client.bzz,
             feed,
           })
-          const chapterID = await timeline.upload(chapter)
-          await timeline.updateChapterID(chapterID)
-          const loadedID = await timeline.getChapterID()
+          const chapterID = await timeline.uploadChapter(chapter)
+          await timeline.setLatestChapterID(chapterID)
+          const loadedID = await timeline.getLatestChapterID()
           return [chapterID, loadedID]
         },
         { user, name: uploadContent },
@@ -715,7 +726,7 @@ describe('browser', () => {
       expect(loadedID).toBe(chapterID)
     })
 
-    it('addChapter() and loadChapter() methods manipulate a chapter', async () => {
+    it('setLatestChapter() and getLatestChapter() methods manipulate a chapter', async () => {
       jest.setTimeout(10000) // 10 secs
       const chapter = await page.evaluate(author => {
         return Erebos.timeline.createChapter({ author, content: { ok: true } })
@@ -726,8 +737,8 @@ describe('browser', () => {
             bzz: client.bzz,
             feed,
           })
-          const chapterID = await timeline.addChapter(chapter)
-          const loadedChapter = await timeline.loadChapter()
+          const chapterID = await timeline.setLatestChapter(chapter)
+          const loadedChapter = await timeline.getLatestChapter()
           return [chapterID, loadedChapter]
         },
         { user, name: uploadContent },

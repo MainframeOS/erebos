@@ -65,19 +65,18 @@ export type UploadOptions = FileOptions & {
   manifestHash?: hexValue | string,
 }
 
-export type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
-
-export type FeedOptions = FetchOptions & {
-  mode?: FeedMode, // defaults to 'feed-response'
-}
-
-export type PollOptions = FeedOptions & {
+export type PollOptions = FetchOptions & {
   interval: number, // in milliseconds
   immediate?: boolean, // defaults to true
   whenEmpty?: 'accept' | 'ignore' | 'error', // defaults to 'accept'
-  contentChangedOnly?: boolean, // only relevant when mode is 'content-*'
   trigger?: Observable<void>,
 }
+
+export type PollContentHashOptions = PollOptions & {
+  changedOnly?: boolean,
+}
+
+export type PollContentOptions = DownloadOptions & PollContentHashOptions
 
 export type FeedParams = {
   user: string,

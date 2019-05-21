@@ -23,10 +23,10 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
+    "@babel/runtime": "^7.4.4",
     "@erebos/api-pss": "^0.7.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.97.0"
+    "flow-bin": "^0.98.1"
   }
 }
