@@ -5,7 +5,6 @@ docker run \
        --env DATADIR=/data \
        --env PASSWORD=password123 \
        --volume /tmp/swarm-data:/data \
-       --network host \
        --interactive \
        --tty \
        "ethdevops/swarm:v0.3.11" \
