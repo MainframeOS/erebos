@@ -29,7 +29,7 @@
     "postpublish": "del-cli oclif.manifest.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
     "@erebos/api-bzz-node": "^0.7.0",
     "@erebos/hex": "^0.7.0",
     "@erebos/keccak256": "^0.7.0",

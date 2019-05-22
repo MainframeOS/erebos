@@ -62,7 +62,6 @@ npm install -g @erebos/cli
 yarn install
 yarn bootstrap
 yarn build
-docker build --tag erebos --file Dockerfile.erebos .
 ```
 
 ### Running tests
@@ -70,7 +69,7 @@ docker build --tag erebos --file Dockerfile.erebos .
 In one terminal window run:
 
 ```
-docker run --publish 8500:8500 --publish 8546:8546 --interactive --tty erebos
+./start_swarm_node.sh
 ```
 
 And in the second one run:

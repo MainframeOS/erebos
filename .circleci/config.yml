@@ -7,8 +7,21 @@ jobs:
 
     docker:
       - image: circleci/node:10-browsers
-      - image: mainframehq/swarm
-        command: [./start_swarm_node.sh, tmp]
+      - image: ethdevops/swarm:v0.3.11
+        environment:
+          DATADIR: /data
+          PASSWORD: password123
+        command:
+          - >
+            --nosync
+            --maxpeers=0
+            --verbosity=4
+            --httpaddr=0.0.0.0
+            --nat=none
+            --corsdomain=*
+            --ws
+            --wsaddr=0.0.0.0
+            --wsorigins=*
 
     working_directory: ~/repo
 

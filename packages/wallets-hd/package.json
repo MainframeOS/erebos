@@ -1,17 +1,15 @@
 {
-  "name": "@erebos/api-bzz-base",
-  "version": "0.7.2",
-  "description": "Base Bzz API",
+  "name": "@erebos/wallets-hd",
+  "version": "0.3.0",
+  "description": "Ethereum HD Wallets",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
     "cjs/*",
-    "esm/*",
-    "types/*"
+    "esm/*"
   ],
   "scripts": {
     "clean": "del cjs esm",
@@ -24,8 +22,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "@erebos/hex": "^0.7.0",
-    "@erebos/keccak256": "^0.7.0"
+    "ethers": "^4.0.27"
   },
   "devDependencies": {
     "flow-bin": "^0.98.1"

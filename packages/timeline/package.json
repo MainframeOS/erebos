@@ -28,7 +28,7 @@
     "prepublishOnly": "yarn build && yarn build:dist"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
     "@erebos/api-bzz-base": "^0.7.1",
     "@erebos/hex": "^0.7.0",
     "rxjs": "^6.5.2",

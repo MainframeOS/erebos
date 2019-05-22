@@ -19,7 +19,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.4",
+    "@babel/runtime": "^7.4.5",
     "@erebos/api-bzz-base": "^0.7.0",
     "@erebos/api-bzz-node": "^0.7.0",
     "@erebos/api-pss": "^0.7.0",
