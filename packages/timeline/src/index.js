@@ -289,9 +289,9 @@ export class Timeline<T> {
     }
     return this._bzz
       .pollFeedContentHash(this._feed, {
-        ...options,
         whenEmpty: 'ignore',
         changedOnly: true,
+        ...options,
       })
       .pipe(
         flatMap(id => {

@@ -68,15 +68,29 @@ type DecodeChapter<T> = (res: *) => Promise<Chapter<T>>
 type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>
 ```
 
-### LiveOptions
+### PollOptions
 
 Includes [FetchOptions](api-bzz.md#fetchoptions)
+
+```js
+type PollOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  interval: number,
+}
+```
+
+### LiveOptions
+
+Includes [PollOptions](#polloptions)
 
 ```js
 type LiveOptions = {
   headers?: Object,
   timeout?: ?number,
   interval: number,
+  previous?: string
+  timestamp?: number
 }
 ```
 
@@ -85,11 +99,11 @@ type LiveOptions = {
 `bzz` is a [Bzz instance](api-bzz.md#bzz-class-default-export) and `feed` can either be a feed manifest hash or [feed paramters](api-bzz.md#feedparams).
 
 ```js
-type TimelineConfig = {
+type TimelineConfig<T> = {
   bzz: Bzz,
   feed: string | FeedParams,
-  decode?: ?DecodeChapter<*>,
-  encode?: ?EncodeChapter<*>,
+  decode?: ?DecodeChapter<T>,
+  encode?: ?EncodeChapter<T>,
   signParams?: any,
 }
 ```
@@ -125,17 +139,17 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Arguments**
 
-1.  [`config: TimelineConfig`](#timelineconfig), see below
+1.  [`config: TimelineConfig<T>`](#timelineconfig), see below
 
 **Configuration**
 
 - [`bzz: Bzz`](api-bzz.md#bzz-class-default-export): Bzz instance
 - `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
-- [`decode?: ?DecodeChapter<*>`](#decodechapter): optional chapter decoding function used when loading any chapter with this timeline instance
-- [`encode?: ?EncodeChapter<*>`](#encodechapter): optional chapter encoding function used when adding any chapter with this timeline instance
+- [`decode?: ?DecodeChapter<T>`](#decodechapter): optional chapter decoding function used when loading any chapter with this timeline instance
+- [`encode?: ?EncodeChapter<T>`](#encodechapter): optional chapter encoding function used when adding any chapter with this timeline instance
 - `signParams?: any`: optional signing parameters provided to the [`signBytes() function`](api-bzz.md#signbytesfunc) when updating a the timeline feed.
 
-### .download()
+### .downloadChapter()
 
 **Arguments**
 
@@ -144,7 +158,7 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Returns** `Promise<Chapter<T>>`
 
-### .upload()
+### .uploadChapter()
 
 **Arguments**
 
@@ -153,7 +167,7 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
 
-### .getChapterID()
+### .getLatestChapterID()
 
 Retrieves the ID of the latest chapter in the timeline.
 
@@ -163,7 +177,7 @@ Retrieves the ID of the latest chapter in the timeline.
 
 **Returns** `Promise<hexValue | null>` the ID of the chapter (Swarm hash) if found, `null` otherwise
 
-### .loadChapter()
+### .getLatestChapter()
 
 Loads the latest chapter in the timeline.
 
@@ -173,9 +187,19 @@ Loads the latest chapter in the timeline.
 
 **Returns** `Promise<Chapter<T> | null>` the chapter if found, `null` otherwise
 
-### .updateChapterID()
+### .pollLatestChapter()
 
-Updates the ID of the latest chapter in the timeline.
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the latest chapter at the provided `interval`.
+
+**Arguments**
+
+1.  [`options: PollOptions`](#polloptions): providing the `interval` field with the number of milliseconds between each query to the timeline
+
+**Returns** `Observable<Chapter<T>>`
+
+### .setLatestChapterID()
+
+Sets the ID of the latest chapter in the timeline.
 
 **Arguments**
 
@@ -184,9 +208,9 @@ Updates the ID of the latest chapter in the timeline.
 
 **Returns** `Promise<void>`
 
-### .addChapter()
+### .setLatestChapter()
 
-Adds a chapter to the timeline. This is equivalent of calling [`upload()`](#upload) and [`updateChapterID()`](#updatechapterid).
+Sets the latest chapter of the timeline. This is equivalent of calling [`uploadChapter()`](#uploadchapter) and [`setLatestChapterID()`](#setlatestchapterid).
 
 **Arguments**
 
@@ -195,11 +219,22 @@ Adds a chapter to the timeline. This is equivalent of calling [`upload()`](#uplo
 
 **Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
 
-### .createUpdater()
+### .addChapter()
 
-Creates an updater function that will add a chapter to the timeline every time it is called.
+Adds a chapter to the timeline. This is similar to [`setLatestChapter()`](#setlatestchapter), except [`getLatestChapterID()`](#getlatestchapterid) will be called to retrieved the id of the `previous` chapter if not provided.
 
-⚠️ This function only keeps track of the updates it is making, not other possible updates on the timeline (such as performed when calling [`updateChapterID()`](#updatechapterid) and [`addChapter()`](#addchapter)).  
+**Arguments**
+
+1.  `chapter: PartialChapter<T>`
+1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+
+**Returns** `Promise<Chapter<T>>` the uploaded chapter
+
+### .createAddChapter()
+
+Creates a function that will add a chapter to the timeline every time it is called.
+
+⚠️ This function only keeps track of the updates it is making, not other possible updates on the timeline (such as performed when calling [`setLatestChapterID()`](#setlatestchapterid) and [`addChapter()`](#addchapter)).  
 Make sure all the timeline updates are performed using the created updater function for a given timeline.
 
 **Arguments**
@@ -207,7 +242,7 @@ Make sure all the timeline updates are performed using the created updater funct
 1.  [`chapterDefaults?: $Shape<PartialChapter<T>> = {}`](#partialchapter): default values for all the chapters that will be added
 1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
 
-**Returns** `(chapter: $Shape<PartialChapter<T>>) => Promise<Chapter<T>>` the updater function
+**Returns** `(chapter: $Shape<PartialChapter<T>>) => Promise<Chapter<T>>` the chapter adding function
 
 ### .createIterator()
 
@@ -219,6 +254,18 @@ Creates an async iterator of chapters, from the latest to oldest chapter.
 1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
 
 **Returns** `AsyncIterator<Chapter<T>>`
+
+### .createLoader()
+
+Returns [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting chapters between the given newest (inclusive) and oldest (exclusive) chapter ID boundaries.
+
+**Arguments**
+
+1.  `newestID: string`: newest chapter ID to load
+1.  `oldestID: string`: oldest chapter ID, this chapter will **not** be emitted by the created Observable
+1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+
+**Returns** `Observable<Chapter<T>>`
 
 ### .loadChapters()
 

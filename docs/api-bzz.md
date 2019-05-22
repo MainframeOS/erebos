@@ -142,26 +142,6 @@ type UploadOptions = {
 }
 ```
 
-### FeedMode
-
-```javascript
-type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
-```
-
-### FeedOptions
-
-Includes [FetchOptions](#fetchoptions)
-
-```javascript
-type FeedOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
-  mode?: FeedMode,
-}
-```
-
 ### PollOptions
 
 Includes [FeedOptions](#feedoptions)
@@ -172,12 +152,47 @@ type PollOptions = {
   timeout?: ?number,
   contentType?: string,
   path?: string,
-  mode?: FeedMode,
   interval: number,
   immediate?: boolean,
   whenEmpty?: 'accept' | 'ignore' | 'error',
-  contentChangedOnly?: boolean,
   trigger?: Observable<void>,
+}
+```
+
+### PollContentHashOptions
+
+Includes [PollOptions](#polloptions)
+
+```javascript
+type PollContentHashOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  contentType?: string,
+  path?: string,
+  interval: number,
+  immediate?: boolean,
+  whenEmpty?: 'accept' | 'ignore' | 'error',
+  trigger?: Observable<void>,
+  changedOnly?: boolean,
+}
+```
+
+### PollContentOptions
+
+Includes [DownloadOptions](#downloadoptions) and [PollContentHashOptions](#pollcontenthashoptions)
+
+```javascript
+type PollContentOptions = {
+  headers?: Object,
+  timeout?: ?number,
+  contentType?: string,
+  path?: string,
+  mode?: BzzMode,
+  interval: number,
+  immediate?: boolean,
+  whenEmpty?: 'accept' | 'ignore' | 'error',
+  trigger?: Observable<void>,
+  changedOnly?: boolean,
 }
 ```
 
@@ -400,36 +415,79 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Returns** `Promise<FeedMetadata>`
 
-### .getFeedValue()
-
-Depending on the `mode` option provided, returns the feed HTTP response (in `feed-response` mode, the default one), the content hash (in `content-hash` mode) or the content HTTP response (in `content-response`) mode.
-The `content-hash` and `content-response` modes assume to value of the feed is a Swarm hash pointing to another resource.
+### .getFeedChunk()
 
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: : ENS name, hash of the feed manifest or [feed parameters](#feedparams)
-1.  [`options?: FeedOptions = {}`](#feedoptions)
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
-**Returns** `Promise<Response | string>`
+**Returns** `Promise<Response>`
 
-### .pollFeedValue()
+### .getFeedContentHash()
 
-Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `Response` objects (or a `string` when the `mode` option is set to `content-hash`) as they are downloaded.
+Returns the feed contents hash, or `null` if not found.
+
+**Arguments**
+
+1.  `hashOrParams: string | FeedParams`: : ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<hexValue | null>`
+
+### .getFeedContent()
+
+Returns the feed contents `Response`, or `null` if not found.
+
+**Arguments**
+
+1.  `hashOrParams: string | FeedParams`: : ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Promise<Response>`
+
+### .pollFeedChunk()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `Response` objects or `null` depending on the `options`.
 
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
-1.  `options: PollOptions`, see below
+1.  [`options: PollOptions`](#polloptions), see below
 
 **Options**
 
 - `interval: number`: the number of milliseconds between each query
 - `immediate?: boolean`: by default, a query will be performed as soon as the returned `Observable` is subscribed to. Set this option to `false` in order to wait for the first `interval` tick to perform the first query.
 - `whenEmpty?: 'accept' | 'ignore' | 'error'`: behaviour to apply when the feed response is an HTTP 404 status: `accept` (default) will push a `null` value to the subscriber, `ignore` will not push any empty value, and `error` will push the error response to the subscriber, causing it to error
-- `contentChangedOnly?: boolean`: this option is only relevant in the `content-hash` or `content-mode`, set it to `true` in order to only push when the content has changed rather than on every interval tick
 - `trigger?: Observable<void>`: provides an external `Observable` that can be used to execute queries
 
-**Returns** `Observable<Response>`
+**Returns** `Observable<Response | null>`
+
+### .pollFeedContentHash()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the contents hash or `null` depending on the `options`.
+
+**Arguments**
+
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`options: PollContentHashOptions`](#pollcontenthashoptions), see below
+
+**Options**
+
+- All the options of [`pollFeedChunk()`](#pollfeedchunk).
+- `changedOnly?: boolean`: set it to `true` in order to only push when the content has changed rather than on every interval tick
+
+### .pollFeedContent()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the contents `Response` objects or `null` depending on the `options`.
+
+**Arguments**
+
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`options: PollContentOptions`](#pollcontentoptions): includes all the options of [`pollFeedContentHash()`](#pollfeedcontenthash) as well as [`DownloadOptions`](#downloadoptions).
+
+**Returns** `Observable<Response | null>`
 
 ### .postSignedFeedValue()
 

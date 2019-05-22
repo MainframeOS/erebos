@@ -31,8 +31,13 @@ export type EncodeChapter<T> = (
   chapter: PartialChapter<T>,
 ) => Promise<string | Buffer>
 
-export interface LiveOptions extends FetchOptions {
+export interface PollOptions extends FetchOptions {
   interval: number
+}
+
+export interface LiveOptions extends PollOptions {
+  previous?: string
+  timestamp?: number
 }
 
 export function createChapter<T>(
@@ -51,16 +56,23 @@ export interface TimelineConfig<C = any, B = any, S = any> {
 
 export class Timeline<T = any> {
   constructor(config: TimelineConfig<T>)
-  download(id: string, options?: FetchOptions): Promise<Chapter<T>>
-  upload(chapter: PartialChapter<T>, options?: UploadOptions): Promise<hexValue>
-  getChapterID(options?: FetchOptions): Promise<hexValue | null>
-  loadChapter(options?: FetchOptions): Promise<Chapter<T> | null>
-  updateChapterID(chapterID: string, options?: FetchOptions): Promise<void>
-  addChapter(
+  downloadChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>
+  uploadChapter(
     chapter: PartialChapter<T>,
     options?: UploadOptions,
   ): Promise<hexValue>
-  createUpdater(
+  getLatestChapterID(options?: FetchOptions): Promise<hexValue | null>
+  getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>
+  setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>
+  setLatestChapter(
+    chapter: PartialChapter<T>,
+    options?: UploadOptions,
+  ): Promise<hexValue>
+  addChapter(
+    chapter: PartialChapter<T>,
+    options?: UploadOptions,
+  ): Promise<Chapter<T>>
+  createAddChapter(
     chapterDefaults?: Partial<PartialChapter<T>>,
     options?: UploadOptions,
   ): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>
@@ -68,11 +80,17 @@ export class Timeline<T = any> {
     initialID?: string,
     options?: FetchOptions,
   ): AsyncIterableIterator<Chapter<T>>
+  createLoader(
+    newestID: string, // inclusive
+    oldestID: string, // exclusive
+    options?: FetchOptions,
+  ): Observable<Chapter<T>>
   loadChapters(
     newestID: string, // inclusive
     oldestID: string, // exclusive
     options?: FetchOptions,
   ): Promise<Array<Chapter<T>>>
+  pollLatestChapter(options: PollOptions): Observable<Chapter<T>>
   live(options: LiveOptions): Observable<Array<Chapter<T>>>
 }
 

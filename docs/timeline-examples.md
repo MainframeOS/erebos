@@ -26,7 +26,7 @@ const aliceTimeline = new Timeline({
 })
 
 // The provided metadata will be added to each message
-const aliceSend = aliceTimeline.createUpdater({
+const aliceSend = aliceTimeline.createAddChapter({
   author: aliceAddress,
   type: 'text/plain',
 })
