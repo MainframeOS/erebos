@@ -647,7 +647,7 @@ describe('browser', () => {
       expect(validated).toEqual(valid)
     })
 
-    it('downloadChapter() method downloads and decodes the chapter', async () => {
+    it('getChapter() method downloads and decodes the chapter', async () => {
       const timestamp = Date.now()
 
       const [validID, invalidID] = await evalClient(
@@ -668,7 +668,7 @@ describe('browser', () => {
 
       const valid = await evalClient(async (client, id) => {
         const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
-        return await timeline.downloadChapter(id)
+        return await timeline.getChapter(id)
       }, validID)
       expect(valid).toEqual({
         id: validID,
@@ -683,7 +683,7 @@ describe('browser', () => {
       const invalidError = await evalClient(async (client, id) => {
         const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
         try {
-          await timeline.downloadChapter(id)
+          await timeline.getChapter(id)
         } catch (err) {
           return err.message
         }
@@ -691,14 +691,14 @@ describe('browser', () => {
       expect(invalidError).toBe('Invalid payload')
     })
 
-    it('uploadChapter() method encodes and uploads the chapter', async () => {
+    it('postChapter() method encodes and uploads the chapter', async () => {
       const chapter = await page.evaluate(author => {
         return Erebos.timeline.createChapter({ author, content: { ok: true } })
       }, user)
       const [id, downloaded] = await evalClient(async (client, chapter) => {
         const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
-        const id = await timeline.uploadChapter(chapter)
-        const downloaded = await timeline.downloadChapter(id)
+        const id = await timeline.postChapter(chapter)
+        const downloaded = await timeline.getChapter(id)
         return [id, downloaded]
       }, chapter)
       expect(downloaded).toEqual({ ...chapter, id })
@@ -715,7 +715,7 @@ describe('browser', () => {
             bzz: client.bzz,
             feed,
           })
-          const chapterID = await timeline.uploadChapter(chapter)
+          const chapterID = await timeline.postChapter(chapter)
           await timeline.setLatestChapterID(chapterID)
           const loadedID = await timeline.getLatestChapterID()
           return [chapterID, loadedID]

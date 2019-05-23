@@ -117,7 +117,7 @@ export class Timeline<T> {
     this._signParams = config.signParams
   }
 
-  async downloadChapter(
+  async getChapter(
     id: string,
     options?: FetchOptions = {},
   ): Promise<Chapter<T>> {
@@ -127,7 +127,7 @@ export class Timeline<T> {
     return chapter
   }
 
-  async uploadChapter(
+  async postChapter(
     chapter: PartialChapter<T>,
     options?: UploadOptions = {},
   ): Promise<hexValue> {
@@ -156,7 +156,7 @@ export class Timeline<T> {
     if (id == null) {
       return null
     }
-    return await this.downloadChapter(id, options)
+    return await this.getChapter(id, options)
   }
 
   async setLatestChapterID(
@@ -176,7 +176,7 @@ export class Timeline<T> {
     options?: UploadOptions = {},
   ): Promise<hexValue> {
     const [chapterID, feedMeta] = await Promise.all([
-      this.uploadChapter(chapter, options),
+      this.postChapter(chapter, options),
       this._bzz.getFeedMetadata(this._feed),
     ])
     await this._bzz.postFeedChunk(
@@ -240,7 +240,7 @@ export class Timeline<T> {
         if (nextID == null) {
           return { done: true, value: undefined }
         }
-        const chapter = await this.downloadChapter(nextID, options)
+        const chapter = await this.getChapter(nextID, options)
         nextID = chapter.previous
         return { done: false, value: chapter }
       },
@@ -267,7 +267,7 @@ export class Timeline<T> {
     })
   }
 
-  async loadChapters(
+  async getChapters(
     newestID: string, // inclusive
     oldestID: string, // exclusive
     options?: FetchOptions = {},
@@ -295,7 +295,7 @@ export class Timeline<T> {
       })
       .pipe(
         flatMap(id => {
-          return id === null ? [] : this.downloadChapter(id, downloadOptions)
+          return id === null ? [] : this.getChapter(id, downloadOptions)
         }),
       )
   }
@@ -322,7 +322,7 @@ export class Timeline<T> {
           chapters = [chapter]
         } else {
           // There has been more than one update during the polling interval
-          const slice = await this.loadChapters(
+          const slice = await this.getChapters(
             chapter.previous,
             previousID,
             options,

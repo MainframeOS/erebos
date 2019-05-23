@@ -12,6 +12,7 @@ export default class TimelineCreateCommand extends Command {
     {
       name: 'content',
       description: 'chapter content (JSON)',
+      parse: JSON.parse,
       required: true,
     },
   ]
@@ -84,6 +85,7 @@ export default class TimelineCreateCommand extends Command {
       )
     } catch (err) {
       this.spinner.fail(err.message)
+      process.exit()
     }
   }
 }

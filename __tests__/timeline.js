@@ -59,7 +59,7 @@ describe('timeline', () => {
     expect(validateChapter(valid)).toBe(valid)
   })
 
-  it('downloadChapter() method downloads and decodes the chapter', async () => {
+  it('getChapter() method downloads and decodes the chapter', async () => {
     const now = Date.now()
     Date.now = jest.fn(() => now)
 
@@ -70,7 +70,7 @@ describe('timeline', () => {
       bzz.uploadFile(JSON.stringify({ ok: false })),
     ])
 
-    const valid = await timeline.downloadChapter(validID)
+    const valid = await timeline.getChapter(validID)
     expect(valid).toEqual({
       id: validID,
       protocol: 'timeline',
@@ -81,16 +81,14 @@ describe('timeline', () => {
       content: { ok: true },
     })
 
-    expect(timeline.downloadChapter(invalidID)).rejects.toThrow(
-      'Invalid payload',
-    )
+    expect(timeline.getChapter(invalidID)).rejects.toThrow('Invalid payload')
   })
 
-  it('uploadChapter() method encodes and uploads the chapter', async () => {
+  it('postChapter() method encodes and uploads the chapter', async () => {
     const timeline = new Timeline({ bzz })
     const chapter = createChapter({ author, content: { ok: true } })
-    const id = await timeline.uploadChapter(chapter)
-    const downloaded = await timeline.downloadChapter(id)
+    const id = await timeline.postChapter(chapter)
+    const downloaded = await timeline.getChapter(id)
     expect(downloaded).toEqual({ ...chapter, id })
   })
 
@@ -112,10 +110,10 @@ describe('timeline', () => {
     const timeline = new Timeline({ bzz, decode, encode })
     const chapter = createChapter({ author, content: { ok: true } })
 
-    const id = await timeline.uploadChapter(chapter)
+    const id = await timeline.postChapter(chapter)
     expect(encode).toHaveBeenCalledTimes(1)
 
-    const downloaded = await timeline.downloadChapter(id)
+    const downloaded = await timeline.getChapter(id)
     expect(decode).toHaveBeenCalledTimes(1)
     expect(downloaded).toEqual({ ...chapter, id })
   })
@@ -130,7 +128,7 @@ describe('timeline', () => {
     const timeline = new Timeline({ bzz, feed })
 
     const chapter = createChapter({ author, content: { ok: true } })
-    const chapterID = await timeline.uploadChapter(chapter)
+    const chapterID = await timeline.postChapter(chapter)
 
     await timeline.setLatestChapterID(chapterID)
     const id = await timeline.getLatestChapterID()
@@ -270,7 +268,7 @@ describe('timeline', () => {
     })
   })
 
-  it('loadChapters() returns an array of chapters within the given range', async () => {
+  it('getChapters() returns an array of chapters within the given range', async () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three', 'four', 'five']
@@ -291,7 +289,7 @@ describe('timeline', () => {
       chapterIDs.push(chapter.id)
     }
 
-    const slice1 = await timeline.loadChapters(chapterIDs[3], chapterIDs[0])
+    const slice1 = await timeline.getChapters(chapterIDs[3], chapterIDs[0])
     expect(slice1.map(chapter => chapter.content)).toEqual([
       'four',
       'three',
@@ -299,7 +297,7 @@ describe('timeline', () => {
     ])
 
     const latestChapterID = await timeline.getLatestChapterID()
-    const slice2 = await timeline.loadChapters(latestChapterID, chapterIDs[1])
+    const slice2 = await timeline.getChapters(latestChapterID, chapterIDs[1])
     expect(slice2.map(chapter => chapter.content)).toEqual([
       'five',
       'four',

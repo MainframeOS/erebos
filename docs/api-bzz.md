@@ -144,7 +144,7 @@ type UploadOptions = {
 
 ### PollOptions
 
-Includes [FeedOptions](#feedoptions)
+Includes [FetchOptions](#fetchoptions)
 
 ```javascript
 type PollOptions = {

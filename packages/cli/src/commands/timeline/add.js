@@ -77,6 +77,7 @@ export default class TimelineAddCommand extends Command {
       )
     } catch (err) {
       this.spinner.fail(err.message)
+      process.exit()
     }
   }
 }

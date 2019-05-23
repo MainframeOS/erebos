@@ -56,8 +56,8 @@ export interface TimelineConfig<C = any, B = any, S = any> {
 
 export class Timeline<T = any> {
   constructor(config: TimelineConfig<T>)
-  downloadChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>
-  uploadChapter(
+  getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>
+  postChapter(
     chapter: PartialChapter<T>,
     options?: UploadOptions,
   ): Promise<hexValue>
@@ -85,7 +85,7 @@ export class Timeline<T = any> {
     oldestID: string, // exclusive
     options?: FetchOptions,
   ): Observable<Chapter<T>>
-  loadChapters(
+  getChapters(
     newestID: string, // inclusive
     oldestID: string, // exclusive
     options?: FetchOptions,

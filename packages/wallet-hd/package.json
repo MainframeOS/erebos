@@ -1,7 +1,7 @@
 {
-  "name": "@erebos/wallets-hd",
-  "version": "0.3.0",
-  "description": "Ethereum HD Wallets",
+  "name": "@erebos/wallet-hd",
+  "version": "0.8.0",
+  "description": "Ethereum HD Wallet",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
+    "@erebos/secp256k1": "^0.7.0",
     "ethers": "^4.0.27"
   },
   "devDependencies": {

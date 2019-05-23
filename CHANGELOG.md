@@ -1,3 +1,47 @@
+## v0.8.0 (master)
+
+### Breaking changes
+
+- The `FeedMode` and `FeedOptions` types have been removed, their use cases are implemented by new methods.
+- The `mode` and `contentChangedOnly` fields have been removed from the [`PollOptions`](https://erebos.js.org/docs/api-bzz#polloptions) object.
+- The `xxxFeedValue()` methods of the Bzz class have been changed as follows:
+  - `getFeedValue()`
+    - [`getFeedChunk()`](https://erebos.js.org/docs/api-bzz#getfeedchunk) to load the chunk itself
+    - [`getFeedContentHash()`](https://erebos.js.org/docs/api-bzz#getfeedcontentHash) to load the chunk and parse the response as a Swarm hash
+    - [`getFeedContent()`](https://erebos.js.org/docs/api-bzz#getfeedcontent) to load the chunk, parse the response as a Swarm hash and load the referenced resource
+  - `pollFeedValue()`
+    - [`pollFeedChunk()`](https://erebos.js.org/docs/api-bzz#pollfeedchunk) to poll the chunk itself
+    - [`pollFeedContentHash()`](https://erebos.js.org/docs/api-bzz#pollfeedcontentHash) to poll the chunk and parse the response as a Swarm hash
+    - [`pollFeedContent()`](https://erebos.js.org/docs/api-bzz#pollfeedcontent) to poll the chunk, parse the response as a Swarm hash and load the referenced resource
+  - `postSignedFeedValue()` -> [`postSignedFeedChunk()`](https://erebos.js.org/docs/api-bzz#postsignedfeedchunk)
+  - `postFeedValue()` -> [`postFeedChunk()`](https://erebos.js.org/docs/api-bzz#postfeedchunk)
+  - `updateFeedValue()` -> [`setFeedChunk()`](https://erebos.js.org/docs/api-bzz#setfeedchunk)
+  - `uploadFeedValue()` -> [`setFeedContent()`](https://erebos.js.org/docs/api-bzz#setfeedcontent)
+- Various Timeline methods have been renamed to be more explicit:
+  - `download()` -> [`getChapter()`](https://erebos.js.org/docs/timeline-api#getchapter)
+  - `upload()` -> [`postChapter()`](https://erebos.js.org/docs/timeline-api#postchapter)
+  - `getChapterID()` -> [`getLatestChapterID()`](https://erebos.js.org/docs/timeline-api#getlatestchapterid)
+  - `loadChapter()` -> [`getLatestChapter()`](https://erebos.js.org/docs/timeline-api#getlatestchapter)
+  - `updateChapterID()` -> [`setLatestChapterID()`](https://erebos.js.org/docs/timeline-api#setlatestchapterid)
+  - `createUpdater()` -> [`createAddChapter()`](https://erebos.js.org/docs/timeline-api#createaddchapter)
+  - `loadChapters()` -> [`getChapters()`](https://erebos.js.org/docs/timeline-api#getchapters)
+
+### Additional features
+
+- The [`@erebos/wallet-hd`](https://erebos.js.org/docs/wallet-hd) utility package has been added, providing a simple way to use Hierarchical Deterministic wallets.
+- The [`PollContentHashOptions`](https://erebos.js.org/docs/api-bzz#pollcontenthashoptions) and [`PollContentOptions`](https://erebos.js.org/docs/api-bzz#pollcontentoptions) have been added for the [`pollFeedContentHash()`](https://erebos.js.org/docs/api-bzz#pollfeedcontentHash) and [`pollFeedContent()`](https://erebos.js.org/docs/api-bzz#pollfeedcontent) methods, respectively.
+- The [`setFeedContentHash()`](https://erebos.js.org/docs/api-bzz#setfeedcontenthash) method has been added to the Bzz class.
+- New methods have been added to the Timeline class:
+  - [`setLatestChapter`](https://erebos.js.org/docs/timeline-api#setlatestchapter): sets the latest chapter without checking the `previous` field, while the logic of [`addChapter`](https://erebos.js.org/docs/timeline-api#addchapter) has been changed to retrieve the latest chapter ID before adding the new chapter when the `previous` field is not provided.
+  - [`createLoader()`](https://erebos.js.org/docs/timeline-api#createloader): returns an Observable of chapters.
+  - [`pollLatestChapter()`](https://erebos.js.org/docs/timeline-api#polllatestchapter): returns an Observable of the latest chapter.
+
+TODO: new CLI commands for feed and timeline
+
+### Other changes
+
+The library is now tested against [Swarm v0.4.0](https://www.reddit.com/r/ethswarm/comments/bpqxeu/swarm_v040_released/), using the [Docker image provided by ethersphere](https://hub.docker.com/r/ethdevops/swarm).
+
 ## v0.7.2 (2019-04-15)
 
 Fix `FeedParams` type in `@erebos/api-bzz-base`.

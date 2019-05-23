@@ -5,9 +5,14 @@ import { flags } from '@oclif/command'
 
 import Command from '../../Command'
 
-export default class TimelineLookupCommand extends Command {
+export default class TimelineReadCommand extends Command {
   static flags = {
     ...Command.flags,
+    chapter: flags.string({
+      char: 'c',
+      description: 'specific chapter ID',
+      exclusive: ['user'],
+    }),
     hash: flags.string({
       char: 'h',
       description: 'hash of the timeline feed',
@@ -27,6 +32,7 @@ export default class TimelineLookupCommand extends Command {
 
   async run() {
     this.spinner.start('Checking input parameters')
+
     let feed
     if (this.flags.hash != null) {
       feed = this.flags.hash
@@ -44,11 +50,13 @@ export default class TimelineLookupCommand extends Command {
     try {
       const timeline = new Timeline({ bzz: this.client.bzz, feed })
       this.spinner.succeed().start('Querying feed...')
-      const id = await timeline.getLatestChapterID()
+      const id = this.flags.chapter || (await timeline.getLatestChapterID())
       if (id === null) {
         this.spinner.warn('No chapter found for the provided feed parameters')
       } else {
+        const chapter = await timeline.getChapter(id)
         this.spinner.succeed(`Found chapter ID: ${id}`)
+        this.logObject(chapter)
       }
     } catch (err) {
       this.spinner.fail(err.message)

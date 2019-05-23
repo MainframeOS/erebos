@@ -1,6 +1,5 @@
 // @flow
 
-import { inspect } from 'util'
 import { flags } from '@oclif/command'
 
 import Command from '../../Command'
@@ -32,7 +31,7 @@ export default class BzzListCommand extends Command {
         path: this.flags.path,
       })
       this.spinner.succeed()
-      this.log(inspect(data, { colors: true, depth: null }))
+      this.logObject(data)
     } catch (err) {
       this.spinner.fail(err.message)
     }

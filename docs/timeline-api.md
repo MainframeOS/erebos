@@ -149,7 +149,7 @@ Validates that the provided object contains the `protocol` and `version` fields 
 - [`encode?: ?EncodeChapter<T>`](#encodechapter): optional chapter encoding function used when adding any chapter with this timeline instance
 - `signParams?: any`: optional signing parameters provided to the [`signBytes() function`](api-bzz.md#signbytesfunc) when updating a the timeline feed.
 
-### .downloadChapter()
+### .getChapter()
 
 **Arguments**
 
@@ -158,7 +158,7 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Returns** `Promise<Chapter<T>>`
 
-### .uploadChapter()
+### .postChapter()
 
 **Arguments**
 
@@ -210,7 +210,7 @@ Sets the ID of the latest chapter in the timeline.
 
 ### .setLatestChapter()
 
-Sets the latest chapter of the timeline. This is equivalent of calling [`uploadChapter()`](#uploadchapter) and [`setLatestChapterID()`](#setlatestchapterid).
+Sets the latest chapter of the timeline. This is equivalent of calling [`postChapter()`](#postchapter) and [`setLatestChapterID()`](#setlatestchapterid).
 
 **Arguments**
 
@@ -267,7 +267,7 @@ Returns [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emittin
 
 **Returns** `Observable<Chapter<T>>`
 
-### .loadChapters()
+### .getChapters()
 
 Loads a range of chapters between the given newest (inclusive) and oldest (exclusive) chapter ID boundaries.
 
