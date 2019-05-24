@@ -104,33 +104,136 @@ erebos feed:user --key-env=MY_KEY
 
 ### feed:set
 
-TODO
+Sets the value of the feed chunk
+
+**Arguments**
+
+1. chunk value (required)
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing the private key for the feed (required)
+- `--name`: feed name (optional)
+
+**Example**
+
+```sh
+erebos feed:set --key-env=MY_KEY --name=test "hello world"
+```
 
 ### feed:get
 
-TODO
+Displays the value of the feed chunk
+
+**Flags**
+
+- `--hash`: feed hash (required if `--user` is not provided)
+- `--user`: feed user (required if `--hash` is not provided)
+- `--name`: feed name (optional, only relevant if `--user` is provided)
+- `--type`: content type to parse, possible options are:
+  - `text` (default) for plain text contents
+  - `json` for JSON data
+  - `hash` if the chunk references a Swarm hash
+
+**Example**
+
+```sh
+erebos feed:get --hash=1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d7878809938139 --type=json
+```
 
 ### feed:manifest
 
-TODO
+Creates a feed manifest and displays its hash
+
+**Arguments**
+
+1. user address (required)
+
+**Flags**
+
+- `--name`: feed name (optional)
+- `--topic`: feed topic (optional)
+
+**Example**
+
+```sh
+erebos feed:manifest 0x9a13f677a40459d8a49597eec0838191b4d74ec5 --name=test
+```
 
 ## Timeline commands
 
 ### timeline:create
 
-TODO
+Creates a new timeline using the provided private key or creating a new one
+
+**Arguments**
+
+1. first chapter contents (required - JSON by default unless the `--type` flag is set otherwise)
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing an already created private key (optional, a new key will be created when not provided)
+- `--name`: feed name (optional)
+- `--type`: type of the chapter `content` field (optional, defaults to `application/json`)
+- `--manifest`: if provided, creates a feed manifest and displays its hash
+
+**Example**
+
+```sh
+erebos timeline:create --key-env=MY_KEY --name=json '{"hello":"world"}'
+erebos timeline:create --key-env=MY_KEY --name=text --type="text/plain" "hello world"
+```
 
 ### timeline:add
 
-TODO
+Adds a new chapter to an existing timeline using the provided private key
+
+**Arguments**
+
+1. new chapter contents (required - JSON by default unless the `--type` flag is set otherwise)
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing an already created private key (required)
+- `--name`: feed name (optional)
+- `--type`: type of the chapter `content` field (optional, defaults to `application/json`)
+
+**Example**
+
+```sh
+erebos timeline:add --key-env=MY_KEY --name=json '{"hello":"timeline"}'
+```
 
 ### timeline:lookup
 
-TODO
+Retrieves the latest chapter ID of the given timeline
+
+**Flags**
+
+- `--hash`: feed hash (required if `--user` is not provided)
+- `--user`: feed user (required if `--hash` is not provided)
+- `--name`: feed name (optional, only relevant if `--user` is provided)
+
+**Example**
+
+```sh
+erebos timeline:lookup --user=0x9a13f677a40459d8a49597eec0838191b4d74ec5 --name=test
+```
 
 ### timeline:read
 
-TODO
+Retrieves the chapter with the provided `--chapter` ID, or the latest chapter of the given timeline
+
+**Flags**
+
+- `--hash`: feed hash (required if `--user` is not provided)
+- `--user`: feed user (required if `--hash` is not provided)
+- `--name`: feed name (optional, only relevant if `--user` is provided)
+- `--chapter`: chapter ID (optional, latest chapter ID by default)
+
+```sh
+erebos timeline:read --user=0x9a13f677a40459d8a49597eec0838191b4d74ec5 --chapter=1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d7878809938139
+```
 
 ## Website commands
 

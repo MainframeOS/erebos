@@ -11,7 +11,6 @@ export default class TimelineReadCommand extends Command {
     chapter: flags.string({
       char: 'c',
       description: 'specific chapter ID',
-      exclusive: ['user'],
     }),
     hash: flags.string({
       char: 'h',

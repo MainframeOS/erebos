@@ -46,6 +46,6 @@
     "jest-puppeteer": "^4.1.1",
     "lerna": "^3.14.1",
     "prettier": "^1.17.1",
-    "puppeteer": "^1.16.0"
+    "puppeteer": "^1.17.0"
   }
 }

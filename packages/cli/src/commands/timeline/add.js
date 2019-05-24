@@ -11,8 +11,7 @@ export default class TimelineAddCommand extends Command {
   static args = [
     {
       name: 'content',
-      description: 'chapter content (JSON)',
-      parse: JSON.parse,
+      description: 'chapter content (JSON by default)',
       required: true,
     },
   ]
@@ -65,9 +64,13 @@ export default class TimelineAddCommand extends Command {
         .succeed(`Found latest chapter ID: ${previous}`)
         .start(`Publishing new chapter to timeline...`)
 
+      const content =
+        this.flags.type === 'application/json'
+          ? JSON.parse(this.args.content)
+          : this.args.content
       const chapter = createChapter({
         author: address,
-        content: this.args.content,
+        content,
         type: this.flags.type,
         previous,
       })

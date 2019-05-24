@@ -68,7 +68,6 @@ const ProjectTitle = () => (
         {
           image: imgUrl('logo.svg'),
           imageAlign: 'top',
-          title: 'logo',
         },
       ]}
     />
@@ -79,7 +78,6 @@ const ProjectTitle = () => (
         {
           image: imgUrl('erebos.png'),
           imageAlign: 'top',
-          title: 'erebos',
         },
       ]}
     />

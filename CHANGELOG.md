@@ -32,11 +32,10 @@
 - The [`PollContentHashOptions`](https://erebos.js.org/docs/api-bzz#pollcontenthashoptions) and [`PollContentOptions`](https://erebos.js.org/docs/api-bzz#pollcontentoptions) have been added for the [`pollFeedContentHash()`](https://erebos.js.org/docs/api-bzz#pollfeedcontentHash) and [`pollFeedContent()`](https://erebos.js.org/docs/api-bzz#pollfeedcontent) methods, respectively.
 - The [`setFeedContentHash()`](https://erebos.js.org/docs/api-bzz#setfeedcontenthash) method has been added to the Bzz class.
 - New methods have been added to the Timeline class:
-  - [`setLatestChapter`](https://erebos.js.org/docs/timeline-api#setlatestchapter): sets the latest chapter without checking the `previous` field, while the logic of [`addChapter`](https://erebos.js.org/docs/timeline-api#addchapter) has been changed to retrieve the latest chapter ID before adding the new chapter when the `previous` field is not provided.
+  - [`setLatestChapter()`](https://erebos.js.org/docs/timeline-api#setlatestchapter): sets the latest chapter without checking the `previous` field, while the logic of [`addChapter()`](https://erebos.js.org/docs/timeline-api#addchapter) has been changed to retrieve the latest chapter ID before adding the new chapter when the `previous` field is not provided.
   - [`createLoader()`](https://erebos.js.org/docs/timeline-api#createloader): returns an Observable of chapters.
   - [`pollLatestChapter()`](https://erebos.js.org/docs/timeline-api#polllatestchapter): returns an Observable of the latest chapter.
-
-TODO: new CLI commands for feed and timeline
+- Additional commands have been added in the CLI to interact with [feeds](https://erebos.js.org/docs/cli#feed-commands) and [timelines](https://erebos.js.org/docs/cli#timeline-commands).
 
 ### Other changes
 

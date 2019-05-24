@@ -21,14 +21,13 @@ export default class FeedUserCommand extends Command {
       const keyValue = this.flags['key-env']
       const hasKey = keyValue != null && keyValue.length !== 0
       const keyPair = createKeyPair(hasKey ? keyValue : undefined)
+      const address = pubKeyToAddress(keyPair.getPublic().encode())
+      this.log(`User address: ${address}`)
 
       if (!hasKey) {
         const privKey = keyPair.getPrivate('hex')
         this.warn(`A new private key has been created: ${privKey}`)
       }
-
-      const address = pubKeyToAddress(keyPair.getPublic().encode())
-      this.log(`User address: ${address}`)
     } catch (err) {
       this.error(err.message)
       process.exit()

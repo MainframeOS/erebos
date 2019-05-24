@@ -11,8 +11,7 @@ export default class TimelineCreateCommand extends Command {
   static args = [
     {
       name: 'content',
-      description: 'chapter content (JSON)',
-      parse: JSON.parse,
+      description: 'chapter content (JSON by default)',
       required: true,
     },
   ]
@@ -22,8 +21,7 @@ export default class TimelineCreateCommand extends Command {
     'key-env': flags.string({
       description:
         'name of the environment variable containing the private key',
-      parse: key => process.env[key],
-      required: true,
+      parse: key => (key ? process.env[key] : undefined),
     }),
     name: flags.string({
       char: 'n',
@@ -36,14 +34,15 @@ export default class TimelineCreateCommand extends Command {
     }),
     manifest: flags.boolean({
       char: 'm',
-      default: true,
       description: 'create a feed manifest',
     }),
   }
 
   async run() {
     try {
-      const keyPair = createKeyPair(this.flags['key-env'])
+      const keyValue = this.flags['key-env']
+      const hasKey = keyValue != null && keyValue.length !== 0
+      const keyPair = createKeyPair(hasKey ? keyValue : undefined)
       const address = pubKeyToAddress(keyPair.getPublic().encode())
       let hash
 
@@ -74,15 +73,26 @@ export default class TimelineCreateCommand extends Command {
       }
       this.spinner.start(`Creating timeline for ${timelineInfo}...`)
 
+      const content =
+        this.flags.type === 'application/json'
+          ? JSON.parse(this.args.content)
+          : this.args.content
       const chapter = createChapter({
         author: address,
-        content: this.args.content,
+        content,
         type: this.flags.type,
       })
       const id = await timeline.setLatestChapter(chapter)
       this.spinner.succeed(
         `Timeline created for ${timelineInfo} with chapter ID: ${id}`,
       )
+
+      if (!hasKey) {
+        const privKey = keyPair.getPrivate('hex')
+        this.warn(
+          `A new private key has been created for this timeline: ${privKey}. DO NOT lose this key in order to be able to add chapters to this timeline.`,
+        )
+      }
     } catch (err) {
       this.spinner.fail(err.message)
       process.exit()
