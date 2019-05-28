@@ -10,7 +10,7 @@ yarn add @erebos/swarm-browser
 
 ## API
 
-See the [library documentation](../../docs/README.md).
+See the [library documentation website](https://erebos.js.org/docs/swarm-client).
 
 ## License
 

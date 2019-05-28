@@ -1,4 +1,4 @@
-## v0.8.0 (master)
+## v0.8.0 (2019-05-28)
 
 ### Breaking changes
 

@@ -10,7 +10,7 @@ yarn add @erebos/wallet-hd
 
 ## API
 
-See the [library documentation](../../docs/wallet-hd.md).
+See the [library documentation website](https://erebos.js.org/docs/wallet-hd).
 
 ## License
 

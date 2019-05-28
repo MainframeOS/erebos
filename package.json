@@ -1,6 +1,6 @@
 {
   "name": "erebos-project",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Ethereum and Swarm client",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
@@ -43,7 +43,7 @@
     "jest": "^24.8.0",
     "jest-fetch-mock": "^2.1.2",
     "jest-junit": "^6.4.0",
-    "jest-puppeteer": "^4.1.1",
+    "jest-puppeteer": "^4.2.0",
     "lerna": "^3.14.1",
     "prettier": "^1.17.1",
     "puppeteer": "^1.17.0"
