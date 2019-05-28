@@ -13,10 +13,14 @@
         "packages/api-web3/package.json",
         "packages/cli/package.json",
         "packages/client-base/package.json",
+        "packages/hex/package.json",
+        "packages/keccak256/package.json",
+        "packages/secp256k1/package.json",
         "packages/swarm/package.json",
         "packages/swarm-browser/package.json",
         "packages/swarm-node/package.json",
-        "packages/timeline/package.json"
+        "packages/timeline/package.json",
+        "packages/wallet-hd/package.json"
       ]
     }
   }

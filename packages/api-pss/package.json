@@ -23,11 +23,11 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
+    "@babel/runtime": "^7.4.5",
     "@erebos/hex": "^0.7.0",
-    "rxjs": "^6.3.0"
+    "rxjs": "^6.5.2"
   },
   "devDependencies": {
-    "flow-bin": "^0.97.0"
+    "flow-bin": "^0.98.1"
   }
 }

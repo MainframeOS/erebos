@@ -24,6 +24,7 @@ In order to connect to the relevant Swarm node, the Erebos CLI uses the followin
 - `--http-gateway` flag or `EREBOS_HTTP_GATEWAY` environment variable, defaults to `http://localhost:8500`
 - `--ipc-path` flag or `EREBOS_IPC_PATH` environment variable, no default
 - `--ws-url` flag or `EREBOS_WS_URL` environment variable, defaults to `ws://localhost:8546`
+- `--timeout` flag to set the requests timeout (in seconds), no timeout by default
 
 ## BZZ commands
 
@@ -83,6 +84,193 @@ erebos bzz:download 1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d787880993
 
 ```sh
 erebos bzz:upload ./test
+```
+
+## Feed commands
+
+### feed:user
+
+Displays the user address for the given private key, or creates a new private key if not provided.
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing an already created private key (optional, a new key will be created when not provided)
+
+**Example**
+
+```sh
+erebos feed:user --key-env=MY_KEY
+```
+
+### feed:set
+
+Sets the value of the feed chunk
+
+**Arguments**
+
+1. chunk value (required)
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing the private key for the feed (required)
+- `--name`: feed name (optional)
+
+**Example**
+
+```sh
+erebos feed:set --key-env=MY_KEY --name=test "hello world"
+```
+
+### feed:get
+
+Displays the value of the feed chunk
+
+**Flags**
+
+- `--hash`: feed hash (required if `--user` is not provided)
+- `--user`: feed user (required if `--hash` is not provided)
+- `--name`: feed name (optional, only relevant if `--user` is provided)
+- `--type`: content type to parse, possible options are:
+  - `text` (default) for plain text contents
+  - `json` for JSON data
+  - `hash` if the chunk references a Swarm hash
+
+**Example**
+
+```sh
+erebos feed:get --hash=1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d7878809938139 --type=json
+```
+
+### feed:manifest
+
+Creates a feed manifest and displays its hash
+
+**Arguments**
+
+1. user address (required)
+
+**Flags**
+
+- `--name`: feed name (optional)
+- `--topic`: feed topic (optional)
+
+**Example**
+
+```sh
+erebos feed:manifest 0x9a13f677a40459d8a49597eec0838191b4d74ec5 --name=test
+```
+
+## Timeline commands
+
+### timeline:create
+
+Creates a new timeline using the provided private key or creating a new one
+
+**Arguments**
+
+1. first chapter contents (required - JSON by default unless the `--type` flag is set otherwise)
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing an already created private key (optional, a new key will be created when not provided)
+- `--name`: feed name (optional)
+- `--type`: type of the chapter `content` field (optional, defaults to `application/json`)
+- `--manifest`: if provided, creates a feed manifest and displays its hash
+
+**Example**
+
+```sh
+erebos timeline:create --key-env=MY_KEY --name=json '{"hello":"world"}'
+erebos timeline:create --key-env=MY_KEY --name=text --type="text/plain" "hello world"
+```
+
+### timeline:add
+
+Adds a new chapter to an existing timeline using the provided private key
+
+**Arguments**
+
+1. new chapter contents (required - JSON by default unless the `--type` flag is set otherwise)
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing an already created private key (required)
+- `--name`: feed name (optional)
+- `--type`: type of the chapter `content` field (optional, defaults to `application/json`)
+
+**Example**
+
+```sh
+erebos timeline:add --key-env=MY_KEY --name=json '{"hello":"timeline"}'
+```
+
+### timeline:lookup
+
+Retrieves the latest chapter ID of the given timeline
+
+**Flags**
+
+- `--hash`: feed hash (required if `--user` is not provided)
+- `--user`: feed user (required if `--hash` is not provided)
+- `--name`: feed name (optional, only relevant if `--user` is provided)
+
+**Example**
+
+```sh
+erebos timeline:lookup --user=0x9a13f677a40459d8a49597eec0838191b4d74ec5 --name=test
+```
+
+### timeline:read
+
+Retrieves the chapter with the provided `--chapter` ID, or the latest chapter of the given timeline
+
+**Flags**
+
+- `--hash`: feed hash (required if `--user` is not provided)
+- `--user`: feed user (required if `--hash` is not provided)
+- `--name`: feed name (optional, only relevant if `--user` is provided)
+- `--chapter`: chapter ID (optional, latest chapter ID by default)
+
+```sh
+erebos timeline:read --user=0x9a13f677a40459d8a49597eec0838191b4d74ec5 --chapter=1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d7878809938139
+```
+
+## Website commands
+
+### website:setup
+
+Creates a new Swarm feed manifest that will provide an immutable hash for the website.
+
+**Flags**
+
+- `--key-env`: name of the environment variable containing an already created private key (optional, a new key will be created when not provided)
+- `--name`: feed name (optional)
+- `--topic`: feed topic (optional)
+
+**Example**
+
+```sh
+erebos website:setup --name="awesome website"
+```
+
+### website:publish
+
+Publishes website contents using the provided contents folder, manifest hash and corresponding private key.\
+The root `index.html` file in the contents folder will be used as the default entry.
+
+**Arguments**
+
+1. path to the website contents folder to upload
+
+**Flags**
+
+- `--hash`: feed manifest hash generated using the `website:setup` command
+- `--key-env`: name of the environment variable containing the private key associated to the feed manifest
+
+**Example**
+
+```sh
+MY_KEY=... erebos website:publish --hash=... --key-env=MY_KEY ./build
 ```
 
 ## PSS commands
@@ -172,42 +360,4 @@ Opens a [Node.js REPL](https://nodejs.org/dist/latest-v10.x/docs/api/repl.html) 
 
 ```sh
 erebos pss:peer 0x... --topic=hello
-```
-
-## Website commands
-
-### website:setup
-
-Creates a new Swarm feed manifest that will provide an immutable hash for the website.
-
-**Flags**
-
-- `--key-env`: name of the environment variable containing an already created private key (optional, a new key will be created when not provided)
-- `--name`: feed name (optional)
-- `--topic`: feed topic (optional)
-
-**Example**
-
-```sh
-erebos website:setup --name="awesome website"
-```
-
-### website:publish
-
-Publishes website contents using the provided contents folder, manifest hash and corresponding private key.\
-The root `index.html` file in the contents folder will be used as the default entry.
-
-**Arguments**
-
-1. path to the website contents folder to upload
-
-**Flags**
-
-- `--hash`: feed manifest hash generated using the `website:setup` command
-- `--key-env`: name of the environment variable containing the private key associated to the feed manifest
-
-**Example**
-
-```sh
-MY_KEY=... erebos website:publish --hash=... --key-env=MY_KEY ./build
 ```

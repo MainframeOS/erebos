@@ -10,11 +10,11 @@ yarn add @erebos/api-pss
 
 ## Example
 
-See the [examples folder](../../examples/pss.js).
+See the [examples folder](https://github.com/MainframeHQ/erebos/blob/master/examples/pss.js).
 
 ## API
 
-See the [library documentation](../../docs/api-pss.md).
+See the [library documentation website](https://erebos.js.org/docs/api-pss).
 
 ## License
 

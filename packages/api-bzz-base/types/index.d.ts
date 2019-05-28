@@ -63,19 +63,20 @@ export interface UploadOptions extends FileOptions {
   manifestHash?: hexValue | string
 }
 
-export type FeedMode = 'feed-response' | 'content-hash' | 'content-response'
-
-export interface FeedOptions extends FetchOptions {
-  mode?: FeedMode
-}
-
 export interface PollOptions extends FeedOptions {
   interval: number
   immediate?: boolean
   whenEmpty?: 'accept' | 'ignore' | 'error'
-  contentChangedOnly?: boolean
   trigger?: Observable<void>
 }
+
+export interface PollContentHashOptions extends PollOptions {
+  changedOnly?: boolean
+}
+
+export interface PollContentOptions
+  extends DownloadOptions,
+    PollContentHashOptions {}
 
 export interface FeedParams {
   user: string
@@ -143,32 +144,54 @@ export default abstract class BaseBzz<T> {
     hashOrParams: string | FeedParams,
     options?: FetchOptions,
   ): Promise<FeedMetadata>
-  getFeedValue(
+  getFeedChunk(
     hashOrParams: string | FeedParams,
     options?: FeedOptions,
-  ): Promise<T | string>
-  pollFeedValue(
+  ): Promise<T>
+  getFeedContentHash(
+    hashOrParams: string | FeedParams,
+    options?: FeedOptions,
+  ): Promise<string | null>
+  getFeedContent(
+    hashOrParams: string | FeedParams,
+    options?: FeedOptions,
+  ): Promise<T | null>
+  pollFeedChunk(
     hashOrParams: string | FeedParams,
     options: PollOptions,
-  ): Observable<T | string>
-  postSignedFeedValue(
+  ): Observable<T>
+  pollFeedContentHash(
+    hashOrParams: string | FeedParams,
+    options: PollContentHashOptions,
+  ): Observable<string | null>
+  pollFeedContent(
+    hashOrParams: string | FeedParams,
+    options: PollContentOptions,
+  ): Observable<T | null>
+  postSignedFeedChunk(
     params: FeedUpdateParams,
     body: Buffer,
     options?: FetchOptions,
   ): Promise<T>
-  postFeedValue(
+  postFeedChunk(
     meta: FeedMetadata,
     data: hexInput,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<T>
-  updateFeedValue(
+  setFeedChunk(
     hashOrParams: string | FeedParams,
     data: hexInput,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<T>
-  uploadFeedValue(
+  setFeedContentHash(
+    hashOrParams: string | FeedParams,
+    contentHash: string,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<T>
+  setFeedContent(
     hashOrParams: string | FeedParams,
     data: string | Buffer | DirectoryData,
     options?: UploadOptions,

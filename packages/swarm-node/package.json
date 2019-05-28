@@ -1,6 +1,6 @@
 {
   "name": "@erebos/swarm-node",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Swarm client for node",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -19,15 +19,15 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
-    "@erebos/api-bzz-base": "^0.7.0",
-    "@erebos/api-bzz-node": "^0.7.0",
+    "@babel/runtime": "^7.4.5",
+    "@erebos/api-bzz-base": "^0.8.0",
+    "@erebos/api-bzz-node": "^0.8.0",
     "@erebos/api-pss": "^0.7.0",
     "@erebos/client-base": "^0.7.0",
     "@mainframe/rpc-node": "^0.3.0",
     "@mainframe/rpc-stream": "^0.3.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.97.0"
+    "flow-bin": "^0.98.1"
   }
 }

@@ -1,6 +1,6 @@
 # @erebos/timeline
 
-Reference implementation of the timeline protocol.
+Reference implementation of the [timeline protocol](https://erebos.js.org/docs/timeline-protocol).
 
 ## Installation
 
@@ -8,9 +8,13 @@ Reference implementation of the timeline protocol.
 yarn add @erebos/timeline
 ```
 
+## Example
+
+See the [library documentation website](https://erebos.js.org/docs/timeline-example).
+
 ## API
 
-See the [library documentation](../../docs/timeline-api.md).
+See the [library documentation website](https://erebos.js.org/docs/timeline-api).
 
 ## License
 

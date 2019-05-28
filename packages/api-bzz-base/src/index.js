@@ -15,12 +15,13 @@ import type {
   DirectoryData,
   DownloadOptions,
   FeedMetadata,
-  FeedOptions,
   FeedParams,
   FeedUpdateParams,
   FetchOptions,
   ListResult,
   PollOptions,
+  PollContentHashOptions,
+  PollContentOptions,
   SignBytesFunc,
   UploadOptions,
 } from './types'
@@ -281,25 +282,32 @@ export default class BaseBzz {
     return this._fetchTimeout(url, options).then(resJSON)
   }
 
-  getFeedValue(
+  getFeedChunk(
     hashOrParams: string | FeedParams,
-    options?: FeedOptions = {},
+    options?: FetchOptions = {},
   ): Promise<*> {
     const url = this.getFeedURL(hashOrParams)
-    return this._fetchTimeout(url, options)
-      .then(resOrError)
-      .then(res => {
-        if (options.mode === 'content-hash') {
-          return resSwarmHash(res)
-        }
-        if (options.mode === 'content-response') {
-          return resSwarmHash(res).then(hash => this.download(hash))
-        }
-        return res
-      })
+    return this._fetchTimeout(url, options).then(resOrError)
   }
 
-  pollFeedValue(
+  getFeedContentHash(
+    hashOrParams: string | FeedParams,
+    options?: FetchOptions = {},
+  ) {
+    return this.getFeedChunk(hashOrParams, options).then(resSwarmHash)
+  }
+
+  getFeedContent(
+    hashOrParams: string | FeedParams,
+    options?: DownloadOptions = {},
+  ) {
+    return this.getFeedContentHash(hashOrParams, {
+      headers: options.headers,
+      timeout: options.timeout,
+    }).then(hash => this.download(hash, options))
+  }
+
+  pollFeedChunk(
     hashOrParams: string | FeedParams,
     options: PollOptions,
   ): Observable<*> {
@@ -319,7 +327,7 @@ export default class BaseBzz {
 
     // Handle whether the subscription should fail if the feed doesn't have a value
     if (options.whenEmpty === 'error') {
-      pipeline.push(flatMap(() => this.getFeedValue(hashOrParams, options)))
+      pipeline.push(flatMap(() => this.getFeedChunk(hashOrParams, options)))
     } else {
       const url = this.getFeedURL(hashOrParams)
       pipeline.push(
@@ -342,37 +350,38 @@ export default class BaseBzz {
       }
     }
 
-    // In content mode, additional logic can be performed
-    if (
-      options.mode === 'content-hash' ||
-      options.mode === 'content-response'
-    ) {
-      // Parse response as Swarm content hash
-      pipeline.push(
-        flatMap(res => {
-          return res === null ? Promise.resolve(null) : resSwarmHash(res)
-        }),
-      )
-
-      // Only continue execution when the content hash has changed
-      if (options.contentChangedOnly === true) {
-        pipeline.push(distinctUntilChanged())
-      }
-
-      // Download contents from the provided hash
-      if (options.mode === 'content-response') {
-        pipeline.push(
-          flatMap(hash => {
-            return hash === null ? Promise.resolve(null) : this.download(hash)
-          }),
-        )
-      }
-    }
-
     return merge(interval(options.interval), ...sources).pipe(...pipeline)
   }
 
-  postSignedFeedValue(
+  pollFeedContentHash(
+    hashOrParams: string | FeedParams,
+    options: PollContentHashOptions,
+  ): Observable<string | null> {
+    const pipeline = [
+      flatMap(res => {
+        return res === null ? Promise.resolve(null) : resSwarmHash(res)
+      }),
+    ]
+    if (options.changedOnly) {
+      pipeline.push(distinctUntilChanged())
+    }
+    return this.pollFeedChunk(hashOrParams, options).pipe(...pipeline)
+  }
+
+  pollFeedContent(
+    hashOrParams: string | FeedParams,
+    options: PollContentOptions,
+  ): Observable<*> {
+    return this.pollFeedContentHash(hashOrParams, options).pipe(
+      flatMap(hash => {
+        return hash === null
+          ? Promise.resolve(null)
+          : this.download(hash, options)
+      }),
+    )
+  }
+
+  postSignedFeedChunk(
     params: FeedUpdateParams,
     body: Buffer,
     options?: FetchOptions = {},
@@ -383,7 +392,7 @@ export default class BaseBzz {
     )
   }
 
-  postFeedValue(
+  postFeedChunk(
     meta: FeedMetadata,
     data: hexInput,
     options?: FetchOptions,
@@ -399,22 +408,33 @@ export default class BaseBzz {
         level: meta.epoch.level,
         signature,
       }
-      return this.postSignedFeedValue(params, body, options)
+      return this.postSignedFeedChunk(params, body, options)
     })
   }
 
-  updateFeedValue(
+  setFeedChunk(
     hashOrParams: string | FeedParams,
     data: hexInput,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<*> {
     return this.getFeedMetadata(hashOrParams, options).then(meta => {
-      return this.postFeedValue(meta, data, options, signParams)
+      return this.postFeedChunk(meta, data, options, signParams)
     })
   }
 
-  uploadFeedValue(
+  setFeedContentHash(
+    hashOrParams: string | FeedParams,
+    contentHash: string,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<*> {
+    return this.getFeedMetadata(hashOrParams, options).then(meta => {
+      return this.postFeedChunk(meta, `0x${contentHash}`, options, signParams)
+    })
+  }
+
+  setFeedContent(
     hashOrParams: string | FeedParams,
     data: string | Buffer | DirectoryData,
     options?: UploadOptions = {},
@@ -425,7 +445,7 @@ export default class BaseBzz {
       this.upload(data, options),
       this.getFeedMetadata(hashOrParams, feedOptions),
     ]).then(([hash, meta]) => {
-      return this.postFeedValue(
+      return this.postFeedChunk(
         meta,
         `0x${hash}`,
         feedOptions,

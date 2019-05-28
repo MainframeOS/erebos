@@ -59,7 +59,7 @@ describe('timeline', () => {
     expect(validateChapter(valid)).toBe(valid)
   })
 
-  it('download() method downloads and decodes the chapter', async () => {
+  it('getChapter() method downloads and decodes the chapter', async () => {
     const now = Date.now()
     Date.now = jest.fn(() => now)
 
@@ -70,7 +70,7 @@ describe('timeline', () => {
       bzz.uploadFile(JSON.stringify({ ok: false })),
     ])
 
-    const valid = await timeline.download(validID)
+    const valid = await timeline.getChapter(validID)
     expect(valid).toEqual({
       id: validID,
       protocol: 'timeline',
@@ -81,14 +81,14 @@ describe('timeline', () => {
       content: { ok: true },
     })
 
-    expect(timeline.download(invalidID)).rejects.toThrow('Invalid payload')
+    expect(timeline.getChapter(invalidID)).rejects.toThrow('Invalid payload')
   })
 
-  it('upload() method encodes and uploads the chapter', async () => {
+  it('postChapter() method encodes and uploads the chapter', async () => {
     const timeline = new Timeline({ bzz })
     const chapter = createChapter({ author, content: { ok: true } })
-    const id = await timeline.upload(chapter)
-    const downloaded = await timeline.download(id)
+    const id = await timeline.postChapter(chapter)
+    const downloaded = await timeline.getChapter(id)
     expect(downloaded).toEqual({ ...chapter, id })
   })
 
@@ -110,15 +110,15 @@ describe('timeline', () => {
     const timeline = new Timeline({ bzz, decode, encode })
     const chapter = createChapter({ author, content: { ok: true } })
 
-    const id = await timeline.upload(chapter)
+    const id = await timeline.postChapter(chapter)
     expect(encode).toHaveBeenCalledTimes(1)
 
-    const downloaded = await timeline.download(id)
+    const downloaded = await timeline.getChapter(id)
     expect(decode).toHaveBeenCalledTimes(1)
     expect(downloaded).toEqual({ ...chapter, id })
   })
 
-  it('updateChapterID() and getChapterID() methods manipulate a feed hash', async () => {
+  it('setLatestChapterID() and getLatestChapterID() methods manipulate a feed hash', async () => {
     jest.setTimeout(10000) // 10 secs
 
     const feed = await bzz.createFeedManifest({
@@ -128,30 +128,49 @@ describe('timeline', () => {
     const timeline = new Timeline({ bzz, feed })
 
     const chapter = createChapter({ author, content: { ok: true } })
-    const chapterID = await timeline.upload(chapter)
+    const chapterID = await timeline.postChapter(chapter)
 
-    await timeline.updateChapterID(chapterID)
-    const id = await timeline.getChapterID()
+    await timeline.setLatestChapterID(chapterID)
+    const id = await timeline.getLatestChapterID()
     expect(id).toBe(chapterID)
   })
 
-  it('addChapter() and loadChapter() methods manipulate a chapter', async () => {
+  it('setLatestChapter() and getLatestChapter() methods manipulate a chapter', async () => {
     jest.setTimeout(10000) // 10 secs
 
-    const feed = await bzz.createFeedManifest({
-      user: author,
-      name: 'test-chapter',
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-chapter' },
     })
-    const timeline = new Timeline({ bzz, feed })
 
     const chapter = createChapter({ author, content: { ok: true } })
-    const chapterID = await timeline.addChapter(chapter)
-    const loadedChapter = await timeline.loadChapter()
+    const chapterID = await timeline.setLatestChapter(chapter)
+    const loadedChapter = await timeline.getLatestChapter()
 
     expect(loadedChapter).toEqual({ ...chapter, id: chapterID })
   })
 
-  it('createUpdater() returns a function to call to update the feed', async () => {
+  it('addChapter() method retrieves the previous chapter when needed', async () => {
+    jest.setTimeout(10000) // 10 secs
+
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-add-chapter' },
+    })
+
+    const chapter = createChapter({ author, content: { ok: true } })
+    const previousChapterID = await timeline.setLatestChapter(chapter)
+    const addedChapter = await timeline.addChapter(chapter)
+    const loadedChapter = await timeline.getLatestChapter()
+
+    expect(loadedChapter).toEqual({
+      ...chapter,
+      id: addedChapter.id,
+      previous: previousChapterID,
+    })
+  })
+
+  it('createAddChapter() returns a function to call to add to the feed', async () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['first update', 'second update', 'third update']
@@ -160,14 +179,14 @@ describe('timeline', () => {
       bzz,
       feed: { user: author, name: 'test-updater' },
     })
-    const updateTimeline = timeline.createUpdater({
+    const addChapter = timeline.createAddChapter({
       author,
       type: 'text/plain',
     })
 
     for (const content of contents) {
-      await updateTimeline({ content })
-      const chapter = await timeline.loadChapter()
+      await addChapter({ content })
+      const chapter = await timeline.getLatestChapter()
       expect(chapter.content).toBe(content)
     }
   })
@@ -182,13 +201,13 @@ describe('timeline', () => {
     })
 
     // Create the timeline with the given chapters
-    const updateTimeline = await timeline.createUpdater({
+    const addChapter = await timeline.createAddChapter({
       author,
       type: 'text/plain',
     })
     const chapterIDs = []
     for (const content of contents) {
-      const chapter = await updateTimeline({ content })
+      const chapter = await addChapter({ content })
       chapterIDs.push(chapter.id)
     }
 
@@ -209,7 +228,47 @@ describe('timeline', () => {
     expect(j).toBe(0)
   })
 
-  it('loadChapters() returns an array of chapters within the given range', async () => {
+  it('createLoader() returns an Observable of chapters within the given range', async () => {
+    jest.setTimeout(20000) // 20 secs
+
+    const contents = ['one', 'two', 'three', 'four', 'five']
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-loader' },
+    })
+
+    // Create the timeline with the given chapters
+    const addChapter = timeline.createAddChapter({
+      author,
+      type: 'text/plain',
+    })
+
+    const chapterIDs = []
+    for (const content of contents) {
+      const chapter = await addChapter({ content })
+      chapterIDs.push(chapter.id)
+    }
+
+    const loader = await timeline.createLoader(chapterIDs[3], chapterIDs[0])
+
+    await new Promise((resolve, reject) => {
+      let index = 3
+      loader.subscribe({
+        next: chapter => {
+          expect(chapter.content).toBe(contents[index--])
+        },
+        complete: () => {
+          expect(index).toBe(0)
+          resolve()
+        },
+        error: err => {
+          reject(err)
+        },
+      })
+    })
+  })
+
+  it('getChapters() returns an array of chapters within the given range', async () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three', 'four', 'five']
@@ -219,31 +278,70 @@ describe('timeline', () => {
     })
 
     // Create the timeline with the given chapters
-    const updateTimeline = timeline.createUpdater({
+    const addChapter = timeline.createAddChapter({
       author,
       type: 'text/plain',
     })
 
     const chapterIDs = []
     for (const content of contents) {
-      const chapter = await updateTimeline({ content })
+      const chapter = await addChapter({ content })
       chapterIDs.push(chapter.id)
     }
 
-    const slice1 = await timeline.loadChapters(chapterIDs[3], chapterIDs[0])
+    const slice1 = await timeline.getChapters(chapterIDs[3], chapterIDs[0])
     expect(slice1.map(chapter => chapter.content)).toEqual([
       'four',
       'three',
       'two',
     ])
 
-    const latestChapterID = await timeline.getChapterID()
-    const slice2 = await timeline.loadChapters(latestChapterID, chapterIDs[1])
+    const latestChapterID = await timeline.getLatestChapterID()
+    const slice2 = await timeline.getChapters(latestChapterID, chapterIDs[1])
     expect(slice2.map(chapter => chapter.content)).toEqual([
       'five',
       'four',
       'three',
     ])
+  })
+
+  it('pollLatestChapter() returns an observable of the latest chapter', () => {
+    jest.setTimeout(40000) // 40 secs
+
+    const contents = ['one', 'two', 'three']
+    const timeline = new Timeline({
+      bzz,
+      feed: { user: author, name: 'test-poll' },
+    })
+
+    return new Promise(async (resolve, reject) => {
+      const addChapter = timeline.createAddChapter({
+        author,
+        type: 'text/plain',
+      })
+
+      let i = 0
+      const pushNext = async () => {
+        await addChapter({ content: contents[i] })
+      }
+
+      const sub = timeline.pollLatestChapter({ interval: 10000 }).subscribe({
+        next: chapter => {
+          expect(chapter.content).toBe(contents[i])
+          if (++i === 3) {
+            sub.unsubscribe()
+            resolve()
+          } else {
+            pushNext()
+          }
+        },
+        error: err => {
+          reject(err)
+        },
+      })
+
+      pushNext()
+    })
   })
 
   it('live() returns an observable of lists of chapters as they get polled', () => {
@@ -256,7 +354,7 @@ describe('timeline', () => {
     })
 
     return new Promise(async (resolve, reject) => {
-      const updateTimeline = timeline.createUpdater({
+      const addChapter = timeline.createAddChapter({
         author,
         type: 'text/plain',
       })
@@ -264,7 +362,7 @@ describe('timeline', () => {
       let i = 0
       const pushSlice = async () => {
         for (const content of contents[i]) {
-          await updateTimeline({ content })
+          await addChapter({ content })
         }
       }
 

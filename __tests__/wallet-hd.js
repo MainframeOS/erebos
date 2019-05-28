@@ -1,5 +1,6 @@
 import { utils } from 'ethers'
-import { HDWallet } from '../packages/wallets-hd'
+
+import { HDWallet } from '../packages/wallet-hd'
 import Bzz from '../packages/api-bzz-node'
 
 const MNEMONIC =
@@ -71,10 +72,10 @@ describe('HDWallet', () => {
     )
   })
 
-  it('signs bytes with an accounts private key', async () => {
+  it('signs bytes with an accounts private key', () => {
     const wallet = new HDWallet(MNEMONIC)
     const bytes = Buffer.from('test', 'utf8')
-    const signedBytes = await wallet.signBytes(FIRST_ACCOUNT, bytes)
+    const signedBytes = wallet.signBytes(FIRST_ACCOUNT, bytes)
     const hex = utils.hexlify(signedBytes)
     expect(hex).toBe(
       '0x6740fad7598944a2a35eb0297ce22ab45981ddbc295e3fbdbb1aeb98bd7bd850474a696ffdcc1e7e98276f2116e4b5c0dd17d28b2250c7f6bf384cb5ab5f0b9801',
@@ -89,8 +90,8 @@ describe('HDWallet', () => {
       signBytes: async bytes => wallet.signBytes(FIRST_ACCOUNT, bytes),
       url: 'http://localhost:8500',
     })
-    await bzz.updateFeedValue(params, data)
-    const res = await bzz.getFeedValue(params)
+    await bzz.setFeedChunk(params, data)
+    const res = await bzz.getFeedChunk(params)
     const value = await res.json()
     expect(value).toEqual(data)
   })

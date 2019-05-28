@@ -7,7 +7,7 @@ jobs:
 
     docker:
       - image: circleci/node:10-browsers
-      - image: ethdevops/swarm:v0.3.11
+      - image: ethdevops/swarm:v0.4.0
         environment:
           DATADIR: /data
           PASSWORD: password123

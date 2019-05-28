@@ -10,7 +10,7 @@ npm install --global @erebos/cli
 
 ## Commands
 
-See the [CLI documentation](../../docs/cli.md).
+See the [CLI documentation](https://erebos.js.org/docs/cli).
 
 ## License
 

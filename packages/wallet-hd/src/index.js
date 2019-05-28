@@ -1,9 +1,9 @@
 // @flow
 
+import { sign } from '@erebos/secp256k1'
 import { Wallet, utils, type Arrayish } from 'ethers'
-import { sign } from '../../secp256k1'
 
-type TransactionParams = {
+export type TransactionParams = {
   from: string,
   to?: string,
   value?: string,
@@ -15,7 +15,7 @@ type TransactionParams = {
 
 const BASE_PATH = `m/44'/60'/0'/0/`
 
-export default class HDWallet {
+export class HDWallet {
   _mnemonic: string
   _wallets: { [index: string]: Wallet } = {}
 
@@ -65,7 +65,7 @@ export default class HDWallet {
     return wallet
   }
 
-  discardAccount(index: number | string) {
+  discardAccount(index: number | string): void {
     const indexStr = String(index)
     if (this._wallets[indexStr]) {
       delete this._wallets[indexStr]
@@ -74,27 +74,29 @@ export default class HDWallet {
 
   // Signing
 
-  signTransaction(txParams: TransactionParams): Promise<string> {
-    const wallet = this.getAccountWallet(txParams.from)
+  async signTransaction({
+    from,
+    ...params
+  }: TransactionParams): Promise<string> {
+    const wallet = this.getAccountWallet(from)
     if (!wallet) {
-      throw new Error(`Wallet not found for account ${txParams.from}`)
+      throw new Error(`Wallet not found for account ${from}`)
     }
-    delete txParams['from']
-    return wallet.sign(txParams)
+    return await wallet.sign(params)
   }
 
-  signMessage(address: string, message: string | Arrayish): Promise<string> {
+  async signMessage(
+    address: string,
+    message: string | Arrayish,
+  ): Promise<string> {
     const wallet = this.getAccountWallet(address)
     if (!wallet) {
       throw new Error(`Wallet not found for account ${address}`)
     }
-    return wallet.signMessage(message)
+    return await wallet.signMessage(message)
   }
 
-  async signBytes(
-    address: string,
-    bytes: Array<number>,
-  ): Promise<Array<number>> {
+  signBytes(address: string, bytes: Array<number>): Array<number> {
     const wallet = this.getAccountWallet(address)
     if (!wallet) {
       throw new Error(`Wallet not found for account ${address}`)

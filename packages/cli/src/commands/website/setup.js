@@ -12,6 +12,7 @@ export default class WebsiteSetupCommand extends Command {
     'key-env': flags.string({
       description:
         'name of the environment variable containing the private key',
+      parse: key => (key ? process.env[key] : undefined),
     }),
     name: flags.string({
       description: 'feed name',
@@ -24,7 +25,7 @@ export default class WebsiteSetupCommand extends Command {
   async run() {
     this.spinner.start()
     try {
-      const keyValue = process.env[this.flags['key-env']]
+      const keyValue = this.flags['key-env']
       const hasKey = keyValue != null && keyValue.length !== 0
       const keyPair = createKeyPair(hasKey ? keyValue : undefined)
 
