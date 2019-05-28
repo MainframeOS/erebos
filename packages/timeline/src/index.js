@@ -80,7 +80,10 @@ export const validateChapter = <T: Object>(chapter: T): T => {
   if (chapter.protocol !== PROTOCOL) {
     throw new Error('Unsupported protocol')
   }
-  if (!semver.satisfies(chapter.version, VERSION_RANGE)) {
+  if (
+    semver.valid(chapter.version) === null ||
+    !semver.satisfies(chapter.version, VERSION_RANGE)
+  ) {
     throw new Error('Unsupported protocol version')
   }
   return chapter
