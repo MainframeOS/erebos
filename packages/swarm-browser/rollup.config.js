@@ -18,7 +18,6 @@ const config = {
   plugins: [
     resolve({
       browser: true,
-      jsnext: true,
     }),
     babel({
       exclude: '**/node_modules/**',
