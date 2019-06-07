@@ -28,6 +28,6 @@
     "@mainframe/rpc-stream": "^0.3.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.98.1"
+    "flow-bin": "^0.100.0"
   }
 }

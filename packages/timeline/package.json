@@ -32,9 +32,9 @@
     "@erebos/api-bzz-base": "^0.8.0",
     "@erebos/hex": "^0.7.0",
     "rxjs": "^6.5.2",
-    "semver": "^6.1.0"
+    "semver": "^6.1.1"
   },
   "devDependencies": {
-    "flow-bin": "^0.98.1"
+    "flow-bin": "^0.100.0"
   }
 }

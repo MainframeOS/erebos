@@ -489,28 +489,28 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Returns** `Observable<Response | null>`
 
-### .postSignedFeedValue()
+### .postSignedFeedChunk()
 
 **Arguments**
 
-1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  [`params: FeedUpdateParams`](#feedupdateparams)
 1.  `body: Buffer`
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<Response>`
 
-### .postFeedValue()
+### .postFeedChunk()
 
 **Arguments**
 
-1.  `meta: FeedMetadata`
+1.  [`meta: FeedMetadata`](#feedmetadata)
 1.  `data: string | Object | Buffer`
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
 **Returns** `Promise<Response>`
 
-### .updateFeedValue()
+### .setFeedChunk()
 
 **Arguments**
 
@@ -521,7 +521,18 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Returns** `Promise<Response>`
 
-### .uploadFeedValue()
+### .setFeedContentHash()
+
+**Arguments**
+
+1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
+1.  `contentHash: string`
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+1.  `signParams?: any`
+
+**Returns** `Promise<Response>`
+
+### .setFeedContent()
 
 This method implements the flow of uploading the provided `data` and updating the feed identified by the provided `userOrHash` and eventually `feedParams` with the immutable hash of the uploaded contents, and returns this hash.
 

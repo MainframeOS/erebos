@@ -23,9 +23,9 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "@erebos/secp256k1": "^0.7.0",
-    "ethers": "^4.0.28"
+    "ethers": "^4.0.29"
   },
   "devDependencies": {
-    "flow-bin": "^0.98.1"
+    "flow-bin": "^0.100.0"
   }
 }
