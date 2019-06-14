@@ -7,7 +7,7 @@ docker run \
        --volume /tmp/swarm-data:/data \
        --interactive \
        --tty \
-       "ethdevops/swarm:v0.4.0" \
+       "ethersphere/swarm:0.4.1" \
        --nosync \
        --maxpeers=0 \
        --verbosity=4 \
