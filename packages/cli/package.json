@@ -45,6 +45,6 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.0",
     "del-cli": "^2.0.0",
-    "flow-bin": "^0.100.0"
+    "flow-bin": "^0.101.0"
   }
 }

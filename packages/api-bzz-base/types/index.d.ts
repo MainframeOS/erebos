@@ -63,7 +63,7 @@ export interface UploadOptions extends FileOptions {
   manifestHash?: hexValue | string
 }
 
-export interface PollOptions extends FeedOptions {
+export interface PollOptions extends FetchOptions {
   interval: number
   immediate?: boolean
   whenEmpty?: 'accept' | 'ignore' | 'error'
@@ -146,15 +146,15 @@ export default abstract class BaseBzz<T> {
   ): Promise<FeedMetadata>
   getFeedChunk(
     hashOrParams: string | FeedParams,
-    options?: FeedOptions,
+    options?: FetchOptions,
   ): Promise<T>
   getFeedContentHash(
     hashOrParams: string | FeedParams,
-    options?: FeedOptions,
+    options?: FetchOptions,
   ): Promise<string | null>
   getFeedContent(
     hashOrParams: string | FeedParams,
-    options?: FeedOptions,
+    options?: DownloadOptions,
   ): Promise<T | null>
   pollFeedChunk(
     hashOrParams: string | FeedParams,

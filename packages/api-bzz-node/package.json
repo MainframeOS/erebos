@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "@erebos/api-bzz-base": "^0.8.0",
-    "@types/node-fetch": "^2.3.5",
+    "@types/node-fetch": "^2.3.6",
     "form-data": "^2.3.3",
     "fs-extra": "^8.0.1",
     "node-fetch": "^2.6.0",
@@ -30,6 +30,6 @@
     "tar-stream": "^2.1.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.100.0"
+    "flow-bin": "^0.101.0"
   }
 }

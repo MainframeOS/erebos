@@ -37,14 +37,14 @@
     "del-cli": "^2.0.0",
     "eslint": "^5.16.0",
     "eslint-config-mainframe": "^3.2.0",
-    "flow-bin": "^0.100.0",
+    "flow-bin": "^0.101.0",
     "flow-copy-source": "^2.0.6",
     "flow-typed": "^2.5.2",
     "jest": "^24.8.0",
     "jest-fetch-mock": "^2.1.2",
     "jest-junit": "^6.4.0",
     "jest-puppeteer": "^4.2.0",
-    "lerna": "^3.14.1",
+    "lerna": "^3.15.0",
     "prettier": "^1.18.2",
     "puppeteer": "^1.17.0"
   }

@@ -8,5 +8,5 @@
 /packages/*/umd
 /website/build
 coverage
-external_deps
+flow-typed
 node_modules
