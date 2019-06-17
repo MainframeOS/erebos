@@ -1,3 +1,8 @@
+## v0.8.1 (2019-06-17)
+
+- Add missing `rxjs` dependency to `@erebos/api-bzz-base` package.
+- Fix TypeScript definition for `@erebos/api-bzz-base` package.
+
 ## v0.8.0 (2019-05-28)
 
 ### Breaking changes

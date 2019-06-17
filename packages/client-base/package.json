@@ -1,6 +1,6 @@
 {
   "name": "@erebos/client-base",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "description": "Client base",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -23,8 +23,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@erebos/api-pss": "^0.7.0"
+    "@babel/runtime": "^7.4.5"
   },
   "devDependencies": {
     "flow-bin": "^0.101.0"
