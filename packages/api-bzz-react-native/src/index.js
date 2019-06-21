@@ -1,5 +1,7 @@
 // @flow
-import { URL } from 'universal-url';
+/* eslint-env browser */
+
+import { URL } from 'universal-url'
 import BaseBzz, {
   type BzzConfig,
   type DirectoryData,
@@ -24,23 +26,26 @@ export default class Bzz extends BaseBzz {
     Object.keys(directory).forEach(key => {
       form.append(
         key,
-        {
+        ({
           uri: directory[key].data,
-          type: directory[key].mimeType,
-          name: directory[key].name,
-        },
+          type: directory[key].contentType,
+          name: key,
+        }: any),
         key,
       )
     })
     if (options.defaultPath != null) {
       const file = directory[options.defaultPath]
       if (file != null) {
-        form.append('', {
-          uri: directory[key].data,
-          type: directory[key].mimeType,
-          name: directory[key].name,
-        },
-        '')
+        form.append(
+          '',
+          ({
+            uri: directory[options.defaultPath].data,
+            type: directory[options.defaultPath].contentType,
+            name: options.defaultPath,
+          }: any),
+          '',
+        )
       }
     }
     return this._upload(form, options)
