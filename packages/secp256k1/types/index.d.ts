@@ -1,31 +1,15 @@
 /// <reference types="node" />
-
-import BN = require('bn.js')
-import elliptic = require('elliptic')
-
-export interface SignatureBuffer {
-  r: Buffer
-  s: Buffer
-}
-
-export interface SignatureHex {
-  r: string
-  s: string
-}
-
-export type Signature = SignatureBuffer | SignatureHex
-
-export function createKeyPair(privKey?: string): elliptic.ec.KeyPair
-
-export function createPublic(pubKey: string): elliptic.ec.KeyPair
-
-export function sign(
-  bytes: Array<number>,
-  privKey: Buffer | BN | string,
-): Array<number>
-
-export function verify(
-  bytes: Array<number>,
-  signature: Array<number> | Signature,
-  pubKey: string | elliptic.ec.KeyPair,
-): boolean
+import elliptic from 'elliptic';
+export declare type KeyPair = elliptic.ec.KeyPair;
+export declare type Signature = {
+    r: Buffer;
+    s: Buffer;
+} | {
+    r: string;
+    s: string;
+};
+export declare const ec: elliptic.ec;
+export declare function createKeyPair(privKey?: string): KeyPair;
+export declare function createPublic(pubKey: string): KeyPair;
+export declare function sign(bytes: Array<number>, privKey: KeyPair | Buffer): Array<number>;
+export declare function verify(bytes: Array<number>, signature: Array<number> | Signature, pubKey: string | KeyPair): boolean;

@@ -7,9 +7,10 @@ import replace from 'rollup-plugin-replace'
 import { uglify } from 'rollup-plugin-uglify'
 
 const env = process.env.NODE_ENV
+const extensions = ['.js', '.ts']
 
 const config = {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: {
     file: `dist/erebos.${env}.js`,
     format: 'umd',
@@ -18,9 +19,11 @@ const config = {
   plugins: [
     resolve({
       browser: true,
+      extensions,
     }),
     babel({
       exclude: '**/node_modules/**',
+      extensions,
       runtimeHelpers: true,
     }),
     commonjs(),

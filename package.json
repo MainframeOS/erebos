@@ -13,13 +13,12 @@
   "scripts": {
     "flow:install": "lerna exec --concurrency 1 -- flow-typed install --ignoreDeps=dev",
     "bootstrap": "lerna bootstrap && yarn flow:install",
-    "lint": "eslint packages/*/src __tests__",
+    "lint": "eslint 'packages/*/src/**.ts' '__tests__/**.ts'",
     "lint:fix": "yarn lint --fix",
     "test:flow": "flow check",
     "test:project": "jest --config jest.config.js",
     "test:ci": "jest --ci --config jest.config.ci.js --runInBand",
-    "test": "yarn test:flow && yarn test:project",
-    "test:all": "yarn lint && yarn test",
+    "test": "yarn lint && yarn test:project",
     "build": "lerna run build && lerna run build:dist",
     "start": "yarn test && yarn build"
   },
@@ -31,13 +30,14 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.15",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "del-cli": "^2.0.0",
     "eslint": "^5.16.0",
     "eslint-config-mainframe": "^3.2.0",
-    "flow-bin": "^0.101.0",
     "flow-copy-source": "^2.0.6",
     "flow-typed": "^2.5.2",
     "jest": "^24.8.0",
@@ -46,6 +46,8 @@
     "jest-puppeteer": "^4.2.0",
     "lerna": "^3.15.0",
     "prettier": "^1.18.2",
-    "puppeteer": "^1.17.0"
+    "puppeteer": "^1.17.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
   }
 }

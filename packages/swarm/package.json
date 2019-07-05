@@ -15,7 +15,5 @@
     "@erebos/swarm-browser": "^0.8.1",
     "@erebos/swarm-node": "^0.8.1"
   },
-  "devDependencies": {
-    "flow-bin": "^0.101.0"
-  }
+  "devDependencies": {}
 }

@@ -7,7 +7,7 @@ jobs:
 
     docker:
       - image: circleci/node:10-browsers
-      - image: ethersphere/swarm:0.4.1
+      - image: ethersphere/swarm:0.4.2
         environment:
           DATADIR: /data
           PASSWORD: password123
@@ -15,7 +15,7 @@ jobs:
           - >
             --nosync
             --maxpeers=0
-            --verbosity=4
+            --verbosity=3
             --httpaddr=0.0.0.0
             --nat=none
             --corsdomain=*

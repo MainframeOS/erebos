@@ -13,9 +13,10 @@
   ],
   "scripts": {
     "clean": "del lib",
-    "build:js": "BABEL_ENV=node babel src --out-dir lib",
-    "build:flow": "flow-copy-source src lib",
-    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "test:types": "tsc --noEmit",
+    "build:js": "BABEL_ENV=node babel src --out-dir lib --extensions \".ts\"",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
@@ -28,6 +29,6 @@
     "@mainframe/rpc-stream": "^0.3.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.101.0"
+    "typescript": "^3.5.2"
   }
 }

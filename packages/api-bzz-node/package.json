@@ -13,9 +13,10 @@
   ],
   "scripts": {
     "clean": "del lib",
-    "build:js": "BABEL_ENV=node babel src --out-dir lib",
-    "build:flow": "flow-copy-source src lib",
-    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "test:types": "tsc --noEmit",
+    "build:js": "BABEL_ENV=node babel src --out-dir lib --extensions \".ts\"",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
@@ -30,6 +31,10 @@
     "tar-stream": "^2.1.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.101.0"
+    "@types/form-data": "^2.2.1",
+    "@types/fs-extra": "^8.0.0",
+    "@types/node": "^12.0.12",
+    "@types/tar-fs": "^1.16.1",
+    "@types/tar-stream": "^1.6.1"
   }
 }

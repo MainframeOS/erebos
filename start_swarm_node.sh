@@ -7,10 +7,10 @@ docker run \
        --volume /tmp/swarm-data:/data \
        --interactive \
        --tty \
-       "ethersphere/swarm:0.4.1" \
+       "ethersphere/swarm:0.4.2" \
        --nosync \
        --maxpeers=0 \
-       --verbosity=4 \
+       --verbosity=3 \
        --httpaddr=0.0.0.0 \
        --nat=none \
        --corsdomain="*" \

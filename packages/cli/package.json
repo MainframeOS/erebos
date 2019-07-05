@@ -23,14 +23,16 @@
   },
   "scripts": {
     "clean": "del lib",
-    "build:js": "BABEL_ENV=node babel src --out-dir lib",
-    "build": "yarn clean && yarn build:js",
+    "test:types": "tsc --noEmit",
+    "build:js": "BABEL_ENV=node babel src --out-dir lib --extensions \".ts\"",
+    "build": "yarn test:types && yarn clean && yarn build:js",
     "prepublishOnly": "yarn build && oclif-dev manifest",
     "postpublish": "del-cli oclif.manifest.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "@erebos/api-bzz-node": "^0.8.0",
+    "@erebos/api-pss": "^0.7.0",
     "@erebos/hex": "^0.7.0",
     "@erebos/keccak256": "^0.7.0",
     "@erebos/secp256k1": "^0.7.0",
@@ -45,6 +47,6 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.0",
     "del-cli": "^2.0.0",
-    "flow-bin": "^0.101.0"
+    "typescript": "^3.5.2"
   }
 }
