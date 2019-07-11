@@ -1,7 +1,7 @@
 import elliptic from 'elliptic'
 
+export type BNInput = elliptic.BNInput
 export type KeyPair = elliptic.ec.KeyPair
-export type Signature = { r: Buffer; s: Buffer } | { r: string; s: string }
 
 export const ec = new elliptic.ec('secp256k1')
 
@@ -13,11 +13,8 @@ export function createPublic(pubKey: string): KeyPair {
   return ec.keyFromPublic(pubKey, 'hex')
 }
 
-export function sign(
-  bytes: Array<number>,
-  privKey: KeyPair | Buffer,
-): Array<number> {
-  const sig = ec.sign(bytes, privKey, { canonical: true })
+export function sign(input: BNInput, privKey: KeyPair | Buffer): Array<number> {
+  const sig = ec.sign(input, privKey, { canonical: true })
   return [
     ...sig.r.toArray('be', 32),
     ...sig.s.toArray('be', 32),
@@ -26,9 +23,9 @@ export function sign(
 }
 
 export function verify(
-  bytes: Array<number>,
-  signature: Array<number> | Signature,
-  pubKey: string | KeyPair,
+  input: BNInput,
+  signature: Array<number> | elliptic.ec.SignatureOptions,
+  pubKey: string | KeyPair | Buffer,
 ): boolean {
   let sig
   if (Array.isArray(signature)) {
@@ -38,5 +35,5 @@ export function verify(
     sig = signature
   }
   const key = typeof pubKey === 'string' ? createPublic(pubKey) : pubKey
-  return key.verify(bytes, sig)
+  return ec.verify(input, sig, key)
 }

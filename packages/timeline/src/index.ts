@@ -1,6 +1,6 @@
 import {
+  BaseBzz,
   BaseResponse,
-  BzzBase,
   FeedParams,
   FetchOptions,
   UploadOptions,
@@ -104,7 +104,7 @@ async function defaultEncode(chapter: any) {
 
 export interface TimelineConfig<
   T = any,
-  Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>
+  Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>
 > {
   bzz: Bzz
   feed: string | FeedParams
@@ -115,7 +115,7 @@ export interface TimelineConfig<
 
 export class Timeline<
   T = any,
-  Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>
+  Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>
 > {
   protected bzz: Bzz
   protected decode: DecodeChapter<T>
@@ -209,7 +209,7 @@ export class Timeline<
     if (typeof chapter.previous === 'undefined') {
       chapter.previous = await this.getLatestChapterID(options)
     }
-    const id = await this.setLatestChapter(chapter)
+    const id = await this.setLatestChapter(createChapter(chapter))
     return { ...chapter, id }
   }
 

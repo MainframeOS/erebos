@@ -1,4 +1,4 @@
-import { BzzNode } from '../packages/api-bzz-node'
+import { Bzz } from '../packages/api-bzz-node'
 import { createHex } from '../packages/hex'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign, verify } from '../packages/secp256k1'
@@ -15,8 +15,8 @@ describe('timeline', () => {
   const keyPair = createKeyPair()
   const author = pubKeyToAddress(keyPair.getPublic('array'))
 
-  const bzz = new BzzNode({
-    signBytes: async bytes => sign(bytes, keyPair.getPrivate()),
+  const bzz = new Bzz({
+    signBytes: async bytes => sign(bytes, keyPair),
     url: 'http://localhost:8500/',
   })
 

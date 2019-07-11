@@ -1,5 +1,3 @@
-import { BzzBase, BaseResponse } from '@erebos/api-bzz-base'
-import { Pss } from '@erebos/api-pss'
 import BaseRPC from '@mainframe/rpc-base'
 import StreamRPC from '@mainframe/rpc-stream'
 
@@ -33,27 +31,11 @@ export function createInstantiateAPI<R extends BaseRPC>(
   }
 }
 
-export abstract class ClientBase<Bzz extends BzzBase<BaseResponse>> {
-  protected bzzInstance: Bzz | void = undefined
-  protected pssInstance: Pss | void = undefined
+export abstract class BaseClient {
   protected rpcInstance: StreamRPC | void
 
   public constructor(config: ClientConfig = {}) {
     this.rpcInstance = config.rpc
-  }
-
-  public get bzz(): Bzz {
-    if (this.bzzInstance == null) {
-      throw new Error('Missing Bzz instance or HTTP URL')
-    }
-    return this.bzzInstance
-  }
-
-  public get pss(): Pss {
-    if (this.pssInstance == null) {
-      this.pssInstance = new Pss(this.rpc)
-    }
-    return this.pssInstance
   }
 
   public get rpc(): StreamRPC {

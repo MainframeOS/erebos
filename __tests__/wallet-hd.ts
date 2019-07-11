@@ -1,6 +1,6 @@
 import { utils } from 'ethers'
 
-import { BzzNode } from '../packages/api-bzz-node'
+import { Bzz } from '../packages/api-bzz-node'
 import { HDWallet } from '../packages/wallet-hd'
 
 const MNEMONIC =
@@ -86,7 +86,7 @@ describe('HDWallet', () => {
     const wallet = new HDWallet(MNEMONIC)
     const params = { user: FIRST_ACCOUNT, name: 'test' }
     const data = { test: 'test' }
-    const bzz = new BzzNode({
+    const bzz = new Bzz({
       signBytes: async bytes => wallet.signBytes(FIRST_ACCOUNT, bytes),
       url: 'http://localhost:8500',
     })

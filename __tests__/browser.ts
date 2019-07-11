@@ -22,7 +22,7 @@ describe('browser', () => {
     await page.addScriptTag({
       path: resolve(
         __dirname,
-        '../packages/swarm-browser/dist/erebos.development.js',
+        '../packages/swarm-browser/dist/erebos.swarm.development.js',
       ),
     })
     await page.addScriptTag({
@@ -40,7 +40,7 @@ describe('browser', () => {
     })
 
     const clientHandle = await page.evaluateHandle(() => {
-      return new Erebos.SwarmClient({
+      return new Erebos.swarm.SwarmClient({
         bzz: {
           signBytes: window.signBytes,
           url: 'http://localhost:8500',

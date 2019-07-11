@@ -12,9 +12,9 @@ const extensions = ['.js', '.ts']
 const config = {
   input: 'src/index.ts',
   output: {
-    file: `dist/erebos.${env}.js`,
+    file: `dist/erebos.swarm.${env}.js`,
     format: 'umd',
-    name: 'Erebos',
+    name: 'Erebos.swarm',
   },
   plugins: [
     resolve({
@@ -36,14 +36,7 @@ const config = {
 }
 
 if (env === 'production') {
-  config.plugins.push(
-    uglify({
-      compress: {
-        dead_code: true,
-        warnings: false,
-      },
-    }),
-  )
+  config.plugins.push(uglify())
 }
 
 export default config

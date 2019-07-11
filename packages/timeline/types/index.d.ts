@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { BaseResponse, BzzBase, FeedParams, FetchOptions, UploadOptions } from '@erebos/api-bzz-base';
+import { BaseBzz, BaseResponse, FeedParams, FetchOptions, UploadOptions } from '@erebos/api-bzz-base';
 import { hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
 export declare const PROTOCOL = "timeline";
@@ -34,14 +34,14 @@ export interface MaybeChapter extends Record<string, any> {
     version?: string;
 }
 export declare function validateChapter<T extends MaybeChapter>(chapter: T): T;
-export interface TimelineConfig<T = any, Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>> {
+export interface TimelineConfig<T = any, Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>> {
     bzz: Bzz;
     feed: string | FeedParams;
     decode?: DecodeChapter<T>;
     encode?: EncodeChapter<T>;
     signParams?: any;
 }
-export declare class Timeline<T = any, Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>> {
+export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>> {
     protected bzz: Bzz;
     protected decode: DecodeChapter<T>;
     protected encode: EncodeChapter<T>;

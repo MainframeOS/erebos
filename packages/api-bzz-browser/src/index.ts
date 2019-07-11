@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
 import {
-  BzzBase,
+  BaseBzz,
   BzzConfig,
   DirectoryData,
   UploadOptions,
@@ -10,7 +10,7 @@ import { hexValue } from '@erebos/hex'
 
 export * from '@erebos/api-bzz-base'
 
-export class BzzBrowser extends BzzBase<Response> {
+export class Bzz extends BaseBzz<Response> {
   public constructor(config: BzzConfig) {
     const { url, ...cfg } = config
     super(window.fetch.bind(window), { ...cfg, url: new URL(url).href })
@@ -34,6 +34,6 @@ export class BzzBrowser extends BzzBase<Response> {
         form.append('', new Blob([file.data], { type: file.contentType }), '')
       }
     }
-    return this._upload(form, options)
+    return this.uploadBody(form, options)
   }
 }

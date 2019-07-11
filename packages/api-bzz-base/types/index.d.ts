@@ -20,7 +20,7 @@ export declare function resJSON<R extends BaseResponse, T = any>(res: R): Promis
 export declare function resText<R extends BaseResponse>(res: R): Promise<string>;
 export declare function resHex<R extends BaseResponse>(res: R): Promise<hexValue>;
 export declare function resSwarmHash<R extends BaseResponse>(res: R): Promise<string>;
-export declare class BzzBase<Response extends BaseResponse> {
+export declare class BaseBzz<Response extends BaseResponse> {
     protected defaultTimeout: number;
     protected fetch: Fetch<Response>;
     protected signBytes: SignBytesFunc;
@@ -33,9 +33,8 @@ export declare class BzzBase<Response extends BaseResponse> {
     getFeedURL(hashOrParams: string | FeedParams | FeedUpdateParams, flag?: 'meta'): string;
     hash(domain: string, options?: FetchOptions): Promise<hexValue>;
     list(hash: string, options?: DownloadOptions): Promise<ListResult>;
-    protected _download(hash: string, options: DownloadOptions): Promise<Response>;
     download(hash: string, options?: DownloadOptions): Promise<Response>;
-    protected _upload(body: any, options: UploadOptions, raw?: boolean): Promise<hexValue>;
+    protected uploadBody(body: any, options: UploadOptions, raw?: boolean): Promise<hexValue>;
     uploadFile(data: string | Buffer, options?: UploadOptions): Promise<hexValue>;
     uploadDirectory(_directory: DirectoryData, _options?: UploadOptions): Promise<hexValue>;
     upload(data: string | Buffer | DirectoryData, options?: UploadOptions): Promise<hexValue>;

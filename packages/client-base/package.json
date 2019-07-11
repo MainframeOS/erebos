@@ -1,6 +1,6 @@
 {
   "name": "@erebos/client-base",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Client base",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -14,7 +14,7 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "del cjs esm",
+    "clean": "del cjs esm types",
     "test:types": "tsc --noEmit",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
@@ -24,15 +24,11 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@erebos/api-pss": "^0.7.0",
-    "@mainframe/rpc-base": "^0.3.0"
-  },
-  "peerDependencies": {
-    "@erebos/api-bzz-base": "^0.8.1"
+    "@babel/runtime": "^7.5.4",
+    "@mainframe/rpc-base": "^0.3.0",
+    "@mainframe/rpc-stream": "^0.3.0"
   },
   "devDependencies": {
-    "@erebos/api-bzz-base": "^0.8.1",
-    "typescript": "^3.5.2"
+    "typescript": "3.5.2"
   }
 }

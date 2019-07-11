@@ -17,7 +17,7 @@ const pubKey = Buffer.from('...')
 const address = pubKeyToAddress(pubKey)
 ```
 
-## Flow types
+## Interfaces and types
 
 ### hexValue
 

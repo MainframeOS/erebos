@@ -80,7 +80,7 @@ function defaultSignBytes() {
   return Promise.reject(new Error('Missing `signBytes()` function'))
 }
 
-export class BzzBase<Response extends BaseResponse> {
+export class BaseBzz<Response extends BaseResponse> {
   protected defaultTimeout: number
   protected fetch: Fetch<Response>
   protected signBytes: SignBytesFunc
@@ -214,23 +214,16 @@ export class BzzBase<Response extends BaseResponse> {
     return await resJSON(res)
   }
 
-  protected async _download(
+  public async download(
     hash: string,
-    options: DownloadOptions,
+    options: DownloadOptions = {},
   ): Promise<Response> {
     const url = this.getDownloadURL(hash, options)
     const res = await this.fetchTimeout(url, options)
     return resOrError(res)
   }
 
-  public async download(
-    hash: string,
-    options: DownloadOptions = {},
-  ): Promise<Response> {
-    return await this._download(hash, options)
-  }
-
-  protected async _upload(
+  protected async uploadBody(
     body: any,
     options: UploadOptions,
     raw: boolean = false,
@@ -259,7 +252,7 @@ export class BzzBase<Response extends BaseResponse> {
       options.headers['content-type'] = options.contentType
     }
 
-    return await this._upload(body, options, raw)
+    return await this.uploadBody(body, options, raw)
   }
 
   public uploadDirectory(

@@ -1,11 +1,11 @@
 {
   "name": "@erebos/swarm-browser",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Swarm client for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "browser": "dist/erebos.production.js",
+  "browser": "dist/erebos.swarm.production.js",
   "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "del cjs dist esm",
+    "clean": "del cjs dist esm types",
     "test:types": "tsc --noEmit",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
@@ -29,16 +29,16 @@
     "prepublishOnly": "yarn build && yarn build:dist"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@erebos/api-bzz-base": "^0.8.1",
-    "@erebos/api-bzz-browser": "^0.8.1",
-    "@erebos/api-pss": "^0.7.0",
-    "@erebos/client-base": "^0.8.1",
+    "@babel/runtime": "^7.5.4",
+    "@erebos/api-bzz-base": "^0.9.0",
+    "@erebos/api-bzz-browser": "^0.9.0",
+    "@erebos/api-pss": "^0.9.0",
+    "@erebos/client-base": "^0.9.0",
     "@mainframe/rpc-browser": "^0.3.0",
     "@mainframe/rpc-stream": "^0.3.0"
   },
   "devDependencies": {
-    "rollup": "^1.15.6",
+    "rollup": "^1.16.7",
     "rollup-plugin-babel": "^4.2.0",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-json": "^4.0.0",
@@ -46,6 +46,6 @@
     "rollup-plugin-node-resolve": "^5.0.3",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-uglify": "^6.0.0",
-    "typescript": "^3.5.2"
+    "typescript": "3.5.2"
   }
 }

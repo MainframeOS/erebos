@@ -5,90 +5,75 @@ title: Timeline API
 ## Usage
 
 ```javascript
-import BzzAPI from '@erebos/api-bzz-node'
+import { Bzz } from '@erebos/api-bzz-node'
 import { Timeline } from '@erebos/timeline'
 
 const user = '0x...'
-const bzz = new BzzAPI({ ... }) // Check the Bzz API documentation for more details
+const bzz = new Bzz({ ... }) // Check the Bzz API documentation for more details
 const timeline = new Timeline({ bzz, feed: { user, name: 'hello-timeline' } })
 
 await timeline.addChapter({ author: user, contents: { hello: 'world' } })
 const chapterID = await timeline.getChapterID()
 ```
 
-## Flow types
+## Interfaces and types
 
 ### hexValue
 
 Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
-### JSONValue
-
-```js
-type JSONValue =
-  | null
-  | boolean
-  | number
-  | string
-  | Array<JSONValue>
-  | { [key: string]: JSONValue }
-```
-
 ### PartialChapter
 
-```js
-type PartialChapter<T = JSONValue> = {
-  protocol: 'timeline',
-  version: 1,
-  timestamp: number,
-  author: string,
-  type: string,
-  content: T,
-  previous?: ?string,
-  references?: ?Array<string>,
-  signature?: string,
+```typescript
+interface PartialChapter<T = any> {
+  protocol: string
+  version: string
+  timestamp: number
+  author: string
+  type: string
+  content: T
+  previous?: string | null
+  references?: Array<string>
+  signature?: string
 }
 ```
 
 ### Chapter
 
-```js
-type Chapter<T = JSONValue> = PartialChapter<T> & { id: string }
+```typescript
+type Chapter<T = any> = PartialChapter<T> & { id: string }
 ```
 
 ### DecodeChapter
 
-```js
-type DecodeChapter<T> = (res: *) => Promise<Chapter<T>>
+```typescript
+type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (
+  res: R,
+) => Promise<Chapter<T>>
 ```
 
 ### EncodeChapter
 
-```js
+```typescript
 type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>
 ```
 
 ### PollOptions
 
-Includes [FetchOptions](api-bzz.md#fetchoptions)
+Extends [FetchOptions](api-bzz.md#fetchoptions)
 
-```js
-type PollOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  interval: number,
+```typescript
+interface PollOptions extends FetchOptions {
+  interval: number
 }
 ```
 
 ### LiveOptions
 
-Includes [PollOptions](#polloptions)
+Extends [PollOptions](#polloptions)
 
-```js
-type LiveOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  interval: number,
+```typescript
+interface LiveOptions extends PollOptions {
   previous?: string
   timestamp?: number
 }
@@ -96,15 +81,18 @@ type LiveOptions = {
 
 ### TimelineConfig
 
-`bzz` is a [Bzz instance](api-bzz.md#bzz-class-default-export) and `feed` can either be a feed manifest hash or [feed paramters](api-bzz.md#feedparams).
+`bzz` is a [Bzz instance](api-bzz.md#bzz-class) and `feed` can either be a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
 
-```js
-type TimelineConfig<T> = {
-  bzz: Bzz,
-  feed: string | FeedParams,
-  decode?: ?DecodeChapter<T>,
-  encode?: ?EncodeChapter<T>,
-  signParams?: any,
+```typescript
+interface TimelineConfig<
+  T = any,
+  Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>
+> {
+  bzz: Bzz
+  feed: string | FeedParams
+  decode?: DecodeChapter<T>
+  encode?: EncodeChapter<T>
+  signParams?: any
 }
 ```
 

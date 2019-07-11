@@ -30,16 +30,16 @@
     "postpublish": "del-cli oclif.manifest.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@erebos/api-bzz-node": "^0.8.0",
-    "@erebos/api-pss": "^0.7.0",
-    "@erebos/hex": "^0.7.0",
-    "@erebos/keccak256": "^0.7.0",
-    "@erebos/secp256k1": "^0.7.0",
-    "@erebos/swarm-node": "^0.8.0",
-    "@erebos/timeline": "^0.8.0",
-    "@oclif/command": "^1.5.14",
-    "@oclif/config": "^1.13.0",
+    "@babel/runtime": "^7.5.4",
+    "@erebos/api-bzz-node": "^0.9.0",
+    "@erebos/api-pss": "^0.9.0",
+    "@erebos/hex": "^0.9.0",
+    "@erebos/keccak256": "^0.9.0",
+    "@erebos/secp256k1": "^0.9.0",
+    "@erebos/swarm-node": "^0.9.0",
+    "@erebos/timeline": "^0.9.0",
+    "@oclif/command": "^1.5.16",
+    "@oclif/config": "^1.13.1",
     "@oclif/plugin-help": "^2.2.0",
     "fs-extra": "^8.0.1",
     "ora": "^3.4.0"
@@ -47,6 +47,6 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.0",
     "del-cli": "^2.0.0",
-    "typescript": "^3.5.2"
+    "typescript": "3.5.2"
   }
 }

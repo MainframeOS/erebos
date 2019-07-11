@@ -1,7 +1,7 @@
 /* global fetch */
 
 import {
-  BzzBase,
+  BaseBzz,
   HTTPError,
   getModeProtocol,
   resOrError,
@@ -11,7 +11,7 @@ import {
 
 describe('api-bzz-base', () => {
   const TEST_URL = 'https://example.com/swarm-gateways/'
-  const bzz = new BzzBase(fetch, { url: TEST_URL })
+  const bzz = new BaseBzz(fetch, { url: TEST_URL })
 
   beforeEach(() => {
     fetch.resetMocks()
@@ -94,7 +94,7 @@ describe('api-bzz-base', () => {
     jest.useFakeTimers()
 
     it('fetchTimeout() method supports timeout options', async () => {
-      const bzzTimeout = new BzzBase(fetch, { url: TEST_URL, timeout: 5000 })
+      const bzzTimeout = new BaseBzz(fetch, { url: TEST_URL, timeout: 5000 })
 
       // Default (instance) timeout
       fetch.mockResponseOnce('ok')
@@ -199,9 +199,9 @@ describe('api-bzz-base', () => {
       expect(fetch.mock.calls[1][0]).toBe(`${TEST_URL}bzz-list:/test/a`)
     })
 
-    it('_download() performs the request based on the given parameters and returns the response or error', async () => {
+    it('download() performs the request based on the given parameters and returns the response or error', async () => {
       fetch.mockResponseOnce('OK')
-      const res = await bzz._download('test', {
+      const res = await bzz.download('test', {
         headers: { accept: 'application/json' },
         mode: 'raw',
       })
@@ -213,22 +213,15 @@ describe('api-bzz-base', () => {
       const expectedError = new HTTPError(404, 'Not found')
       fetch.mockRejectOnce(expectedError)
       try {
-        await bzz._download('no', {})
+        await bzz.download('no', {})
       } catch (err) {
         expect(err).toBe(expectedError)
       }
     })
 
-    it('download() calls _download() and returns the response', async () => {
-      fetch.mockResponseOnce('OK')
-      const res = await bzz.download('test')
-      expect(res.body).toBe('OK')
-      expect(fetch.mock.calls[0][0]).toBe(`${TEST_URL}bzz:/test/`)
-    })
-
-    it('_upload() performs the request based on the given parameters and returns the response or error', async () => {
+    it('uploadBody() performs the request based on the given parameters and returns the response or error', async () => {
       fetch.mockResponseOnce('5678')
-      const hash = await bzz._upload(
+      const hash = await bzz.uploadBody(
         'test',
         { headers: { 'content-length': 4 }, manifestHash: '1234' },
         true,
@@ -241,7 +234,7 @@ describe('api-bzz-base', () => {
       const expectedError = new HTTPError(400, 'Bad request')
       fetch.mockRejectOnce(expectedError)
       try {
-        await bzz._upload('test', {})
+        await bzz.uploadBody('test', {})
       } catch (err) {
         expect(err).toBe(expectedError)
       }

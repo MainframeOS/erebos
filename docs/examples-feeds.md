@@ -7,7 +7,7 @@ title: Feeds examples
 ## Publishing a website with a permanent URL
 
 ```javascript
-import BzzAPI from '@erebos/api-bzz-node'
+import { Bzz } from '@erebos/api-bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
@@ -15,9 +15,9 @@ const BZZ_URL = 'http://localhost:8500'
 
 // This setup is meant for demonstration purpose only - keys and signatures security must be handled by the application
 const keyPair = createKeyPair()
-const user = pubKeyToAddress(keyPair.getPublic().encode())
-const signBytes = async bytes => sign(bytes, keyPair.getPrivate())
-const bzz = new BzzAPI({ url: BZZ_URL, signBytes })
+const user = pubKeyToAddress(keyPair.getPublic('array'))
+const signBytes = async bytes => sign(bytes, keyPair)
+const bzz = new Bzz({ url: BZZ_URL, signBytes })
 
 // website will be accessible with the URL `${BZZ_URL}/bzz:/${feedHash}`
 const feedHash = await bzz.createFeedManifest({

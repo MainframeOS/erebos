@@ -8,7 +8,7 @@ import * as fs from 'fs-extra'
 import { Subject } from 'rxjs'
 import * as tar from 'tar-stream'
 
-import { BzzNode } from '../packages/api-bzz-node'
+import { Bzz } from '../packages/api-bzz-node'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign } from '../packages/secp256k1'
 
@@ -24,7 +24,7 @@ describe('api-bzz-node', () => {
   const keyPair = createKeyPair()
   const user = pubKeyToAddress(keyPair.getPublic('array'))
 
-  const bzz = new BzzNode({
+  const bzz = new Bzz({
     signBytes: async (bytes: Array<number>) => {
       return sign(bytes, keyPair)
     },

@@ -1,6 +1,6 @@
 {
   "name": "@erebos/hex",
-  "version": "0.7.0",
+  "version": "0.9.0",
   "description": "Hex conversion utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -14,7 +14,7 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "del cjs esm",
+    "clean": "del cjs esm types",
     "test:types": "tsc --noEmit",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
@@ -24,9 +24,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5"
+    "@babel/runtime": "^7.5.4"
   },
   "devDependencies": {
-    "typescript": "^3.5.2"
+    "typescript": "3.5.2"
   }
 }

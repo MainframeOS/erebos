@@ -2,7 +2,7 @@ import { createReadStream } from 'fs'
 import { Readable } from 'stream'
 import { URL } from 'url'
 import {
-  BzzBase,
+  BaseBzz,
   BzzConfig,
   DirectoryData,
   FileEntry,
@@ -20,7 +20,7 @@ import { isFile, writeStreamTo, extractTarStreamTo } from './fs'
 
 export * from '@erebos/api-bzz-base'
 
-export class BzzNode extends BzzBase<Response> {
+export class Bzz extends BaseBzz<Response> {
   public constructor(config: BzzConfig) {
     const { url, ...cfg } = config
     super(fetch, {
@@ -29,7 +29,7 @@ export class BzzNode extends BzzBase<Response> {
     })
   }
 
-  private async _downloadTar(
+  private async downloadTar(
     hash: string,
     options: DownloadOptions,
   ): Promise<Response> {
@@ -37,7 +37,7 @@ export class BzzNode extends BzzBase<Response> {
       options.headers = {}
     }
     options.headers.accept = 'application/x-tar'
-    return await this._download(hash, options)
+    return await this.download(hash, options)
   }
 
   public downloadObservable(
@@ -45,7 +45,7 @@ export class BzzNode extends BzzBase<Response> {
     options: DownloadOptions = {},
   ): Observable<FileEntry> {
     return Observable.create((observer: Observer<FileEntry>) => {
-      this._downloadTar(hash, options).then(
+      this.downloadTar(hash, options).then(
         res => {
           const extract = tarStream.extract()
           extract.on('entry', (header, stream, next) => {
@@ -105,7 +105,7 @@ export class BzzNode extends BzzBase<Response> {
     toPath: string,
     options: DownloadOptions = {},
   ): Promise<void> {
-    const res = await this._download(hash, options)
+    const res = await this.download(hash, options)
     await writeStreamTo((res.body as unknown) as Readable, toPath)
   }
 
@@ -114,7 +114,7 @@ export class BzzNode extends BzzBase<Response> {
     toPath: string,
     options: DownloadOptions = {},
   ): Promise<number> {
-    const res = await this._downloadTar(hash, options)
+    const res = await this.downloadTar(hash, options)
     return await extractTarStreamTo((res.body as unknown) as Readable, toPath)
   }
 
@@ -148,7 +148,7 @@ export class BzzNode extends BzzBase<Response> {
     }
     const headers = options.headers || {}
     options.headers = { ...headers, ...form.getHeaders() }
-    return await this._upload(form, options)
+    return await this.uploadBody(form, options)
   }
 
   public async uploadFileStream(
@@ -162,7 +162,7 @@ export class BzzNode extends BzzBase<Response> {
       }
       options.headers['content-type'] = options.contentType
     }
-    return await this._upload(stream, options, raw)
+    return await this.uploadBody(stream, options, raw)
   }
 
   public async uploadFileFrom(
@@ -172,7 +172,7 @@ export class BzzNode extends BzzBase<Response> {
     return await this.uploadFileStream(createReadStream(path), options)
   }
 
-  private async _uploadTarStream(
+  private async uploadTarStream(
     stream: Readable,
     options: UploadOptions = {},
   ): Promise<hexValue> {
@@ -180,7 +180,7 @@ export class BzzNode extends BzzBase<Response> {
       options.headers = {}
     }
     options.headers['content-type'] = 'application/x-tar'
-    return await this._upload(stream, options)
+    return await this.uploadBody(stream, options)
   }
 
   // path must be either a tar archive or a directory
@@ -191,14 +191,14 @@ export class BzzNode extends BzzBase<Response> {
     const stream = (await isFile(path))
       ? createReadStream(path)
       : tarFS.pack(path)
-    return await this._uploadTarStream(stream, options)
+    return await this.uploadTarStream(stream, options)
   }
 
   public async uploadDirectoryFrom(
     path: string,
     options: UploadOptions = {},
   ): Promise<hexValue> {
-    return await this._uploadTarStream(tarFS.pack(path), options)
+    return await this.uploadTarStream(tarFS.pack(path), options)
   }
 
   public async uploadFrom(
