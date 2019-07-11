@@ -2,6 +2,14 @@
 title: Timeline API
 ---
 
+## Installation
+
+```sh
+npm install @erebos/timeline
+```
+
+⚠️ The `Timeline` class must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
+
 ## Usage
 
 ```javascript

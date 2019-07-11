@@ -12,6 +12,12 @@ Managing key pairs on behalf of users is the responsibility of your app.
 This library **may not be suited for your needs**, depending on your security constraints.
 It is provided as a convenience but **has not been audited**, use at your own risk.
 
+## Installation
+
+```sh
+npm install @erebos/secp256k1
+```
+
 ## Usage
 
 ```javascript

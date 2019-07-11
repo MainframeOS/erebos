@@ -3,7 +3,13 @@ title: Postal Services over Swarm (Pss) API
 sidebar_label: Pss API
 ---
 
-## Standalone usage
+## Installation
+
+```sh
+npm install @erebos/api-pss
+```
+
+## Usage
 
 ```javascript
 import { Pss } from '@erebos/api-pss'

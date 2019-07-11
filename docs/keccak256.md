@@ -6,6 +6,12 @@ title: Keccak256 hashing
 
 This package provides Keccak256 hashing functions, as used by Ethereum and Swarm.
 
+## Installation
+
+```sh
+npm install @erebos/keccak256
+```
+
 ## Usage
 
 ```javascript

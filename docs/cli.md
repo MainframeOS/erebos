@@ -8,7 +8,7 @@ sidebar_label: CLI
 Node.js v10+ is required to run the CLI.
 
 ```sh
-npm install -g @erebos/cli
+npm install --global @erebos/cli
 ```
 
 ## Usage

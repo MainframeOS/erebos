@@ -2,7 +2,21 @@
 title: Bzz API
 ---
 
-## Standalone usage
+## Installation
+
+### For browser
+
+```sh
+npm install @erebos/api-bzz-browser
+```
+
+### For Node
+
+```sh
+npm install @erebos/api-bzz-node
+```
+
+## Usage
 
 ```javacript
 import { Bzz } from '@erebos/api-bzz-browser' // browser

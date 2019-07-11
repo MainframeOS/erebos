@@ -73,11 +73,15 @@ h3 {
   color: #000;
   font-weight: 400;
   font-family: 'Muli';
-  font-size: 24px;
+  font-size: 21px;
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 26px;
 }
 
 /* for main page */

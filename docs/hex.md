@@ -8,6 +8,12 @@ Many of Ethereum and Swarm APIs require inputs or output values to be encoded as
 The `@erebos/hex` package is used by other Erebos packages to ease the interactions with some APIs by providing an abstraction on top of it.\
 The `Hex` class is a container for the prefixed hexadecimal string, exposed in its `value` property, but also handles strings, objects and buffers as input and output values in order to simplify application-level interactions.
 
+## Installation
+
+```sh
+npm install @erebos/hex
+```
+
 ## Usage
 
 ```javascript
