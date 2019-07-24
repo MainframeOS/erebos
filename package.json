@@ -42,7 +42,6 @@
     "flow-typed": "^2.5.2",
     "jest": "^24.8.0",
     "jest-fetch-mock": "^2.1.2",
-    "jest-junit": "^6.4.0",
     "jest-puppeteer": "^4.2.0",
     "lerna": "^3.15.0",
     "prettier": "^1.18.2",
