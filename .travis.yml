@@ -30,7 +30,7 @@ matrix:
         - KEYFILE=`find $DATADIR | grep UTC | head -n 1` || true
         - BZZACCOUNT="`echo -n $KEYFILE | tail -c 40`" || true
         - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x
-        - ./$SWARM_VERSION/swarm --bzzaccount=$BZZACCOUNT --datadir $DATADIR --password $PASSWORD --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*" &
+        - ./$SWARM_VERSION/swarm --bzzaccount=$BZZACCOUNT --datadir $DATADIR --password $PASSWORD --nosync --maxpeers=0 --verbosity=0 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*" &
       script:
         - yarn build
         - yarn lint
