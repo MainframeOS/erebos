@@ -1,0 +1,43 @@
+language: node_js
+node_js:
+  - '10'
+
+cache:
+  yarn: true
+
+git:
+  depth: false
+  submodules: false
+  quiet: true
+
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      services:
+        - docker
+      before_install:
+        - docker run -d --publish 8500:8500 --publish 8546:8546 --env DATADIR=/data --env PASSWORD=password123 --volume /tmp/swarm-data:/data --interactive --tty "ethersphere/swarm:0.4.2" --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*"
+    - os: osx
+      env:
+        - GETH_VERSION=geth-darwin-amd64-1.9.1-b7b2f60f
+        - SWARM_VERSION=swarm-darwin-amd64-0.4.2-3cdc45ee
+        - DATADIR=~/data
+        - PASSWORD=~/password
+      before_install:
+        - mkdir $DATADIR && echo "password" > $PASSWORD
+        - curl "https://gethstore.blob.core.windows.net/builds/$GETH_VERSION.tar.gz" | tar -x
+        - ./$GETH_VERSION/geth --datadir $DATADIR --password $PASSWORD --verbosity=0 account new
+        - KEYFILE=`find $DATADIR | grep UTC | head -n 1` || true
+        - BZZACCOUNT="`echo -n $KEYFILE | tail -c 40`" || true
+        - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x
+        - ./$SWARM_VERSION/swarm --bzzaccount=$BZZACCOUNT --datadir $DATADIR --password $PASSWORD --nosync --maxpeers=0 --verbosity=0 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*" &
+
+script:
+  - yarn build
+  - yarn lint
+  - yarn test:ci
+
+notifications:
+  email:
+    on_failure: change
