@@ -24,7 +24,7 @@ matrix:
         - DATADIR=/data
         - PASSWORD=password123
       before_install:
-        - curl "https://ethswarm.blob.core.windows.net/builds/$GETH_VERSION.tar.gz" | tar -x && cd $GETH_VERSION
+        - curl "https://gethstore.blob.core.windows.net/builds/$GETH_VERSION.tar.gz" | tar -x && cd $GETH_VERSION
         - ./geth --datadir $DATADIR --password /password account new && cd ..
         - KEYFILE=`find $DATADIR | grep UTC | head -n 1` || true
         - BZZACCOUNT="`echo -n $KEYFILE | tail -c 40`" || true
