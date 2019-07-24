@@ -21,15 +21,16 @@ matrix:
       env:
         - GETH_VERSION=geth-darwin-amd64-1.9.1-b7b2f60f
         - SWARM_VERSION=swarm-darwin-amd64-0.4.2-3cdc45ee
-        - DATADIR=/data
-        - PASSWORD=password123
+        - DATADIR=~/data
+        - PASSWORD=~/password
       before_install:
-        - curl "https://gethstore.blob.core.windows.net/builds/$GETH_VERSION.tar.gz" | tar -x && cd $GETH_VERSION
-        - ./geth --datadir $DATADIR --password /password account new && cd ..
+        - mkdir $DATADIR && echo "password" > $PASSWORD
+        - curl "https://gethstore.blob.core.windows.net/builds/$GETH_VERSION.tar.gz" | tar -x
+        - ./$GETH_VERSION/geth --datadir $DATADIR --password $PASSWORD account new
         - KEYFILE=`find $DATADIR | grep UTC | head -n 1` || true
         - BZZACCOUNT="`echo -n $KEYFILE | tail -c 40`" || true
-        - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x && cd $SWARM_VERSION
-        - ./swarm --bzzaccount=$BZZACCOUNT --password /password --datadir $DATADIR --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*" &
+        - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x
+        - ./$SWARM_VERSION/swarm --bzzaccount=$BZZACCOUNT --datadir $DATADIR --password $PASSWORD --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*" &
       script:
         - yarn build
         - yarn lint
