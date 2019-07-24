@@ -5,13 +5,24 @@ cache:
   yarn: true
 
 matrix:
-  include:
+  exclude:
     - os: linux
       dist: bionic
       services:
         - docker
       before_install:
-        - docker run -d --publish 8500:8500 --publish 8546:8546 --env DATADIR=/data --env PASSWORD=password123 --volume /tmp/swarm-data:/data --interactive --tty "ethersphere/swarm:0.4.1" --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*"
+        - docker run -d --publish 8500:8500 --publish 8546:8546 --env DATADIR=/data --env PASSWORD=password123 --volume /tmp/swarm-data:/data --interactive --tty "ethersphere/swarm:0.4.2" --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*"
+      script:
+        - yarn build
+        - yarn lint
+        - yarn test:ci
+  include:
+    - os: osx
+      env:
+        - SWARM_VERSION=swarm-darwin-amd64-0.4.2-3cdc45ee
+      before_install:
+        - brew install geth
+        - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x && cd $SWARM_VERSION && swarm --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*"
       script:
         - yarn build
         - yarn lint
