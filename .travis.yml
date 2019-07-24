@@ -22,7 +22,8 @@ matrix:
         - SWARM_VERSION=swarm-darwin-amd64-0.4.2-3cdc45ee
       before_install:
         - brew install geth
-        - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x && cd $SWARM_VERSION && swarm --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*"
+        - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x && cd $SWARM_VERSION
+        - ./swarm --nosync --maxpeers=0 --verbosity=4 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*" &
       script:
         - yarn build
         - yarn lint
