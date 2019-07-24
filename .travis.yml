@@ -15,8 +15,9 @@ matrix:
       install:
         - yarn bootstrap
       script:
-        - pwd
-        - ls
+        - yarn build
+        - yarn lint
+        - yarn test:flow
         - yarn test:ci
 
 notifications:
