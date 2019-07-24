@@ -1,4 +1,4 @@
-# Erebos [![CircleCI](https://img.shields.io/circleci/project/github/MainframeHQ/erebos.svg)](https://circleci.com/gh/MainframeHQ/erebos) [![Gitter](https://badges.gitter.im/MainframeHQ/erebos.svg)](https://gitter.im/MainframeHQ/erebos) [![Last release](https://img.shields.io/github/release/MainframeHQ/erebos.svg)](https://github.com/MainframeHQ/erebos/releases)
+# Erebos [![Build Status](https://travis-ci.com/MainframeHQ/erebos.svg?branch=master)](https://travis-ci.com/MainframeHQ/erebos) [![Gitter](https://badges.gitter.im/MainframeHQ/erebos.svg)](https://gitter.im/MainframeHQ/erebos) [![Last release](https://img.shields.io/github/release/MainframeHQ/erebos.svg)](https://github.com/MainframeHQ/erebos/releases)
 
 JavaScript client and CLI for [Swarm](https://swarm-guide.readthedocs.io/en/latest/index.html).
 
