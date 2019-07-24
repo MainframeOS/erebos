@@ -24,7 +24,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.4"
+    "@babel/runtime": "^7.5.5"
   },
   "devDependencies": {
     "typescript": "3.5.2"
