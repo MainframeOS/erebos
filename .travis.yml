@@ -5,7 +5,7 @@ cache:
   yarn: true
 
 matrix:
-  exclude:
+  include:
     - os: linux
       dist: bionic
       services:
@@ -16,7 +16,6 @@ matrix:
         - yarn build
         - yarn lint
         - yarn test:ci
-  include:
     - os: osx
       env:
         - GETH_VERSION=geth-darwin-amd64-1.9.1-b7b2f60f
@@ -26,7 +25,7 @@ matrix:
       before_install:
         - mkdir $DATADIR && echo "password" > $PASSWORD
         - curl "https://gethstore.blob.core.windows.net/builds/$GETH_VERSION.tar.gz" | tar -x
-        - ./$GETH_VERSION/geth --datadir $DATADIR --password $PASSWORD account new
+        - ./$GETH_VERSION/geth --datadir $DATADIR --password $PASSWORD --verbosity=0 account new
         - KEYFILE=`find $DATADIR | grep UTC | head -n 1` || true
         - BZZACCOUNT="`echo -n $KEYFILE | tail -c 40`" || true
         - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x
