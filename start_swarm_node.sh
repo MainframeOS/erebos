@@ -1,7 +1,7 @@
 #!/bin/sh
 mkdir -p /tmp/swarm/data && \
 echo "password" > /tmp/swarm/password && \
-docker run \
+docker run $@ \
   --publish 8500:8500 \
   --publish 8546:8546 \
   --volume /tmp/swarm:/swarm \

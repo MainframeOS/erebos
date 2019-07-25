@@ -17,7 +17,7 @@ matrix:
       services:
         - docker
       before_install:
-        - ./start_swarm_node.sh
+        - ./start_swarm_node.sh -d
     - os: osx
       env:
         - SWARM_VERSION=swarm-darwin-amd64-0.4.3-66e016c6
