@@ -565,6 +565,16 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Returns** `Promise<DirectoryData>`
 
+### .downloadTarTo()
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  `path: string`: tar file path
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Promise<void>`
+
 ### .downloadFileTo()
 
 **Arguments**

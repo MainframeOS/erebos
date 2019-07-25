@@ -72,6 +72,9 @@ module.exports = {
   onPageNav: 'separate',
   // No .html extensions for paths.
   cleanUrl: true,
+  scrollToTop: true,
+
+  editUrl: 'https://github.com/MainframeHQ/erebos/edit/master/docs/',
 
   algolia: {
     apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',

@@ -10,6 +10,7 @@ export declare class Bzz extends BaseBzz<Response> {
     private downloadTar;
     downloadObservable(hash: string, options?: DownloadOptions): Observable<FileEntry>;
     downloadDirectoryData(hash: string, options?: DownloadOptions): Promise<DirectoryData>;
+    downloadTarTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadFileTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadDirectoryTo(hash: string, toPath: string, options?: DownloadOptions): Promise<number>;
     downloadTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;

@@ -20,6 +20,10 @@ The main change in this release is that the code based has been rewritten in Typ
 The `@erebos/swarm-browser` package now exports its contents in the `Erebos.swarm` namespace instead of `Erebos`. For example `Erebos.swarm.SwarmClient()` should be used instead of `Erebos.SwarmClient()`.  
 The browser builds (in the `dist` folder) have been renamed from `erebos.development.js` and `erebos.production.js` to `erebos.swarm.development.js` and `erebos.swarm.production.js` to better reflect this change.
 
+### Additional features
+
+- The `downloadTarTo()` method has been added to `@erebos/api-bzz-node`.
+
 ### Other changes
 
 - The `sign()` and `verify()` functions exported by the `@erebos/secp256k1` package now accept a `BNInput` input value as exported by the `elliptic` package.

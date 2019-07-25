@@ -100,6 +100,15 @@ export class Bzz extends BaseBzz<Response> {
     })
   }
 
+  public async downloadTarTo(
+    hash: string,
+    toPath: string,
+    options: DownloadOptions = {},
+  ): Promise<void> {
+    const res = await this.downloadTar(hash, options)
+    await writeStreamTo((res.body as unknown) as Readable, toPath)
+  }
+
   public async downloadFileTo(
     hash: string,
     toPath: string,

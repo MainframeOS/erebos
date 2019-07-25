@@ -311,6 +311,22 @@ describe('api-bzz-node', () => {
     await fs.remove(TEMP_DIR)
   })
 
+  it('download a tar file to the provided path', async () => {
+    const filePath = `${TEMP_DIR}/archive.tar`
+    const existsBefore = await fs.exists(filePath)
+    expect(existsBefore).toBe(false)
+
+    const hash = await bzz.uploadDirectory({
+      'file.txt': {
+        data: 'hello test',
+      },
+    })
+    await bzz.downloadTarTo(hash, filePath)
+
+    const existsAfter = await fs.exists(filePath)
+    expect(existsAfter).toBe(true)
+  })
+
   it('download directory of files using downloadDirectoryTo()', async () => {
     const dir = {
       [`foo-${uploadContent}.txt`]: {
@@ -324,13 +340,15 @@ describe('api-bzz-node', () => {
     const dirHash = await bzz.uploadDirectory(dir)
     const numberOfFiles = await bzz.downloadDirectoryTo(dirHash, TEMP_DIR)
     expect(numberOfFiles).toBe(Object.keys(dir).length)
-    const downloadedFileNames = fs.readdirSync(TEMP_DIR)
+    const downloadedFileNames = await fs.readdir(TEMP_DIR)
     expect(downloadedFileNames.sort()).toEqual(Object.keys(dir).sort())
 
     const file1Path = path.join(TEMP_DIR, `foo-${uploadContent}.txt`)
-    const file1Content = fs.readFileSync(file1Path, { encoding: 'utf8' })
     const file2Path = path.join(TEMP_DIR, `bar-${uploadContent}.txt`)
-    const file2Content = fs.readFileSync(file2Path, { encoding: 'utf8' })
+    const [file1Content, file2Content] = await Promise.all([
+      fs.readFile(file1Path, { encoding: 'utf8' }),
+      fs.readFile(file2Path, { encoding: 'utf8' }),
+    ])
     expect(file1Content).toEqual(dir[`foo-${uploadContent}.txt`].data)
     expect(file2Content).toEqual(dir[`bar-${uploadContent}.txt`].data)
     await fs.remove(TEMP_DIR)
@@ -361,13 +379,15 @@ describe('api-bzz-node', () => {
     const dirHash = await bzz.uploadDirectory(dir)
     await fs.ensureDir(TEMP_DIR)
     await bzz.downloadTo(dirHash, TEMP_DIR)
-    const downloadedFileNames = fs.readdirSync(TEMP_DIR)
+    const downloadedFileNames = await fs.readdir(TEMP_DIR)
     expect(downloadedFileNames.sort()).toEqual(Object.keys(dir).sort())
 
     const file1Path = path.join(TEMP_DIR, `foo-${uploadContent}.txt`)
-    const file1Content = fs.readFileSync(file1Path, { encoding: 'utf8' })
     const file2Path = path.join(TEMP_DIR, `bar-${uploadContent}.txt`)
-    const file2Content = fs.readFileSync(file2Path, { encoding: 'utf8' })
+    const [file1Content, file2Content] = await Promise.all([
+      fs.readFile(file1Path, { encoding: 'utf8' }),
+      fs.readFile(file2Path, { encoding: 'utf8' }),
+    ])
     expect(file1Content).toEqual(dir[`foo-${uploadContent}.txt`].data)
     expect(file2Content).toEqual(dir[`bar-${uploadContent}.txt`].data)
     await fs.remove(TEMP_DIR)
