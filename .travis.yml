@@ -17,7 +17,7 @@ matrix:
       services:
         - docker
       before_install:
-        - docker run -d --publish 8500:8500 --publish 8546:8546 --volume /tmp/swarm:/swarm --interactive --tty "ethersphere/swarm:0.4.3" --datadir /swarm/data --password /swarm/password --nosync --maxpeers=0 --verbosity=0 --httpaddr=0.0.0.0 --nat=none --corsdomain="*" --ws --wsaddr=0.0.0.0 --wsorigins="*"
+        - ./start_swarm_node.sh
     - os: osx
       env:
         - SWARM_VERSION=swarm-darwin-amd64-0.4.3-66e016c6
@@ -32,5 +32,4 @@ script:
   - yarn test:ci
 
 notifications:
-  email:
-    on_failure: change
+  email: false
