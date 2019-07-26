@@ -1,10 +1,21 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "lib": ["es2015"],
-    "moduleResolution": "node",
-    "strict": true,
-    "target": "esnext"
+    "baseUrl": "./packages",
+    "paths": {
+      "@erebos/api-bzz-base": ["api-bzz-base/src"],
+      "@erebos/api-bzz-browser": ["api-bzz-browser/src"],
+      "@erebos/api-bzz-node": ["api-bzz-node/src"],
+      "@erebos/api-pss": ["api-pss/src"],
+      "@erebos/cli": ["cli/src"],
+      "@erebos/client-base": ["client-base/src"],
+      "@erebos/hex": ["hex/src"],
+      "@erebos/keccak256": ["keccack256/src"],
+      "@erebos/secp256k1": ["secp256k1/src"],
+      "@erebos/swarm-browser": ["swarm-browser/src"],
+      "@erebos/swarm-node": ["swarm-node/src"],
+      "@erebos/timeline": ["timeline/src"],
+      "@erebos/wallet-hd": ["wallet-hd/src"]
+    }
   }
 }

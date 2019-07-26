@@ -5,14 +5,12 @@
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "flow:install": "lerna exec --concurrency 1 -- flow-typed install --ignoreDeps=dev",
-    "bootstrap": "lerna bootstrap && yarn flow:install",
+    "bootstrap": "lerna bootstrap",
     "lint": "eslint 'packages/*/src/**.ts' '__tests__/**.ts'",
     "lint:fix": "yarn lint --fix",
     "test:flow": "flow check",
@@ -38,7 +36,6 @@
     "eslint-config-mainframe": "^3.2.0",
     "jest": "^24.8.0",
     "jest-fetch-mock": "^2.1.2",
-    "jest-junit": "^7.0.0",
     "jest-puppeteer": "^4.3.0",
     "lerna": "^3.16.4",
     "prettier": "^1.18.2",

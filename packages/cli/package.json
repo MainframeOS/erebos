@@ -23,7 +23,7 @@
   },
   "scripts": {
     "clean": "del lib",
-    "test:types": "tsc --noEmit",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
     "build:js": "BABEL_ENV=node babel src --out-dir lib --extensions \".ts\"",
     "build": "yarn test:types && yarn clean && yarn build:js",
     "prepublishOnly": "yarn build && oclif-dev manifest",
