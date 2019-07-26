@@ -7,20 +7,23 @@ import replace from 'rollup-plugin-replace'
 import { uglify } from 'rollup-plugin-uglify'
 
 const env = process.env.NODE_ENV
+const extensions = ['.js', '.ts']
 
 const config = {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: {
-    file: `dist/erebos.${env}.js`,
+    file: `dist/erebos.swarm.${env}.js`,
     format: 'umd',
-    name: 'Erebos',
+    name: 'Erebos.swarm',
   },
   plugins: [
     resolve({
       browser: true,
+      extensions,
     }),
     babel({
       exclude: '**/node_modules/**',
+      extensions,
       runtimeHelpers: true,
     }),
     commonjs(),
@@ -33,14 +36,7 @@ const config = {
 }
 
 if (env === 'production') {
-  config.plugins.push(
-    uglify({
-      compress: {
-        dead_code: true,
-        warnings: false,
-      },
-    }),
-  )
+  config.plugins.push(uglify())
 }
 
 export default config

@@ -3,26 +3,14 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "JavaScript client and CLI for Swarm v0.4.0",
+    "tagline": "JavaScript client and CLI for Swarm v0.4.x",
     "docs": {
       "api-bzz": {
         "title": "Bzz API"
       },
-      "api-eth": {
-        "title": "Eth API"
-      },
-      "api-net": {
-        "title": "Net API"
-      },
       "api-pss": {
         "title": "Postal Services over Swarm (Pss) API",
         "sidebar_label": "Pss API"
-      },
-      "api-shh": {
-        "title": "Whisper (SHH) API"
-      },
-      "api-web3": {
-        "title": "Web3 API"
       },
       "cli": {
         "title": "Command-line interface",

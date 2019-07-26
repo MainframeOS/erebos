@@ -1,7 +1,7 @@
+const config = require('./jest.config')
+
 module.exports = {
-  automock: false,
-  collectCoverage: true,
-  preset: 'jest-puppeteer',
+  ...config,
+  bail: false,
   reporters: ['default', 'jest-junit'],
-  setupFiles: ['./jest.setup.js'],
 }

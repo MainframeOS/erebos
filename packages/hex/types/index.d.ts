@@ -1,30 +1,37 @@
 /// <reference types="node" />
-
-declare enum HexValue {}
-
-export type hexValue = HexValue & string
-
-export type hexInput = hexValue | string | Object | Buffer | Array<number>
-
-export function isHexValue(input: any): boolean
-
-export function fromHexValue(input: hexValue): Buffer
-
-type HexInput =
-  | { type: 'buffer'; value: Buffer }
-  | { type: 'bytesArray'; value: Array<number> }
-  | { type: 'hex'; value: hexValue }
-  | { type: 'object'; value: Object }
-  | { type: 'string'; value: string }
-
-export class Hex {
-  constructor(input: hexInput | Hex)
-  value: hexValue
-  equals(other: hexInput | Hex): boolean
-  toBuffer(): Buffer
-  toBytesArray(): Array<number>
-  toObject(): Object
-  toString(): string
+declare enum HexValue {
 }
-
-export default function(input: hexInput | Hex): Hex
+export declare type hexValue = HexValue & string;
+export declare type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>;
+export declare function isHexValue(value: any): value is hexValue;
+export declare function fromHexValue(input: hexValue): Buffer;
+export declare function toHexValue(value: Buffer | string | ArrayBuffer | Array<number> | Uint8Array): hexValue;
+declare type HexInput = {
+    type: 'buffer';
+    value: Buffer;
+} | {
+    type: 'bytesArray';
+    value: Array<number>;
+} | {
+    type: 'hex';
+    value: hexValue;
+} | {
+    type: 'object';
+    value: Record<string, any>;
+} | {
+    type: 'string';
+    value: string;
+};
+export declare class Hex {
+    protected input: HexInput;
+    protected hexValue: hexValue;
+    constructor(inputValue: hexInput | Hex);
+    readonly value: hexValue;
+    equals(other: hexInput | Hex): boolean;
+    toBuffer(): Buffer;
+    toBytesArray(): Array<number>;
+    toObject<T = Record<string, any>>(): T;
+    toString(): string;
+}
+export declare function createHex(input: hexInput | Hex): Hex;
+export {};

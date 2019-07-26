@@ -1,97 +1,69 @@
-import Bzz, {
-  FeedParams,
-  FetchOptions,
-  UploadOptions,
-} from '@erebos/api-bzz-base'
-import { hexValue } from '@erebos/hex'
-import { Observable } from 'rxjs'
-
-export const PROTOCOL = 'timeline'
-export const VERSION = '1.0.0'
-export const VERSION_RANGE = '^1.0.0'
-
+/// <reference types="node" />
+import { BaseBzz, BaseResponse, FeedParams, FetchOptions, UploadOptions } from '@erebos/api-bzz-base';
+import { hexValue } from '@erebos/hex';
+import { Observable } from 'rxjs';
+export declare const PROTOCOL = "timeline";
+export declare const VERSION = "1.0.0";
+export declare const VERSION_RANGE = "^1.0.0";
 export interface PartialChapter<T = any> {
-  protocol: string
-  version: string
-  timestamp: number
-  references?: Array<string>
-  previous?: string
-  type: string
-  author: string
-  content: T
-  signature?: string
+    protocol: string;
+    version: string;
+    timestamp: number;
+    author: string;
+    type: string;
+    content: T;
+    previous?: string | null;
+    references?: Array<string>;
+    signature?: string;
 }
-
-export interface Chapter<T = any> extends PartialChapter<T> {
-  id: string
-}
-
-export type DecodeChapter<T> = (res: any) => Promise<Chapter<T>>
-export type EncodeChapter<T> = (
-  chapter: PartialChapter<T>,
-) => Promise<string | Buffer>
-
+export declare type Chapter<T = any> = PartialChapter<T> & {
+    id: string;
+};
+export declare type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (res: R) => Promise<Chapter<T>>;
+export declare type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>;
 export interface PollOptions extends FetchOptions {
-  interval: number
+    interval: number;
 }
-
 export interface LiveOptions extends PollOptions {
-  previous?: string
-  timestamp?: number
+    previous?: string;
+    timestamp?: number;
 }
-
-export function createChapter<T>(
-  chapter: Partial<PartialChapter<T>>,
-): PartialChapter<T>
-
-export function validateChapter<T = Object>(chapter: T): T
-
-export interface TimelineConfig<C = any, B = any, S = any> {
-  bzz: Bzz<B>
-  feed: string | FeedParams
-  decode?: DecodeChapter<C>
-  encode?: EncodeChapter<C>
-  signParams?: S
+export declare function createChapter<T>(chapter: Partial<PartialChapter<T>>): PartialChapter<T>;
+export interface MaybeChapter extends Record<string, any> {
+    protocol?: string;
+    version?: string;
 }
-
-export class Timeline<T = any> {
-  constructor(config: TimelineConfig<T>)
-  getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>
-  postChapter(
-    chapter: PartialChapter<T>,
-    options?: UploadOptions,
-  ): Promise<hexValue>
-  getLatestChapterID(options?: FetchOptions): Promise<hexValue | null>
-  getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>
-  setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>
-  setLatestChapter(
-    chapter: PartialChapter<T>,
-    options?: UploadOptions,
-  ): Promise<hexValue>
-  addChapter(
-    chapter: PartialChapter<T>,
-    options?: UploadOptions,
-  ): Promise<Chapter<T>>
-  createAddChapter(
-    chapterDefaults?: Partial<PartialChapter<T>>,
-    options?: UploadOptions,
-  ): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>
-  createIterator(
-    initialID?: string,
-    options?: FetchOptions,
-  ): AsyncIterableIterator<Chapter<T>>
-  createLoader(
-    newestID: string, // inclusive
+export declare function validateChapter<T extends MaybeChapter>(chapter: T): T;
+export interface TimelineConfig<T = any, Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>> {
+    bzz: Bzz;
+    feed: string | FeedParams;
+    decode?: DecodeChapter<T>;
+    encode?: EncodeChapter<T>;
+    signParams?: any;
+}
+export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>> {
+    protected bzz: Bzz;
+    protected decode: DecodeChapter<T>;
+    protected encode: EncodeChapter<T>;
+    protected feed: string | FeedParams;
+    protected signParams: any;
+    constructor(config: TimelineConfig<T, Bzz>);
+    getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>;
+    postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<hexValue>;
+    getLatestChapterID(options?: FetchOptions): Promise<string | null>;
+    getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>;
+    setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
+    setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<hexValue>;
+    addChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<Chapter<T>>;
+    createAddChapter(chapterDefaults?: Partial<PartialChapter<T>>, options?: UploadOptions): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>;
+    createIterator(initialID?: string, options?: FetchOptions): AsyncIterator<Chapter<T>>;
+    createLoader(newestID: string, // inclusive
     oldestID: string, // exclusive
-    options?: FetchOptions,
-  ): Observable<Chapter<T>>
-  getChapters(
-    newestID: string, // inclusive
+    options?: FetchOptions): Observable<Chapter<T>>;
+    getChapters(newestID: string, // inclusive
     oldestID: string, // exclusive
-    options?: FetchOptions,
-  ): Promise<Array<Chapter<T>>>
-  pollLatestChapter(options: PollOptions): Observable<Chapter<T>>
-  live(options: LiveOptions): Observable<Array<Chapter<T>>>
+    options?: FetchOptions): Promise<Array<Chapter<T>>>;
+    pollLatestChapter(options: PollOptions): Observable<Chapter<T>>;
+    live(options: LiveOptions): Observable<Array<Chapter<T>>>;
 }
-
-export function createTimeline<T = any>(config: TimelineConfig<T>): Timeline<T>
+export declare function createTimeline<T>(config: TimelineConfig<T>): Timeline<T>;
