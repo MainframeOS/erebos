@@ -27,8 +27,8 @@ const feedHash = await bzz.createFeedManifest({
 
 // This function can be called any time the website contents change
 const publishContents = async contents => {
-  // uploadFeedValue() uploads the given contents and updates the feed to point to the contents hash
-  await bzz.uploadFeedValue(feedHash, contents, { defaultPath: 'index.html' })
+  // setFeedContent() uploads the given contents and updates the feed to point to the contents hash
+  await bzz.setFeedContent(feedHash, contents, { defaultPath: 'index.html' })
 }
 
 // Example use of publishContents()
