@@ -13,9 +13,9 @@
   ],
   "scripts": {
     "clean": "del lib types",
-    "test:types": "tsc --noEmit",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
     "build:js": "BABEL_ENV=node babel src --out-dir lib --extensions \".ts\"",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
     "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },

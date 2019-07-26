@@ -17,14 +17,14 @@
   ],
   "scripts": {
     "clean": "del cjs dist esm types",
-    "test:types": "tsc --noEmit",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
     "build:dist:dev": "BABEL_ENV='browser-esm' NODE_ENV=development rollup -c",
     "build:dist:prod": "BABEL_ENV='browser-esm' NODE_ENV=production rollup -c",
     "build:dist": "yarn build:dist:dev && yarn build:dist:prod",
     "build:js": "yarn build:cjs && yarn build:esm && yarn build:dist",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
     "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build && yarn build:dist"
   },

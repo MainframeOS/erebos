@@ -5,14 +5,12 @@
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "flow:install": "lerna exec --concurrency 1 -- flow-typed install --ignoreDeps=dev",
-    "bootstrap": "lerna bootstrap && yarn flow:install",
+    "bootstrap": "lerna bootstrap",
     "lint": "eslint 'packages/*/src/**.ts' '__tests__/**.ts'",
     "lint:fix": "yarn lint --fix",
     "test:flow": "flow check",

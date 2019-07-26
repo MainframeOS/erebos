@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "lib": ["es2015"],
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "esnext"
+  },
+  "exclude": ["node_modules", "cjs", "esm", "lib"]
+}

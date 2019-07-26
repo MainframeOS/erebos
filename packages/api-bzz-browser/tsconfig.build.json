@@ -1,6 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.build.json",
   "compilerOptions": {
+    "lib": ["dom", "es2015"],
     "outDir": "./types"
   },
   "include": ["./src/**/*"]

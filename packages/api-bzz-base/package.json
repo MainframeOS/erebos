@@ -15,11 +15,11 @@
   ],
   "scripts": {
     "clean": "del cjs esm types",
-    "test:types": "tsc --noEmit",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
     "build:js": "yarn build:cjs && yarn build:esm",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
     "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
