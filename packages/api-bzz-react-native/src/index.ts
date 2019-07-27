@@ -1,26 +1,24 @@
-// @flow
 /* eslint-env browser */
-
 import { URL } from 'universal-url'
-import BaseBzz, {
-  type BzzConfig,
-  type DirectoryData,
-  type UploadOptions,
+import {
+  BaseBzz,
+  BzzConfig,
+  DirectoryData,
+  UploadOptions,
 } from '@erebos/api-bzz-base'
-import type { hexValue } from '@erebos/hex'
+import { hexValue } from '@erebos/hex'
 
-export type * from '@erebos/api-bzz-base'
+export * from '@erebos/api-bzz-base'
 
-export default class Bzz extends BaseBzz {
-  constructor(config: BzzConfig) {
+export class Bzz extends BaseBzz<Response> {
+  public constructor(config: BzzConfig) {
     const { url, ...cfg } = config
-    super({ ...cfg, url: new URL(url).href })
-    this._fetch = window.fetch.bind(window)
+    super(window.fetch.bind(window), { ...cfg, url: new URL(url).href })
   }
 
-  uploadDirectory(
+  public uploadDirectory(
     directory: DirectoryData,
-    options?: UploadOptions = {},
+    options: UploadOptions = {},
   ): Promise<hexValue> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
@@ -30,7 +28,7 @@ export default class Bzz extends BaseBzz {
           uri: directory[key].data,
           type: directory[key].contentType,
           name: key,
-        }: any),
+        } as any),
         key,
       )
     })
@@ -43,11 +41,11 @@ export default class Bzz extends BaseBzz {
             uri: directory[options.defaultPath].data,
             type: directory[options.defaultPath].contentType,
             name: options.defaultPath,
-          }: any),
+          } as any),
           '',
         )
       }
     }
-    return this._upload(form, options)
+    return this.uploadBody(form, options)
   }
 }
