@@ -14,12 +14,12 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "del cjs esm",
-    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
-    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "clean": "del cjs esm types",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
     "build:js": "yarn build:cjs && yarn build:esm",
-    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
-    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build": "yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
