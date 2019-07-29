@@ -1,12 +1,9 @@
 *.log
 /.idea
-/packages/*/.flowconfig
 /packages/*/cjs
 /packages/*/dist
 /packages/*/esm
 /packages/*/lib
-/packages/*/umd
 /website/build
 coverage
-flow-typed
 node_modules

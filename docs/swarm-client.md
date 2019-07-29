@@ -2,9 +2,9 @@
 title: Swarm client
 ---
 
-The Erebos `SwarmClient` class provides an unified way of interacting with the various APIs based on a provided configuration, or simply a server endpoint.
+The Erebos `SwarmClient` class provides an unified way of interacting with the Swarm APIs based on a provided configuration, or simply a server endpoint.
 
-```js
+```javascript
 import { SwarmClient } from '@erebos/swarm-browser' // browser
 // or
 import { SwarmClient } from '@erebos/swarm-node' // node
@@ -22,14 +22,14 @@ The relevant factory is exported as `createRPC()` and can be used with [standalo
 Creates a SwarmClient instance based on the provided `config`.\
 [`BzzConfig`](api-bzz.md#bzzconfig) is an Object exported by the `@erebos/api-bzz-base` package.
 
-```javascript
-type SwarmConfig = {
-  bzz?: BzzConfig | BzzAPI,
-  http?: string,
-  ipc?: string,
-  pss?: string | PssAPI,
-  rpc?: RPC,
-  ws?: string,
+```typescript
+interface SwarmConfig {
+  bzz?: BzzConfig | Bzz
+  http?: string
+  ipc?: string
+  pss?: string | Pss
+  rpc?: RPC
+  ws?: string
 }
 ```
 
@@ -48,8 +48,8 @@ const client = new SwarmClient({
 
 ### .bzz
 
-**Returns** [`BzzAPI` instance](api-bzz.md), or throws if not provided and could not be created.
+**Returns** [`Bzz` instance](api-bzz.md), or throws if not provided and could not be created.
 
 ### .pss
 
-**Returns** [`PssAPI` instance](api-pss.md), or throws if not provided and could not be created.
+**Returns** [`Pss` instance](api-pss.md), or throws if not provided and could not be created.

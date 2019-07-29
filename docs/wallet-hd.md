@@ -2,6 +2,12 @@
 title: Hierarchical Deterministic wallet
 ---
 
+## Installation
+
+```sh
+npm install @erebos/wallet-hd
+```
+
 ## Usage
 
 ```javascript

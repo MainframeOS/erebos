@@ -8,10 +8,16 @@ Many of Ethereum and Swarm APIs require inputs or output values to be encoded as
 The `@erebos/hex` package is used by other Erebos packages to ease the interactions with some APIs by providing an abstraction on top of it.\
 The `Hex` class is a container for the prefixed hexadecimal string, exposed in its `value` property, but also handles strings, objects and buffers as input and output values in order to simplify application-level interactions.
 
+## Installation
+
+```sh
+npm install @erebos/hex
+```
+
 ## Usage
 
 ```javascript
-import createHex from '@erebos/hex'
+import { createHex } from '@erebos/hex'
 
 const fromString = createHex('Hello world!')
 fromString.value // '0x48656c6c6f20776f726c6421'
@@ -20,29 +26,22 @@ const fromHex = createHex('0x48656c6c6f20776f726c6421')
 fromHex.toString() // 'Hello world!'
 ```
 
-## Flow types
+## Interfaces and types
 
 ### hexValue
 
-```javascript
-opaque type hexValue: string = string
+```typescript
+enum HexValue {}
+type hexValue = HexValue & string
 ```
 
 ### hexInput
 
-```javascript
-type hexInput = hexValue | string | Object | Buffer | Array<number>
+```typescript
+type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>
 ```
 
 ## Public API
-
-### hexValueType()
-
-**Arguments**
-
-1.  `input: any`
-
-**Returns** `hexValue`
 
 ### isHexValue()
 
@@ -51,6 +50,14 @@ type hexInput = hexValue | string | Object | Buffer | Array<number>
 1.  `value: any`
 
 **Returns** `boolean`
+
+### createHex()
+
+**Arguments**
+
+1.  `value: hexInput | Hex`
+
+**Returns** `Hex`
 
 ### Hex class
 
@@ -80,16 +87,8 @@ type hexInput = hexValue | string | Object | Buffer | Array<number>
 
 ### .toObject()
 
-**Returns** `Object`
+**Returns** `Record<string, any>`
 
 ### .toString()
 
 **Returns** `string`
-
-### createHex() (default export)
-
-**Arguments**
-
-1.  `value: hexInput | Hex`
-
-**Returns** `Hex`

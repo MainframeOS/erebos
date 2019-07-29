@@ -2,83 +2,109 @@
 title: Bzz API
 ---
 
-## Standalone usage
+## Installation
 
-```javascript
-import BzzAPI from '@erebos/api-bzz-browser' // browser
-// or
-import BzzAPI from '@erebos/api-bzz-node' // node
+### For browser
 
-const bzz = new BzzAPI({ url: 'http://localhost:8500' })
+```sh
+npm install @erebos/api-bzz-browser
 ```
 
-## Flow types
+### For Node
+
+```sh
+npm install @erebos/api-bzz-node
+```
+
+## Usage
+
+```javacript
+import { Bzz } from '@erebos/api-bzz-browser' // browser
+// or
+import { Bzz } from '@erebos/api-bzz-node' // node
+
+const bzz = new Bzz({ url: 'http://localhost:8500' })
+```
+
+## Interfaces and types
+
+### hexInput
+
+Input value supported by the `Hex` class exported by the [`@erebos/hex` package](hex.md).
 
 ### hexValue
 
 Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
+### DirectoryEntry
+
+```typescript
+interface DirectoryEntry {
+  data: string | Buffer
+  contentType?: string
+  size?: number
+}
+```
+
 ### DirectoryData
 
-```javascript
-type DirectoryData = {
-  [path: string]: { data: string | Buffer, contentType: string, size?: number },
-}
+```typescript
+type DirectoryData = Record<string, DirectoryEntry>
 ```
 
 ### FileEntry
 
-```javascript
-type FileEntry = {
-  data: string | Buffer,
-  path: string,
-  size?: number,
+```typescript
+interface FileEntry {
+  data: string | Buffer
+  path: string
+  size?: number
 }
 ```
 
 ### ListEntry
 
-```javascript
-type ListEntry = {
-  hash: string,
-  path: string,
-  contentType: string,
-  size: number,
-  mod_time: string,
+```typescript
+interface ListEntry {
+  hash: string
+  path: string
+  contentType: string
+  size: number
+  mod_time: string
 }
 ```
 
 ### ListResult
 
-```javascript
-type ListResult = {
-  common_prefixes?: Array<string>,
-  entries?: Array<ListEntry>,
+```typescript
+interface ListResult {
+  common_prefixes?: Array<string>
+  entries?: Array<ListEntry>
 }
 ```
 
 ### FeedTopicParams
 
-```javascript
-type FeedTopicParams = {
-  name?: string,
-  topic?: string,
+```typescript
+interface FeedTopicParams {
+  name?: string
+  topic?: string
 }
 ```
 
 ### FeedMetadata
 
-```javascript
-type FeedMetadata = {
+```typescript
+interface FeedMetadata {
   feed: {
-    topic: hexValue,
-    user: hexValue,
-  },
+    topic: hexValue
+    user: hexValue
+  }
   epoch: {
-    time: number,
-    level: number,
-  },
-  protocolVersion: number,
+    time: number
+    level: number
+  }
+  protocolVersion: number
 }
 ```
 
@@ -86,136 +112,104 @@ type FeedMetadata = {
 
 Common options to all HTTP requests. The `timeout` value can be set to `0` to prevent applying any timeout, for example if a default timeout is set at the instance level, but a particular request needs to ignore it.
 
-```javascript
-type FetchOptions = {
-  headers?: Object,
-  timeout?: ?number,
+```typescript
+interface FetchOptions {
+  headers?: Record<string, any>
+  timeout?: number
 }
 ```
 
 ### FileOptions
 
-Includes [FetchOptions](#fetchoptions)
+Extends [FetchOptions](#fetchoptions)
 
-```javascript
-type FileOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
+```typescript
+interface FileOptions extends FetchOptions {
+  contentType?: string
+  path?: string
 }
 ```
 
 ### BzzMode
 
-```javascript
+```typescript
 type BzzMode = 'default' | 'immutable' | 'raw'
 ```
 
 ### DownloadOptions
 
-Includes [FileOptions](#fileoptions)
+Extends [FileOptions](#fileoptions)
 
-```javascript
-type DownloadOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
-  mode?: BzzMode,
+```typescript
+interface DownloadOptions extends FileOptions {
+  mode?: BzzMode
 }
 ```
 
 ### UploadOptions
 
-Includes [FileOptions](#fileoptions)
+Extends [FileOptions](#fileoptions)
 
-```javascript
-type UploadOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
-  defaultPath?: string,
-  encrypt?: boolean,
-  manifestHash?: string,
+```typescript
+interface UploadOptions extends FileOptions {
+  defaultPath?: string
+  encrypt?: boolean
+  manifestHash?: hexValue | string
 }
 ```
 
 ### PollOptions
 
-Includes [FetchOptions](#fetchoptions)
+Extends [FetchOptions](#fetchoptions)
 
-```javascript
-type PollOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
-  interval: number,
-  immediate?: boolean,
-  whenEmpty?: 'accept' | 'ignore' | 'error',
-  trigger?: Observable<void>,
+```typescript
+interface PollOptions extends FetchOptions {
+  interval: number // in milliseconds
+  immediate?: boolean // defaults to true
+  whenEmpty?: 'accept' | 'ignore' | 'error' // defaults to 'accept'
+  trigger?: Observable<void>
 }
 ```
 
 ### PollContentHashOptions
 
-Includes [PollOptions](#polloptions)
+Extends [PollOptions](#polloptions)
 
-```javascript
-type PollContentHashOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
-  interval: number,
-  immediate?: boolean,
-  whenEmpty?: 'accept' | 'ignore' | 'error',
-  trigger?: Observable<void>,
-  changedOnly?: boolean,
+```typescript
+interface PollContentHashOptions extends PollOptions {
+  changedOnly?: boolean
 }
 ```
 
 ### PollContentOptions
 
-Includes [DownloadOptions](#downloadoptions) and [PollContentHashOptions](#pollcontenthashoptions)
+Extends [DownloadOptions](#downloadoptions) and [PollContentHashOptions](#pollcontenthashoptions)
 
-```javascript
-type PollContentOptions = {
-  headers?: Object,
-  timeout?: ?number,
-  contentType?: string,
-  path?: string,
-  mode?: BzzMode,
-  interval: number,
-  immediate?: boolean,
-  whenEmpty?: 'accept' | 'ignore' | 'error',
-  trigger?: Observable<void>,
-  changedOnly?: boolean,
-}
+```typescript
+interface PollContentOptions extends DownloadOptions, PollContentHashOptions {}
 ```
 
 ### FeedParams
 
-```javascript
-type FeedParams = {
-  user: string,
-  level?: number,
-  name?: string,
-  time?: number,
-  topic?: string,
+```typescript
+interface FeedParams {
+  user: string
+  level?: number
+  name?: string
+  time?: number
+  topic?: string
 }
 ```
 
 ### FeedUpdateParams
 
-```javascript
-type FeedUpdateParams = {
-  level: number,
-  time: number,
-  topic: string,
-  signature: string,
+```typescript
+interface FeedUpdateParams {
+  user: string
+  level: number
+  time: number
+  topic: string
+  signature: string
 }
 ```
 
@@ -223,20 +217,20 @@ type FeedUpdateParams = {
 
 Function to provide in order to sign feed updates
 
-```javascript
+```typescript
 type SignBytesFunc = (
-  bytes: Array<number>,
+  digest: Array<number>,
   params?: any,
 ) => Promise<Array<number>>
 ```
 
 ### BzzConfig
 
-```javascript
-type BzzConfig = {
-  signBytes?: SignBytesFunc,
-  timeout?: number,
-  url: string,
+```typescript
+interface BzzConfig {
+  signBytes?: SignBytesFunc
+  timeout?: number
+  url: string
 }
 ```
 
@@ -246,10 +240,10 @@ type BzzConfig = {
 
 **Arguments**
 
-1.  `meta: FeedMetadata`
-1.  `data: string | Object | Buffer`
+1.  [`meta: FeedMetadata`](#feedmetadat)
+1.  [`data: hexInput`](#hexinput)
 
-**Returns** `Buffer`
+**Returns** `Array<number>`
 
 ### getFeedTopic()
 
@@ -257,7 +251,7 @@ type BzzConfig = {
 
 1.  [`params?: FeedTopicParams = {}`](#feedtopicparams)
 
-**Returns** `hexValue`
+**Returns** [`hexValue`](#hexvalue)
 
 ### HTTPError class
 
@@ -271,11 +265,13 @@ type BzzConfig = {
 - `status: number`: HTTP status code
 - `message: string`: error message
 
-### Bzz class (default export)
+### Bzz class
+
+_Exported as `BzzBrowser` by `@erebos/api-bzz-browser` and `BzzNode` by `@erebos/api-bzz-node`._
 
 **Arguments**
 
-1.  `config: BzzConfig`, see below
+1.  [`config: BzzConfig`](#bzzconfig), see below
 
 **Configuration**
 
@@ -547,11 +543,11 @@ This method implements the flow of uploading the provided `data` and updating th
 
 ## Node-specific APIs
 
-The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`.
+_The following `BzzNode` class methods are only available when using `@erebos/api-bzz-node`._
 
 ### .downloadObservable()
 
-Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the `FileEntry` objects as they are downloaded.
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`FileEntry`](#fileentry) objects as they are downloaded.
 
 **Arguments**
 
@@ -568,6 +564,16 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Promise<DirectoryData>`
+
+### .downloadTarTo()
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  `path: string`: tar file path
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Promise<void>`
 
 ### .downloadFileTo()
 

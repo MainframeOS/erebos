@@ -1,6 +1,6 @@
 {
   "name": "@erebos/keccak256",
-  "version": "0.7.0",
+  "version": "0.9.0",
   "description": "keccak256 utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -14,20 +14,21 @@
     "types/*"
   ],
   "scripts": {
-    "clean": "del cjs esm",
-    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs",
-    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm",
+    "clean": "del cjs esm types",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
     "build:js": "yarn build:cjs && yarn build:esm",
-    "build:flow": "flow-copy-source src cjs && flow-copy-source src esm",
-    "build": "yarn clean && yarn build:js && yarn build:flow",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@erebos/hex": "^0.7.0",
+    "@babel/runtime": "^7.5.5",
+    "@erebos/hex": "^0.9.0",
     "js-sha3": "^0.8.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.101.0"
+    "typescript": "3.5.2"
   }
 }

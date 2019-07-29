@@ -10,7 +10,7 @@ title: File storage examples
 <html>
   <script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.production.js"></script>
   <script>
-    const client = new Erebos.SwarmClient({
+    const client = new Erebos.swarm.SwarmClient({
       http: 'https://swarm-gateways.net',
     })
     client.bzz

@@ -3,20 +3,30 @@ title: Postal Services over Swarm (Pss) API
 sidebar_label: Pss API
 ---
 
-## Standalone usage
+## Installation
+
+```sh
+npm install @erebos/api-pss
+```
+
+## Usage
 
 ```javascript
-import PssAPI from '@erebos/api-pss'
+import { Pss } from '@erebos/api-pss'
 import webSocketRPC from '@mainframe/rpc-ws-browser'
 // or
 import webSocketRPC from '@mainframe/rpc-ws-node'
 // or any other StreamRPC factory
 
 const rpc = webSocketRPC('ws://localhost:8546')
-const pss = new PssAPI(rpc)
+const pss = new Pss(rpc)
 ```
 
-## Flow types
+## Interfaces and types
+
+### hexInput
+
+Input value supported by the `Hex` class exported by the [`@erebos/hex` package](hex.md).
 
 ### hexValue
 
@@ -24,22 +34,26 @@ Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@e
 
 ### Hex
 
-`Hex` class instance as exported by the `@erebos/hex` package.
+`Hex` class instance as exported by the [`@erebos/hex` package](hex.md).
 
 ### PssEvent
 
-```javascript
-type PssEvent = {
-  key: ?hexValue,
-  msg: Hex,
+```typescript
+interface PssEvent {
+  key?: hexValue
+  msg: Hex
 }
 ```
 
 ## Public API
 
-### Pss class (default export)
+### EMPTY_ADDRESS
 
-Creates a Pss instance with the provided `StreamRPC` instance.
+[`hexValue`](#hexvalue) of the empty address (`0x`), can be used to broadcast a message to the entire network.
+
+### Pss class
+
+Creates a Pss instance using the provided `StreamRPC` instance.
 
 **Arguments**
 
@@ -65,7 +79,7 @@ Calls `pss_sendAsym` with the provided arguments:
 
 1.  `key: string`: public key of the peer
 1.  `topic: string`: destination topic
-1.  `message: string | Object | Buffer | Hex`
+1.  `message: Hex | hexInput`
 
 **Returns** `Promise<void>`
 
@@ -77,7 +91,7 @@ Calls `pss_sendSym` with the provided arguments:
 
 1.  `keyID: hexValue`: symmetric key ID generated using `setSymmetricKey()`
 1.  `topic: hexValue`: destination topic
-1.  `message: string | Object | Buffer | Hex`
+1.  `message: Hex | hexInput`
 
 **Returns** `Promise<void>`
 
@@ -89,7 +103,7 @@ Calls `pss_sendRaw` with the provided arguments:
 
 1.  `address: hexValue`: full or partial peer address
 1.  `topic: hexValue`: destination topic
-1.  `message: string | Object | Buffer | Hex`
+1.  `message: Hex | hexInput`
 
 **Returns** `Promise<void>`
 
@@ -101,7 +115,7 @@ Calls `pss_setPeerPublicKey` with the provided arguments:
 
 1.  `key: hexValue`: public key of the peer
 1.  `topic: hexValue`
-1.  `address?: hexValue = '0x'`
+1.  `address: hexValue`
 
 **Returns** `Promise<void>`
 
@@ -113,12 +127,12 @@ Calls `pss_setSymmetricKey` with the provided arguments:
 
 1.  `key: hexValue`: public key of the peer
 1.  `topic: hexValue`
-1.  `address?: hexValue = '0x'`
+1.  `address: hexValue`
 1.  `useForDecryption: boolean = false`
 
 **Returns** `Promise<string>`
 
-#### .stringToTopic()
+### .stringToTopic()
 
 Calls `pss_stringToTopic` with the provided string and returns the generated topic.
 
