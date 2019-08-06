@@ -23,6 +23,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
+    "@babel/runtime": "^7.5.5",
     "@erebos/api-bzz-base": "^0.9.0",
     "universal-url": "^2.0.0"
   },

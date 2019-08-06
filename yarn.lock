@@ -764,7 +764,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5":
+"@babel/runtime@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
   integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
@@ -835,32 +835,6 @@
   dependencies:
     exec-sh "^0.3.2"
     minimist "^1.2.0"
-
-"@erebos/api-bzz-base@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@erebos/api-bzz-base/-/api-bzz-base-0.8.1.tgz#da3404fe357bce47aa1e05e4997aa96801443f99"
-  integrity sha512-hz14pwLy2CklbeuRSChH28COQxlLSMTjJMzuhkvPqNmLo9sSYjgAlPiAM2xqG5fjHaRo4WPACz5gfJs+r7+UyA==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@erebos/hex" "^0.7.0"
-    "@erebos/keccak256" "^0.7.0"
-    rxjs "^6.5.2"
-
-"@erebos/hex@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@erebos/hex/-/hex-0.7.0.tgz#e40341b81d55cc976279cd90cac9ab766ede839c"
-  integrity sha512-4Qa2U4Y2XsjfTiQmH+MXsoZnxVBx04v/RZVD9ErrrLbX8HN+WAWQv6Z001QzWD+z/Y5aHPmHO/KJwB4cvSl/Dg==
-  dependencies:
-    "@babel/runtime" "^7.3.4"
-
-"@erebos/keccak256@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@erebos/keccak256/-/keccak256-0.7.0.tgz#80bc51c54ee0a6270f5928bdd1274d7e8bffc739"
-  integrity sha512-MLVl/AhSN6hOUxopYC1H/rK/fU/B+fDMqWqdqmHTuANs0pLcG7HXHVEqCiOQz963lMb/9S0eDS21t8Z46AJq8A==
-  dependencies:
-    "@babel/runtime" "^7.3.4"
-    "@erebos/hex" "^0.7.0"
-    js-sha3 "^0.8.0"
 
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
