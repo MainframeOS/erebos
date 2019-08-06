@@ -1,4 +1,5 @@
 /* eslint-env browser */
+// @ts-ignore
 import { URL } from 'universal-url'
 import {
   BaseBzz,

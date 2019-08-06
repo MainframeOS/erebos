@@ -764,7 +764,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.5.5":
+"@babel/runtime@^7.3.4", "@babel/runtime@^7.4.5", "@babel/runtime@^7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
   integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
@@ -835,6 +835,32 @@
   dependencies:
     exec-sh "^0.3.2"
     minimist "^1.2.0"
+
+"@erebos/api-bzz-base@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@erebos/api-bzz-base/-/api-bzz-base-0.8.1.tgz#da3404fe357bce47aa1e05e4997aa96801443f99"
+  integrity sha512-hz14pwLy2CklbeuRSChH28COQxlLSMTjJMzuhkvPqNmLo9sSYjgAlPiAM2xqG5fjHaRo4WPACz5gfJs+r7+UyA==
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    "@erebos/hex" "^0.7.0"
+    "@erebos/keccak256" "^0.7.0"
+    rxjs "^6.5.2"
+
+"@erebos/hex@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@erebos/hex/-/hex-0.7.0.tgz#e40341b81d55cc976279cd90cac9ab766ede839c"
+  integrity sha512-4Qa2U4Y2XsjfTiQmH+MXsoZnxVBx04v/RZVD9ErrrLbX8HN+WAWQv6Z001QzWD+z/Y5aHPmHO/KJwB4cvSl/Dg==
+  dependencies:
+    "@babel/runtime" "^7.3.4"
+
+"@erebos/keccak256@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@erebos/keccak256/-/keccak256-0.7.0.tgz#80bc51c54ee0a6270f5928bdd1274d7e8bffc739"
+  integrity sha512-MLVl/AhSN6hOUxopYC1H/rK/fU/B+fDMqWqdqmHTuANs0pLcG7HXHVEqCiOQz963lMb/9S0eDS21t8Z46AJq8A==
+  dependencies:
+    "@babel/runtime" "^7.3.4"
+    "@erebos/hex" "^0.7.0"
+    js-sha3 "^0.8.0"
 
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
@@ -4427,6 +4453,11 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
 
+flow-bin@^0.101.0:
+  version "0.101.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.101.1.tgz#6175eb4a2e510949decf4750cb573f83ddf303f2"
+  integrity sha512-+HVuoMgWNK8vIM662Rt6OzlJNTnC+BWChdeYjkPpl70TKiRMt//j6/5x6PH8HVZ/vytOfPZw2b/JrlBHdlGCkQ==
+
 flush-write-stream@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
@@ -4909,6 +4940,11 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
+
+hasurl@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/hasurl/-/hasurl-1.0.0.tgz#e4c619097ae1e8fc906bee904ce47e94f5e1ea37"
+  integrity sha512-43ypUd3DbwyCT01UYpA99AEZxZ4aKtRxWGBHEIbjcOsUghd9YUON0C+JF6isNjaiwC/UF5neaUudy6JS9jZPZQ==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -9006,6 +9042,14 @@ unique-slug@^2.0.0:
   integrity sha512-zoWr9ObaxALD3DOPfjPSqxt4fnZiWblxHIgeWqW8x7UqDzEtHEQLzji2cuJYQFCU6KmoJikOYAZlrTHHebjx2w==
   dependencies:
     imurmurhash "^0.1.4"
+
+universal-url@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/universal-url/-/universal-url-2.0.0.tgz#35e7fc2c3374804905cee67ea289ed3a47669809"
+  integrity sha512-3DLtXdm/G1LQMCnPj+Aw7uDoleQttNHp2g5FnNQKR6cP6taNWS1b/Ehjjx4PVyvejKi3TJyu8iBraKM4q3JQPg==
+  dependencies:
+    hasurl "^1.0.0"
+    whatwg-url "^7.0.0"
 
 universal-user-agent@^2.1.0:
   version "2.1.0"

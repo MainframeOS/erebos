@@ -1,6 +1,6 @@
 {
   "name": "@erebos/api-bzz-react-native",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Bzz API for react-native",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -23,8 +23,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@erebos/api-bzz-base": "^0.8.1",
+    "@erebos/api-bzz-base": "^0.9.0",
     "universal-url": "^2.0.0"
   },
   "devDependencies": {
