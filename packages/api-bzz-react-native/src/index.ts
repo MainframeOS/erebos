@@ -25,11 +25,11 @@ export class Bzz extends BaseBzz<Response> {
     Object.keys(directory).forEach(key => {
       form.append(
         key,
-        ({
+        {
           uri: directory[key].data,
           type: directory[key].contentType,
           name: key,
-        } as any),
+        } as any,
         key,
       )
     })
@@ -38,11 +38,11 @@ export class Bzz extends BaseBzz<Response> {
       if (file != null) {
         form.append(
           '',
-          ({
+          {
             uri: directory[options.defaultPath].data,
             type: directory[options.defaultPath].contentType,
             name: options.defaultPath,
-          } as any),
+          } as any,
           '',
         )
       }
