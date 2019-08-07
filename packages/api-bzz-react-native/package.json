@@ -28,6 +28,6 @@
     "universal-url": "^2.0.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.101.0"
+    "typescript": "3.5.2"
   }
 }
