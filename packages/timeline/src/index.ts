@@ -240,7 +240,7 @@ export class Timeline<
     initialID?: string,
     options: FetchOptions = {},
   ): AsyncIterator<Chapter<T>> {
-    let unitialLoaded = false
+    let initialLoaded = false
     let nextID: string | null | void = initialID
     return {
       // @ts-ignore
@@ -248,9 +248,9 @@ export class Timeline<
         return this
       },
       next: async (): Promise<IteratorResult<Chapter<T>>> => {
-        if (initialID == null && !unitialLoaded) {
+        if (initialID == null && !initialLoaded) {
           nextID = await this.getLatestChapterID(options)
-          unitialLoaded = true
+          initialLoaded = true
         }
         if (nextID == null) {
           // @ts-ignore

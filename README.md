@@ -36,7 +36,7 @@ npm install -g @erebos/cli
 | **Individual APIs**
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Node-only Swarm (BZZ) APIs
-| [`@erebos/api-bzz-react-native`](/packages/api-bzz-react-native) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-react-native.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | Experimental React Native Swarm (BZZ) APIs
+| [`@erebos/api-bzz-react-native`](/packages/api-bzz-react-native) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-react-native.svg)](https://www.npmjs.com/package/@erebos/api-bzz-react-native) | Experimental React Native Swarm (BZZ) APIs
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | Postal Services over Swarm (PSS) APIs
 | [`@erebos/timeline`](/packages/timeline) | [![npm version](https://img.shields.io/npm/v/@erebos/timeline.svg)](https://www.npmjs.com/package/@erebos/timeline) | Feed-based Timeline APIs
 | **Utilities**

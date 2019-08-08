@@ -23,11 +23,13 @@ The browser builds (in the `dist` folder) have been renamed from `erebos.develop
 ### Additional features
 
 - The `downloadTarTo()` method has been added to `@erebos/api-bzz-node`.
+- The experimental `@erebos/api-bzz-react-native` has been added by [Mark Vujevits](https://github.com/vujevits) in [PR #98](https://github.com/MainframeHQ/erebos/pull/98).
 
 ### Other changes
 
 - The `sign()` and `verify()` functions exported by the `@erebos/secp256k1` package now accept a `BNInput` input value as exported by the `elliptic` package.
 - The `addChapter()` method of the `Timeline` class now calls `createChapter()`, so default values for the chapter will be injected.
+- Fixed links to Swarm install & run (by [thecryptofruit](https://github.com/thecryptofruit) in [PR #108](https://github.com/MainframeHQ/erebos/pull/108)).
 - The docs have been updated to expose TypeScript interfaces rather than Flow types.
 
 ## v0.8.1 (2019-06-17)
