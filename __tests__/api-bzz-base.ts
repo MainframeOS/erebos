@@ -265,8 +265,8 @@ describe('api-bzz-base', () => {
       })
     })
 
-    it('uploadDirectory() rejects an error it must be implemented in extending class', () => {
-      expect(bzz.uploadDirectory({})).rejects.toThrow(
+    it('uploadDirectory() rejects an error it must be implemented in extending class', async () => {
+      await expect(bzz.uploadDirectory({})).rejects.toThrow(
         'Must be implemented in extending class',
       )
     })
@@ -296,7 +296,7 @@ describe('api-bzz-base', () => {
       })
 
       // Upload a directory
-      expect(bzz.upload({})).rejects.toThrow(
+      await expect(bzz.upload({})).rejects.toThrow(
         'Must be implemented in extending class',
       )
     })

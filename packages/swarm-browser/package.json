@@ -26,7 +26,7 @@
     "build:js": "yarn build:cjs && yarn build:esm && yarn build:dist",
     "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
     "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
-    "prepublishOnly": "yarn build && yarn build:dist"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",

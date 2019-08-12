@@ -9,16 +9,14 @@
     "packages/*"
   ],
   "scripts": {
-    "flow:install": "lerna exec --concurrency 1 -- flow-typed install --ignoreDeps=dev",
     "bootstrap": "lerna bootstrap",
     "lint": "eslint 'packages/*/src/**.ts' '__tests__/**.ts'",
     "lint:fix": "yarn lint --fix",
-    "test:flow": "flow check",
-    "test:project": "jest --config jest.config.js",
+    "test": "jest --config jest.config.js",
+    "test:all": "yarn lint && yarn test",
     "test:ci": "jest --ci --config jest.config.ci.js --runInBand",
-    "test": "yarn lint && yarn test:project",
-    "build": "lerna run build && lerna run build:dist",
-    "start": "yarn test && yarn build"
+    "build": "lerna run build",
+    "start": "yarn lint && yarn build && yarn test"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

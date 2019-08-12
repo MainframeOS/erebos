@@ -487,16 +487,11 @@ describe('api-bzz-node', () => {
     expect(text).toBe('hello')
   })
 
-  it('supports feed chunk polling', async () => {
+  it('supports feed chunk polling', done => {
     jest.setTimeout(40000)
 
     let step = '0-idle'
     let expectedValue
-
-    let completeTest
-    const testPromise = new Promise(resolve => {
-      completeTest = resolve
-    })
 
     const params = { user, name: uploadContent }
     const subscription = bzz
@@ -524,17 +519,15 @@ describe('api-bzz-node', () => {
             subscription.unsubscribe()
             step = '6-unsubscribed'
             await sleep(5000)
-            completeTest()
+            done()
           } else if (step === '6-unsubscribed') {
             throw new Error('Event received after unsubscribed')
           }
         }
       })
-
-    await testPromise
   })
 
-  it('supports feed content hash polling', async () => {
+  it('supports feed content hash polling', done => {
     jest.setTimeout(40000)
 
     const params = { user, name: uploadContent }
@@ -547,11 +540,6 @@ describe('api-bzz-node', () => {
     let step = '0-idle'
     let expectedHash
     let previousValue
-
-    let completeTest
-    const testPromise = new Promise(resolve => {
-      completeTest = resolve
-    })
 
     const subscription = bzz
       .pollFeedContentHash(params, {
@@ -579,15 +567,13 @@ describe('api-bzz-node', () => {
           } else if (step === '5-second-value-posted') {
             expect(value).toBe(expectedHash)
             subscription.unsubscribe()
-            completeTest()
+            done()
           }
         }
       })
-
-    await testPromise
   })
 
-  it('supports feed content polling', async () => {
+  it('supports feed content polling', done => {
     jest.setTimeout(40000)
 
     const params = { user, name: uploadContent }
@@ -599,11 +585,6 @@ describe('api-bzz-node', () => {
 
     let step = '0-idle'
     let expectedValue
-
-    let completeTest
-    const testPromise = new Promise(resolve => {
-      completeTest = resolve
-    })
 
     const subscription = bzz
       .pollFeedContent(params, {
@@ -632,12 +613,10 @@ describe('api-bzz-node', () => {
           } else if (step === '5-second-value-posted') {
             expect(value).toBe(expectedValue)
             subscription.unsubscribe()
-            completeTest()
+            done()
           }
         }
       })
-
-    await testPromise
   })
 
   it('feed polling fails on not found error if the option is enabled', async () => {
@@ -660,23 +639,18 @@ describe('api-bzz-node', () => {
     })
   })
 
-  it('feed polling accepts an external trigger', async () => {
+  it('feed polling accepts an external trigger', done => {
     const trigger = new Subject()
-    let subscription
-
-    await new Promise(resolve => {
-      subscription = bzz
-        .pollFeedChunk(
-          { user, name: 'notfound' },
-          { interval: 10000, immediate: false, trigger },
-        )
-        .subscribe(() => {
-          resolve()
-        })
-      // Test should timeout if the trigger is not executed
-      trigger.next()
-    })
-
-    subscription.unsubscribe()
+    const subscription = bzz
+      .pollFeedChunk(
+        { user, name: 'notfound' },
+        { interval: 10000, immediate: false, trigger },
+      )
+      .subscribe(() => {
+        subscription.unsubscribe()
+        done()
+      })
+    // Test should timeout if the trigger is not executed
+    trigger.next()
   })
 })
