@@ -8,6 +8,7 @@ docker run $@ \
   --interactive \
   --tty \
   "ethersphere/swarm:0.4.3" \
+    --bzznetworkid=256 \
     --datadir /swarm/data \
     --password /swarm/password \
     --nosync \

@@ -81,7 +81,9 @@ describe('timeline', () => {
       content: { ok: true },
     })
 
-    expect(timeline.getChapter(invalidID)).rejects.toThrow('Invalid payload')
+    await expect(timeline.getChapter(invalidID)).rejects.toThrow(
+      'Invalid payload',
+    )
   })
 
   it('postChapter() method encodes and uploads the chapter', async () => {
