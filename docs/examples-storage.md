@@ -8,7 +8,7 @@ title: File storage examples
 
 ```html
 <html>
-  <script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.production.js"></script>
+  <script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.swarm.production.js"></script>
   <script>
     const client = new Erebos.swarm.SwarmClient({
       http: 'https://swarm-gateways.net',
