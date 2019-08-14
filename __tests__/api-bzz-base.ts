@@ -33,12 +33,12 @@ describe('api-bzz-base', () => {
     expect(error.status).toBe(404)
   })
 
-  it('exports resOrError() utility function', async () => {
+  it('exports resOrError() utility function', () => {
     const resOK = { ok: true }
-    expect(await resOrError(resOK)).toBe(resOK)
+    expect(resOrError(resOK)).toBe(resOK)
 
     try {
-      await resOrError({
+      resOrError({
         ok: false,
         status: 400,
         statusText: 'Bad request',

@@ -16,7 +16,7 @@ describe('timeline', () => {
   const author = pubKeyToAddress(keyPair.getPublic('array'))
 
   const bzz = new Bzz({
-    signBytes: async bytes => sign(bytes, keyPair),
+    signBytes: bytes => Promise.resolve(sign(bytes, keyPair)),
     url: 'http://localhost:8500/',
   })
 
@@ -28,6 +28,7 @@ describe('timeline', () => {
 
   it('provides a createChapter() function', () => {
     const now = Date.now()
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     Date.now = jest.fn(() => now)
     const chapter = createChapter({
       author,
@@ -61,6 +62,7 @@ describe('timeline', () => {
 
   it('getChapter() method downloads and decodes the chapter', async () => {
     const now = Date.now()
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     Date.now = jest.fn(() => now)
 
     const timeline = new Timeline({ bzz })
@@ -105,6 +107,7 @@ describe('timeline', () => {
     })
 
     const encode = jest.fn(async chapter => {
+      // eslint-disable-next-line require-atomic-updates
       chapter.signature = await bzz.sign(createHex(chapter).toBytesArray())
       return JSON.stringify(chapter)
     })
@@ -203,7 +206,7 @@ describe('timeline', () => {
     })
 
     // Create the timeline with the given chapters
-    const addChapter = await timeline.createAddChapter({
+    const addChapter = timeline.createAddChapter({
       author,
       type: 'text/plain',
     })
@@ -230,7 +233,7 @@ describe('timeline', () => {
     expect(j).toBe(0)
   })
 
-  it('createLoader() returns an Observable of chapters within the given range', async () => {
+  it('createLoader() returns an Observable of chapters within the given range', async done => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three', 'four', 'five']
@@ -251,22 +254,18 @@ describe('timeline', () => {
       chapterIDs.push(chapter.id)
     }
 
-    const loader = await timeline.createLoader(chapterIDs[3], chapterIDs[0])
-
-    await new Promise((resolve, reject) => {
-      let index = 3
-      loader.subscribe({
-        next: chapter => {
-          expect(chapter.content).toBe(contents[index--])
-        },
-        complete: () => {
-          expect(index).toBe(0)
-          resolve()
-        },
-        error: err => {
-          reject(err)
-        },
-      })
+    let index = 3
+    timeline.createLoader(chapterIDs[3], chapterIDs[0]).subscribe({
+      next: chapter => {
+        expect(chapter.content).toBe(contents[index--])
+      },
+      complete: () => {
+        expect(index).toBe(0)
+        done()
+      },
+      error: err => {
+        throw err
+      },
     })
   })
 
@@ -307,7 +306,7 @@ describe('timeline', () => {
     ])
   })
 
-  it('pollLatestChapter() returns an observable of the latest chapter', () => {
+  it('pollLatestChapter() returns an observable of the latest chapter', async done => {
     jest.setTimeout(40000) // 40 secs
 
     const contents = ['one', 'two', 'three']
@@ -316,37 +315,35 @@ describe('timeline', () => {
       feed: { user: author, name: 'test-poll' },
     })
 
-    return new Promise(async (resolve, reject) => {
-      const addChapter = timeline.createAddChapter({
-        author,
-        type: 'text/plain',
-      })
-
-      let i = 0
-      const pushNext = async () => {
-        await addChapter({ content: contents[i] })
-      }
-
-      const sub = timeline.pollLatestChapter({ interval: 10000 }).subscribe({
-        next: chapter => {
-          expect(chapter.content).toBe(contents[i])
-          if (++i === 3) {
-            sub.unsubscribe()
-            resolve()
-          } else {
-            pushNext()
-          }
-        },
-        error: err => {
-          reject(err)
-        },
-      })
-
-      pushNext()
+    const addChapter = timeline.createAddChapter({
+      author,
+      type: 'text/plain',
     })
+
+    let i = 0
+    const pushNext = async (): Promise<void> => {
+      await addChapter({ content: contents[i] })
+    }
+
+    const sub = timeline.pollLatestChapter({ interval: 10000 }).subscribe({
+      next: chapter => {
+        expect(chapter.content).toBe(contents[i])
+        if (++i === 3) {
+          sub.unsubscribe()
+          done()
+        } else {
+          pushNext()
+        }
+      },
+      error: err => {
+        throw err
+      },
+    })
+
+    await pushNext()
   })
 
-  it('live() returns an observable of lists of chapters as they get polled', () => {
+  it('live() returns an observable of lists of chapters as they get polled', done => {
     jest.setTimeout(40000) // 40 secs
 
     const contents = [['one'], ['two', 'three', 'four'], ['five', 'six']]
@@ -355,36 +352,34 @@ describe('timeline', () => {
       feed: { user: author, name: 'test-live' },
     })
 
-    return new Promise(async (resolve, reject) => {
-      const addChapter = timeline.createAddChapter({
-        author,
-        type: 'text/plain',
-      })
-
-      let i = 0
-      const pushSlice = async () => {
-        for (const content of contents[i]) {
-          await addChapter({ content })
-        }
-      }
-
-      const sub = timeline.live({ interval: 10000 }).subscribe({
-        next: chapters => {
-          expect(chapters.map(l => l.content)).toEqual(contents[i])
-          if (++i === 3) {
-            sub.unsubscribe()
-            resolve()
-          } else {
-            pushSlice()
-          }
-        },
-        error: err => {
-          reject(err)
-        },
-      })
-
-      // Push first slice
-      pushSlice()
+    const addChapter = timeline.createAddChapter({
+      author,
+      type: 'text/plain',
     })
+
+    let i = 0
+    const pushSlice = async (): Promise<void> => {
+      for (const content of contents[i]) {
+        await addChapter({ content })
+      }
+    }
+
+    const sub = timeline.live({ interval: 10000 }).subscribe({
+      next: chapters => {
+        expect(chapters.map(l => l.content)).toEqual(contents[i])
+        if (++i === 3) {
+          sub.unsubscribe()
+          done()
+        } else {
+          pushSlice()
+        }
+      },
+      error: err => {
+        throw err
+      },
+    })
+
+    // Push first slice
+    pushSlice()
   })
 })

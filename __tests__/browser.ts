@@ -3,6 +3,7 @@
 
 import { resolve } from 'path'
 
+import { hexValue } from '../packages/hex'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign } from '../packages/secp256k1'
 
@@ -169,11 +170,10 @@ describe('browser', () => {
         const manifest = await client.bzz.list(dirHash)
         const entries = Object.values(manifest.entries)
         const downloaded = await Promise.all(
-          entries.map(entry =>
-            client.bzz
-              .download(entry.hash, { mode: 'raw' })
-              .then(r => r.text()),
-          ),
+          entries.map(async entry => {
+            const r = await client.bzz.download(entry.hash, { mode: 'raw' })
+            return await r.text()
+          }),
         )
         const downloadedDir = entries.reduce((acc, entry, i) => {
           acc[entry.path] = {
@@ -206,11 +206,10 @@ describe('browser', () => {
           const manifest = await client.bzz.list(dirHash)
           const entries = Object.values(manifest.entries)
           const downloaded = await Promise.all(
-            entries.map(entry =>
-              client.bzz
-                .download(entry.hash, { mode: 'raw' })
-                .then(r => r.text()),
-            ),
+            entries.map(async entry => {
+              const r = await client.bzz.download(entry.hash, { mode: 'raw' })
+              return await r.text()
+            }),
           )
           const downloadedDir = entries.reduce((acc, entry, i) => {
             acc[entry.path] = {
@@ -326,7 +325,7 @@ describe('browser', () => {
 
       await evalClient(
         async (client, user, name) => {
-          const sleep = async () => {
+          const sleep = async (): Promise<void> => {
             await new Promise(resolve => {
               setTimeout(resolve, 5000)
             })
@@ -344,6 +343,7 @@ describe('browser', () => {
           const subscription = client.bzz
             .pollFeedChunk(params, { interval: 2000 })
             .subscribe(async res => {
+              /* eslint-disable require-atomic-updates */
               if (res === null) {
                 if (step === '0-idle') {
                   step = '1-first-value-post'
@@ -379,6 +379,7 @@ describe('browser', () => {
                   throw new Error('Event received after unsubscribed')
                 }
               }
+              /* eslint-enable require-atomic-updates */
             })
 
           await testPromise
@@ -393,14 +394,14 @@ describe('browser', () => {
 
       await evalClient(
         async (client, user, name) => {
-          const sleep = async () => {
+          const sleep = async (): Promise<void> => {
             await new Promise(resolve => {
               setTimeout(resolve, 8000)
             })
           }
 
           const params = { user, name }
-          const post = async value => {
+          const post = async (value): Promise<hexValue> => {
             return await client.bzz.setFeedContent(params, value, {
               contentType: 'text/plain',
             })
@@ -421,6 +422,7 @@ describe('browser', () => {
               changedOnly: true,
             })
             .subscribe(async value => {
+              /* eslint-disable require-atomic-updates */
               if (value === null) {
                 if (step === '0-idle') {
                   step = '1-first-value-post'
@@ -450,6 +452,7 @@ describe('browser', () => {
                   completeTest()
                 }
               }
+              /* eslint-enable require-atomic-updates */
             })
 
           await testPromise
@@ -464,14 +467,14 @@ describe('browser', () => {
 
       await evalClient(
         async (client, user, name) => {
-          const sleep = async () => {
+          const sleep = async (): Promise<void> => {
             await new Promise(resolve => {
               setTimeout(resolve, 8000)
             })
           }
 
           const params = { user, name }
-          const post = async value => {
+          const post = async (value): Promise<hexValue> => {
             return await client.bzz.setFeedContent(params, value, {
               contentType: 'text/plain',
             })
@@ -492,6 +495,7 @@ describe('browser', () => {
               changedOnly: true,
             })
             .subscribe(async res => {
+              /* eslint-disable require-atomic-updates */
               if (res === null) {
                 if (step === '0-idle') {
                   step = '1-first-value-post'
@@ -520,6 +524,7 @@ describe('browser', () => {
                   completeTest()
                 }
               }
+              /* eslint-enable require-atomic-updates */
             })
 
           await testPromise

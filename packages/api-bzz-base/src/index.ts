@@ -76,7 +76,7 @@ export async function resSwarmHash<R extends BaseResponse>(
   return Buffer.from(new Uint8Array(value)).toString('hex')
 }
 
-function defaultSignBytes() {
+function defaultSignBytes(): Promise<Array<number>> {
   return Promise.reject(new Error('Missing `signBytes()` function'))
 }
 
@@ -129,7 +129,7 @@ export class BaseBzz<Response extends BaseResponse> {
   public getDownloadURL(
     hash: string,
     options: DownloadOptions = {},
-    raw: boolean = false,
+    raw = false,
   ): string {
     const protocol = raw
       ? BZZ_MODE_PROTOCOLS.raw
@@ -144,10 +144,7 @@ export class BaseBzz<Response extends BaseResponse> {
     return url
   }
 
-  public getUploadURL(
-    options: UploadOptions = {},
-    raw: boolean = false,
-  ): string {
+  public getUploadURL(options: UploadOptions = {}, raw = false): string {
     // Default URL to creation
     let url = this.url + BZZ_MODE_PROTOCOLS[raw ? 'raw' : 'default']
     // Manifest update if hash is provided
@@ -175,9 +172,9 @@ export class BaseBzz<Response extends BaseResponse> {
       url += `${hashOrParams}/`
     } else {
       // feed params
-      Object.keys(hashOrParams).forEach(key => {
-        // @ts-ignore
-        const value = hashOrParams[key]
+      const params: { [index: string]: any } = hashOrParams
+      Object.keys(params).forEach(key => {
+        const value = params[key]
         if (value != null) {
           query.push(`${key}=${value}`)
         }
@@ -226,7 +223,7 @@ export class BaseBzz<Response extends BaseResponse> {
   protected async uploadBody(
     body: any,
     options: UploadOptions,
-    raw: boolean = false,
+    raw = false,
   ): Promise<hexValue> {
     const url = this.getUploadURL(options, raw)
     const res = await this.fetchTimeout(url, options, { body, method: 'POST' })

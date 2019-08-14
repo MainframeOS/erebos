@@ -60,7 +60,9 @@ export function createChapter<T>(
   } as PartialChapter<T>
 }
 
-function createChapterFactory(defaults: Partial<PartialChapter<any>>) {
+function createChapterFactory(
+  defaults: Partial<PartialChapter<any>>,
+): <T>(chapter: Partial<PartialChapter<T>>) => PartialChapter<T> {
   const allDefaults = { ...CHAPTER_DEFAULTS, ...defaults }
   return function createChapter<T>(
     chapter: Partial<PartialChapter<T>>,
@@ -94,12 +96,15 @@ export function validateChapter<T extends MaybeChapter>(chapter: T): T {
   return chapter
 }
 
-async function defaultDecode<R extends BaseResponse = BaseResponse>(res: R) {
-  return validateChapter(await res.json())
+async function defaultDecode<
+  T extends MaybeChapter,
+  R extends BaseResponse = BaseResponse
+>(res: R): Promise<T> {
+  return validateChapter<T>(await res.json())
 }
 
-async function defaultEncode(chapter: any) {
-  return JSON.stringify(chapter)
+function defaultEncode(chapter: any): Promise<string> {
+  return Promise.resolve(JSON.stringify(chapter))
 }
 
 export interface TimelineConfig<
@@ -207,6 +212,7 @@ export class Timeline<
     options: UploadOptions = {},
   ): Promise<Chapter<T>> {
     if (typeof chapter.previous === 'undefined') {
+      // eslint-disable-next-line require-atomic-updates
       chapter.previous = await this.getLatestChapterID(options)
     }
     const id = await this.setLatestChapter(createChapter(chapter))
@@ -216,7 +222,7 @@ export class Timeline<
   public createAddChapter(
     chapterDefaults: Partial<PartialChapter<T>> = {},
     options: UploadOptions = {},
-  ) {
+  ): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>> {
     let previous: string | null = null
     let previousPromise: null | Promise<
       string | null
@@ -227,10 +233,13 @@ export class Timeline<
       partialChapter: Partial<PartialChapter<T>>,
     ): Promise<Chapter<T>> => {
       if (previous === null && previousPromise !== null) {
+        // eslint-disable-next-line require-atomic-updates
         previous = await previousPromise
+        // eslint-disable-next-line require-atomic-updates
         previousPromise = null
       }
       const chapter = create({ ...partialChapter, previous })
+      // eslint-disable-next-line require-atomic-updates
       previous = await this.setLatestChapter(chapter, options)
       return { ...chapter, id: previous }
     }
@@ -250,6 +259,7 @@ export class Timeline<
       next: async (): Promise<IteratorResult<Chapter<T>>> => {
         if (initialID == null && !initialLoaded) {
           nextID = await this.getLatestChapterID(options)
+          // eslint-disable-next-line require-atomic-updates
           initialLoaded = true
         }
         if (nextID == null) {
@@ -257,6 +267,7 @@ export class Timeline<
           return { done: true }
         }
         const chapter = await this.getChapter(nextID, options)
+        // eslint-disable-next-line require-atomic-updates
         nextID = chapter.previous
         return { done: false, value: chapter }
       },
@@ -348,7 +359,9 @@ export class Timeline<
           chapters = slice.reverse().concat(chapter)
         }
 
+        // eslint-disable-next-line require-atomic-updates
         minTimestamp = chapter.timestamp
+        // eslint-disable-next-line require-atomic-updates
         previousID = chapter.id
 
         return chapters

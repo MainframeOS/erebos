@@ -48,14 +48,9 @@ export async function extractTarStreamTo(
     extract.on('error', (err: Error) => {
       reject(err)
     })
-    extract.on('finish', async () => {
+    extract.on('finish', () => {
       // Wait until all files have been written before resolving
-      try {
-        await Promise.all(writeFiles)
-        resolve(writeFiles.length)
-      } catch (err) {
-        reject(err)
-      }
+      Promise.all(writeFiles).then(() => resolve(writeFiles.length), reject)
     })
     stream.pipe(extract)
   })

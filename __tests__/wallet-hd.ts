@@ -14,7 +14,7 @@ describe('HDWallet', () => {
     expect(wallet.accounts[0]).toBe(FIRST_ACCOUNT)
   })
 
-  it('creates a wallet from a random mnemonic', async () => {
+  it('creates a wallet from a random mnemonic', () => {
     const wallet = HDWallet.createRandom()
     expect(wallet.accounts.length).toBe(1)
   })
@@ -87,7 +87,9 @@ describe('HDWallet', () => {
     const params = { user: FIRST_ACCOUNT, name: 'test' }
     const data = { test: 'test' }
     const bzz = new Bzz({
-      signBytes: async bytes => wallet.signBytes(FIRST_ACCOUNT, bytes),
+      signBytes: bytes => {
+        return Promise.resolve(wallet.signBytes(FIRST_ACCOUNT, bytes))
+      },
       url: 'http://localhost:8500',
     })
     await bzz.setFeedChunk(params, data)

@@ -3,6 +3,7 @@ import { inspect } from 'util'
 import { sign } from '@erebos/secp256k1'
 import { SwarmClient } from '@erebos/swarm-node'
 import { Command as Cmd, flags } from '@oclif/command'
+// eslint-disable-next-line import/default
 import ora from 'ora'
 
 export interface DefaultFlags extends Record<string, any> {
@@ -43,7 +44,9 @@ export abstract class Command<
     if (this.clientInstance == null) {
       this.clientInstance = new SwarmClient({
         bzz: {
-          signBytes: async (bytes: Array<number>, key: any) => sign(bytes, key),
+          signBytes: (bytes: Array<number>, key: any) => {
+            return Promise.resolve(sign(bytes, key))
+          },
           timeout: this.flags.timeout,
           url: this.flags['http-gateway'],
         },
@@ -58,21 +61,23 @@ export abstract class Command<
     return resolve(process.cwd(), path)
   }
 
-  public logObject(data: Record<string, any>) {
+  public logObject(data: Record<string, any>): void {
     this.log(inspect(data, { colors: true, depth: null }))
   }
 
-  public async init() {
+  public init(): Promise<void> {
     // @ts-ignore
     const { args, flags } = this.parse(this.constructor)
     this.args = args
     this.flags = flags
     this.spinner = ora()
+    return Promise.resolve()
   }
 
-  public async finally() {
+  public finally(): Promise<void> {
     if (this.clientInstance != null) {
       this.clientInstance.disconnect()
     }
+    return Promise.resolve()
   }
 }

@@ -1,13 +1,6 @@
 module.exports = {
   extends: ['mainframe', 'mainframe/jest-puppeteer', 'mainframe/typescript'],
   rules: {
-    '@typescript-eslint/explicit-function-return-type': {
-      allowExpressions: true,
-    },
-    '@typescript-eslint/no-unused-vars': {
-      argsIgnorePattern: '^_',
-      varsIgnorePattern: '^_',
-    },
-    'import/default': false,
+    '@typescript-eslint/ban-ts-ignore': 'warn',
   },
 }

@@ -8,14 +8,15 @@ import * as fs from 'fs-extra'
 import { Subject } from 'rxjs'
 import * as tar from 'tar-stream'
 
-import { Bzz } from '../packages/api-bzz-node'
+import { Bzz, ListEntry } from '../packages/api-bzz-node'
+import { hexValue } from '../packages/hex'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign } from '../packages/secp256k1'
 
 describe('api-bzz-node', () => {
   const TEMP_DIR = path.join(os.tmpdir(), 'erebos-test-temp')
 
-  const sleep = async (time = 1000) => {
+  const sleep = async (time = 1000): Promise<void> => {
     await new Promise(resolve => {
       setTimeout(resolve, time)
     })
@@ -25,13 +26,13 @@ describe('api-bzz-node', () => {
   const user = pubKeyToAddress(keyPair.getPublic('array'))
 
   const bzz = new Bzz({
-    signBytes: async (bytes: Array<number>) => {
-      return sign(bytes, keyPair)
-    },
+    signBytes: (bytes: Array<number>) => Promise.resolve(sign(bytes, keyPair)),
     url: 'http://localhost:8500',
   })
 
-  const downloadRawEntries = async entries => {
+  const downloadRawEntries = async (
+    entries: Array<ListEntry>,
+  ): Promise<Array<string>> => {
     return await Promise.all(
       entries.map(e => {
         return bzz.download(e.hash, { mode: 'raw' }).then(r => r.text())
@@ -39,7 +40,9 @@ describe('api-bzz-node', () => {
     )
   }
 
-  const writeTempDir = async dir => {
+  const writeTempDir = async (
+    dir: Record<string, { data: string }>,
+  ): Promise<void> => {
     await fs.ensureDir(TEMP_DIR)
     await Promise.all(
       Object.keys(dir).map(filePath => {
@@ -48,7 +51,7 @@ describe('api-bzz-node', () => {
     )
   }
 
-  let uploadContent
+  let uploadContent: string
 
   beforeEach(() => {
     fs.removeSync(TEMP_DIR)
@@ -313,7 +316,7 @@ describe('api-bzz-node', () => {
 
   it('download a tar file to the provided path', async () => {
     const filePath = `${TEMP_DIR}/archive.tar`
-    const existsBefore = await fs.exists(filePath)
+    const existsBefore = await fs.pathExists(filePath)
     expect(existsBefore).toBe(false)
 
     const hash = await bzz.uploadDirectory({
@@ -323,7 +326,7 @@ describe('api-bzz-node', () => {
     })
     await bzz.downloadTarTo(hash, filePath)
 
-    const existsAfter = await fs.exists(filePath)
+    const existsAfter = await fs.pathExists(filePath)
     expect(existsAfter).toBe(true)
   })
 
@@ -491,17 +494,20 @@ describe('api-bzz-node', () => {
     jest.setTimeout(40000)
 
     let step = '0-idle'
-    let expectedValue
+    let expectedValue: string
 
     const params = { user, name: uploadContent }
     const subscription = bzz
       .pollFeedChunk(params, { interval: 2000 })
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(async res => {
+        /* eslint-disable require-atomic-updates */
         if (res === null) {
           if (step === '0-idle') {
             step = '1-first-value-post'
             await bzz.setFeedChunk(params, 'hello')
             expectedValue = 'hello'
+
             step = '2-first-value-posted'
           }
         } else {
@@ -524,6 +530,7 @@ describe('api-bzz-node', () => {
             throw new Error('Event received after unsubscribed')
           }
         }
+        /* eslint-enable require-atomic-updates */
       })
   })
 
@@ -531,22 +538,24 @@ describe('api-bzz-node', () => {
     jest.setTimeout(40000)
 
     const params = { user, name: uploadContent }
-    const post = async value => {
+    const post = async (value: string): Promise<hexValue> => {
       return await bzz.setFeedContent(params, value, {
         contentType: 'text/plain',
       })
     }
 
     let step = '0-idle'
-    let expectedHash
-    let previousValue
+    let expectedHash: string
+    let previousValue: string
 
     const subscription = bzz
       .pollFeedContentHash(params, {
         interval: 5000,
         changedOnly: true,
       })
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(async value => {
+        /* eslint-disable require-atomic-updates */
         if (value === null) {
           if (step === '0-idle') {
             step = '1-first-value-post'
@@ -570,6 +579,7 @@ describe('api-bzz-node', () => {
             done()
           }
         }
+        /* eslint-enable require-atomic-updates */
       })
   })
 
@@ -577,21 +587,23 @@ describe('api-bzz-node', () => {
     jest.setTimeout(40000)
 
     const params = { user, name: uploadContent }
-    const post = async value => {
+    const post = async (value: string): Promise<hexValue> => {
       return await bzz.setFeedContent(params, value, {
         contentType: 'text/plain',
       })
     }
 
     let step = '0-idle'
-    let expectedValue
+    let expectedValue: string
 
     const subscription = bzz
       .pollFeedContent(params, {
         interval: 5000,
         changedOnly: true,
       })
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       .subscribe(async res => {
+        /* eslint-disable require-atomic-updates */
         if (res === null) {
           if (step === '0-idle') {
             step = '1-first-value-post'
@@ -616,31 +628,30 @@ describe('api-bzz-node', () => {
             done()
           }
         }
+        /* eslint-enable require-atomic-updates */
       })
   })
 
-  it('feed polling fails on not found error if the option is enabled', async () => {
+  it('feed polling fails on not found error if the option is enabled', done => {
     jest.setTimeout(10000)
 
-    await new Promise((resolve, reject) => {
-      bzz
-        .pollFeedChunk(
-          { user, name: 'notfound' },
-          { interval: 2000, whenEmpty: 'error', immediate: false },
-        )
-        .subscribe({
-          next: () => {
-            reject(new Error('Subscription should not have emitted a value'))
-          },
-          error: () => {
-            resolve()
-          },
-        })
-    })
+    bzz
+      .pollFeedChunk(
+        { user, name: 'notfound' },
+        { interval: 2000, whenEmpty: 'error', immediate: false },
+      )
+      .subscribe({
+        next: () => {
+          throw new Error('Subscription should not have emitted a value')
+        },
+        error: () => {
+          done()
+        },
+      })
   })
 
   it('feed polling accepts an external trigger', done => {
-    const trigger = new Subject()
+    const trigger: Subject<void> = new Subject()
     const subscription = bzz
       .pollFeedChunk(
         { user, name: 'notfound' },

@@ -26,7 +26,7 @@ export function createInstantiateAPI<R extends BaseRPC>(
       return maybeInstance
     }
     if (typeof maybeInstance === 'string') {
-      return new Cls(createRPC(maybeInstance) as R)
+      return new Cls(createRPC(maybeInstance))
     }
   }
 }
@@ -47,9 +47,10 @@ export abstract class BaseClient {
     return this.rpcInstance
   }
 
-  public disconnect() {
+  public disconnect(): void {
     if (
       this.rpcInstance != null &&
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       typeof this.rpcInstance.disconnect === 'function'
     ) {
       this.rpcInstance.disconnect()

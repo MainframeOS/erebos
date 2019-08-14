@@ -10,7 +10,7 @@ export type hexInput =
   | Array<number>
 
 export function isHexValue(value: any): value is hexValue {
-  return typeof value === 'string' && value.slice(0, 2) === '0x'
+  return typeof value === 'string' && value.startsWith('0x')
 }
 
 export function fromHexValue(input: hexValue): Buffer {

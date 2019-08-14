@@ -82,7 +82,7 @@ export class Pss {
     key: hexValue,
     topic: hexValue,
     address: hexValue,
-    useForDecryption: boolean = false,
+    useForDecryption = false,
   ): Promise<string> {
     return this.rpc.request('pss_setSymmetricKey', [
       key,
@@ -98,7 +98,7 @@ export class Pss {
 
   public subscribeTopic(
     topic: hexValue,
-    handleRawMessages: boolean = false,
+    handleRawMessages = false,
   ): Promise<hexValue> {
     return this.rpc.request('pss_subscribe', [
       'receive',
