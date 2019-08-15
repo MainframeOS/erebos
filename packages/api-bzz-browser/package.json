@@ -26,8 +26,5 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@erebos/api-bzz-base": "^0.9.0"
-  },
-  "devDependencies": {
-    "typescript": "3.5.2"
   }
 }

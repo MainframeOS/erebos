@@ -1,11 +1,11 @@
-import StreamRPC from '@mainframe/rpc-stream';
 import { Bzz, BzzConfig } from '@erebos/api-bzz-browser';
 import { Pss } from '@erebos/api-pss';
 import { BaseClient, ClientConfig } from '@erebos/client-base';
+import { StreamRPC } from '@erebos/rpc-stream';
 export { Bzz } from '@erebos/api-bzz-browser';
 export { Pss } from '@erebos/api-pss';
 export { Hex, createHex } from '@erebos/hex';
-export { default as createRPC } from '@mainframe/rpc-browser';
+export { createRPC } from '@erebos/rpc-browser';
 export interface SwarmConfig extends ClientConfig {
     bzz?: BzzConfig | Bzz;
     pss?: string | Pss;

@@ -3,9 +3,9 @@
 
 import { resolve } from 'path'
 
-import { hexValue } from '../packages/hex'
-import { pubKeyToAddress } from '../packages/keccak256'
-import { createKeyPair, sign } from '../packages/secp256k1'
+import { hexValue } from '@erebos/hex'
+import { pubKeyToAddress } from '@erebos/keccak256'
+import { createKeyPair, sign } from '@erebos/secp256k1'
 
 describe('browser', () => {
   let evalClient

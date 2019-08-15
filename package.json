@@ -9,14 +9,14 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "clean": "lerna clean -y && del ./node_modules",
     "lint": "eslint 'packages/*/src/**.ts' '__tests__/**.ts'",
     "lint:fix": "yarn lint --fix",
     "test": "jest --config jest.config.js",
     "test:all": "yarn lint && yarn test",
     "test:ci": "jest --ci --config jest.config.ci.js --runInBand",
     "build": "lerna run build",
-    "start": "yarn lint && yarn build && yarn test"
+    "start": "yarn build && yarn test:all"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

@@ -36,6 +36,19 @@
         ]
       ]
     },
+    "electron-renderer": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "electron": "6.0"
+            },
+            "loose": true
+          }
+        ]
+      ]
+    },
     "node": {
       "presets": [
         [

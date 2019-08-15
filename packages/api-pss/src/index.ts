@@ -1,5 +1,5 @@
 import { Hex, createHex, hexInput, hexValue } from '@erebos/hex'
-import StreamRPC from '@mainframe/rpc-stream'
+import { StreamRPC } from '@erebos/rpc-stream'
 import { Observable, Observer } from 'rxjs'
 
 export const EMPTY_ADDRESS = '0x' as hexValue

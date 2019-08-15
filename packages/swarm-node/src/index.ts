@@ -1,5 +1,3 @@
-import createRPC, { ipcRPC, wsRPC } from '@mainframe/rpc-node'
-import StreamRPC from '@mainframe/rpc-stream'
 import { Bzz, BzzConfig } from '@erebos/api-bzz-node'
 import { Pss } from '@erebos/api-pss'
 import {
@@ -7,12 +5,16 @@ import {
   ClientConfig,
   createInstantiateAPI,
 } from '@erebos/client-base'
+import { createRPC as createIPC } from '@erebos/rpc-ipc'
+import { createRPC } from '@erebos/rpc-node'
+import { StreamRPC } from '@erebos/rpc-stream'
+import { createRPC as createWS } from '@erebos/rpc-ws-node'
 
 // Re-exports from imported libraries
 export { Bzz } from '@erebos/api-bzz-node'
 export { Pss } from '@erebos/api-pss'
 export { Hex, createHex, hexInput, hexValue } from '@erebos/hex'
-export { default as createRPC } from '@mainframe/rpc-node'
+export { createRPC } from '@erebos/rpc-node'
 
 const instantiateAPI = createInstantiateAPI(createRPC as (
   endpoint: string,
@@ -33,9 +35,9 @@ export class SwarmClient extends BaseClient {
 
     if (config.rpc == null) {
       if (config.ipc != null) {
-        this.rpcInstance = ipcRPC(config.ipc)
+        this.rpcInstance = createIPC(config.ipc)
       } else if (config.ws != null) {
-        this.rpcInstance = wsRPC(config.ws)
+        this.rpcInstance = createWS(config.ws)
       }
     }
 

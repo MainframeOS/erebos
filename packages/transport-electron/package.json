@@ -1,0 +1,32 @@
+{
+  "name": "@erebos/transport-electron",
+  "version": "0.10.0",
+  "description": "Electron transport",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "lib/*",
+    "types/*"
+  ],
+  "scripts": {
+    "clean": "del lib types",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
+    "build:js": "BABEL_ENV='electron-renderer' babel src --out-dir lib  --extensions \".ts\"",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.5.5",
+    "rxjs": "^6.5.2"
+  },
+  "peerDependencies": {
+    "electron": "^6.0.0"
+  },
+  "devDependencies": {
+    "electron": "^6.0.2"
+  }
+}

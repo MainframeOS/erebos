@@ -14,7 +14,7 @@ import { SwarmClient } from '@erebos/swarm' // universal
 
 ## RPC class
 
-The Erebos client and individual APIs use RPC classes provided by the [`MainframeHQ/js-tools` repository](https://github.com/MainframeHQ/js-tools#packages), such as [`@mainframe/rpc-browser`](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-browser) and [`@mainframe/rpc-node`](https://github.com/MainframeHQ/js-tools/tree/master/packages/rpc-node) depending on the environment.
+The Erebos client and individual APIs use RPC classes such as [`@erebos/rpc-browser`](https://github.com/MainframeHQ/erebos/tree/master/packages/rpc-browser) and [`@erebos/rpc-node`](https://github.com/MainframeHQ/erebos/tree/master/packages/rpc-node) depending on the environment.
 The relevant factory is exported as `createRPC()` and can be used with [standalone API classes](individual-apis.md) also exported with the client.
 
 ## SwarmClient class

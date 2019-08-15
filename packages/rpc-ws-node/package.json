@@ -1,0 +1,27 @@
+{
+  "name": "@erebos/rpc-ws-node",
+  "version": "0.10.0",
+  "description": "WebSocket RPC for node",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "lib/*",
+    "types/*"
+  ],
+  "scripts": {
+    "clean": "del lib types",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
+    "build:js": "BABEL_ENV=node babel src --out-dir lib --extensions \".ts\"",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.5.5",
+    "@erebos/rpc-stream": "^0.10.0",
+    "@erebos/transport-ws-node": "^0.10.0"
+  }
+}
