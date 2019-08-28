@@ -35,7 +35,6 @@
     "@types/node": "^12.7.1",
     "@types/node-fetch": "^2.5.0",
     "@types/tar-fs": "^1.16.1",
-    "@types/tar-stream": "^1.6.1",
-    "typescript": "3.5.2"
+    "@types/tar-stream": "^1.6.1"
   }
 }

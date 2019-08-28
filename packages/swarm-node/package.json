@@ -25,10 +25,9 @@
     "@erebos/api-bzz-node": "^0.9.0",
     "@erebos/api-pss": "^0.9.0",
     "@erebos/client-base": "^0.9.0",
-    "@mainframe/rpc-node": "^0.3.0",
-    "@mainframe/rpc-stream": "^0.3.0"
-  },
-  "devDependencies": {
-    "typescript": "3.5.2"
+    "@erebos/rpc-ipc": "^0.10.0",
+    "@erebos/rpc-node": "^0.10.0",
+    "@erebos/rpc-stream": "^0.10.0",
+    "@erebos/rpc-ws-node": "^0.10.0"
   }
 }

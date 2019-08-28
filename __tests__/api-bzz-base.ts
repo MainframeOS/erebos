@@ -7,7 +7,7 @@ import {
   resOrError,
   resJSON,
   resText,
-} from '../packages/api-bzz-base'
+} from '@erebos/api-bzz-base'
 
 describe('api-bzz-base', () => {
   const TEST_URL = 'https://example.com/swarm-gateways/'

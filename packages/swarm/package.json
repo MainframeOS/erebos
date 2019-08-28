@@ -14,6 +14,5 @@
   "dependencies": {
     "@erebos/swarm-browser": "^0.9.0",
     "@erebos/swarm-node": "^0.9.0"
-  },
-  "devDependencies": {}
+  }
 }

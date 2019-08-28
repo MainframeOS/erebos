@@ -25,10 +25,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@mainframe/rpc-base": "^0.3.0",
-    "@mainframe/rpc-stream": "^0.3.0"
-  },
-  "devDependencies": {
-    "typescript": "3.5.2"
+    "@erebos/rpc-base": "^0.10.0",
+    "@erebos/rpc-stream": "^0.10.0"
   }
 }

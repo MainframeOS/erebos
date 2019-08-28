@@ -1,5 +1,5 @@
-import BaseRPC from '@mainframe/rpc-base';
-import StreamRPC from '@mainframe/rpc-stream';
+import { BaseRPC } from '@erebos/rpc-base';
+import { StreamRPC } from '@erebos/rpc-stream';
 export interface ClientConfig {
     http?: string;
     ipc?: string;

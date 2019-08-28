@@ -1,4 +1,4 @@
-import { hash, pubKeyToAddress } from '../packages/keccak256'
+import { hash, pubKeyToAddress } from '@erebos/keccak256'
 
 describe('keccak256', () => {
   it('hash() hashes an input buffer', () => {

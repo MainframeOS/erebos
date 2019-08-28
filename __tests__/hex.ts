@@ -1,4 +1,4 @@
-import { Hex, createHex } from '../packages/hex'
+import { Hex, createHex } from '@erebos/hex'
 
 describe('hex', () => {
   it('accepts an hex value', () => {

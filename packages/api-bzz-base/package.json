@@ -28,8 +28,5 @@
     "@erebos/hex": "^0.9.0",
     "@erebos/keccak256": "^0.9.0",
     "rxjs": "^6.5.2"
-  },
-  "devDependencies": {
-    "typescript": "3.5.2"
   }
 }

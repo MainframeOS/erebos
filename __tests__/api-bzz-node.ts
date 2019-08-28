@@ -8,10 +8,10 @@ import * as fs from 'fs-extra'
 import { Subject } from 'rxjs'
 import * as tar from 'tar-stream'
 
-import { Bzz, ListEntry } from '../packages/api-bzz-node'
-import { hexValue } from '../packages/hex'
-import { pubKeyToAddress } from '../packages/keccak256'
-import { createKeyPair, sign } from '../packages/secp256k1'
+import { Bzz, ListEntry } from '@erebos/api-bzz-node'
+import { hexValue } from '@erebos/hex'
+import { pubKeyToAddress } from '@erebos/keccak256'
+import { createKeyPair, sign } from '@erebos/secp256k1'
 
 describe('api-bzz-node', () => {
   const TEMP_DIR = path.join(os.tmpdir(), 'erebos-test-temp')
@@ -270,6 +270,21 @@ describe('api-bzz-node', () => {
       contentType: 'text/plain',
     })
     const response = await bzz.download(hash)
+    expect(await response.text()).toBe('hello world')
+    await fs.remove(TEMP_DIR)
+  })
+
+  it('upload a single raw file using uploadFileFrom()', async () => {
+    jest.setTimeout(10000) // 10 secs
+    await writeTempDir({
+      'test.txt': {
+        data: 'hello world',
+      },
+    })
+    const hash = await bzz.uploadFileFrom(`${TEMP_DIR}/test.txt`, {
+      headers: { 'content-length': 11 },
+    })
+    const response = await bzz.download(hash, { mode: 'raw' })
     expect(await response.text()).toBe('hello world')
     await fs.remove(TEMP_DIR)
   })

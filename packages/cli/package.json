@@ -45,8 +45,6 @@
     "ora": "^3.4.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.22.2",
-    "del-cli": "^2.0.0",
-    "typescript": "3.5.2"
+    "@oclif/dev-cli": "^1.22.2"
   }
 }

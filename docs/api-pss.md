@@ -13,12 +13,12 @@ npm install @erebos/api-pss
 
 ```javascript
 import { Pss } from '@erebos/api-pss'
-import webSocketRPC from '@mainframe/rpc-ws-browser'
+import { createRPC } from '@erebos/rpc-ws-browser'
 // or
-import webSocketRPC from '@mainframe/rpc-ws-node'
+import { createRPC } from '@erebos/rpc-ws-node'
 // or any other StreamRPC factory
 
-const rpc = webSocketRPC('ws://localhost:8546')
+const rpc = createRPC('ws://localhost:8546')
 const pss = new Pss(rpc)
 ```
 
