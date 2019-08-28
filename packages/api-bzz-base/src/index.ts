@@ -240,7 +240,9 @@ export class BaseBzz<Response extends BaseResponse> {
     if (options.headers == null) {
       options.headers = {}
     }
-    options.headers['content-length'] = body.length
+    options.headers['content-length'] =
+      options.size == null ? body.length : options.size
+
     if (
       options.headers != null &&
       options.headers['content-type'] == null &&

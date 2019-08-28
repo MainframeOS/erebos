@@ -1,12 +1,17 @@
 import { createWriteStream } from 'fs'
 import path from 'path'
 import { Readable } from 'stream'
-import { ensureDir, lstat } from 'fs-extra'
+import { ensureDir, stat } from 'fs-extra'
 import tarStream from 'tar-stream'
 
+export async function getSize(path: string): Promise<number> {
+  const stats = await stat(path)
+  return stats.size
+}
+
 export async function isFile(path: string): Promise<boolean> {
-  const stat = await lstat(path)
-  return stat.isFile()
+  const stats = await stat(path)
+  return stats.isFile()
 }
 
 export async function writeStreamTo(

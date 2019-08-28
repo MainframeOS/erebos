@@ -250,9 +250,10 @@ describe('api-bzz-base', () => {
       expect(fetchUrl1).toBe(`${TEST_URL}bzz-raw:/`)
       expect(params1.headers).toEqual({ 'content-length': 4 })
 
-      // Upload a Buffer with content type
+      // Upload a Buffer with content type and size
       fetch.mockResponseOnce('5678')
       const hash2 = await bzz.uploadFile(Buffer.from('hello'), {
+        size: 10,
         contentType: 'text/plain',
       })
       expect(hash2).toBe('5678')
@@ -260,7 +261,7 @@ describe('api-bzz-base', () => {
       const [fetchUrl2, params2] = fetch.mock.calls[1]
       expect(fetchUrl2).toBe(`${TEST_URL}bzz:/`)
       expect(params2.headers).toEqual({
-        'content-length': 5,
+        'content-length': 10,
         'content-type': 'text/plain',
       })
     })

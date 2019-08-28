@@ -17,8 +17,8 @@ export declare class RPCError<T = any> extends Error {
     constructor(code: number, message?: string | undefined, data?: T | undefined);
     toObject(): RPCErrorObject<T>;
 }
-export declare const parseError: <T>(data?: T | undefined) => RPCError<T>;
-export declare const invalidRequest: <T>(data?: T | undefined) => RPCError<T>;
-export declare const methodNotFound: <T>(data?: T | undefined) => RPCError<T>;
-export declare const invalidParams: <T>(data?: T | undefined) => RPCError<T>;
-export declare const internalError: <T>(data?: T | undefined) => RPCError<T>;
+export declare const createParseError: <T>(data?: T | undefined) => RPCError<T>;
+export declare const createInvalidRequest: <T>(data?: T | undefined) => RPCError<T>;
+export declare const createMethodNotFound: <T>(data?: T | undefined) => RPCError<T>;
+export declare const createInvalidParams: <T>(data?: T | undefined) => RPCError<T>;
+export declare const createInternalError: <T>(data?: T | undefined) => RPCError<T>;

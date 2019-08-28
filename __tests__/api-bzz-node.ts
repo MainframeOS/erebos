@@ -8,7 +8,7 @@ import * as fs from 'fs-extra'
 import { Subject } from 'rxjs'
 import * as tar from 'tar-stream'
 
-import { Bzz, ListEntry } from '@erebos/api-bzz-node'
+import { Bzz, DirectoryEntry, ListEntry } from '@erebos/api-bzz-node'
 import { hexValue } from '@erebos/hex'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
@@ -95,8 +95,7 @@ describe('api-bzz-node', () => {
   })
 
   it('uploading and downloading single file using bzz using Buffer type', async () => {
-    const bufferData = Buffer.from(uploadContent, 'utf8')
-    const manifestHash = await bzz.upload(bufferData, {
+    const manifestHash = await bzz.upload(Buffer.from(uploadContent), {
       contentType: 'application/octet-stream',
     })
     const response = await bzz.download(manifestHash)
@@ -116,12 +115,18 @@ describe('api-bzz-node', () => {
     }
     const dirHash = await bzz.uploadDirectory(dir)
     const manifest = await bzz.list(dirHash)
-    const entries = Object.values(manifest.entries)
+    const entries = Object.values(manifest.entries || {})
     const downloaded = await downloadRawEntries(entries)
-    const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
-      return acc
-    }, {})
+    const downloadedDir = entries.reduce(
+      (acc, entry, i) => {
+        acc[entry.path] = {
+          data: downloaded[i],
+          contentType: entry.contentType,
+        }
+        return acc
+      },
+      {} as Record<string, DirectoryEntry>,
+    )
     expect(downloadedDir).toEqual(dir)
   })
 
@@ -139,12 +144,18 @@ describe('api-bzz-node', () => {
     const defaultPath = `foo-${uploadContent}.txt`
     const dirHash = await bzz.uploadDirectory(dir, { defaultPath })
     const manifest = await bzz.list(dirHash)
-    const entries = Object.values(manifest.entries)
+    const entries = Object.values(manifest.entries || {})
     const downloaded = await downloadRawEntries(entries)
-    const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = { data: downloaded[i], contentType: entry.contentType }
-      return acc
-    }, {})
+    const downloadedDir = entries.reduce(
+      (acc, entry, i) => {
+        acc[entry.path] = {
+          data: downloaded[i],
+          contentType: entry.contentType,
+        }
+        return acc
+      },
+      {} as Record<string, DirectoryEntry>,
+    )
     expect(downloadedDir).toEqual({ ...dir, '/': dir[defaultPath] })
   })
 
@@ -281,9 +292,7 @@ describe('api-bzz-node', () => {
         data: 'hello world',
       },
     })
-    const hash = await bzz.uploadFileFrom(`${TEMP_DIR}/test.txt`, {
-      headers: { 'content-length': 11 },
-    })
+    const hash = await bzz.uploadFileFrom(`${TEMP_DIR}/test.txt`)
     const response = await bzz.download(hash, { mode: 'raw' })
     expect(await response.text()).toBe('hello world')
     await fs.remove(TEMP_DIR)

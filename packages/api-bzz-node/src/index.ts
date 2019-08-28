@@ -16,7 +16,7 @@ import { Observable, Observer } from 'rxjs'
 import tarFS from 'tar-fs'
 import tarStream from 'tar-stream'
 
-import { isFile, writeStreamTo, extractTarStreamTo } from './fs'
+import { getSize, isFile, writeStreamTo, extractTarStreamTo } from './fs'
 
 export * from '@erebos/api-bzz-base'
 
@@ -164,21 +164,30 @@ export class Bzz extends BaseBzz<Response> {
     stream: Readable,
     options: UploadOptions = {},
   ): Promise<hexValue> {
+    if (options.headers == null) {
+      options.headers = {}
+    }
+
     const raw = options.contentType == null
     if (!raw) {
-      if (options.headers == null) {
-        options.headers = {}
-      }
       options.headers['content-type'] = options.contentType
     }
+    if (options.size != null) {
+      options.headers['content-length'] = options.size
+    }
+
     return await this.uploadBody(stream, options, raw)
   }
 
   public async uploadFileFrom(
     path: string,
-    options?: UploadOptions,
+    options: UploadOptions = {},
   ): Promise<hexValue> {
-    return await this.uploadFileStream(createReadStream(path), options)
+    const size = options.size == null ? await getSize(path) : options.size
+    return await this.uploadFileStream(createReadStream(path), {
+      ...options,
+      size,
+    })
   }
 
   private async uploadTarStream(

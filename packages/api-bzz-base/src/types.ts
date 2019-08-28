@@ -82,6 +82,7 @@ export interface UploadOptions extends FileOptions {
   defaultPath?: string
   encrypt?: boolean
   manifestHash?: hexValue | string
+  size?: number
 }
 
 export interface PollOptions extends FetchOptions {
