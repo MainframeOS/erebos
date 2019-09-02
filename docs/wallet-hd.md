@@ -17,7 +17,7 @@ const wallet = HDWallet.createRandom()
 const sameWallet = new HDWallet(wallet.mnemonic)
 ```
 
-## Flow types
+## Interfaces and types
 
 ### Arrayish
 
@@ -25,15 +25,15 @@ const sameWallet = new HDWallet(wallet.mnemonic)
 
 ### TransactionParams
 
-```javascript
-type TransactionParams = {
-  from: string,
-  to?: string,
-  value?: string,
-  data?: string,
-  gasLimit: string,
-  gasPrice: string,
-  chainId?: string,
+```typescript
+interface TransactionParams {
+  from: string
+  to?: string
+  value?: string
+  data?: string
+  gasLimit: string
+  gasPrice: string
+  chainId?: string
 }
 ```
 

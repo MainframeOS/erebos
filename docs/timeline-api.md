@@ -49,7 +49,9 @@ interface PartialChapter<T = any> {
 ### Chapter
 
 ```typescript
-type Chapter<T = any> = PartialChapter<T> & { id: string }
+interface Chapter<T = any> extends PartialChapter<T> {
+  id: string
+}
 ```
 
 ### DecodeChapter

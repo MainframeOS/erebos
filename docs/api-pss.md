@@ -155,7 +155,7 @@ Calls `pss_subscribe` with the provided topic and returns the subscription handl
 
 ### .createSubscription()
 
-Creates a [RxJS Observable](https://rxjs-dev.firebaseapp.com/api/index/class/Observable) that will emit events matching the provided subscription handle as created by calling `subscribeTopic()` once subscribed to.
+Creates a [RxJS Observable](https://rxjs.dev/api/index/class/Observable) that will emit events matching the provided subscription handle as created by calling `subscribeTopic()` once subscribed to.
 
 **Arguments**
 

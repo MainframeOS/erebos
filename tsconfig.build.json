@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "lib": ["es2015", "dom"],
+    "lib": ["es2015", "esnext.asynciterable", "dom"],
     "moduleResolution": "node",
     "strict": true,
     "target": "esnext"

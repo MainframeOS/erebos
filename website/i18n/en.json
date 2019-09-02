@@ -40,6 +40,42 @@
       "keccak256": {
         "title": "Keccak256 hashing"
       },
+      "rpc-base": {
+        "title": "Base RPC class and types"
+      },
+      "rpc-browser": {
+        "title": "RPC client for browsers"
+      },
+      "rpc-electron": {
+        "title": "RPC client for Electron"
+      },
+      "rpc-error": {
+        "title": "RPC Errors"
+      },
+      "rpc-handler": {
+        "title": "RPC handler"
+      },
+      "rpc-http": {
+        "title": "RPC client over HTTP"
+      },
+      "rpc-intro": {
+        "title": "RPC clients, handler and transport"
+      },
+      "rpc-ipc": {
+        "title": "RPC client over IPC"
+      },
+      "rpc-node": {
+        "title": "RPC client for Node"
+      },
+      "rpc-request": {
+        "title": "RequestRPC client (stateless)"
+      },
+      "rpc-stream": {
+        "title": "StreamRPC client (stateful)"
+      },
+      "rpc-ws": {
+        "title": "RPC client over WebSocket"
+      },
       "secp256k1": {
         "title": "SECP256k1 signing"
       },
@@ -55,6 +91,18 @@
       "timeline-spec": {
         "title": "Timeline specification"
       },
+      "transport-electron": {
+        "title": "Electron transport"
+      },
+      "transport-http": {
+        "title": "HTTP transport"
+      },
+      "transport-ipc": {
+        "title": "IPC transport"
+      },
+      "transport-ws": {
+        "title": "WebSocket transport"
+      },
       "wallet-hd": {
         "title": "Hierarchical Deterministic wallet"
       }
@@ -68,11 +116,11 @@
     },
     "categories": {
       "Docs": "Docs",
-      "Examples": "Examples",
-      "API": "API",
+      "Swarm examples": "Swarm examples",
+      "Swarm APIs and CLI": "Swarm APIs and CLI",
       "Timeline protocol": "Timeline protocol",
       "Utility libraries": "Utility libraries",
-      "Tools": "Tools"
+      "RPC tools": "RPC tools"
     }
   },
   "pages-strings": {

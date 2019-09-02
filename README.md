@@ -9,9 +9,9 @@ Node.js v10+ is required to use the Node.js APIs and run the CLI.
 ### Client library
 
 ```sh
-yarn add @erebos/swarm-browser # browser-only
-yarn add @erebos/swarm-node # node-only
-yarn add @erebos/swarm # universal
+npm install @erebos/swarm-browser # browser-only
+npm install @erebos/swarm-node # node-only
+npm install @erebos/swarm # universal
 ```
 
 ### CLI

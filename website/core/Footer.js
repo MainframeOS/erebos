@@ -90,10 +90,10 @@ class Footer extends React.Component {
               HTTP gateway
             </a>
             <a
-              href="https://gitter.im/ethereum/swarm"
+              href="https://beehive.ethswarm.org"
               target="_blank"
               rel="noreferrer noopener">
-              Gitter chat
+              Development chat
             </a>
           </div>
         </section>

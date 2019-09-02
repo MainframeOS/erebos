@@ -30,7 +30,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "del-cli": "^2.0.0",
-    "eslint": "^6.2.2",
+    "eslint": "^6.3.0",
     "eslint-config-mainframe": "^4.0.1",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",
@@ -39,6 +39,6 @@
     "prettier": "^1.18.2",
     "puppeteer": "^1.19.0",
     "ts-jest": "^24.0.2",
-    "typescript": "3.5.2"
+    "typescript": "3.6.2"
   }
 }

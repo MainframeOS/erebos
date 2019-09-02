@@ -14,7 +14,7 @@ export function isHexValue(value: any): value is hexValue {
 }
 
 export function fromHexValue(input: hexValue): Buffer {
-  return Buffer.from(input.substr(2), 'hex')
+  return Buffer.from((input as string).substr(2), 'hex')
 }
 
 export function toHexValue(

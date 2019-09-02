@@ -19,7 +19,7 @@ The relevant factory is exported as `createRPC()` and can be used with [standalo
 
 ## SwarmClient class
 
-Creates a SwarmClient instance based on the provided `config`.\
+Creates a SwarmClient instance based on the provided `config`.
 [`BzzConfig`](api-bzz.md#bzzconfig) is an Object exported by the `@erebos/api-bzz-base` package.
 
 ```typescript

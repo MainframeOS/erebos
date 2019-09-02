@@ -26,7 +26,9 @@ export interface PartialChapter<T = any> {
   signature?: string
 }
 
-export type Chapter<T = any> = PartialChapter<T> & { id: string }
+export interface Chapter<T = any> extends PartialChapter<T> {
+  id: string
+}
 
 export type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (
   res: R,
@@ -263,8 +265,7 @@ export class Timeline<
           initialLoaded = true
         }
         if (nextID == null) {
-          // @ts-ignore
-          return { done: true }
+          return { done: true, value: undefined }
         }
         const chapter = await this.getChapter(nextID, options)
         // eslint-disable-next-line require-atomic-updates

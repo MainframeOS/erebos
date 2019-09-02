@@ -16,9 +16,9 @@ export interface PartialChapter<T = any> {
     references?: Array<string>;
     signature?: string;
 }
-export declare type Chapter<T = any> = PartialChapter<T> & {
+export interface Chapter<T = any> extends PartialChapter<T> {
     id: string;
-};
+}
 export declare type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (res: R) => Promise<Chapter<T>>;
 export declare type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>;
 export interface PollOptions extends FetchOptions {

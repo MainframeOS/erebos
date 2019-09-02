@@ -1,14 +1,37 @@
 {
   "docs": {
     "Docs": ["introduction", "getting-started"],
-    "Examples": [
+    "Swarm examples": [
       "examples-storage",
       "examples-feeds",
       "examples-communications"
     ],
-    "API": ["swarm-client", "individual-apis", "api-bzz", "api-pss"],
+    "Swarm APIs and CLI": [
+      "swarm-client",
+      "individual-apis",
+      "api-bzz",
+      "api-pss",
+      "cli"
+    ],
     "Timeline protocol": ["timeline-spec", "timeline-examples", "timeline-api"],
     "Utility libraries": ["hex", "keccak256", "secp256k1", "wallet-hd"],
-    "Tools": ["cli"]
+    "RPC tools": [
+      "rpc-intro",
+      "rpc-base",
+      "rpc-error",
+      "rpc-request",
+      "rpc-stream",
+      "rpc-handler",
+      "rpc-http",
+      "rpc-ws",
+      "rpc-ipc",
+      "rpc-browser",
+      "rpc-node",
+      "rpc-electron",
+      "transport-http",
+      "transport-ws",
+      "transport-ipc",
+      "transport-electron"
+    ]
   }
 }

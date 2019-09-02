@@ -1,7 +1,7 @@
 import { Hex, hexInput, hexValue } from '@erebos/hex';
 import { StreamRPC } from '@erebos/rpc-stream';
 import { Observable } from 'rxjs';
-export declare const EMPTY_ADDRESS: hexValue;
+export declare const EMPTY_ADDRESS: never;
 export interface PssEvent {
     key?: hexValue;
     msg: Hex;

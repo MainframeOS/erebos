@@ -40,3 +40,7 @@ The [`@erebos/timeline`](timeline-api.md) package exposes a reference implementa
 The [Erebos CLI](cli.md) provides useful commands to use Swarm's [Bzz](cli.md#bzz-commands) (including [feeds](cli.md#feed-commands)) and [Pss](cli.md#pss-commands) APIs.
 
 It also supports more advanced use cases, such as interacting with [Timelines](cli.md#timeline-commands) and a simple way to publish [static websites](cli.md#website-commands).
+
+### JSON-RPC specification
+
+[Various JSON-RPC libraries](rpc-intro.md) are provided to support communications with Ethereum, Swarm or other JSON-RPC interfaces.
