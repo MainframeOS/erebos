@@ -16,6 +16,8 @@ import {
   FeedUpdateParams,
   FetchOptions,
   ListResult,
+  PinOptions,
+  PinnedFile,
   PollOptions,
   PollContentHashOptions,
   PollContentOptions,
@@ -30,6 +32,7 @@ export const BZZ_MODE_PROTOCOLS = {
   default: 'bzz:/',
   feed: 'bzz-feed:/',
   immutable: 'bzz-immutable:/',
+  pin: 'bzz-pin:/',
   raw: 'bzz-raw:/',
 }
 
@@ -78,6 +81,22 @@ export async function resSwarmHash<R extends BaseResponse>(
 
 function defaultSignBytes(): Promise<Array<number>> {
   return Promise.reject(new Error('Missing `signBytes()` function'))
+}
+
+interface PinResult {
+  Address: string
+  FileSize: number
+  IsRaw: boolean
+  PinCounter: number
+}
+
+function formatPinnedFile(p: PinResult): PinnedFile {
+  return {
+    hash: p.Address,
+    pinCounter: p.PinCounter,
+    raw: p.IsRaw,
+    size: p.FileSize,
+  }
 }
 
 export class BaseBzz<Response extends BaseResponse> {
@@ -243,12 +262,12 @@ export class BaseBzz<Response extends BaseResponse> {
     options.headers['content-length'] =
       options.size == null ? body.length : options.size
 
-    if (
-      options.headers != null &&
-      options.headers['content-type'] == null &&
-      !raw
-    ) {
+    if (options.headers['content-type'] == null && !raw) {
       options.headers['content-type'] = options.contentType
+    }
+
+    if (options.pin) {
+      options.headers['x-swarm-pin'] = true
     }
 
     return await this.uploadBody(body, options, raw)
@@ -480,5 +499,33 @@ export class BaseBzz<Response extends BaseResponse> {
     ])
     await this.postFeedChunk(meta, `0x${hash}`, feedOptions, signParams)
     return hash
+  }
+
+  public async pin(hash: string, options: PinOptions = {}): Promise<void> {
+    if (options.download) {
+      await this.download(hash, { mode: options.raw ? 'raw' : 'default' })
+    }
+
+    let url = this.url + BZZ_MODE_PROTOCOLS.pin + hash
+    if (options.raw) {
+      url += '/?raw=true'
+    }
+
+    await this.fetchTimeout(url, options, { method: 'POST' })
+  }
+
+  public async unpin(hash: string, options: FetchOptions = {}): Promise<void> {
+    await this.fetchTimeout(this.url + BZZ_MODE_PROTOCOLS.pin + hash, options, {
+      method: 'DELETE',
+    })
+  }
+
+  public async pins(options: FetchOptions = {}): Promise<Array<PinnedFile>> {
+    const res = await this.fetchTimeout(
+      this.url + BZZ_MODE_PROTOCOLS.pin,
+      options,
+    )
+    const pins: Array<PinResult> = await resJSON(res)
+    return pins.map(formatPinnedFile)
   }
 }

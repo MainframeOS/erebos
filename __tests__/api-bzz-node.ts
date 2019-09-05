@@ -688,4 +688,63 @@ describe('api-bzz-node', () => {
     // Test should timeout if the trigger is not executed
     trigger.next()
   })
+
+  it('pins when uploading', async () => {
+    const pinsBefore = await bzz.pins()
+    await Promise.all(pinsBefore.map(p => bzz.unpin(p.hash)))
+
+    const hash = await bzz.uploadFile(uploadContent, { pin: true })
+    const pins = await bzz.pins()
+    expect(pins.length).toBe(1)
+    expect(pins[0]).toEqual({
+      hash,
+      pinCounter: 1,
+      raw: true,
+      size: uploadContent.length,
+    })
+
+    await bzz.unpin(hash)
+    const pinsAfter = await bzz.pins()
+    expect(pinsAfter.length).toBe(0)
+  })
+
+  it('pins an already uploaded raw file', async () => {
+    const pinsBefore = await bzz.pins()
+    await Promise.all(pinsBefore.map(p => bzz.unpin(p.hash)))
+
+    const hash = await bzz.uploadFile(uploadContent)
+    await bzz.pin(hash, { raw: true })
+
+    const pins = await bzz.pins()
+    expect(pins.length).toBe(1)
+    expect(pins[0]).toEqual({
+      hash,
+      pinCounter: 1,
+      raw: true,
+      size: uploadContent.length,
+    })
+
+    await bzz.unpin(hash)
+    const pinsAfter = await bzz.pins()
+    expect(pinsAfter.length).toBe(0)
+  })
+
+  it('pins a manifest', async () => {
+    const pinsBefore = await bzz.pins()
+    await Promise.all(pinsBefore.map(p => bzz.unpin(p.hash)))
+
+    const hash = await bzz.uploadFile(uploadContent, {
+      contentType: 'text/plain',
+    })
+    await bzz.pin(hash)
+
+    const pins = await bzz.pins()
+    expect(pins.length).toBe(1)
+    expect(pins[0].hash).toBe(hash)
+    expect(pins[0].raw).toBe(false)
+
+    await bzz.unpin(hash)
+    const pinsAfter = await bzz.pins()
+    expect(pinsAfter.length).toBe(0)
+  })
 })

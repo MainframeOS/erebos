@@ -1,13 +1,14 @@
 /// <reference types="node" />
 import { hexInput, hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
-import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PollOptions, PollContentHashOptions, PollContentOptions, SignBytesFunc, UploadOptions } from './types';
+import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PinOptions, PinnedFile, PollOptions, PollContentHashOptions, PollContentOptions, SignBytesFunc, UploadOptions } from './types';
 export * from './feed';
 export * from './types';
 export declare const BZZ_MODE_PROTOCOLS: {
     default: string;
     feed: string;
     immutable: string;
+    pin: string;
     raw: string;
 };
 export declare function getModeProtocol(mode?: BzzMode): string;
@@ -52,4 +53,7 @@ export declare class BaseBzz<Response extends BaseResponse> {
     setFeedChunk(hashOrParams: string | FeedParams, data: hexInput, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContentHash(hashOrParams: string | FeedParams, contentHash: string, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContent(hashOrParams: string | FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<hexValue>;
+    pin(hash: string, options?: PinOptions): Promise<void>;
+    unpin(hash: string, options?: FetchOptions): Promise<void>;
+    pins(options?: FetchOptions): Promise<Array<PinnedFile>>;
 }

@@ -8,7 +8,7 @@ export * from '@erebos/api-bzz-base';
 export declare class Bzz extends BaseBzz<Response> {
     constructor(config: BzzConfig);
     private downloadTar;
-    downloadObservable(hash: string, options?: DownloadOptions): Observable<FileEntry>;
+    download$(hash: string, options?: DownloadOptions): Observable<FileEntry>;
     downloadDirectoryData(hash: string, options?: DownloadOptions): Promise<DirectoryData>;
     downloadTarTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadFileTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;

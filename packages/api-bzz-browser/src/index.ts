@@ -16,7 +16,7 @@ export class Bzz extends BaseBzz<Response> {
     super(window.fetch.bind(window), { ...cfg, url: new URL(url).href })
   }
 
-  public uploadDirectory(
+  public async uploadDirectory(
     directory: DirectoryData,
     options: UploadOptions = {},
   ): Promise<hexValue> {
@@ -28,12 +28,21 @@ export class Bzz extends BaseBzz<Response> {
         key,
       )
     })
+
     if (options.defaultPath != null) {
       const file = directory[options.defaultPath]
       if (file != null) {
         form.append('', new Blob([file.data], { type: file.contentType }), '')
       }
     }
-    return this.uploadBody(form, options)
+
+    if (options.pin) {
+      if (options.headers == null) {
+        options.headers = {}
+      }
+      options.headers['x-swarm-pin'] = true
+    }
+
+    return await this.uploadBody(form, options)
   }
 }

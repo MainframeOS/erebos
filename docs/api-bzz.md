@@ -190,6 +190,28 @@ Extends [DownloadOptions](#downloadoptions) and [PollContentHashOptions](#pollco
 interface PollContentOptions extends DownloadOptions, PollContentHashOptions {}
 ```
 
+### PinOptions
+
+Extends [FetchOptions](#fetchoptions)
+
+```typescript
+interface PinOptions extends FetchOptions {
+  download?: boolean
+  raw?: boolean
+}
+```
+
+### PinnedFile
+
+```typescript
+interface PinnedFile {
+  hash: string
+  pinCounter: number
+  raw: boolean
+  size: number
+}
+```
+
 ### FeedParams
 
 ```typescript
@@ -542,11 +564,41 @@ This method implements the flow of uploading the provided `data` and updating th
 
 **Returns** `Promise<string>`
 
+### .pin()
+
+Pins the specified resource. To make sure the resource is available on the node, the `download` option can be set to explicitely download it before pinning.
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: PinOptions = {}`](#pinoptions)
+
+**Returns** `Promise<void>`
+
+### .unpin()
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<void>`
+
+### .pins()
+
+Returns the list of resources currently pinned on the node.
+
+**Arguments**
+
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<Array<PinnedFile>>` the list of [`PinnedFile`](#pinnedfile)
+
 ## Node-specific APIs
 
-_The following `BzzNode` class methods are only available when using `@erebos/api-bzz-node`._
+_The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`._
 
-### .downloadObservable()
+### .download\$()
 
 Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`FileEntry`](#fileentry) objects as they are downloaded.
 

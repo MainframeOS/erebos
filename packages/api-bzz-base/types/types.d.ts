@@ -65,6 +65,7 @@ export interface UploadOptions extends FileOptions {
     defaultPath?: string;
     encrypt?: boolean;
     manifestHash?: hexValue | string;
+    pin?: boolean;
     size?: number;
 }
 export interface PollOptions extends FetchOptions {
@@ -77,6 +78,16 @@ export interface PollContentHashOptions extends PollOptions {
     changedOnly?: boolean;
 }
 export interface PollContentOptions extends DownloadOptions, PollContentHashOptions {
+}
+export interface PinOptions extends FetchOptions {
+    download?: boolean;
+    raw?: boolean;
+}
+export interface PinnedFile {
+    hash: string;
+    pinCounter: number;
+    raw: boolean;
+    size: number;
 }
 export interface FeedParams {
     user: string;
