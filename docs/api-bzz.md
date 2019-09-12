@@ -445,18 +445,18 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 ### .getFeedContentHash()
 
-Returns the feed contents hash, or `null` if not found.
+Returns the feed contents hash.
 
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: : ENS name, hash of the feed manifest or [feed parameters](#feedparams)
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
-**Returns** `Promise<hexValue | null>`
+**Returns** `Promise<string>`
 
 ### .getFeedContent()
 
-Returns the feed contents `Response`, or `null` if not found.
+Returns the feed contents `Response`.
 
 **Arguments**
 
@@ -534,7 +534,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
-1.  `data: string | Object | Buffer`
+1.  `data: string | Record<string, any> | Buffer`
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
