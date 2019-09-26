@@ -1,7 +1,7 @@
 {
   "name": "@erebos/cli",
   "version": "0.9.0",
-  "description": "Swarm command-line interface",
+  "description": "Command-line interface for Swarm",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
   "author": "Mainframe",
@@ -15,11 +15,31 @@
     "oclif.manifest.json"
   ],
   "oclif": {
-    "commands": "./lib/commands",
     "bin": "erebos",
+    "commands": "./lib/commands",
     "plugins": [
       "@oclif/plugin-help"
-    ]
+    ],
+    "topics": {
+      "bzz": {
+        "description": "upload, download and list immutable resources"
+      },
+      "feed": {
+        "description": "get and set mutable resources using immutable references"
+      },
+      "pin": {
+        "description": "add, remove and list pinned resources"
+      },
+      "pss": {
+        "description": "UDP-like messaging"
+      },
+      "timeline": {
+        "description": "a feed-based singly-linked list"
+      },
+      "website": {
+        "description": "setup and publish static websites"
+      }
+    }
   },
   "scripts": {
     "clean": "del lib",
@@ -30,7 +50,7 @@
     "postpublish": "del-cli oclif.manifest.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
+    "@babel/runtime": "^7.6.2",
     "@erebos/api-bzz-node": "^0.9.0",
     "@erebos/api-pss": "^0.9.0",
     "@erebos/hex": "^0.9.0",
@@ -38,13 +58,15 @@
     "@erebos/secp256k1": "^0.9.0",
     "@erebos/swarm-node": "^0.9.0",
     "@erebos/timeline": "^0.9.0",
-    "@oclif/command": "^1.5.18",
+    "@oclif/command": "^1.5.19",
     "@oclif/config": "^1.13.3",
     "@oclif/plugin-help": "^2.2.1",
     "fs-extra": "^8.0.1",
-    "ora": "^3.4.0"
+    "ora": "^4.0.1",
+    "update-notifier": "^3.0.1"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.22.2"
+    "@oclif/dev-cli": "^1.22.2",
+    "@types/update-notifier": "^2.5.0"
   }
 }

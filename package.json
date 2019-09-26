@@ -19,26 +19,26 @@
     "start": "yarn build && yarn test:all"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-typescript": "^7.6.0",
     "@types/jest": "^24.0.18",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
-    "del-cli": "^2.0.0",
-    "eslint": "^6.3.0",
+    "del-cli": "^3.0.0",
+    "eslint": "^6.4.0",
     "eslint-config-mainframe": "^4.0.1",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",
     "jest-puppeteer": "^4.3.0",
     "lerna": "^3.16.4",
     "prettier": "^1.18.2",
-    "puppeteer": "^1.19.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "3.6.2"
+    "puppeteer": "^1.20.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "3.6.3"
   }
 }

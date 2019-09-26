@@ -29,7 +29,7 @@ export default class TimelineLookupCommand extends Command<Flags> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Checking input parameters')
     let feed
     if (this.flags.hash != null) {

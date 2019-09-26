@@ -24,7 +24,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
+    "@babel/runtime": "^7.6.2",
     "@erebos/rpc-http-browser": "^0.10.0",
     "@erebos/rpc-ws-browser": "^0.10.0"
   }

@@ -167,27 +167,38 @@ Extends [FetchOptions](#fetchoptions)
 interface PollOptions extends FetchOptions {
   interval: number // in milliseconds
   immediate?: boolean // defaults to true
+}
+```
+
+### PollFeedOptions
+
+Extends [PollOptions](#polloptions)
+
+```typescript
+interface PollFeedOptions extends PollOptions {
   whenEmpty?: 'accept' | 'ignore' | 'error' // defaults to 'accept'
   trigger?: Observable<void>
 }
 ```
 
-### PollContentHashOptions
+### PollFeedContentHashOptions
 
-Extends [PollOptions](#polloptions)
+Extends [PollFeedOptions](#pollfeedoptions)
 
 ```typescript
-interface PollContentHashOptions extends PollOptions {
+interface PollFeedContentHashOptions extends PollFeedOptions {
   changedOnly?: boolean
 }
 ```
 
-### PollContentOptions
+### PollFeedContentOptions
 
-Extends [DownloadOptions](#downloadoptions) and [PollContentHashOptions](#pollcontenthashoptions)
+Extends [DownloadOptions](#downloadoptions) and [PollFeedContentHashOptions](#pollfeedcontenthashoptions)
 
 ```typescript
-interface PollContentOptions extends DownloadOptions, PollContentHashOptions {}
+interface PollFeedContentOptions
+  extends DownloadOptions,
+    PollFeedContentHashOptions {}
 ```
 
 ### PinOptions
@@ -205,10 +216,27 @@ interface PinOptions extends FetchOptions {
 
 ```typescript
 interface PinnedFile {
-  hash: string
-  pinCounter: number
+  address: string
+  counter: number
   raw: boolean
   size: number
+}
+```
+
+### Tag
+
+```typescript
+interface Tag {
+  uid: number
+  name: string
+  address: string
+  total: number
+  split: number
+  seen: number
+  stored: number
+  sent: number
+  synced: number
+  startedAt: Date
 }
 ```
 
@@ -333,6 +361,17 @@ Returns the Swarm URL for a feed based on the provided arguments.
 
 1.  `hashOrParams: string | FeedParams | FeedUpdateParams`: ENS name, hash of the feed manifest, [feed parameters](#feedparams) or [feed update parameters](#feedupdateparams)
 1.  `flag?: 'meta'`
+
+**Returns** `string`
+
+### .getPinURL()
+
+Returns the Swarm URL for a pin based on the provided arguments.
+
+**Arguments**
+
+1.  `hash?: string`: hash of the resource
+1.  `raw: boolean = false`
 
 **Returns** `string`
 
@@ -523,7 +562,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 **Arguments**
 
 1.  [`meta: FeedMetadata`](#feedmetadata)
-1.  `data: string | Object | Buffer`
+1.  `data: string | Record<string, any> | Buffer`
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
@@ -558,7 +597,7 @@ This method implements the flow of uploading the provided `data` and updating th
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
-1.  `data: string | Object | Buffer`
+1.  `data: string | Record<string, any> | Buffer`
 1.  [`options?: UploadOptions = {}`](#uploadoptions)
 1.  `signParams?: any`
 
@@ -593,6 +632,26 @@ Returns the list of resources currently pinned on the node.
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<Array<PinnedFile>>` the list of [`PinnedFile`](#pinnedfile)
+
+### .getTag()
+
+**Arguments**
+
+1.  `hash: string`
+1.  [`options: FetchOptions`](#fetchoptions)
+
+**Returns** `Promise<Tag>` the [`Tag`](#tag) of the given `hash`
+
+### .pollTag()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`Tag`](#tag) of the given `hash`.
+
+**Arguments**
+
+1.  `hash: string`
+1.  [`options: PollOptions`](#polloptions)
+
+**Returns** `Observable<Tag>`
 
 ## Node-specific APIs
 

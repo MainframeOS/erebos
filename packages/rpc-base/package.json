@@ -24,8 +24,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "nanoid": "^2.1.0"
+    "@babel/runtime": "^7.6.2",
+    "nanoid": "^2.1.1"
   },
   "devDependencies": {
     "@types/nanoid": "^2.0.0"

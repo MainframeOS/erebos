@@ -42,7 +42,7 @@ export default class PssSendCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start()
     try {
       const topic = isHexValue(this.flags.topic)

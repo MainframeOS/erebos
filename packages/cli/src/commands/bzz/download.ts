@@ -39,7 +39,7 @@ export default class BzzDownloadCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start(`Downloading contents from: ${this.args.hash}`)
     const options: DownloadOptions = {}
     let toPath = this.resolvePath(this.flags.path)
@@ -55,7 +55,8 @@ export default class BzzDownloadCommand extends Command<Flags, Args> {
           await createFile(toPath)
         } else if (!stat.isFile()) {
           // Ensure destination path is valid if existing
-          return this.spinner.fail('Destination path is not a file')
+          this.spinner.fail('Destination path is not a file')
+          return
         }
       } catch (err) {
         // File doesn't exist, create an empty one
@@ -66,7 +67,8 @@ export default class BzzDownloadCommand extends Command<Flags, Args> {
       try {
         const stat = await lstat(toPath)
         if (!stat.isDirectory()) {
-          return this.spinner.fail('Destination path is not a directory')
+          this.spinner.fail('Destination path is not a directory')
+          return
         }
       } catch (err) {
         // Directory doesn't exist, create an empty one

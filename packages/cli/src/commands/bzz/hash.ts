@@ -15,7 +15,7 @@ export default class BzzHashCommand extends Command<DefaultFlags, Args> {
 
   public static flags = Command.flags
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start(`Retrieving hash for domain: ${this.args.domain}`)
     try {
       const hash = await this.client.bzz.hash(this.args.domain)

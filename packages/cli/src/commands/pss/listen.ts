@@ -17,7 +17,7 @@ export default class PssListenCommand extends Command<DefaultFlags, Args> {
 
   public static flags = Command.flags
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start()
     try {
       const topic = isHexValue(this.args.topic)

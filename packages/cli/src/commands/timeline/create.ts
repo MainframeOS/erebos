@@ -47,7 +47,7 @@ export default class TimelineCreateCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     try {
       const keyValue = this.flags['key-env']
       const hasKey = keyValue != null && keyValue.length !== 0

@@ -36,7 +36,7 @@ export default class FeedSetCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     try {
       const keyPair = createKeyPair(this.flags['key-env'])
       const address = pubKeyToAddress(keyPair.getPublic('array'))

@@ -35,7 +35,7 @@ export default class FeedGetCommand extends Command<Flags> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Retrieving feed...')
 
     try {
