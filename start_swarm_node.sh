@@ -7,11 +7,10 @@ docker run $@ \
   --volume /tmp/swarm:/swarm \
   --interactive \
   --tty \
-  "ethersphere/swarm:0.4.3" \
+  "ethersphere/swarm:0.5.0" \
     --bzznetworkid=256 \
     --datadir /swarm/data \
     --password /swarm/password \
-    --nosync \
     --maxpeers=0 \
     --verbosity=4 \
     --httpaddr=0.0.0.0 \
@@ -19,4 +18,5 @@ docker run $@ \
     --corsdomain="*" \
     --ws \
     --wsaddr=0.0.0.0 \
-    --wsorigins="*"
+    --wsorigins="*" \
+    --enable-pinning

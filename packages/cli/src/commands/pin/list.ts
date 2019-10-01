@@ -3,7 +3,7 @@ import { Command, DefaultFlags } from '../../Command'
 export default class PinListCommand extends Command<DefaultFlags> {
   public static flags = Command.flags
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Loading pins...')
 
     try {

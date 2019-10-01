@@ -1,6 +1,6 @@
 {
   "name": "erebos-project",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Swarm client and tools",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "del-cli": "^3.0.0",
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.1",
     "eslint-config-mainframe": "^4.0.1",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",

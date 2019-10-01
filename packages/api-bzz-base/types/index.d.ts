@@ -55,6 +55,7 @@ export declare class BaseBzz<Response extends BaseResponse> {
     setFeedChunk(hashOrParams: string | FeedParams, data: hexInput, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContentHash(hashOrParams: string | FeedParams, contentHash: string, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContent(hashOrParams: string | FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<hexValue>;
+    pinEnabled(options?: FetchOptions): Promise<boolean>;
     pin(hash: string, options?: PinOptions): Promise<void>;
     unpin(hash: string, options?: FetchOptions): Promise<void>;
     pins(options?: FetchOptions): Promise<Array<PinnedFile>>;

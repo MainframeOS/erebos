@@ -689,6 +689,11 @@ describe('api-bzz-node', () => {
     trigger.next()
   })
 
+  it('checks if pinning is enabled', async () => {
+    const enabled = await bzz.pinEnabled()
+    expect(enabled).toBe(true)
+  })
+
   it('pins when uploading', async () => {
     const pinsBefore = await bzz.pins()
     await Promise.all(pinsBefore.map(p => bzz.unpin(p.address)))

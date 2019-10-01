@@ -33,7 +33,7 @@ export default class PinAddCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Adding pin...')
 
     try {

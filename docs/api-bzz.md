@@ -155,6 +155,7 @@ interface UploadOptions extends FileOptions {
   defaultPath?: string
   encrypt?: boolean
   manifestHash?: hexValue | string
+  pin?: boolean
   size?: number
 }
 ```
@@ -317,8 +318,6 @@ interface BzzConfig {
 - `message: string`: error message
 
 ### Bzz class
-
-_Exported as `BzzBrowser` by `@erebos/api-bzz-browser` and `BzzNode` by `@erebos/api-bzz-node`._
 
 **Arguments**
 
@@ -657,7 +656,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 _The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`._
 
-### .download\$()
+### .downloadObservable()
 
 Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`FileEntry`](#fileentry) objects as they are downloaded.
 

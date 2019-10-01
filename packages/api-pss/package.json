@@ -1,6 +1,6 @@
 {
   "name": "@erebos/api-pss",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "PSS API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.2",
-    "@erebos/hex": "^0.9.0",
+    "@erebos/hex": "^0.10.0",
     "@erebos/rpc-stream": "^0.10.0",
     "rxjs": "^6.5.3"
   }

@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { BaseBzz, BaseResponse, FeedParams, FetchOptions, UploadOptions } from '@erebos/api-bzz-base';
+import { BaseBzz, BaseResponse, FeedParams, FetchOptions, PollOptions, UploadOptions } from '@erebos/api-bzz-base';
 import { hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
 export declare const PROTOCOL = "timeline";
@@ -21,9 +21,6 @@ export interface Chapter<T = any> extends PartialChapter<T> {
 }
 export declare type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (res: R) => Promise<Chapter<T>>;
 export declare type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>;
-export interface PollOptions extends FetchOptions {
-    interval: number;
-}
 export interface LiveOptions extends PollOptions {
     previous?: string;
     timestamp?: number;

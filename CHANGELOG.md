@@ -1,3 +1,30 @@
+## v0.10.0 (unreleased)
+
+### Breaking changes
+
+- The [`PollOptions` interface of the Bzz API](https://erebos.js.org/docs/api-bzz#polloptions) has been changed and is now used by the [Timeline API](https://erebos.js.org/docs/timeline-api). The [`PollFeedOptions` interface](https://erebos.js.org/docs/api-bzz#pollfeedoptions) is now used for polling feeds.
+- The `PollOptions` interface of the Timeline API has been removed, now using the interface exported by the Bzz API.
+
+### Swarm v0.5 support
+
+Erebos v0.10 adds support for 2 new features added to the [Swarm v0.5 release](https://www.reddit.com/r/ethswarm/comments/dbqcbv/swarm_v050_is_released/):
+
+#### [Pinning content](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#pinning-content)
+
+- Using the [`pin()`](https://erebos.js.org/docs/api-bzz#pin), [`unpin()`](https://erebos.js.org/docs/api-bzz#unpin) and [`pins()`](https://erebos.js.org/docs/api-bzz#pins) methods of the [Bzz class](https://erebos.js.org/docs/api-bzz#bzz-class).
+- Using the [`pin` option](https://erebos.js.org/docs/api-bzz#uploadoptions) when uploading content.
+- Using the [CLI](cli.md#pin-commands).
+
+#### [Tags](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#tags)
+
+It is possible to track progress of chunks spreading over the network using the [`getTag()`](https://erebos.js.org/docs/api-bzz#gettag) and [`pins()`](https://erebos.js.org/docs/api-bzz#polltag) methods of the [Bzz class](https://erebos.js.org/docs/api-bzz#bzz-class).
+
+### New packages
+
+RPC utility libraries that were previously stored in a different repository have now been moved to the Erebos repository and npm organization.
+
+You can learn more about these tools in the [added documentation](https://erebos.js.org/docs/rpc-intro).
+
 ## v0.9.0 (2019-08-12)
 
 ### Breaking changes

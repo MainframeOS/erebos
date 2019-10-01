@@ -23,6 +23,6 @@
     "@babel/runtime": "^7.6.2",
     "@erebos/rpc-base": "^0.10.0",
     "@erebos/rpc-error": "^0.10.0",
-    "fastest-validator": "0.6.15"
+    "fastest-validator": "0.6.18"
   }
 }

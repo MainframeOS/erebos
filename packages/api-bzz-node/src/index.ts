@@ -40,7 +40,7 @@ export class Bzz extends BaseBzz<Response> {
     return await this.download(hash, options)
   }
 
-  public download$(
+  public downloadObservable(
     hash: string,
     options: DownloadOptions = {},
   ): Observable<FileEntry> {
@@ -86,7 +86,7 @@ export class Bzz extends BaseBzz<Response> {
   ): Promise<DirectoryData> {
     return new Promise((resolve, reject) => {
       const directoryData: DirectoryData = {}
-      this.download$(hash, options).subscribe({
+      this.downloadObservable(hash, options).subscribe({
         next: entry => {
           directoryData[entry.path] = { data: entry.data, size: entry.size }
         },

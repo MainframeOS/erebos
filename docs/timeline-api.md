@@ -68,19 +68,9 @@ type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (
 type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>
 ```
 
-### PollOptions
-
-Extends [FetchOptions](api-bzz.md#fetchoptions)
-
-```typescript
-interface PollOptions extends FetchOptions {
-  interval: number
-}
-```
-
 ### LiveOptions
 
-Extends [PollOptions](#polloptions)
+Extends [PollOptions](api-bzz.md#polloptions)
 
 ```typescript
 interface LiveOptions extends PollOptions {
@@ -191,7 +181,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  [`options: PollOptions`](#polloptions): providing the `interval` field with the number of milliseconds between each query to the timeline
+1.  [`options: PollOptions`](api-bzz.md#polloptions): providing the `interval` field with the number of milliseconds between each query to the timeline
 
 **Returns** `Observable<Chapter<T>>`
 

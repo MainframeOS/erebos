@@ -14,7 +14,7 @@ export default class PinRemoveCommand extends Command<DefaultFlags, Args> {
 
   public static flags = Command.flags
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Removing pin...')
 
     try {

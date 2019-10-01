@@ -543,6 +543,11 @@ export class BaseBzz<Response extends BaseResponse> {
     return hash
   }
 
+  public async pinEnabled(options: FetchOptions = {}): Promise<boolean> {
+    const res = await this.fetchTimeout(this.getPinURL(), options)
+    return res.ok
+  }
+
   public async pin(hash: string, options: PinOptions = {}): Promise<void> {
     if (options.download) {
       await this.download(hash, { mode: options.raw ? 'raw' : 'default' })
