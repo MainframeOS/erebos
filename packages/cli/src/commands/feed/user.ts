@@ -18,7 +18,7 @@ export default class FeedUserCommand extends Command<Flags> {
     }),
   }
 
-  public async run() {
+  public run(): any {
     try {
       const keyValue = this.flags['key-env']
       const hasKey = keyValue != null && keyValue.length !== 0

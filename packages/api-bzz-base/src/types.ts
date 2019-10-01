@@ -82,23 +82,52 @@ export interface UploadOptions extends FileOptions {
   defaultPath?: string
   encrypt?: boolean
   manifestHash?: hexValue | string
+  pin?: boolean
   size?: number
 }
 
 export interface PollOptions extends FetchOptions {
   interval: number // in milliseconds
   immediate?: boolean // defaults to true
+}
+
+export interface PollFeedOptions extends PollOptions {
   whenEmpty?: 'accept' | 'ignore' | 'error' // defaults to 'accept'
   trigger?: Observable<void>
 }
 
-export interface PollContentHashOptions extends PollOptions {
+export interface PollFeedContentHashOptions extends PollFeedOptions {
   changedOnly?: boolean
 }
 
-export interface PollContentOptions
+export interface PollFeedContentOptions
   extends DownloadOptions,
-    PollContentHashOptions {}
+    PollFeedContentHashOptions {}
+
+export interface PinOptions extends FetchOptions {
+  download?: boolean
+  raw?: boolean
+}
+
+export interface PinnedFile {
+  address: string
+  counter: number
+  raw: boolean
+  size: number
+}
+
+export interface Tag {
+  uid: number
+  name: string
+  address: string
+  total: number
+  split: number
+  seen: number
+  stored: number
+  sent: number
+  synced: number
+  startedAt: Date
+}
 
 export interface FeedParams {
   user: string

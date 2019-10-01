@@ -84,11 +84,12 @@ export function normalizeMethods(
           acc[name] = method.handler
         } else {
           const check = v.compile(method.params)
-          acc[name] = function validatedMethod<C = any, P = any>(
-            ctx: C,
-            params: P,
-          ) {
-            const checked = check(params)
+          acc[name] = function validatedMethod<
+            C = any,
+            P = Record<string, any>
+          >(ctx: C, params: P) {
+            // eslint-disable-next-line @typescript-eslint/ban-types
+            const checked = check(params as Object)
             if (checked === true) {
               return method.handler(ctx, params)
             } else {

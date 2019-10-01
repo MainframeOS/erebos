@@ -26,7 +26,7 @@ export default class WebsiteSetupCommand extends Command<Flags> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start()
     try {
       const keyValue = this.flags['key-env']

@@ -1,6 +1,6 @@
 {
   "name": "@erebos/keccak256",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "keccak256 utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -24,8 +24,8 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "@erebos/hex": "^0.9.0",
+    "@babel/runtime": "^7.6.2",
+    "@erebos/hex": "^0.10.0",
     "js-sha3": "^0.8.0"
   }
 }

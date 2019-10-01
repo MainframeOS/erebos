@@ -149,14 +149,20 @@ export class Bzz extends BaseBzz<Response> {
         contentType: directory[key].contentType,
       })
     })
+
     if (options.defaultPath != null) {
       const file = directory[options.defaultPath]
       if (file != null) {
         form.append('', file.data, { contentType: file.contentType })
       }
     }
+
     const headers = options.headers || {}
+    if (options.pin) {
+      headers['x-swarm-pin'] = true
+    }
     options.headers = { ...headers, ...form.getHeaders() }
+
     return await this.uploadBody(form, options)
   }
 
@@ -174,6 +180,9 @@ export class Bzz extends BaseBzz<Response> {
     }
     if (options.size != null) {
       options.headers['content-length'] = options.size
+    }
+    if (options.pin) {
+      options.headers['x-swarm-pin'] = true
     }
 
     return await this.uploadBody(stream, options, raw)
@@ -198,6 +207,11 @@ export class Bzz extends BaseBzz<Response> {
       options.headers = {}
     }
     options.headers['content-type'] = 'application/x-tar'
+
+    if (options.pin) {
+      options.headers['x-swarm-pin'] = true
+    }
+
     return await this.uploadBody(stream, options)
   }
 

@@ -155,6 +155,7 @@ interface UploadOptions extends FileOptions {
   defaultPath?: string
   encrypt?: boolean
   manifestHash?: hexValue | string
+  pin?: boolean
   size?: number
 }
 ```
@@ -167,27 +168,77 @@ Extends [FetchOptions](#fetchoptions)
 interface PollOptions extends FetchOptions {
   interval: number // in milliseconds
   immediate?: boolean // defaults to true
+}
+```
+
+### PollFeedOptions
+
+Extends [PollOptions](#polloptions)
+
+```typescript
+interface PollFeedOptions extends PollOptions {
   whenEmpty?: 'accept' | 'ignore' | 'error' // defaults to 'accept'
   trigger?: Observable<void>
 }
 ```
 
-### PollContentHashOptions
+### PollFeedContentHashOptions
 
-Extends [PollOptions](#polloptions)
+Extends [PollFeedOptions](#pollfeedoptions)
 
 ```typescript
-interface PollContentHashOptions extends PollOptions {
+interface PollFeedContentHashOptions extends PollFeedOptions {
   changedOnly?: boolean
 }
 ```
 
-### PollContentOptions
+### PollFeedContentOptions
 
-Extends [DownloadOptions](#downloadoptions) and [PollContentHashOptions](#pollcontenthashoptions)
+Extends [DownloadOptions](#downloadoptions) and [PollFeedContentHashOptions](#pollfeedcontenthashoptions)
 
 ```typescript
-interface PollContentOptions extends DownloadOptions, PollContentHashOptions {}
+interface PollFeedContentOptions
+  extends DownloadOptions,
+    PollFeedContentHashOptions {}
+```
+
+### PinOptions
+
+Extends [FetchOptions](#fetchoptions)
+
+```typescript
+interface PinOptions extends FetchOptions {
+  download?: boolean
+  raw?: boolean
+}
+```
+
+### PinnedFile
+
+```typescript
+interface PinnedFile {
+  address: string
+  counter: number
+  raw: boolean
+  size: number
+}
+```
+
+### Tag
+
+```typescript
+interface Tag {
+  uid: number
+  name: string
+  address: string
+  total: number
+  split: number
+  seen: number
+  stored: number
+  sent: number
+  synced: number
+  startedAt: Date
+}
 ```
 
 ### FeedParams
@@ -268,8 +319,6 @@ interface BzzConfig {
 
 ### Bzz class
 
-_Exported as `BzzBrowser` by `@erebos/api-bzz-browser` and `BzzNode` by `@erebos/api-bzz-node`._
-
 **Arguments**
 
 1.  [`config: BzzConfig`](#bzzconfig), see below
@@ -311,6 +360,17 @@ Returns the Swarm URL for a feed based on the provided arguments.
 
 1.  `hashOrParams: string | FeedParams | FeedUpdateParams`: ENS name, hash of the feed manifest, [feed parameters](#feedparams) or [feed update parameters](#feedupdateparams)
 1.  `flag?: 'meta'`
+
+**Returns** `string`
+
+### .getPinURL()
+
+Returns the Swarm URL for a pin based on the provided arguments.
+
+**Arguments**
+
+1.  `hash?: string`: hash of the resource
+1.  `raw: boolean = false`
 
 **Returns** `string`
 
@@ -423,18 +483,18 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 ### .getFeedContentHash()
 
-Returns the feed contents hash, or `null` if not found.
+Returns the feed contents hash.
 
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: : ENS name, hash of the feed manifest or [feed parameters](#feedparams)
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
-**Returns** `Promise<hexValue | null>`
+**Returns** `Promise<string>`
 
 ### .getFeedContent()
 
-Returns the feed contents `Response`, or `null` if not found.
+Returns the feed contents `Response`.
 
 **Arguments**
 
@@ -501,7 +561,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 **Arguments**
 
 1.  [`meta: FeedMetadata`](#feedmetadata)
-1.  `data: string | Object | Buffer`
+1.  `data: string | Record<string, any> | Buffer`
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
@@ -512,7 +572,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
-1.  `data: string | Object | Buffer`
+1.  `data: string | Record<string, any> | Buffer`
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 1.  `signParams?: any`
 
@@ -536,15 +596,65 @@ This method implements the flow of uploading the provided `data` and updating th
 **Arguments**
 
 1.  `hashOrParams: string | FeedParams`: ENS name, hash of the feed manifest or [feed parameters](#feedparams)
-1.  `data: string | Object | Buffer`
+1.  `data: string | Record<string, any> | Buffer`
 1.  [`options?: UploadOptions = {}`](#uploadoptions)
 1.  `signParams?: any`
 
 **Returns** `Promise<string>`
 
+### .pin()
+
+Pins the specified resource. To make sure the resource is available on the node, the `download` option can be set to explicitely download it before pinning.
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: PinOptions = {}`](#pinoptions)
+
+**Returns** `Promise<void>`
+
+### .unpin()
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<void>`
+
+### .pins()
+
+Returns the list of resources currently pinned on the node.
+
+**Arguments**
+
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<Array<PinnedFile>>` the list of [`PinnedFile`](#pinnedfile)
+
+### .getTag()
+
+**Arguments**
+
+1.  `hash: string`
+1.  [`options: FetchOptions`](#fetchoptions)
+
+**Returns** `Promise<Tag>` the [`Tag`](#tag) of the given `hash`
+
+### .pollTag()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`Tag`](#tag) of the given `hash`.
+
+**Arguments**
+
+1.  `hash: string`
+1.  [`options: PollOptions`](#polloptions)
+
+**Returns** `Observable<Tag>`
+
 ## Node-specific APIs
 
-_The following `BzzNode` class methods are only available when using `@erebos/api-bzz-node`._
+_The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`._
 
 ### .downloadObservable()
 

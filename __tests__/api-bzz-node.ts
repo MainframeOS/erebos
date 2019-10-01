@@ -688,4 +688,93 @@ describe('api-bzz-node', () => {
     // Test should timeout if the trigger is not executed
     trigger.next()
   })
+
+  it('checks if pinning is enabled', async () => {
+    const enabled = await bzz.pinEnabled()
+    expect(enabled).toBe(true)
+  })
+
+  it('pins when uploading', async () => {
+    const pinsBefore = await bzz.pins()
+    await Promise.all(pinsBefore.map(p => bzz.unpin(p.address)))
+
+    const hash = await bzz.uploadFile(uploadContent, { pin: true })
+    const pins = await bzz.pins()
+    expect(pins.length).toBe(1)
+    expect(pins[0]).toEqual({
+      address: hash,
+      counter: 1,
+      raw: true,
+      size: uploadContent.length,
+    })
+
+    await bzz.unpin(hash)
+    const pinsAfter = await bzz.pins()
+    expect(pinsAfter.length).toBe(0)
+  })
+
+  it('pins an already uploaded raw file', async () => {
+    const pinsBefore = await bzz.pins()
+    await Promise.all(pinsBefore.map(p => bzz.unpin(p.address)))
+
+    const hash = await bzz.uploadFile(uploadContent)
+    await bzz.pin(hash, { raw: true })
+
+    const pins = await bzz.pins()
+    expect(pins.length).toBe(1)
+    expect(pins[0]).toEqual({
+      address: hash,
+      counter: 1,
+      raw: true,
+      size: uploadContent.length,
+    })
+
+    await bzz.unpin(hash)
+    const pinsAfter = await bzz.pins()
+    expect(pinsAfter.length).toBe(0)
+  })
+
+  it('pins a manifest', async () => {
+    const pinsBefore = await bzz.pins()
+    await Promise.all(pinsBefore.map(p => bzz.unpin(p.address)))
+
+    const hash = await bzz.uploadFile(uploadContent, {
+      contentType: 'text/plain',
+    })
+    await bzz.pin(hash)
+
+    const pins = await bzz.pins()
+    expect(pins.length).toBe(1)
+    expect(pins[0].address).toBe(hash)
+    expect(pins[0].raw).toBe(false)
+
+    await bzz.unpin(hash)
+    const pinsAfter = await bzz.pins()
+    expect(pinsAfter.length).toBe(0)
+  })
+
+  it('gets an upload tag', async () => {
+    const hash = await bzz.uploadFile(uploadContent, {
+      contentType: 'text/plain',
+    })
+    const tag = await bzz.getTag(hash)
+    expect(tag.address).toBe(hash)
+  })
+
+  it('polls an upload tag', async done => {
+    const hash = await bzz.uploadFile(uploadContent, {
+      contentType: 'text/plain',
+    })
+
+    let count = 0
+    const sub = bzz.pollTag(hash, { interval: 300 }).subscribe({
+      next: tag => {
+        expect(tag.address).toBe(hash)
+        if (count++ === 3) {
+          sub.unsubscribe()
+          done()
+        }
+      },
+    })
+  })
 })

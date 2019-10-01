@@ -26,7 +26,7 @@ export default class BzzListCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     let text = `Retrieving list for ${this.args.hash}`
     if (this.flags.path != null) {
       text += `/${this.flags.path}`

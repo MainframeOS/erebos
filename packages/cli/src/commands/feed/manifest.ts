@@ -32,7 +32,7 @@ export default class FeedManifestCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Creating feed manifest...')
 
     try {

@@ -5,6 +5,7 @@ import { Command, DefaultFlags } from '../../Command'
 interface Flags extends DefaultFlags {
   'content-type'?: string
   'default-path'?: string
+  pin: boolean
 }
 
 interface Args {
@@ -28,9 +29,14 @@ export default class BzzUploadCommand extends Command<Flags, Args> {
     'default-path': flags.string({
       description: 'default path of the folder',
     }),
+    pin: flags.boolean({
+      char: 'p',
+      description: 'pin the uploaded resource',
+      default: false,
+    }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start(`Uploading contents from: ${this.args.path}`)
     try {
       const hash = await this.client.bzz.uploadFrom(
@@ -38,6 +44,7 @@ export default class BzzUploadCommand extends Command<Flags, Args> {
         {
           contentType: this.flags['content-type'],
           defaultPath: this.flags['default-path'],
+          pin: this.flags.pin,
         },
       )
       this.spinner.succeed(`Contents successfully uploaded with hash: ${hash}`)

@@ -35,7 +35,7 @@ export default class WebsitePublishCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Publishing website contents...')
     try {
       const keyPair = createKeyPair(this.flags['key-env'])

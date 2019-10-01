@@ -1,14 +1,16 @@
 /// <reference types="node" />
 import { hexInput, hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
-import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PollOptions, PollContentHashOptions, PollContentOptions, SignBytesFunc, UploadOptions } from './types';
+import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PinOptions, PinnedFile, PollOptions, PollFeedOptions, PollFeedContentHashOptions, PollFeedContentOptions, SignBytesFunc, Tag, UploadOptions } from './types';
 export * from './feed';
 export * from './types';
 export declare const BZZ_MODE_PROTOCOLS: {
     default: string;
     feed: string;
     immutable: string;
+    pin: string;
     raw: string;
+    tag: string;
 };
 export declare function getModeProtocol(mode?: BzzMode): string;
 export declare class HTTPError extends Error {
@@ -31,6 +33,7 @@ export declare class BaseBzz<Response extends BaseResponse> {
     getDownloadURL(hash: string, options?: DownloadOptions, raw?: boolean): string;
     getUploadURL(options?: UploadOptions, raw?: boolean): string;
     getFeedURL(hashOrParams: string | FeedParams | FeedUpdateParams, flag?: 'meta'): string;
+    getPinURL(hash?: string, raw?: boolean): string;
     hash(domain: string, options?: FetchOptions): Promise<hexValue>;
     list(hash: string, options?: DownloadOptions): Promise<ListResult>;
     download(hash: string, options?: DownloadOptions): Promise<Response>;
@@ -44,12 +47,18 @@ export declare class BaseBzz<Response extends BaseResponse> {
     getFeedChunk(hashOrParams: string | FeedParams, options?: FetchOptions): Promise<Response>;
     getFeedContentHash(hashOrParams: string | FeedParams, options?: FetchOptions): Promise<string>;
     getFeedContent(hashOrParams: string | FeedParams, options?: DownloadOptions): Promise<Response>;
-    pollFeedChunk(hashOrParams: string | FeedParams, options: PollOptions): Observable<Response>;
-    pollFeedContentHash(hashOrParams: string | FeedParams, options: PollContentHashOptions): Observable<string | null>;
-    pollFeedContent(hashOrParams: string | FeedParams, options: PollContentOptions): Observable<Response | null>;
+    pollFeedChunk(hashOrParams: string | FeedParams, options: PollFeedOptions): Observable<Response>;
+    pollFeedContentHash(hashOrParams: string | FeedParams, options: PollFeedContentHashOptions): Observable<string | null>;
+    pollFeedContent(hashOrParams: string | FeedParams, options: PollFeedContentOptions): Observable<Response | null>;
     postSignedFeedChunk(params: FeedUpdateParams, body: Buffer, options?: FetchOptions): Promise<Response>;
     postFeedChunk(meta: FeedMetadata, data: hexInput, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedChunk(hashOrParams: string | FeedParams, data: hexInput, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContentHash(hashOrParams: string | FeedParams, contentHash: string, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContent(hashOrParams: string | FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<hexValue>;
+    pinEnabled(options?: FetchOptions): Promise<boolean>;
+    pin(hash: string, options?: PinOptions): Promise<void>;
+    unpin(hash: string, options?: FetchOptions): Promise<void>;
+    pins(options?: FetchOptions): Promise<Array<PinnedFile>>;
+    getTag(hash: string, options?: FetchOptions): Promise<Tag>;
+    pollTag(hash: string, options: PollOptions): Observable<Tag>;
 }

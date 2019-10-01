@@ -15,7 +15,7 @@ export default class PssTopicCommand extends Command<DefaultFlags, Args> {
 
   public static flags = Command.flags
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start(`Retrieving PSS topic for string: ${this.args.topic}`)
     try {
       const topic = await this.client.pss.stringToTopic(this.args.topic)

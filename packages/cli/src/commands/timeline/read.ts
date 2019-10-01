@@ -34,7 +34,7 @@ export default class TimelineReadCommand extends Command<Flags> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     this.spinner.start('Checking input parameters')
 
     let feed

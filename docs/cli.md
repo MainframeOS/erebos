@@ -28,6 +28,8 @@ In order to connect to the relevant Swarm node, the Erebos CLI uses the followin
 
 ## BZZ commands
 
+> upload, download and list immutable resources - see the [official documentation](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#uploading-and-downloading)
+
 ### bzz:hash
 
 **Arguments**
@@ -86,7 +88,50 @@ erebos bzz:download 1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d787880993
 erebos bzz:upload ./test
 ```
 
+## Pin commands
+
+> add, remove and list pinned resources - see the [official documentation](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#pinning-content)
+
+### pin:add
+
+**Arguments**
+
+1. resource hash (required)
+
+**Flags**
+
+- `--download`: download the resource before trying to pin it - useful if the resource is not already stored on the node
+- `--raw`: set if the hash identifies a raw resource (single file with no manifest)
+
+**Example**
+
+```sh
+erebos pin:add 1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d7878809938139
+```
+
+### pin:remove
+
+**Arguments**
+
+1. resource hash (required)
+
+**Example**
+
+```sh
+erebos pin:remove 1fa02eab3a58fca347e17b49476a6a19c42187cf4c17452944d7878809938139
+```
+
+### pin:list
+
+**Example**
+
+```sh
+erebos pin:list
+```
+
 ## Feed commands
+
+> get and set mutable resources using immutable references - see the [official documentation](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#feeds)
 
 ### feed:user
 
@@ -161,6 +206,8 @@ erebos feed:manifest 0x9a13f677a40459d8a49597eec0838191b4d74ec5 --name=test
 ```
 
 ## Timeline commands
+
+> a feed-based singly-linked list - [learn more](timeline-spec.md)
 
 ### timeline:create
 
@@ -237,6 +284,8 @@ erebos timeline:read --user=0x9a13f677a40459d8a49597eec0838191b4d74ec5 --chapter
 
 ## Website commands
 
+> setup and publish static websites
+
 ### website:setup
 
 Creates a new Swarm feed manifest that will provide an immutable hash for the website.
@@ -274,6 +323,8 @@ MY_KEY=... erebos website:publish --hash=... --key-env=MY_KEY ./build
 ```
 
 ## PSS commands
+
+> UDP-like messaging - see the [official documentation](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#swarm-messaging-for-dapp-developers)
 
 ### pss:address
 

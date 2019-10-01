@@ -37,7 +37,7 @@ export default class PssPeerCommand extends Command<Flags, Args> {
     }),
   }
 
-  public async run() {
+  public async run(): Promise<void> {
     try {
       const topic = isHexValue(this.flags.topic)
         ? this.flags.topic
@@ -55,7 +55,7 @@ export default class PssPeerCommand extends Command<Flags, Args> {
         context: any,
         file: string,
         cb: (err: Error | null, result?: any) => void,
-      ) => {
+      ): Promise<void> => {
         try {
           await this.client.pss.sendAsym(this.args.key, topic, msg.trim())
           cb(null)

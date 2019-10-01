@@ -3,6 +3,7 @@ import {
   BaseResponse,
   FeedParams,
   FetchOptions,
+  PollOptions,
   UploadOptions,
 } from '@erebos/api-bzz-base'
 import { hexValue } from '@erebos/hex'
@@ -36,10 +37,6 @@ export type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (
 export type EncodeChapter<T> = (
   chapter: PartialChapter<T>,
 ) => Promise<string | Buffer>
-
-export interface PollOptions extends FetchOptions {
-  interval: number
-}
 
 export interface LiveOptions extends PollOptions {
   previous?: string

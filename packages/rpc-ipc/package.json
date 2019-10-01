@@ -20,9 +20,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
+    "@babel/runtime": "^7.6.2",
     "@erebos/rpc-stream": "^0.10.0",
     "@erebos/transport-ipc": "^0.10.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.3"
   }
 }

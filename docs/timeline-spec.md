@@ -5,7 +5,7 @@ title: Timeline specification
 ## Purpose
 
 The timeline specification describes a singly-linked list data structure allowing to iterate over individual items (named "chapters") in reverse chronological order.
-It leverages [Swarm feeds](https://swarm-guide.readthedocs.io/en/latest/usage.html#feeds) in order to store and update the ID (Swarm hash) of the latest chapter, providing an immutable reference to retrieve the latest chapter of the timeline.
+It leverages [Swarm feeds](https://swarm-guide.readthedocs.io/en/latest/dapp_developer/index.html#feeds) in order to store and update the ID (Swarm hash) of the latest chapter, providing an immutable reference to retrieve the latest chapter of the timeline.
 
 ## Data structure
 

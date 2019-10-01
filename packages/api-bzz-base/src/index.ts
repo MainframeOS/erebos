@@ -16,10 +16,14 @@ import {
   FeedUpdateParams,
   FetchOptions,
   ListResult,
+  PinOptions,
+  PinnedFile,
   PollOptions,
-  PollContentHashOptions,
-  PollContentOptions,
+  PollFeedOptions,
+  PollFeedContentHashOptions,
+  PollFeedContentOptions,
   SignBytesFunc,
+  Tag,
   UploadOptions,
 } from './types'
 
@@ -30,7 +34,9 @@ export const BZZ_MODE_PROTOCOLS = {
   default: 'bzz:/',
   feed: 'bzz-feed:/',
   immutable: 'bzz-immutable:/',
+  pin: 'bzz-pin:/',
   raw: 'bzz-raw:/',
+  tag: 'bzz-tag:/',
 }
 
 export function getModeProtocol(mode?: BzzMode): string {
@@ -78,6 +84,50 @@ export async function resSwarmHash<R extends BaseResponse>(
 
 function defaultSignBytes(): Promise<Array<number>> {
   return Promise.reject(new Error('Missing `signBytes()` function'))
+}
+
+interface PinResponse {
+  Address: string
+  FileSize: number
+  IsRaw: boolean
+  PinCounter: number
+}
+
+function formatPinnedFile(p: PinResponse): PinnedFile {
+  return {
+    address: p.Address,
+    counter: p.PinCounter,
+    raw: p.IsRaw,
+    size: p.FileSize,
+  }
+}
+
+interface TagResponse {
+  Uid: number
+  Name: string
+  Address: string
+  Total: number
+  Split: number
+  Seen: number
+  Stored: number
+  Sent: number
+  Synced: number
+  StartedAt: string
+}
+
+function formatTag(t: TagResponse): Tag {
+  return {
+    uid: t.Uid,
+    name: t.Name,
+    address: t.Address,
+    total: t.Total,
+    split: t.Split,
+    seen: t.Seen,
+    stored: t.Stored,
+    sent: t.Sent,
+    synced: t.Synced,
+    startedAt: new Date(t.StartedAt),
+  }
 }
 
 export class BaseBzz<Response extends BaseResponse> {
@@ -188,6 +238,17 @@ export class BaseBzz<Response extends BaseResponse> {
     return query.length > 0 ? `${url}?${query.join('&')}` : url
   }
 
+  public getPinURL(hash?: string, raw = false): string {
+    let url = this.url + BZZ_MODE_PROTOCOLS.pin
+    if (hash != null) {
+      url += hash
+    }
+    if (raw) {
+      url += '/?raw=true'
+    }
+    return url
+  }
+
   public async hash(
     domain: string,
     options: FetchOptions = {},
@@ -243,12 +304,12 @@ export class BaseBzz<Response extends BaseResponse> {
     options.headers['content-length'] =
       options.size == null ? body.length : options.size
 
-    if (
-      options.headers != null &&
-      options.headers['content-type'] == null &&
-      !raw
-    ) {
+    if (options.headers['content-type'] == null && !raw) {
       options.headers['content-type'] = options.contentType
+    }
+
+    if (options.pin) {
+      options.headers['x-swarm-pin'] = true
     }
 
     return await this.uploadBody(body, options, raw)
@@ -335,7 +396,7 @@ export class BaseBzz<Response extends BaseResponse> {
 
   public pollFeedChunk(
     hashOrParams: string | FeedParams,
-    options: PollOptions,
+    options: PollFeedOptions,
   ): Observable<Response> {
     const sources = []
 
@@ -382,7 +443,7 @@ export class BaseBzz<Response extends BaseResponse> {
 
   public pollFeedContentHash(
     hashOrParams: string | FeedParams,
-    options: PollContentHashOptions,
+    options: PollFeedContentHashOptions,
   ): Observable<string | null> {
     const pipeline = [
       flatMap((res: Response | null) => {
@@ -399,7 +460,7 @@ export class BaseBzz<Response extends BaseResponse> {
 
   public pollFeedContent(
     hashOrParams: string | FeedParams,
-    options: PollContentOptions,
+    options: PollFeedContentOptions,
   ): Observable<Response | null> {
     return this.pollFeedContentHash(hashOrParams, options).pipe(
       flatMap(hash => {
@@ -480,5 +541,50 @@ export class BaseBzz<Response extends BaseResponse> {
     ])
     await this.postFeedChunk(meta, `0x${hash}`, feedOptions, signParams)
     return hash
+  }
+
+  public async pinEnabled(options: FetchOptions = {}): Promise<boolean> {
+    const res = await this.fetchTimeout(this.getPinURL(), options)
+    return res.ok
+  }
+
+  public async pin(hash: string, options: PinOptions = {}): Promise<void> {
+    if (options.download) {
+      await this.download(hash, { mode: options.raw ? 'raw' : 'default' })
+    }
+    const url = this.getPinURL(hash, options.raw)
+    await this.fetchTimeout(url, options, { method: 'POST' })
+  }
+
+  public async unpin(hash: string, options: FetchOptions = {}): Promise<void> {
+    await this.fetchTimeout(this.getPinURL(hash), options, {
+      method: 'DELETE',
+    })
+  }
+
+  public async pins(options: FetchOptions = {}): Promise<Array<PinnedFile>> {
+    const res = await this.fetchTimeout(this.getPinURL(), options)
+    const pins: Array<PinResponse> = await resJSON(res)
+    return pins.map(formatPinnedFile)
+  }
+
+  public async getTag(hash: string, options: FetchOptions = {}): Promise<Tag> {
+    const res = await this.fetchTimeout(
+      this.url + BZZ_MODE_PROTOCOLS.tag + hash,
+      options,
+    )
+    const tag: TagResponse = await resJSON(res)
+    return formatTag(tag)
+  }
+
+  public pollTag(hash: string, options: PollOptions): Observable<Tag> {
+    const sources = []
+    // Trigger the flow immediately by default
+    if (options.immediate !== false) {
+      sources.push([0])
+    }
+    return merge(interval(options.interval), ...sources).pipe(
+      flatMap(async () => await this.getTag(hash, options)),
+    )
   }
 }

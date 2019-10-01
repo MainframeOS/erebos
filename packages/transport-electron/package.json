@@ -20,13 +20,13 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "rxjs": "^6.5.2"
+    "@babel/runtime": "^7.6.2",
+    "rxjs": "^6.5.3"
   },
   "peerDependencies": {
     "electron": "^6.0.0"
   },
   "devDependencies": {
-    "electron": "^6.0.7"
+    "electron": "^6.0.10"
   }
 }
