@@ -7,13 +7,42 @@ import {
   UploadOptions,
 } from '@erebos/api-bzz-base'
 import { hexValue } from '@erebos/hex'
+import { Readable } from 'readable-stream'
+import { NodeReadable } from './utils'
 
 export * from '@erebos/api-bzz-base'
 
-export class Bzz extends BaseBzz<Response> {
+export class Bzz extends BaseBzz<Response, Readable> {
   public constructor(config: BzzConfig) {
     const { url, ...cfg } = config
     super(window.fetch.bind(window), { ...cfg, url: new URL(url).href })
+  }
+
+  protected normalizeStream(stream: ReadableStream): Readable {
+    return (new NodeReadable(stream) as unknown) as Readable
+  }
+
+  protected async uploadBody(
+    body: Buffer | FormData | Readable,
+    options: UploadOptions,
+    raw = false,
+  ): Promise<hexValue> {
+    if (Buffer.isBuffer(body) || body instanceof FormData) {
+      return super.uploadBody(body, options, raw)
+    }
+
+    return new Promise<hexValue>(resolve => {
+      const buffers: Array<Uint8Array> = []
+
+      body.on('data', function(d) {
+        buffers.push(d)
+      })
+
+      body.on('end', function() {
+        // @ts-ignore
+        resolve(Buffer.concat(buffers))
+      })
+    }).then((data: Buffer) => super.uploadBody(data, options, raw))
   }
 
   public async uploadDirectory(

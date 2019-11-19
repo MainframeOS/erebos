@@ -407,13 +407,33 @@ The `download()` method returns a [`Response` instance](https://developer.mozill
 
 **Returns** `Promise<Response>`
 
+### .downloadStream()
+
+The `downloadStream()` method returns a NodeJs's compatible [`Readable` instance](https://nodejs.org/api/stream.html#stream_class_stream_readable) if the request succeeds, or throws a `HTTPError`.
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions) optional object providing the `path`, `mode` and `contentType`.
+
+**Returns** `Promise<Readable>`
+
+### .downloadDirectoryData()
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Promise<DirectoryData>`
+
 ### .uploadFile()
 
 Uploads a single file and returns the hash. If the `contentType` option is provided, it will return the manifest hash, otherwise the file will be uploaded as raw data and will return the hash of the data itself.
 
 **Arguments**
 
-1.  `data: string | Buffer`
+1.  `data: string | Buffer | Readable`
 1.  [`options: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`
@@ -667,15 +687,6 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Returns** `Observable<FileEntry>`
 
-### .downloadDirectoryData()
-
-**Arguments**
-
-1.  `hashOrDomain: string`: ENS name or Swarm hash
-1.  [`options?: DownloadOptions = {}`](#downloadoptions)
-
-**Returns** `Promise<DirectoryData>`
-
 ### .downloadTarTo()
 
 **Arguments**
@@ -717,15 +728,6 @@ Call `downloadFileTo()` or `downloadDirectoryTo()` depending on the provided `pa
 1.  [`options?: DownloadOptions = {}`](#downloadoptions)
 
 **Returns** `Promise<void>`
-
-### .uploadFileStream()
-
-**Arguments**
-
-1.  `stream: Readable`: Node.js [`Readable stream`](https://nodejs.org/dist/latest-v10.x/docs/api/stream.html#stream_class_stream_readable) instance
-1.  [`options?: UploadOptions = {}`](#uploadoptions)
-
-**Returns** `Promise<string>`
 
 ### .uploadTar()
 

@@ -1,4 +1,5 @@
 /* eslint-env browser */
+import * as stream from 'stream'
 // @ts-ignore
 import { URL } from 'universal-url'
 import {
@@ -11,7 +12,7 @@ import { hexValue } from '@erebos/hex'
 
 export * from '@erebos/api-bzz-base'
 
-export class Bzz extends BaseBzz<Response> {
+export class Bzz extends BaseBzz<Response, stream.Readable> {
   public constructor(config: BzzConfig) {
     const { url, ...cfg } = config
     super(window.fetch.bind(window), { ...cfg, url: new URL(url).href })

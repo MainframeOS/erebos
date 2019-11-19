@@ -1,6 +1,8 @@
+import * as stream from 'stream'
 import { createHex, hexInput, hexValue, toHexValue } from '@erebos/hex'
-import { interval, merge, Observable } from 'rxjs'
+import { interval, merge, Observable, Observer } from 'rxjs'
 import { distinctUntilChanged, filter, flatMap } from 'rxjs/operators'
+import tarStream from 'tar-stream'
 
 import { createFeedDigest, getFeedTopic } from './feed'
 import {
@@ -25,6 +27,7 @@ import {
   SignBytesFunc,
   Tag,
   UploadOptions,
+  FileEntry,
 } from './types'
 
 export * from './feed'
@@ -56,6 +59,7 @@ export function resOrError<R extends BaseResponse>(res: R): R {
   if (res.ok) {
     return res
   }
+
   throw new HTTPError(res.status, res.statusText)
 }
 
@@ -63,6 +67,12 @@ export async function resJSON<R extends BaseResponse, T = any>(
   res: R,
 ): Promise<T> {
   return await resOrError(res).json<T>()
+}
+
+export function resStream<R extends BaseResponse<stream.Readable>, T = any>(
+  res: R,
+): stream.Readable | ReadableStream {
+  return resOrError(res).body
 }
 
 export async function resText<R extends BaseResponse>(res: R): Promise<string> {
@@ -84,6 +94,20 @@ export async function resSwarmHash<R extends BaseResponse>(
 
 function defaultSignBytes(): Promise<Array<number>> {
   return Promise.reject(new Error('Missing `signBytes()` function'))
+}
+
+function isDirectoryData(
+  data: string | Buffer | stream.Readable | ReadableStream | DirectoryData,
+): data is DirectoryData {
+  if (typeof data !== 'object') return false
+
+  const values = Object.values(data)
+  if (values.length === 0)
+    // Empty object ==> empty directory
+    return true
+
+  const el = values[0]
+  return typeof el === 'object' && 'data' in el
 }
 
 interface PinResponse {
@@ -130,7 +154,10 @@ function formatTag(t: TagResponse): Tag {
   }
 }
 
-export class BaseBzz<Response extends BaseResponse> {
+export class BaseBzz<
+  Response extends BaseResponse,
+  Readable extends stream.Readable
+> {
   protected defaultTimeout: number
   protected fetch: Fetch<Response>
   protected signBytes: SignBytesFunc
@@ -281,8 +308,95 @@ export class BaseBzz<Response extends BaseResponse> {
     return resOrError(res)
   }
 
+  public async downloadStream(
+    hash: string,
+    options: DownloadOptions = {},
+  ): Promise<Readable> {
+    const url = this.getDownloadURL(hash, options)
+    const res = await this.fetchTimeout(url, options)
+    return this.normalizeStream(resStream(res))
+  }
+
+  protected async downloadTar(
+    hash: string,
+    options: DownloadOptions,
+  ): Promise<Response> {
+    if (options.headers == null) {
+      options.headers = {}
+    }
+    options.headers.accept = 'application/x-tar'
+    return await this.download(hash, options)
+  }
+
+  public downloadObservable(
+    hash: string,
+    options: DownloadOptions = {},
+  ): Observable<FileEntry> {
+    return new Observable((observer: Observer<FileEntry>) => {
+      this.downloadTar(hash, options).then(
+        res => {
+          const extract = tarStream.extract()
+          extract.on('entry', (header, stream, next) => {
+            if (header.type === 'file') {
+              const chunks: Array<Buffer> = []
+              stream.on('data', (chunk: Buffer) => {
+                chunks.push(chunk)
+              })
+              stream.on('end', () => {
+                observer.next({
+                  data: Buffer.concat(chunks),
+                  path: header.name,
+                  size: header.size,
+                })
+                next()
+              })
+              stream.resume()
+            } else {
+              next()
+            }
+          })
+          extract.on('finish', () => {
+            observer.complete()
+          })
+
+          this.normalizeStream(res.body).pipe(extract)
+        },
+        err => {
+          observer.error(err)
+        },
+      )
+    })
+  }
+
+  protected normalizeStream(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    stream: Readable | ReadableStream | NodeJS.ReadableStream,
+  ): Readable {
+    throw new Error('Must be implemented in extending class')
+  }
+
+  public downloadDirectoryData(
+    hash: string,
+    options: DownloadOptions = {},
+  ): Promise<DirectoryData> {
+    return new Promise((resolve, reject) => {
+      const directoryData: DirectoryData = {}
+      this.downloadObservable(hash, options).subscribe({
+        next: entry => {
+          directoryData[entry.path] = { data: entry.data, size: entry.size }
+        },
+        error: err => {
+          reject(err)
+        },
+        complete: () => {
+          resolve(directoryData)
+        },
+      })
+    })
+  }
+
   protected async uploadBody(
-    body: any,
+    body: Buffer | FormData | Readable,
     options: UploadOptions,
     raw = false,
   ): Promise<hexValue> {
@@ -292,7 +406,7 @@ export class BaseBzz<Response extends BaseResponse> {
   }
 
   public async uploadFile(
-    data: string | Buffer,
+    data: string | Buffer | Readable,
     options: UploadOptions = {},
   ): Promise<hexValue> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
@@ -301,8 +415,12 @@ export class BaseBzz<Response extends BaseResponse> {
     if (options.headers == null) {
       options.headers = {}
     }
-    options.headers['content-length'] =
-      options.size == null ? body.length : options.size
+
+    if (options.size != null) {
+      options.headers['content-length'] = options.size
+    } else if (Buffer.isBuffer(body)) {
+      options.headers['content-length'] = body.length
+    }
 
     if (options.headers['content-type'] == null && !raw) {
       options.headers['content-type'] = options.contentType
@@ -323,12 +441,12 @@ export class BaseBzz<Response extends BaseResponse> {
   }
 
   public async upload(
-    data: string | Buffer | DirectoryData,
+    data: string | Buffer | Readable | DirectoryData,
     options: UploadOptions = {},
   ): Promise<hexValue> {
-    return typeof data === 'string' || Buffer.isBuffer(data)
-      ? await this.uploadFile(data, options)
-      : await this.uploadDirectory(data, options)
+    return isDirectoryData(data)
+      ? await this.uploadDirectory(data, options)
+      : await this.uploadFile(data, options)
   }
 
   public async deleteResource(

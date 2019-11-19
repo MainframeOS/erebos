@@ -1,15 +1,12 @@
 /// <reference types="node" />
 import { Readable } from 'stream';
-import { BaseBzz, BzzConfig, DirectoryData, FileEntry, DownloadOptions, UploadOptions } from '@erebos/api-bzz-base';
+import { BaseBzz, BzzConfig, DirectoryData, DownloadOptions, UploadOptions } from '@erebos/api-bzz-base';
 import { hexValue } from '@erebos/hex';
 import { Response } from 'node-fetch';
-import { Observable } from 'rxjs';
 export * from '@erebos/api-bzz-base';
-export declare class Bzz extends BaseBzz<Response> {
+export declare class Bzz extends BaseBzz<Response, Readable> {
     constructor(config: BzzConfig);
-    private downloadTar;
-    downloadObservable(hash: string, options?: DownloadOptions): Observable<FileEntry>;
-    downloadDirectoryData(hash: string, options?: DownloadOptions): Promise<DirectoryData>;
+    protected normalizeStream(stream: NodeJS.ReadableStream): Readable;
     downloadTarTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadFileTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadDirectoryTo(hash: string, toPath: string, options?: DownloadOptions): Promise<number>;

@@ -16,8 +16,18 @@ describe('browser', () => {
     page.on('console', msg => {
       for (let i = 0; i < msg.args().length; ++i) {
         /* eslint-disable-next-line no-console */
-        console.log(`${i}: ${msg.args()[i]}`)
+        console.log(msg.args()[i])
       }
+    })
+
+    page.on('pageerror', function(err) {
+      /* eslint-disable-next-line no-console */
+      console.log('Page error: ' + err.toString())
+    })
+
+    page.on('error', function(err) {
+      /* eslint-disable-next-line no-console */
+      console.log('Error: ' + err.toString())
     })
 
     await page.addScriptTag({
@@ -26,6 +36,14 @@ describe('browser', () => {
         '../packages/swarm-browser/dist/erebos.swarm.development.js',
       ),
     })
+
+    await page.addScriptTag({
+      path: resolve(
+        __dirname,
+        '../packages/swarm-browser/dist/readable-stream.js',
+      ),
+    })
+
     await page.addScriptTag({
       path: resolve(
         __dirname,
@@ -134,6 +152,39 @@ describe('browser', () => {
       expect(evalResponse).toBe(uploadContent)
     })
 
+    it('uploads/downloads the file with bzz using streams', async () => {
+      const manifestHash = await evalClient(async (client, uploadContent) => {
+        const s = new NodeStream.Readable()
+        s.push(uploadContent)
+        s.push(null)
+
+        return await client.bzz.upload(s, {
+          contentType: 'text/plain',
+        })
+      }, uploadContent)
+
+      const evalResponse = await evalClient(async (client, manifestHash) => {
+        const response = await client.bzz.downloadStream(manifestHash)
+        return new Promise(resolve => {
+          const data: Array<Uint8Array> = []
+
+          response.on('data', (d: Uint8Array) => {
+            data.push(d)
+          })
+
+          response.on('end', () => {
+            resolve(data)
+          })
+        })
+      }, manifestHash)
+
+      // Reconstruct Buffer
+      const decodedResponse = evalResponse.map(b =>
+        Buffer.from(Object.values(b)),
+      )
+      expect(Buffer.concat(decodedResponse).toString()).toBe(uploadContent)
+    })
+
     it('lists common prefixes for nested directories', async () => {
       const expectedCommonPrefixes = ['dir1/', 'dir2/']
       const dirs = {
@@ -225,6 +276,31 @@ describe('browser', () => {
       )
 
       expect(directoryList).toEqual({ ...dir, '/': dir[defaultPath] })
+    })
+
+    it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {
+      const dir = {
+        [`foo-${uploadContent}.txt`]: {
+          data: `this is foo-${uploadContent}.txt`,
+        },
+        [`bar-${uploadContent}.txt`]: {
+          data: `this is bar-${uploadContent}.txt`,
+        },
+      }
+
+      const downloadedDir = await evalClient(async (client, dir) => {
+        const dirHash = await client.bzz.uploadDirectory(dir)
+        const response = await client.bzz.downloadDirectoryData(dirHash)
+        return Object.keys(response).reduce(
+          (prev, current) => ({
+            ...prev,
+            [current]: { data: response[current].data.toString('utf8') },
+          }),
+          {},
+        )
+      }, dir)
+
+      expect(downloadedDir).toEqual(dir)
     })
 
     it('supports feeds posting and getting', async () => {
