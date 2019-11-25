@@ -1,5 +1,4 @@
-/// <reference types="node" />
-import * as stream from 'stream';
+import * as stream from 'readable-stream';
 import { BaseBzz, BzzConfig, DirectoryData, UploadOptions } from '@erebos/api-bzz-base';
 import { hexValue } from '@erebos/hex';
 export * from '@erebos/api-bzz-base';

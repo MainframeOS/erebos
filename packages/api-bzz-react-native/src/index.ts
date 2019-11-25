@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import * as stream from 'stream'
+import * as stream from 'readable-stream'
 // @ts-ignore
 import { URL } from 'universal-url'
 import {
