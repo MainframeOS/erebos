@@ -7,7 +7,9 @@ import {
   resOrError,
   resJSON,
   resText,
+  isDirectoryData,
 } from '@erebos/api-bzz-base'
+import { Readable } from 'readable-stream'
 
 describe('api-bzz-base', () => {
   const TEST_URL = 'https://example.com/swarm-gateways/'
@@ -15,6 +17,27 @@ describe('api-bzz-base', () => {
 
   beforeEach(() => {
     fetch.resetMocks()
+  })
+
+  it('isDirectoryData should correctly identify structures ', function() {
+    const data: Array<Array<any>> = [
+      [1, false],
+      [undefined, false],
+      [null, false],
+      [[], false],
+      [new Date(), false],
+      [{ some: 'object' }, false],
+      ['', false],
+      ['data', false],
+      [Buffer.from('data'), false],
+      [new Readable(), false],
+      [{ 'some/path': { data: '' } }, true],
+      [{}, true],
+    ]
+
+    data.forEach(([input, result]) =>
+      expect(isDirectoryData(input)).toEqual(result),
+    )
   })
 
   it('exports getModeProtocol() utility function', () => {

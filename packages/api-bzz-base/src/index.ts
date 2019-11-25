@@ -96,10 +96,13 @@ function defaultSignBytes(): Promise<Array<number>> {
   return Promise.reject(new Error('Missing `signBytes()` function'))
 }
 
-function isDirectoryData(
+export function isDirectoryData(
   data: string | Buffer | stream.Readable | ReadableStream | DirectoryData,
 ): data is DirectoryData {
-  if (typeof data !== 'object') return false
+  if (typeof data !== 'object' || data === null || Array.isArray(data))
+    return false
+
+  if (data.constructor !== Object) return false
 
   const values = Object.values(data)
   if (values.length === 0)

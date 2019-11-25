@@ -24,6 +24,7 @@ export declare function resStream<R extends BaseResponse<stream.Readable>, T = a
 export declare function resText<R extends BaseResponse>(res: R): Promise<string>;
 export declare function resHex<R extends BaseResponse>(res: R): Promise<hexValue>;
 export declare function resSwarmHash<R extends BaseResponse>(res: R): Promise<string>;
+export declare function isDirectoryData(data: string | Buffer | stream.Readable | ReadableStream | DirectoryData): data is DirectoryData;
 export declare class BaseBzz<Response extends BaseResponse, Readable extends stream.Readable> {
     protected defaultTimeout: number;
     protected fetch: Fetch<Response>;
