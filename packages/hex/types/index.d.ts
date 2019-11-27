@@ -1,5 +1,6 @@
 /// <reference types="node" />
 declare enum HexValue {
+    _ = ""
 }
 export declare type hexValue = HexValue & string;
 export declare type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>;
@@ -26,7 +27,7 @@ export declare class Hex {
     protected input: HexInput;
     protected hexValue: hexValue;
     constructor(inputValue: hexInput | Hex);
-    readonly value: hexValue;
+    get value(): hexValue;
     equals(other: hexInput | Hex): boolean;
     toBuffer(): Buffer;
     toBytesArray(): Array<number>;

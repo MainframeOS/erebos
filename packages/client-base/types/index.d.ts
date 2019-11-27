@@ -14,7 +14,7 @@ export declare function createInstantiateAPI<R extends BaseRPC>(createRPC: Creat
 export declare abstract class BaseClient {
     protected rpcInstance: StreamRPC | void;
     constructor(config?: ClientConfig);
-    readonly rpc: StreamRPC;
+    get rpc(): StreamRPC;
     disconnect(): void;
 }
 export {};
