@@ -4,6 +4,8 @@
 
 import * as os from 'os'
 import * as path from 'path'
+import { Readable } from 'stream'
+import * as crypto from 'crypto'
 import * as fs from 'fs-extra'
 import { Subject } from 'rxjs'
 import * as tar from 'tar-stream'
@@ -68,6 +70,30 @@ describe('api-bzz-node', () => {
     expect(await response.text()).toBe(uploadContent)
   })
 
+  it('uploading and downloading single file using bzz and streams', async () => {
+    const value = crypto.randomBytes(60).toString('hex')
+    const s = new Readable()
+    s.push(value)
+    s.push(null)
+
+    const manifestHash = await bzz.upload(s, {
+      contentType: 'text/plain',
+    })
+
+    const data: Array<Uint8Array> = []
+    const responseStream = await bzz.downloadStream(manifestHash)
+    responseStream.on('data', (d: Uint8Array) => {
+      data.push(d)
+    })
+
+    return new Promise(resolve => {
+      responseStream.on('end', () => {
+        expect(Buffer.concat(data).toString()).toBe(value)
+        resolve()
+      })
+    })
+  })
+
   it('uploading and downloading single file using bzz with content path', async () => {
     const manifestHash = await bzz.upload(uploadContent, {
       contentType: 'text/plain',
@@ -82,6 +108,30 @@ describe('api-bzz-node', () => {
     const manifestHash = await bzz.upload(uploadContent)
     const response = await bzz.download(manifestHash, { mode: 'raw' })
     expect(await response.text()).toBe(uploadContent)
+  })
+
+  it('uploading and downloading single file using bzz-raw and streams', async () => {
+    const value = crypto.randomBytes(60).toString('hex')
+    const s = new Readable()
+    s.push(value)
+    s.push(null)
+
+    const manifestHash = await bzz.upload(s, { size: value.length })
+
+    const data: Array<Uint8Array> = []
+    const responseStream = await bzz.downloadStream(manifestHash, {
+      mode: 'raw',
+    })
+    responseStream.on('data', (d: Uint8Array) => {
+      data.push(d)
+    })
+
+    return new Promise(resolve => {
+      responseStream.on('end', () => {
+        expect(Buffer.concat(data).toString()).toBe(value)
+        resolve()
+      })
+    })
   })
 
   it('downloading the manifest', async () => {

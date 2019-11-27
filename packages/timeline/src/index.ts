@@ -1,3 +1,4 @@
+import * as stream from 'stream'
 import {
   BaseBzz,
   BaseResponse,
@@ -108,7 +109,10 @@ function defaultEncode(chapter: any): Promise<string> {
 
 export interface TimelineConfig<
   T = any,
-  Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>
+  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
+    BaseResponse,
+    stream.Readable
+  >
 > {
   bzz: Bzz
   feed: string | FeedParams
@@ -119,7 +123,10 @@ export interface TimelineConfig<
 
 export class Timeline<
   T = any,
-  Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>
+  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
+    BaseResponse,
+    stream.Readable
+  >
 > {
   protected bzz: Bzz
   protected decode: DecodeChapter<T>

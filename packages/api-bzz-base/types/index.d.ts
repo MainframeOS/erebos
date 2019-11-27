@@ -1,7 +1,8 @@
 /// <reference types="node" />
+import * as stream from 'stream';
 import { hexInput, hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
-import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PinOptions, PinnedFile, PollOptions, PollFeedOptions, PollFeedContentHashOptions, PollFeedContentOptions, SignBytesFunc, Tag, UploadOptions } from './types';
+import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PinOptions, PinnedFile, PollOptions, PollFeedOptions, PollFeedContentHashOptions, PollFeedContentOptions, SignBytesFunc, Tag, UploadOptions, FileEntry } from './types';
 export * from './feed';
 export * from './types';
 export declare const BZZ_MODE_PROTOCOLS: {
@@ -19,10 +20,12 @@ export declare class HTTPError extends Error {
 }
 export declare function resOrError<R extends BaseResponse>(res: R): R;
 export declare function resJSON<R extends BaseResponse, T = any>(res: R): Promise<T>;
+export declare function resStream<R extends BaseResponse<stream.Readable>, T = any>(res: R): stream.Readable | ReadableStream;
 export declare function resText<R extends BaseResponse>(res: R): Promise<string>;
 export declare function resHex<R extends BaseResponse>(res: R): Promise<hexValue>;
 export declare function resSwarmHash<R extends BaseResponse>(res: R): Promise<string>;
-export declare class BaseBzz<Response extends BaseResponse> {
+export declare function isDirectoryData(data: string | Buffer | stream.Readable | ReadableStream | DirectoryData): data is DirectoryData;
+export declare class BaseBzz<Response extends BaseResponse, Readable extends stream.Readable> {
     protected defaultTimeout: number;
     protected fetch: Fetch<Response>;
     protected signBytes: SignBytesFunc;
@@ -37,10 +40,15 @@ export declare class BaseBzz<Response extends BaseResponse> {
     hash(domain: string, options?: FetchOptions): Promise<hexValue>;
     list(hash: string, options?: DownloadOptions): Promise<ListResult>;
     download(hash: string, options?: DownloadOptions): Promise<Response>;
-    protected uploadBody(body: any, options: UploadOptions, raw?: boolean): Promise<hexValue>;
-    uploadFile(data: string | Buffer, options?: UploadOptions): Promise<hexValue>;
+    downloadStream(hash: string, options?: DownloadOptions): Promise<Readable>;
+    protected downloadTar(hash: string, options: DownloadOptions): Promise<Response>;
+    downloadObservable(hash: string, options?: DownloadOptions): Observable<FileEntry>;
+    protected normalizeStream(stream: Readable | ReadableStream | NodeJS.ReadableStream): Readable;
+    downloadDirectoryData(hash: string, options?: DownloadOptions): Promise<DirectoryData>;
+    protected uploadBody(body: Buffer | FormData | Readable, options: UploadOptions, raw?: boolean): Promise<hexValue>;
+    uploadFile(data: string | Buffer | Readable, options?: UploadOptions): Promise<hexValue>;
     uploadDirectory(_directory: DirectoryData, _options?: UploadOptions): Promise<hexValue>;
-    upload(data: string | Buffer | DirectoryData, options?: UploadOptions): Promise<hexValue>;
+    upload(data: string | Buffer | Readable | DirectoryData, options?: UploadOptions): Promise<hexValue>;
     deleteResource(hash: string, path: string, options?: FetchOptions): Promise<hexValue>;
     createFeedManifest(params: FeedParams, options?: UploadOptions): Promise<hexValue>;
     getFeedMetadata(hashOrParams: string | FeedParams, options?: FetchOptions): Promise<FeedMetadata>;

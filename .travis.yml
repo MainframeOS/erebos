@@ -20,7 +20,7 @@ matrix:
         - ./start_swarm_node.sh -d
     - os: osx
       env:
-        - SWARM_VERSION=swarm-darwin-amd64-0.5.0-c1c233d1
+        - SWARM_VERSION=swarm-darwin-amd64-0.5.2-d8b56ff0
       before_install:
         - mkdir ~/data && echo "password" > ~/password
         - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x

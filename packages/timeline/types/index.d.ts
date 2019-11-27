@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import * as stream from 'stream';
 import { BaseBzz, BaseResponse, FeedParams, FetchOptions, PollOptions, UploadOptions } from '@erebos/api-bzz-base';
 import { hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
@@ -31,14 +32,14 @@ export interface MaybeChapter extends Record<string, any> {
     version?: string;
 }
 export declare function validateChapter<T extends MaybeChapter>(chapter: T): T;
-export interface TimelineConfig<T = any, Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>> {
+export interface TimelineConfig<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
     bzz: Bzz;
     feed: string | FeedParams;
     decode?: DecodeChapter<T>;
     encode?: EncodeChapter<T>;
     signParams?: any;
 }
-export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse> = BaseBzz<BaseResponse>> {
+export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
     protected bzz: Bzz;
     protected decode: DecodeChapter<T>;
     protected encode: EncodeChapter<T>;

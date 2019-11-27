@@ -25,6 +25,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.2",
-    "@erebos/api-bzz-base": "^0.10.0"
+    "@erebos/api-bzz-base": "^0.10.0",
+    "readable-stream": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/readable-stream": "^2.3.5"
   }
 }
