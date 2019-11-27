@@ -180,6 +180,38 @@ describe('api-bzz-node', () => {
     expect(downloadedDir).toEqual(dir)
   })
 
+  it('uploadDirectory() uploads the contents and returns the hash of the manifest', async () => {
+    const dir = {
+      [`foo-${uploadContent}.txt`]: {
+        data: `this is foo-${uploadContent}.txt`,
+        contentType: 'plain/text',
+      },
+      [`bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+        contentType: 'plain/text',
+      },
+      [`some/folder/bar-${uploadContent}.txt`]: {
+        data: `this is bar-${uploadContent}.txt`,
+        contentType: 'plain/text',
+      },
+    }
+    const dirHash = await bzz.uploadDirectory(dir)
+    const manifest = await bzz.list(dirHash)
+    const entries = Object.values(manifest.entries || {})
+    const downloaded = await downloadRawEntries(entries)
+    const downloadedDir = entries.reduce(
+      (acc, entry, i) => {
+        acc[entry.path] = {
+          data: downloaded[i],
+          contentType: entry.contentType,
+        }
+        return acc
+      },
+      {} as Record<string, DirectoryEntry>,
+    )
+    expect(downloadedDir).toEqual(dir)
+  })
+
   it('uploadDirectory() supports the `defaultPath` option', async () => {
     const dir = {
       [`foo-${uploadContent}.txt`]: {
