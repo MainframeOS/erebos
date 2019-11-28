@@ -1,6 +1,6 @@
 {
   "name": "@erebos/timeline",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Linked-list data structure for Swarm feeds",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -30,8 +30,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.4",
-    "@erebos/api-bzz-base": "^0.10.0",
-    "@erebos/hex": "^0.10.0",
+    "@erebos/api-bzz-base": "^0.11.0",
+    "@erebos/hex": "^0.11.0",
     "rxjs": "^6.5.3",
     "semver": "^6.3.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@erebos/rpc-request",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Request-based RPC",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@erebos/client-base",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Client base",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -26,6 +26,6 @@
   "dependencies": {
     "@babel/runtime": "^7.7.4",
     "@erebos/rpc-base": "^0.10.0",
-    "@erebos/rpc-stream": "^0.10.0"
+    "@erebos/rpc-stream": "^0.11.0"
   }
 }

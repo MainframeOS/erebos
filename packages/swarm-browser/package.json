@@ -1,6 +1,6 @@
 {
   "name": "@erebos/swarm-browser",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Swarm client for browser",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -30,13 +30,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.4",
-    "@erebos/api-bzz-base": "^0.10.0",
-    "@erebos/api-bzz-browser": "^0.10.0",
-    "@erebos/api-pss": "^0.10.0",
-    "@erebos/client-base": "^0.10.0",
-    "@erebos/rpc-browser": "^0.10.0",
-    "@erebos/rpc-stream": "^0.10.0",
-    "@erebos/rpc-ws-browser": "^0.10.0"
+    "@erebos/api-bzz-base": "^0.11.0",
+    "@erebos/api-bzz-browser": "^0.11.0",
+    "@erebos/api-pss": "^0.11.0",
+    "@erebos/client-base": "^0.11.0",
+    "@erebos/rpc-browser": "^0.11.0",
+    "@erebos/rpc-stream": "^0.11.0",
+    "@erebos/rpc-ws-browser": "^0.11.0"
   },
   "devDependencies": {
     "babel-loader": "^8.0.5",
