@@ -167,13 +167,16 @@ describe('api-bzz-node', () => {
     const manifest = await bzz.list(dirHash)
     const entries = Object.values(manifest.entries || {})
     const downloaded = await downloadRawEntries(entries)
-    const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = {
-        data: downloaded[i],
-        contentType: entry.contentType,
-      }
-      return acc
-    }, {} as Record<string, DirectoryEntry>)
+    const downloadedDir = entries.reduce(
+      (acc, entry, i) => {
+        acc[entry.path] = {
+          data: downloaded[i],
+          contentType: entry.contentType,
+        }
+        return acc
+      },
+      {} as Record<string, DirectoryEntry>,
+    )
     expect(downloadedDir).toEqual(dir)
   })
 
@@ -193,14 +196,40 @@ describe('api-bzz-node', () => {
     const manifest = await bzz.list(dirHash)
     const entries = Object.values(manifest.entries || {})
     const downloaded = await downloadRawEntries(entries)
-    const downloadedDir = entries.reduce((acc, entry, i) => {
-      acc[entry.path] = {
-        data: downloaded[i],
-        contentType: entry.contentType,
-      }
-      return acc
-    }, {} as Record<string, DirectoryEntry>)
+    const downloadedDir = entries.reduce(
+      (acc, entry, i) => {
+        acc[entry.path] = {
+          data: downloaded[i],
+          contentType: entry.contentType,
+        }
+        return acc
+      },
+      {} as Record<string, DirectoryEntry>,
+    )
     expect(downloadedDir).toEqual({ ...dir, '/': dir[defaultPath] })
+  })
+
+  it('uploadDirectory() with empty files', async () => {
+    const dir = {
+      [`foo-${uploadContent}.txt`]: {
+        data: '',
+      },
+    }
+    const dirHash = await bzz.uploadDirectory(dir)
+    const manifest = await bzz.list(dirHash)
+    const entries = Object.values(manifest.entries || {})
+    const downloaded = await downloadRawEntries(entries)
+    const downloadedDir = entries.reduce(
+      (acc, entry, i) => {
+        acc[entry.path] = {
+          data: downloaded[i],
+          contentType: entry.contentType,
+        }
+        return acc
+      },
+      {} as Record<string, DirectoryEntry>,
+    )
+    expect(downloadedDir).toEqual(dir)
   })
 
   it('downloadDirectoryData() streams the same data provided to uploadDirectory()', async () => {

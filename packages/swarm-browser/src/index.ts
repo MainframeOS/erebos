@@ -21,9 +21,9 @@ export interface SwarmConfig extends ClientConfig {
   rpc?: StreamRPC
 }
 
-const instantiateAPI = createInstantiateAPI(
-  createRPC as (endpoint: string) => StreamRPC,
-)
+const instantiateAPI = createInstantiateAPI(createRPC as (
+  endpoint: string,
+) => StreamRPC)
 
 export class SwarmClient extends BaseClient {
   protected bzzInstance: Bzz | void = undefined

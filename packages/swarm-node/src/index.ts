@@ -16,9 +16,9 @@ export { Pss } from '@erebos/api-pss'
 export { Hex, createHex, hexInput, hexValue } from '@erebos/hex'
 export { createRPC } from '@erebos/rpc-node'
 
-const instantiateAPI = createInstantiateAPI(
-  createRPC as (endpoint: string) => StreamRPC,
-)
+const instantiateAPI = createInstantiateAPI(createRPC as (
+  endpoint: string,
+) => StreamRPC)
 
 export interface SwarmConfig extends ClientConfig {
   bzz?: BzzConfig | Bzz
