@@ -31,7 +31,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
       return super.uploadBody(body, options, raw)
     }
 
-    return new Promise<hexValue>(resolve => {
+    return new Promise(resolve => {
       const buffers: Array<Uint8Array> = []
 
       body.on('data', function(d) {
@@ -42,7 +42,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
         // @ts-ignore
         resolve(Buffer.concat(buffers))
       })
-    }).then((data: Buffer) => super.uploadBody(data, options, raw))
+    }).then(data => super.uploadBody(data as Buffer, options, raw))
   }
 
   public async uploadDirectory(

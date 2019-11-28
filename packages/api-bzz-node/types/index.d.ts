@@ -12,7 +12,6 @@ export declare class Bzz extends BaseBzz<Response, Readable> {
     downloadDirectoryTo(hash: string, toPath: string, options?: DownloadOptions): Promise<number>;
     downloadTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     uploadDirectory(directory: DirectoryData, options?: UploadOptions): Promise<hexValue>;
-    uploadFileStream(stream: Readable, options?: UploadOptions): Promise<hexValue>;
     uploadFileFrom(path: string, options?: UploadOptions): Promise<hexValue>;
     private uploadTarStream;
     uploadTar(path: string, options?: UploadOptions): Promise<hexValue>;

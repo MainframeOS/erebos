@@ -15,6 +15,6 @@ export declare class SwarmClient extends BaseClient {
     protected bzzInstance: Bzz | void;
     protected pssInstance: Pss | void;
     constructor(config: SwarmConfig);
-    readonly bzz: Bzz;
-    readonly pss: Pss;
+    get bzz(): Bzz;
+    get pss(): Pss;
 }

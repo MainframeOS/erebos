@@ -1,4 +1,6 @@
-enum HexValue {}
+enum HexValue {
+  _ = '',
+}
 
 export type hexValue = HexValue & string
 

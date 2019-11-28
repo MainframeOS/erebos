@@ -6,9 +6,9 @@ export declare class HDWallet {
     protected walletsRecord: Record<string, Wallet>;
     static createRandom(): HDWallet;
     constructor(mnemonic: string, activeIndexes?: Array<number>);
-    readonly mnemonic: string;
-    readonly wallets: Array<Wallet>;
-    readonly accounts: Array<string>;
+    get mnemonic(): string;
+    get wallets(): Array<Wallet>;
+    get accounts(): Array<string>;
     getAccountWallet(address: string): Wallet | void;
     addAccount(index: number | string): Wallet;
     discardAccount(index: number | string): void;

@@ -6,7 +6,7 @@ export declare class StreamRPC extends BaseRPC {
     private _subscription;
     private _transport;
     constructor(transport: Subject<any>);
-    readonly connected: boolean;
+    get connected(): boolean;
     connect(): void;
     disconnect(): void;
     observe<P = any, R = any>(method: string, params?: P): Observable<R>;
