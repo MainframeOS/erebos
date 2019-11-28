@@ -20,7 +20,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "^7.7.4",
     "@erebos/rpc-stream": "^0.10.0",
     "@erebos/transport-ws-node": "^0.10.0"
   }

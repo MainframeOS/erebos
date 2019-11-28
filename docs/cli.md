@@ -46,7 +46,11 @@ erebos bzz:hash theswarm.eth
 
 **Arguments**
 
-1. hash or ENS address (required)
+1. manifest hash or ENS address (required)
+
+**Flags**
+
+- `--path`: file or folder to list contents of (optional, defaults to root)
 
 **Example**
 

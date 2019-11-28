@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '10'
+  - '12'
 
 cache:
   yarn: true
@@ -20,7 +20,7 @@ matrix:
         - ./start_swarm_node.sh -d
     - os: osx
       env:
-        - SWARM_VERSION=swarm-darwin-amd64-0.5.2-d8b56ff0
+        - SWARM_VERSION=swarm-darwin-amd64-0.5.3-b0bc6a21
       before_install:
         - mkdir ~/data && echo "password" > ~/password
         - curl "https://ethswarm.blob.core.windows.net/builds/$SWARM_VERSION.tar.gz" | tar -x

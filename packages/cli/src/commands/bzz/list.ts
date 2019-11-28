@@ -22,7 +22,7 @@ export default class BzzListCommand extends Command<Flags, Args> {
   public static flags = {
     ...Command.flags,
     path: flags.string({
-      description: 'file path in the manifest',
+      description: 'file or folder path in the manifest',
     }),
   }
 

@@ -29,7 +29,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "^7.7.4",
     "@erebos/api-bzz-base": "^0.10.0",
     "@erebos/api-bzz-browser": "^0.10.0",
     "@erebos/api-pss": "^0.10.0",
@@ -39,9 +39,9 @@
     "@erebos/rpc-ws-browser": "^0.10.0"
   },
   "devDependencies": {
-    "webpack": "^4.40.2",
-    "terser-webpack-plugin": "^2.0.1",
     "babel-loader": "^8.0.5",
+    "terser-webpack-plugin": "^2.0.1",
+    "webpack": "^4.40.2",
     "webpack-cli": "^3.3.8"
   }
 }

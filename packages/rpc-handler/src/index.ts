@@ -74,38 +74,35 @@ export function normalizeMethods(
 ): NormalizedMethods {
   const v = new Validator(validatorOptions)
 
-  return Object.keys(methods).reduce(
-    (acc, name) => {
-      const method = methods[name]
-      if (typeof method === 'function') {
-        acc[name] = method
-      } else if (typeof method.handler === 'function') {
-        if (method.params == null) {
-          acc[name] = method.handler
-        } else {
-          const check = v.compile(method.params)
-          acc[name] = function validatedMethod<
-            C = any,
-            P = Record<string, any>
-          >(ctx: C, params: P) {
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            const checked = check(params as Object)
-            if (checked === true) {
-              return method.handler(ctx, params)
-            } else {
-              throw createInvalidParams(checked)
-            }
+  return Object.keys(methods).reduce((acc, name) => {
+    const method = methods[name]
+    if (typeof method === 'function') {
+      acc[name] = method
+    } else if (typeof method.handler === 'function') {
+      if (method.params == null) {
+        acc[name] = method.handler
+      } else {
+        const check = v.compile(method.params)
+        acc[name] = function validatedMethod<C = any, P = Record<string, any>>(
+          ctx: C,
+          params: P,
+        ) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
+          const checked = check(params as Object)
+          if (checked === true) {
+            return method.handler(ctx, params)
+          } else {
+            throw createInvalidParams(checked)
           }
         }
-      } else {
-        throw new Error(
-          `Unexpected definition for method "${name}": method should be a function or an object with "params" Object and "handler" function.`,
-        )
       }
-      return acc
-    },
-    {} as NormalizedMethods,
-  )
+    } else {
+      throw new Error(
+        `Unexpected definition for method "${name}": method should be a function or an object with "params" Object and "handler" function.`,
+      )
+    }
+    return acc
+  }, {} as NormalizedMethods)
 }
 
 function defaultOnHandlerError<C = any, P = any>(

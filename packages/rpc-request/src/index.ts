@@ -11,20 +11,19 @@ export class RequestRPC extends BaseRPC {
     this.fetch = fetch
   }
 
-  public request<P = any, R = any, E = any>(
+  public async request<P = any, R = any, E = any>(
     method: string,
     params?: P,
   ): Promise<R> {
-    return this.fetch({
+    const msg = await this.fetch({
       id: this.createID(),
       jsonrpc: '2.0',
       method,
       params,
-    }).then(msg => {
-      if (msg.error) {
-        throw RPCError.fromObject<E>(msg.error)
-      }
-      return msg.result
     })
+    if (msg.error) {
+      throw RPCError.fromObject<E>(msg.error)
+    }
+    return msg.result
   }
 }

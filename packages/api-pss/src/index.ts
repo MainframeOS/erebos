@@ -26,65 +26,65 @@ export class Pss {
     this.rpc = rpc
   }
 
-  public baseAddr(): Promise<hexValue> {
-    return this.rpc.request('pss_baseAddr')
+  public async baseAddr(): Promise<hexValue> {
+    return await this.rpc.request('pss_baseAddr')
   }
 
-  public getPublicKey(): Promise<hexValue> {
+  public async getPublicKey(): Promise<hexValue> {
     return this.rpc.request('pss_getPublicKey')
   }
 
-  public sendAsym(
+  public async sendAsym(
     key: hexValue,
     topic: hexValue,
     message: Hex | hexInput,
   ): Promise<null> {
-    return this.rpc.request('pss_sendAsym', [
+    return await this.rpc.request('pss_sendAsym', [
       key,
       topic,
       createHex(message).value,
     ])
   }
 
-  public sendSym(
+  public async sendSym(
     keyID: string,
     topic: hexValue,
     message: Hex | hexInput,
   ): Promise<null> {
-    return this.rpc.request('pss_sendSym', [
+    return await this.rpc.request('pss_sendSym', [
       keyID,
       topic,
       createHex(message).value,
     ])
   }
 
-  public sendRaw(
+  public async sendRaw(
     address: hexValue,
     topic: hexValue,
     message: Hex | hexInput,
   ): Promise<null> {
-    return this.rpc.request('pss_sendRaw', [
+    return await this.rpc.request('pss_sendRaw', [
       address,
       topic,
       createHex(message).value,
     ])
   }
 
-  public setPeerPublicKey(
+  public async setPeerPublicKey(
     key: hexValue,
     topic: hexValue,
     address: hexValue,
   ): Promise<null> {
-    return this.rpc.request('pss_setPeerPublicKey', [key, topic, address])
+    return await this.rpc.request('pss_setPeerPublicKey', [key, topic, address])
   }
 
-  public setSymmetricKey(
+  public async setSymmetricKey(
     key: hexValue,
     topic: hexValue,
     address: hexValue,
     useForDecryption = false,
   ): Promise<string> {
-    return this.rpc.request('pss_setSymmetricKey', [
+    return await this.rpc.request('pss_setSymmetricKey', [
       key,
       topic,
       address,
@@ -92,15 +92,15 @@ export class Pss {
     ])
   }
 
-  public stringToTopic(str: string): Promise<hexValue> {
-    return this.rpc.request('pss_stringToTopic', [str])
+  public async stringToTopic(str: string): Promise<hexValue> {
+    return await this.rpc.request('pss_stringToTopic', [str])
   }
 
-  public subscribeTopic(
+  public async subscribeTopic(
     topic: hexValue,
     handleRawMessages = false,
   ): Promise<hexValue> {
-    return this.rpc.request('pss_subscribe', [
+    return await this.rpc.request('pss_subscribe', [
       'receive',
       topic,
       handleRawMessages,
@@ -110,7 +110,7 @@ export class Pss {
 
   public createSubscription(subscription: hexValue): Observable<PssEvent> {
     return Observable.create((observer: Observer<PssEvent>) => {
-      return this.rpc.subscribe({
+      this.rpc.subscribe({
         next: (msg: SubscriptionMessage) => {
           if (
             msg.method === 'pss_subscription' &&
@@ -141,14 +141,11 @@ export class Pss {
     })
   }
 
-  public createTopicSubscription(
+  public async createTopicSubscription(
     topic: hexValue,
     handleRawMessages?: boolean,
   ): Promise<Observable<PssEvent>> {
-    return this.subscribeTopic(topic, handleRawMessages).then(
-      (subscription: hexValue): Observable<PssEvent> => {
-        return this.createSubscription(subscription)
-      },
-    )
+    const subscription = await this.subscribeTopic(topic, handleRawMessages)
+    return this.createSubscription(subscription)
   }
 }
