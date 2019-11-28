@@ -722,14 +722,14 @@ export class BaseBzz<
     return response
   }
 
-  public async getRawFeedData(params: FeedParams): Promise<ArrayBuffer> {
+  public async getRawFeedContent(params: FeedParams): Promise<ArrayBuffer> {
     const response = await this.fetchRawFeedChunk(params)
     const dataBuffer = await response.arrayBuffer()
     return feedChunkToData(dataBuffer)
   }
 
   public async getRawFeedContentHash(params: FeedParams): Promise<string> {
-    const dataBuffer = await this.getRawFeedData(params)
+    const dataBuffer = await this.getRawFeedContent(params)
     return Buffer.from(dataBuffer).toString('hex')
   }
 
