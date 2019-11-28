@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.4",
-    "@erebos/rpc-http-browser": "^0.10.0",
-    "@erebos/rpc-ws-browser": "^0.10.0"
+    "@erebos/rpc-http-browser": "^0.11.0",
+    "@erebos/rpc-ws-browser": "^0.11.0"
   }
 }

@@ -1,3 +1,21 @@
+## v0.11.0 (2019-11-28)
+
+This release adds support for [Readable streams](https://nodejs.org/api/stream.html#stream_class_stream_readable) in `@erebos/api-bzz-base`, thanks to [Adam Uhlíř's pull request](https://github.com/MainframeHQ/erebos/pull/116).
+
+### Breaking change
+
+The `uploadFileStream()` method of `@erebos/api-bzz-node` has been removed, `uploadFile()` now supporting streams.
+
+### Additional features
+
+- The [`downloadObservable()`](https://erebos.js.org/docs/api-bzz#downloadobservable) and [`downloadDirectoryData()`](https://erebos.js.org/docs/api-bzz#downloaddirectorydata) methods have been added to `@erebos/api-bzz-base` and are therefore also available in `@erebos/api-bzz-browser`. Until now they were only available in `@erebos/api-bzz-node`.
+- The [`downloadStream()` method](https://erebos.js.org/docs/api-bzz#downloadstream) has been added.
+- The [`uploadFile()`](https://erebos.js.org/docs/api-bzz#uploadfile) and [`upload()`](https://erebos.js.org/docs/api-bzz#upload) methods now support a [Readable stream](https://nodejs.org/api/stream.html#stream_class_stream_readable) input.
+
+### Other change
+
+The code base and type definitions have been updated to TypeScript 3.7 thanks to [Adam Uhlíř's pull request](https://github.com/MainframeHQ/erebos/pull/122).
+
 ## v0.10.0 (2019-10-01)
 
 ### Breaking changes

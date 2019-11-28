@@ -418,6 +418,17 @@ The `downloadStream()` method returns a NodeJs's compatible [`Readable` instance
 
 **Returns** `Promise<Readable>`
 
+### .downloadObservable()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`FileEntry`](#fileentry) objects as they are downloaded.
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Observable<FileEntry>`
+
 ### .downloadDirectoryData()
 
 **Arguments**
@@ -675,17 +686,6 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 ## Node-specific APIs
 
 _The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`._
-
-### .downloadObservable()
-
-Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`FileEntry`](#fileentry) objects as they are downloaded.
-
-**Arguments**
-
-1.  `hashOrDomain: string`: ENS name or Swarm hash
-1.  [`options?: DownloadOptions = {}`](#downloadoptions)
-
-**Returns** `Observable<FileEntry>`
 
 ### .downloadTarTo()
 

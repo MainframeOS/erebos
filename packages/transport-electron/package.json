@@ -1,6 +1,6 @@
 {
   "name": "@erebos/transport-electron",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Electron transport",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
