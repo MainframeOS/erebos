@@ -8,6 +8,7 @@ export * from './types';
 export declare const BZZ_MODE_PROTOCOLS: {
     default: string;
     feed: string;
+    feedRaw: string;
     immutable: string;
     pin: string;
     raw: string;

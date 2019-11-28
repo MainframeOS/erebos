@@ -4,7 +4,12 @@ import { interval, merge, Observable, Observer } from 'rxjs'
 import { distinctUntilChanged, filter, flatMap } from 'rxjs/operators'
 import tarStream from 'tar-stream'
 
-import { createFeedDigest, getFeedTopic } from './feed'
+import {
+  createFeedDigest,
+  getFeedTopic,
+  feedParamsToReference,
+  feedChunkToData,
+} from './feed'
 import {
   BaseResponse,
   RequestInit,
@@ -36,6 +41,7 @@ export * from './types'
 export const BZZ_MODE_PROTOCOLS = {
   default: 'bzz:/',
   feed: 'bzz-feed:/',
+  feedRaw: 'bzz-feed-raw:/',
   immutable: 'bzz-immutable:/',
   pin: 'bzz-pin:/',
   raw: 'bzz-raw:/',
@@ -707,5 +713,43 @@ export class BaseBzz<
     return merge(interval(options.interval), ...sources).pipe(
       flatMap(async () => await this.getTag(hash, options)),
     )
+  }
+
+  private async fetchRawFeedChunk(params: FeedParams): Promise<Response> {
+    const reference = feedParamsToReference(params)
+    const url = this.url + `${BZZ_MODE_PROTOCOLS.feedRaw}${reference}`
+    const response = await this.fetchTimeout(url, {})
+    return response
+  }
+
+  public async getRawFeedData(params: FeedParams): Promise<ArrayBuffer> {
+    const response = await this.fetchRawFeedChunk(params)
+    const dataBuffer = await response.arrayBuffer()
+    return feedChunkToData(dataBuffer)
+  }
+
+  public async getRawFeedContentHash(params: FeedParams): Promise<string> {
+    const dataBuffer = await this.getRawFeedData(params)
+    return Buffer.from(dataBuffer).toString('hex')
+  }
+
+  public async setRawFeedContentHash(
+    params: FeedParams,
+    contentHash: string,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<Response> {
+    const meta = await this.getFeedMetadata(params, options)
+    return await this.postFeedChunk(meta, contentHash, options, signParams)
+  }
+
+  public async setRawFeedContent(
+    params: FeedParams,
+    data: hexInput,
+    options?: FetchOptions,
+    signParams?: any,
+  ): Promise<Response> {
+    const meta = await this.getFeedMetadata(params, options)
+    return await this.postFeedChunk(meta, data, options, signParams)
   }
 }
