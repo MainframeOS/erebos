@@ -18,6 +18,8 @@ const FEED_PARAMS_LENGTH =
 
 const FEED_SIGNATURE_LENGTH = 65
 
+export const FEED_ZERO_TOPIC: hexValue = '0x0000000000000000000000000000000000000000000000000000000000000000' as hexValue
+
 export function createFeedDigest(
   meta: FeedMetadata,
   data: hexInput,
@@ -101,10 +103,21 @@ export function feedChunkToData(chunkData: ArrayBuffer): ArrayBuffer {
     throw new Error('Invalid chunk data length')
   }
 
-  const buffer = Buffer.from(
-    chunkData,
-    FEED_PARAMS_LENGTH,
-    chunkData.byteLength - FEED_PARAMS_LENGTH - FEED_SIGNATURE_LENGTH,
-  )
-  return buffer
+  const length =
+    chunkData.byteLength - FEED_PARAMS_LENGTH - FEED_SIGNATURE_LENGTH
+  return chunkData.slice(FEED_PARAMS_LENGTH, FEED_PARAMS_LENGTH + length)
+}
+
+export function feedParamsToMetadata(params: FeedParams): FeedMetadata {
+  return {
+    feed: {
+      user: toHexValue(params.user),
+      topic: params.topic != null ? toHexValue(params.topic) : FEED_ZERO_TOPIC,
+    },
+    epoch: {
+      time: params.time != null ? params.time : 0,
+      level: params.level != null ? params.level : 0,
+    },
+    protocolVersion: 0,
+  }
 }

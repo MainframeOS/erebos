@@ -70,4 +70,10 @@ export declare class BaseBzz<Response extends BaseResponse, Readable extends str
     pins(options?: FetchOptions): Promise<Array<PinnedFile>>;
     getTag(hash: string, options?: FetchOptions): Promise<Tag>;
     pollTag(hash: string, options: PollOptions): Observable<Tag>;
+    private getRawFeedChunk;
+    private getRawFeedChunkData;
+    getRawFeedContentHash(params: FeedParams, options?: FetchOptions): Promise<string>;
+    getRawFeedContent(params: FeedParams, options?: DownloadOptions): Promise<Response>;
+    setRawFeedContentHash(params: FeedParams, contentHash: string, options?: UploadOptions, signParams?: any): Promise<Response>;
+    setRawFeedContent(params: FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<hexValue>;
 }

@@ -10,7 +10,12 @@ import * as fs from 'fs-extra'
 import { Subject } from 'rxjs'
 import * as tar from 'tar-stream'
 
-import { Bzz, DirectoryEntry, ListEntry } from '@erebos/api-bzz-node'
+import {
+  Bzz,
+  DirectoryEntry,
+  ListEntry,
+  FEED_ZERO_TOPIC,
+} from '@erebos/api-bzz-node'
 import { hexValue } from '@erebos/hex'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
@@ -554,6 +559,26 @@ describe('api-bzz-node', () => {
       contentType: 'text/plain',
     })
     const res = await bzz.getFeedContent(feedParams)
+    const text = await res.text()
+    expect(text).toBe('hello')
+  })
+
+  it('sets and gets the raw feed content hash', async () => {
+    const feedParams = { user, topic: FEED_ZERO_TOPIC, time: 0, level: 0 }
+    const uploadedHash = await bzz.upload('hello', {
+      contentType: 'text/plain',
+    })
+    await bzz.setRawFeedContentHash(feedParams, uploadedHash)
+    const contentHash = await bzz.getRawFeedContentHash(feedParams)
+    expect(contentHash).toBe(uploadedHash)
+  })
+
+  it('sets and gets the raw feed content', async () => {
+    const feedParams = { user, topic: FEED_ZERO_TOPIC, time: 0, level: 0 }
+    await bzz.setRawFeedContent(feedParams, 'hello', {
+      contentType: 'text/plain',
+    })
+    const res = await bzz.getRawFeedContent(feedParams)
     const text = await res.text()
     expect(text).toBe('hello')
   })
