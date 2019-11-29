@@ -15,7 +15,12 @@ export * from '@erebos/api-bzz-base'
 export class Bzz extends BaseBzz<Response, Readable> {
   public constructor(config: BzzConfig) {
     const { url, ...cfg } = config
-    super(window.fetch.bind(window), { ...cfg, url: new URL(url).href })
+    const fetch =
+      typeof window !== 'undefined'
+        ? window.fetch.bind(window)
+        : self.fetch.bind(self)
+
+    super(fetch, { ...cfg, url: new URL(url).href })
   }
 
   protected normalizeStream(stream: ReadableStream): Readable {
