@@ -633,6 +633,60 @@ This method implements the flow of uploading the provided `data` and updating th
 
 **Returns** `Promise<string>`
 
+## Raw feed functionality
+
+Raw feeds can be used to skip Swarm's builtin feed lookup mechanism and use the underlying resource interface directly. Internally Swarm uses a separate address space for `bzz-feed`s and they can be addressed with `FeedParams`. When uploading content, a node calculates the hash from the `FeedParams` and stores the content so that it can be acccessed with that hash.
+
+As with the normal feed API we can only store one chunk worth of data (4KB) in a feed chunk, so the best practice is to store a content hash in the feed chunk. Sometimes it can be useful to work directly with the content hashes and sometimes we just need the content. Hence we have two versions of each function when downloading or uploading the data.
+
+### .getRawFeedContentHash()
+
+This method downloads the hash that can be found on the address specified by the `FeedParams`.
+
+**Arguments**
+
+1.  `params: FeedParams` [feed parameters](#feedparams)
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<string>`
+
+### .getRawFeedContent()
+
+This method downloads the contents of the hash that can be found on the address specified by the `FeedParams`.
+
+**Arguments**
+
+1.  `params: FeedParams` [feed parameters](#feedparams)
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Promise<Response>`
+
+### .setRawFeedContentHash()
+
+This method uploads a hash to the raw feed that can be found on the address specified by the `FeedParams`.
+
+**Arguments**
+
+1.  `params: FeedParams` [feed parameters](#feedparams)
+1.  `contentHash: string`
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
+1.  `signParams?: any`
+
+**Returns** `Promise<Response>`
+
+### .setRawFeedContent()
+
+This method implements the flow of uploading the provided `data` and updating the raw feed identified by the provided `FeedParams` with the immutable hash of the uploaded contents, and returns this hash.
+
+**Arguments**
+
+1.  `params: FeedParams` [feed parameters](#feedparams)
+1.  `data: string | Buffer | DirectoryData`
+1.  [`options?: UploadOptions = {}`](#uploadoptions)
+1.  `signParams?: any`
+
+**Returns** `Promise<hexValue>`
+
 ### .pin()
 
 Pins the specified resource. To make sure the resource is available on the node, the `download` option can be set to explicitely download it before pinning.
