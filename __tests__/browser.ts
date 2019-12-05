@@ -84,10 +84,10 @@ describe('browser', () => {
         try {
           await client.bzz.download('abcdef123456')
         } catch (err) {
-          return err.message
+          return err.status
         }
       })
-      expect(errMessage).toBe('Not Found')
+      expect(errMessage).toBe(404)
     })
 
     it('uploads/downloads the file using bzz', async () => {

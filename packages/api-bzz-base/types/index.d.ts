@@ -19,9 +19,9 @@ export declare class HTTPError extends Error {
     status: number;
     constructor(status: number, message: string);
 }
-export declare function resOrError<R extends BaseResponse>(res: R): R;
+export declare function resOrError<R extends BaseResponse>(res: R): Promise<R>;
 export declare function resJSON<R extends BaseResponse, T = any>(res: R): Promise<T>;
-export declare function resStream<R extends BaseResponse<stream.Readable>, T = any>(res: R): stream.Readable | ReadableStream;
+export declare function resStream<R extends BaseResponse<stream.Readable>, T = any>(res: R): Promise<stream.Readable | ReadableStream>;
 export declare function resText<R extends BaseResponse>(res: R): Promise<string>;
 export declare function resHex<R extends BaseResponse>(res: R): Promise<hexValue>;
 export declare function resSwarmHash<R extends BaseResponse>(res: R): Promise<string>;

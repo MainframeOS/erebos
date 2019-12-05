@@ -56,20 +56,22 @@ describe('api-bzz-base', () => {
     expect(error.status).toBe(404)
   })
 
-  it('exports resOrError() utility function', () => {
+  it('exports resOrError() utility function', async () => {
     const resOK = { ok: true }
-    expect(resOrError(resOK)).toBe(resOK)
+    expect(await resOrError(resOK)).toBe(resOK)
 
     try {
-      resOrError({
+      await resOrError({
         ok: false,
         status: 400,
+        text: (): Promise<string> =>
+          Promise.resolve('Message: Some error message'),
         statusText: 'Bad request',
       })
     } catch (error) {
       expect(error instanceof HTTPError).toBe(true)
       expect(error.status).toBe(400)
-      expect(error.message).toBe('Bad request')
+      expect(error.message).toBe('Some error message')
     }
   })
 
@@ -84,12 +86,14 @@ describe('api-bzz-base', () => {
       await resJSON({
         ok: false,
         status: 400,
+        text: (): Promise<string> =>
+          Promise.resolve('Message: Some error message'),
         statusText: 'Bad request',
       })
     } catch (error) {
       expect(error instanceof HTTPError).toBe(true)
       expect(error.status).toBe(400)
-      expect(error.message).toBe('Bad request')
+      expect(error.message).toBe('Some error message')
     }
   })
 
@@ -104,12 +108,14 @@ describe('api-bzz-base', () => {
       await resText({
         ok: false,
         status: 400,
+        text: (): Promise<string> =>
+          Promise.resolve('Message: Some error message'),
         statusText: 'Bad request',
       })
     } catch (error) {
       expect(error instanceof HTTPError).toBe(true)
       expect(error.status).toBe(400)
-      expect(error.message).toBe('Bad request')
+      expect(error.message).toBe('Some error message')
     }
   })
 

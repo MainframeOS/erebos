@@ -68,28 +68,34 @@ export class HTTPError extends Error {
   }
 }
 
-export function resOrError<R extends BaseResponse>(res: R): R {
+export async function resOrError<R extends BaseResponse>(res: R): Promise<R> {
   if (res.ok) {
     return res
   }
 
-  throw new HTTPError(res.status, res.statusText)
+  const messageMatches = /Message: (.*)$/m.exec(await res.text())
+  if (messageMatches && messageMatches.length === 2) {
+    throw new HTTPError(res.status, messageMatches[1])
+  } else {
+    throw new HTTPError(res.status, res.statusText)
+  }
 }
 
 export async function resJSON<R extends BaseResponse, T = any>(
   res: R,
 ): Promise<T> {
-  return await resOrError(res).json<T>()
+  return (await resOrError(res)).json<T>()
 }
 
-export function resStream<R extends BaseResponse<stream.Readable>, T = any>(
-  res: R,
-): stream.Readable | ReadableStream {
-  return resOrError(res).body
+export async function resStream<
+  R extends BaseResponse<stream.Readable>,
+  T = any
+>(res: R): Promise<stream.Readable | ReadableStream> {
+  return (await resOrError(res)).body
 }
 
 export async function resText<R extends BaseResponse>(res: R): Promise<string> {
-  return await resOrError(res).text()
+  return (await resOrError(res)).text()
 }
 
 export async function resHex<R extends BaseResponse>(
@@ -101,7 +107,8 @@ export async function resHex<R extends BaseResponse>(
 export async function resSwarmHash<R extends BaseResponse>(
   res: R,
 ): Promise<string> {
-  const value = await resOrError(res).arrayBuffer()
+  const resolvedRes = await resOrError(res)
+  const value = await resolvedRes.arrayBuffer()
   return Buffer.from(new Uint8Array(value)).toString('hex')
 }
 
@@ -330,7 +337,7 @@ export class BaseBzz<
   ): Promise<Readable> {
     const url = this.getDownloadURL(hash, options)
     const res = await this.fetchTimeout(url, options)
-    return this.normalizeStream(resStream(res))
+    return this.normalizeStream(await resStream(res))
   }
 
   protected async downloadTar(
