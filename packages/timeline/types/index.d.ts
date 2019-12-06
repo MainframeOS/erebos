@@ -1,7 +1,6 @@
 /// <reference types="node" />
 import * as stream from 'stream';
 import { BaseBzz, BaseResponse, FeedParams, FetchOptions, PollOptions, UploadOptions } from '@erebos/api-bzz-base';
-import { hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
 export declare const PROTOCOL = "timeline";
 export declare const VERSION = "1.0.0";
@@ -47,11 +46,11 @@ export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse, stream.
     protected signParams: any;
     constructor(config: TimelineConfig<T, Bzz>);
     getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>;
-    postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<hexValue>;
+    postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
     getLatestChapterID(options?: FetchOptions): Promise<string | null>;
     getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>;
     setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
-    setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<hexValue>;
+    setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
     addChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<Chapter<T>>;
     createAddChapter(chapterDefaults?: Partial<PartialChapter<T>>, options?: UploadOptions): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>;
     createIterator(initialID?: string, options?: FetchOptions): AsyncIterator<Chapter<T>>;

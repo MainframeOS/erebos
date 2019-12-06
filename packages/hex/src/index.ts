@@ -48,22 +48,20 @@ export class Hex {
     if (isHexValue(inputValue)) {
       this.input = { type: 'hex', value: inputValue }
       this.hexValue = inputValue
+    } else if (typeof inputValue === 'string') {
+      this.input = { type: 'string', value: inputValue }
+      this.hexValue = toHexValue(inputValue)
+    } else if (Array.isArray(inputValue)) {
+      this.input = { type: 'bytesArray', value: inputValue }
+      this.hexValue = toHexValue(inputValue)
+    } else if (Buffer.isBuffer(inputValue)) {
+      this.input = { type: 'buffer', value: inputValue }
+      this.hexValue = toHexValue(inputValue)
+    } else if (typeof inputValue === 'object') {
+      this.input = { type: 'object', value: inputValue }
+      this.hexValue = toHexValue(JSON.stringify(inputValue))
     } else {
-      if (typeof inputValue === 'string') {
-        this.input = { type: 'string', value: inputValue }
-        this.hexValue = toHexValue(inputValue)
-      } else if (Array.isArray(inputValue)) {
-        this.input = { type: 'bytesArray', value: inputValue }
-        this.hexValue = toHexValue(inputValue)
-      } else if (Buffer.isBuffer(inputValue)) {
-        this.input = { type: 'buffer', value: inputValue }
-        this.hexValue = toHexValue(inputValue)
-      } else if (typeof inputValue === 'object') {
-        this.input = { type: 'object', value: inputValue }
-        this.hexValue = toHexValue(JSON.stringify(inputValue))
-      } else {
-        throw new Error('Invalid input')
-      }
+      throw new Error('Invalid input')
     }
   }
 

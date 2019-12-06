@@ -50,15 +50,19 @@ export interface FeedTopicParams {
   topic?: string
 }
 
+export interface Feed {
+  topic: hexValue
+  user: hexValue
+}
+
+export interface FeedEpoch {
+  time: number
+  level: number
+}
+
 export interface FeedMetadata {
-  feed: {
-    topic: hexValue
-    user: hexValue
-  }
-  epoch: {
-    time: number
-    level: number
-  }
+  feed: Feed
+  epoch: FeedEpoch
   protocolVersion: number
 }
 
@@ -130,7 +134,7 @@ export interface Tag {
 }
 
 export interface FeedParams {
-  user: string
+  user: string | hexValue
   level?: number
   name?: string
   time?: number
@@ -138,10 +142,10 @@ export interface FeedParams {
 }
 
 export interface FeedUpdateParams {
-  user: string
+  user: string | hexValue
   level: number
   time: number
-  topic: string
+  topic: string | hexValue
   signature: string
 }
 

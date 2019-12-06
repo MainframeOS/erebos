@@ -27,6 +27,6 @@
     "electron": ">= 6 < 8"
   },
   "devDependencies": {
-    "electron": "^7.1.2"
+    "electron": "^7.1.3"
   }
 }

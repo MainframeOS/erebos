@@ -2,6 +2,7 @@
 import * as stream from 'stream';
 import { hexInput, hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
+import { FeedID } from './feed';
 import { BaseResponse, RequestInit, Fetch, BzzConfig, BzzMode, DirectoryData, DownloadOptions, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, ListResult, PinOptions, PinnedFile, PollOptions, PollFeedOptions, PollFeedContentHashOptions, PollFeedContentOptions, SignBytesFunc, Tag, UploadOptions, FileEntry } from './types';
 export * from './feed';
 export * from './types';
@@ -15,6 +16,7 @@ export declare const BZZ_MODE_PROTOCOLS: {
     tag: string;
 };
 export declare function getModeProtocol(mode?: BzzMode): string;
+export declare function toSwarmHash(buffer: ArrayBuffer): string;
 export declare class HTTPError extends Error {
     status: number;
     constructor(status: number, message: string);
@@ -23,7 +25,7 @@ export declare function resOrError<R extends BaseResponse>(res: R): Promise<R>;
 export declare function resJSON<R extends BaseResponse, T = any>(res: R): Promise<T>;
 export declare function resStream<R extends BaseResponse<stream.Readable>, T = any>(res: R): Promise<stream.Readable | ReadableStream>;
 export declare function resText<R extends BaseResponse>(res: R): Promise<string>;
-export declare function resHex<R extends BaseResponse>(res: R): Promise<hexValue>;
+export declare function resArrayBuffer<R extends BaseResponse>(res: R): Promise<ArrayBuffer>;
 export declare function resSwarmHash<R extends BaseResponse>(res: R): Promise<string>;
 export declare function isDirectoryData(data: string | Buffer | stream.Readable | ReadableStream | DirectoryData): data is DirectoryData;
 export declare class BaseBzz<Response extends BaseResponse, Readable extends stream.Readable> {
@@ -38,7 +40,7 @@ export declare class BaseBzz<Response extends BaseResponse, Readable extends str
     getUploadURL(options?: UploadOptions, raw?: boolean): string;
     getFeedURL(hashOrParams: string | FeedParams | FeedUpdateParams, flag?: 'meta'): string;
     getPinURL(hash?: string, raw?: boolean): string;
-    hash(domain: string, options?: FetchOptions): Promise<hexValue>;
+    hash(domain: string, options?: FetchOptions): Promise<string>;
     list(hash: string, options?: DownloadOptions): Promise<ListResult>;
     download(hash: string, options?: DownloadOptions): Promise<Response>;
     downloadStream(hash: string, options?: DownloadOptions): Promise<Readable>;
@@ -46,12 +48,12 @@ export declare class BaseBzz<Response extends BaseResponse, Readable extends str
     downloadObservable(hash: string, options?: DownloadOptions): Observable<FileEntry>;
     protected normalizeStream(stream: Readable | ReadableStream | NodeJS.ReadableStream): Readable;
     downloadDirectoryData(hash: string, options?: DownloadOptions): Promise<DirectoryData>;
-    protected uploadBody(body: Buffer | FormData | Readable, options: UploadOptions, raw?: boolean): Promise<hexValue>;
-    uploadFile(data: string | Buffer | Readable, options?: UploadOptions): Promise<hexValue>;
-    uploadDirectory(_directory: DirectoryData, _options?: UploadOptions): Promise<hexValue>;
-    upload(data: string | Buffer | Readable | DirectoryData, options?: UploadOptions): Promise<hexValue>;
-    deleteResource(hash: string, path: string, options?: FetchOptions): Promise<hexValue>;
-    createFeedManifest(params: FeedParams, options?: UploadOptions): Promise<hexValue>;
+    protected uploadBody(body: Buffer | FormData | Readable, options: UploadOptions, raw?: boolean): Promise<string>;
+    uploadFile(data: string | Buffer | Readable, options?: UploadOptions): Promise<string>;
+    uploadDirectory(_directory: DirectoryData, _options?: UploadOptions): Promise<string>;
+    upload(data: string | Buffer | Readable | DirectoryData, options?: UploadOptions): Promise<string>;
+    deleteResource(hash: string, path: string, options?: FetchOptions): Promise<string>;
+    createFeedManifest(params: FeedParams, options?: UploadOptions): Promise<string>;
     getFeedMetadata(hashOrParams: string | FeedParams, options?: FetchOptions): Promise<FeedMetadata>;
     getFeedChunk(hashOrParams: string | FeedParams, options?: FetchOptions): Promise<Response>;
     getFeedContentHash(hashOrParams: string | FeedParams, options?: FetchOptions): Promise<string>;
@@ -63,17 +65,17 @@ export declare class BaseBzz<Response extends BaseResponse, Readable extends str
     postFeedChunk(meta: FeedMetadata, data: hexInput, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedChunk(hashOrParams: string | FeedParams, data: hexInput, options?: FetchOptions, signParams?: any): Promise<Response>;
     setFeedContentHash(hashOrParams: string | FeedParams, contentHash: string, options?: FetchOptions, signParams?: any): Promise<Response>;
-    setFeedContent(hashOrParams: string | FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<hexValue>;
+    setFeedContent(hashOrParams: string | FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<string>;
     pinEnabled(options?: FetchOptions): Promise<boolean>;
     pin(hash: string, options?: PinOptions): Promise<void>;
     unpin(hash: string, options?: FetchOptions): Promise<void>;
     pins(options?: FetchOptions): Promise<Array<PinnedFile>>;
     getTag(hash: string, options?: FetchOptions): Promise<Tag>;
     pollTag(hash: string, options: PollOptions): Observable<Tag>;
-    private getRawFeedChunk;
-    private getRawFeedChunkData;
-    getRawFeedContentHash(params: FeedParams, options?: FetchOptions): Promise<string>;
-    getRawFeedContent(params: FeedParams, options?: DownloadOptions): Promise<Response>;
-    setRawFeedContentHash(params: FeedParams, contentHash: string, options?: UploadOptions, signParams?: any): Promise<Response>;
-    setRawFeedContent(params: FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<hexValue>;
+    getRawFeedChunk(feed: FeedID | FeedMetadata | FeedParams, options?: FetchOptions): Promise<Response>;
+    getRawFeedChunkData(feed: FeedID | FeedMetadata | FeedParams, options?: FetchOptions): Promise<ArrayBuffer>;
+    getRawFeedContentHash(feed: FeedID | FeedMetadata | FeedParams, options?: FetchOptions): Promise<string>;
+    getRawFeedContent(feed: FeedID | FeedMetadata | FeedParams, options?: DownloadOptions): Promise<Response>;
+    setRawFeedContentHash(feed: FeedID | FeedMetadata | FeedParams, contentHash: string, options?: UploadOptions, signParams?: any): Promise<Response>;
+    setRawFeedContent(feed: FeedID | FeedMetadata | FeedParams, data: string | Buffer | DirectoryData, options?: UploadOptions, signParams?: any): Promise<string>;
 }
