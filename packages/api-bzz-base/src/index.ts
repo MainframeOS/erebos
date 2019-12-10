@@ -1,5 +1,5 @@
 import * as stream from 'stream'
-import { createHex, hexInput, hexValue, toHexValue } from '@erebos/hex'
+import { Hex, hexInput, hexValue, toHexValue } from '@erebos/hex'
 import { interval, merge, Observable, Observer } from 'rxjs'
 import { distinctUntilChanged, filter, flatMap } from 'rxjs/operators'
 import tarStream from 'tar-stream'
@@ -7,7 +7,6 @@ import tarStream from 'tar-stream'
 import {
   FeedID,
   createFeedDigest,
-  createFeedID,
   getFeedChunkData,
   getFeedMetadata,
   getFeedTopic,
@@ -338,6 +337,15 @@ export class BaseBzz<
     return this.normalizeStream(await resStream(res))
   }
 
+  public async downloadData<T = any>(
+    hash: string,
+    options: DownloadOptions = {},
+  ): Promise<T> {
+    const url = this.getDownloadURL(hash, { ...options, mode: 'raw' })
+    const res = await this.fetchTimeout(url, options)
+    return await resJSON<Response, T>(res)
+  }
+
   protected async downloadTar(
     hash: string,
     options: DownloadOptions,
@@ -452,6 +460,13 @@ export class BaseBzz<
     }
 
     return await this.uploadBody(body, options, raw)
+  }
+
+  public async uploadData<T = any>(
+    data: T,
+    options: UploadOptions = {},
+  ): Promise<string> {
+    return await this.uploadFile(JSON.stringify(data), options)
   }
 
   public uploadDirectory(
@@ -626,7 +641,7 @@ export class BaseBzz<
     options?: FetchOptions,
     signParams?: any,
   ): Promise<Response> {
-    const body = createHex(data).toBuffer()
+    const body = Hex.from(data).toBuffer()
     const digest = createFeedDigest(meta, body)
     const signature = await this.sign(digest, signParams)
     return await this.postSignedFeedChunk(
@@ -733,7 +748,7 @@ export class BaseBzz<
     feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<Response> {
-    const hash = createFeedID(feed).toHash()
+    const hash = FeedID.from(feed).toHash()
     const url = this.url + `${BZZ_MODE_PROTOCOLS.feedRaw}${hash}`
     const res = await this.fetchTimeout(url, options)
     return resOrError(res)

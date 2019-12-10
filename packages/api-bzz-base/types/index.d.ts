@@ -44,12 +44,14 @@ export declare class BaseBzz<Response extends BaseResponse, Readable extends str
     list(hash: string, options?: DownloadOptions): Promise<ListResult>;
     download(hash: string, options?: DownloadOptions): Promise<Response>;
     downloadStream(hash: string, options?: DownloadOptions): Promise<Readable>;
+    downloadData<T = any>(hash: string, options?: DownloadOptions): Promise<T>;
     protected downloadTar(hash: string, options: DownloadOptions): Promise<Response>;
     downloadObservable(hash: string, options?: DownloadOptions): Observable<FileEntry>;
     protected normalizeStream(stream: Readable | ReadableStream | NodeJS.ReadableStream): Readable;
     downloadDirectoryData(hash: string, options?: DownloadOptions): Promise<DirectoryData>;
     protected uploadBody(body: Buffer | FormData | Readable, options: UploadOptions, raw?: boolean): Promise<string>;
     uploadFile(data: string | Buffer | Readable, options?: UploadOptions): Promise<string>;
+    uploadData<T = any>(data: T, options?: UploadOptions): Promise<string>;
     uploadDirectory(_directory: DirectoryData, _options?: UploadOptions): Promise<string>;
     upload(data: string | Buffer | Readable | DirectoryData, options?: UploadOptions): Promise<string>;
     deleteResource(hash: string, path: string, options?: FetchOptions): Promise<string>;

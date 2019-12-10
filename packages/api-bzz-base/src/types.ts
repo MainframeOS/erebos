@@ -134,7 +134,7 @@ export interface Tag {
 }
 
 export interface FeedParams {
-  user: string | hexValue
+  user: string
   level?: number
   name?: string
   time?: number
@@ -142,10 +142,10 @@ export interface FeedParams {
 }
 
 export interface FeedUpdateParams {
-  user: string | hexValue
+  user: string
   level: number
   time: number
-  topic: string | hexValue
+  topic: string
   signature: string
 }
 

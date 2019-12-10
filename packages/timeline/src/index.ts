@@ -375,5 +375,5 @@ export class Timeline<
 }
 
 export function createTimeline<T>(config: TimelineConfig<T>): Timeline<T> {
-  return new Timeline(config)
+  return new Timeline<T>(config)
 }

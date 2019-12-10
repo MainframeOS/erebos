@@ -492,7 +492,7 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 1.  [`params: FeedParams`](#feedparams)
 1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
-**Returns** `Promise<hexValue>`
+**Returns** `Promise<string>`
 
 ### .getFeedMetadata()
 
@@ -685,7 +685,7 @@ This method implements the flow of uploading the provided `data` and updating th
 1.  [`options?: UploadOptions = {}`](#uploadoptions)
 1.  `signParams?: any`
 
-**Returns** `Promise<hexValue>`
+**Returns** `Promise<string>`
 
 ### .pin()
 

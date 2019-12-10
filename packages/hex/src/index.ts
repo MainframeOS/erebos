@@ -37,6 +37,10 @@ type HexInput =
   | { type: 'string'; value: string }
 
 export class Hex {
+  public static from(input: hexInput | Hex): Hex {
+    return new Hex(input)
+  }
+
   protected input!: HexInput
   protected hexValue!: hexValue
 
@@ -70,7 +74,7 @@ export class Hex {
   }
 
   public equals(other: hexInput | Hex): boolean {
-    return new Hex(other).value === this.hexValue
+    return Hex.from(other).value === this.hexValue
   }
 
   public toBuffer(): Buffer {
@@ -120,5 +124,5 @@ export class Hex {
 }
 
 export function createHex(input: hexInput | Hex): Hex {
-  return new Hex(input)
+  return Hex.from(input)
 }

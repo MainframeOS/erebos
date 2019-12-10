@@ -106,17 +106,17 @@ export interface Tag {
     startedAt: Date;
 }
 export interface FeedParams {
-    user: string | hexValue;
+    user: string;
     level?: number;
     name?: string;
     time?: number;
     topic?: string;
 }
 export interface FeedUpdateParams {
-    user: string | hexValue;
+    user: string;
     level: number;
     time: number;
-    topic: string | hexValue;
+    topic: string;
     signature: string;
 }
 export declare type SignBytesFunc = (digest: Array<number>, params?: any) => Promise<Array<number>>;

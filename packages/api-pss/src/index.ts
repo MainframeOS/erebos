@@ -1,4 +1,4 @@
-import { Hex, createHex, hexInput, hexValue } from '@erebos/hex'
+import { Hex, hexInput, hexValue } from '@erebos/hex'
 import { StreamRPC } from '@erebos/rpc-stream'
 import { Observable, Observer } from 'rxjs'
 
@@ -42,7 +42,7 @@ export class Pss {
     return await this.rpc.request('pss_sendAsym', [
       key,
       topic,
-      createHex(message).value,
+      Hex.from(message).value,
     ])
   }
 
@@ -54,7 +54,7 @@ export class Pss {
     return await this.rpc.request('pss_sendSym', [
       keyID,
       topic,
-      createHex(message).value,
+      Hex.from(message).value,
     ])
   }
 
@@ -66,7 +66,7 @@ export class Pss {
     return await this.rpc.request('pss_sendRaw', [
       address,
       topic,
-      createHex(message).value,
+      Hex.from(message).value,
     ])
   }
 
@@ -122,7 +122,7 @@ export class Pss {
               try {
                 observer.next({
                   key: result.Key && result.Key.length ? result.Key : undefined,
-                  msg: createHex(result.Msg),
+                  msg: Hex.from(result.Msg),
                 })
               } catch (err) {
                 // eslint-disable-next-line no-console

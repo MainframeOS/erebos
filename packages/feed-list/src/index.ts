@@ -7,7 +7,7 @@ import {
   FeedParams,
   FetchOptions,
 } from '@erebos/api-bzz-base'
-import { createHex, Hex, hexInput } from '@erebos/hex'
+import { Hex, hexInput } from '@erebos/hex'
 
 export const MAX_CHUNK_BYTE_LENGTH = FEED_MAX_DATA_LENGTH
 // Hex value is a hex string (= byte length x 2) prefixed by `0x`
@@ -35,8 +35,7 @@ export class ChunkListReader<
   constructor(config: ChunkListReaderConfig<Bzz>) {
     this.bzz = config.bzz
     this.fetchOptions = config.fetchOptions || {}
-    this.id =
-      config.feed instanceof FeedID ? config.feed : new FeedID(config.feed)
+    this.id = FeedID.from(config.feed)
   }
 
   public async load(index: number): Promise<Hex | null> {
@@ -45,7 +44,7 @@ export class ChunkListReader<
 
     try {
       const data = await this.bzz.getRawFeedChunkData(id, this.fetchOptions)
-      return createHex(Buffer.from(data))
+      return Hex.from(Buffer.from(data))
     } catch (err) {
       if (err.status === 404) {
         return null
@@ -55,17 +54,19 @@ export class ChunkListReader<
   }
 
   public createBackwardsIterator(
-    initialIndex: number,
+    maxIndex: number,
+    minIndex = 1,
   ): AsyncIterator<Hex | null> {
     const id = this.id.clone()
-    id.time = initialIndex
+    id.time = maxIndex
+
     return {
       // @ts-ignore
       [Symbol.asyncIterator]() {
         return this
       },
       next: async (): Promise<IteratorResult<Hex | null>> => {
-        if (id.time === -1) {
+        if (id.time === minIndex - 1) {
           return { done: true, value: undefined }
         }
         const value = await this.load(id.time)
@@ -76,18 +77,26 @@ export class ChunkListReader<
     }
   }
 
-  public createForwardsIterator(initialIndex = 0): ForwardsChunkIterator<Hex> {
+  public createForwardsIterator(
+    minIndex = 1,
+    maxIndex?: number,
+  ): ForwardsChunkIterator<Hex> {
+    const doneIndex = maxIndex ? maxIndex + 1 : Number.MAX_SAFE_INTEGER
     const id = this.id.clone()
-    id.time = initialIndex
+    id.time = minIndex
+
     return {
       // @ts-ignore
       [Symbol.asyncIterator]() {
         return this
       },
       get length(): number {
-        return id.time
+        return id.time - minIndex
       },
       next: async (): Promise<IteratorResult<Hex>> => {
+        if (id.time === doneIndex) {
+          return { done: true, value: undefined }
+        }
         const value = await this.load(id.time)
         if (value === null) {
           return { done: true, value: undefined }
@@ -120,20 +129,23 @@ export class ChunkListWriter<
     return this.id.time
   }
 
+  public getID(): FeedID {
+    return this.id.clone()
+  }
+
   public async push(data: hexInput): Promise<void> {
-    const chunk = createHex(data)
+    const chunk = Hex.from(data)
     if (chunk.value.length > MAX_CHUNK_VALUE_LENGTH) {
       throw new Error(
         `Chunk exceeds max length of ${MAX_CHUNK_BYTE_LENGTH} bytes`,
       )
     }
-    await this.bzz.postFeedChunk(
-      this.id,
-      chunk,
-      this.fetchOptions,
-      this.signParams,
-    )
-    this.id.time += 1
+
+    const id = this.getID()
+    id.time += 1
+
+    await this.bzz.postFeedChunk(id, chunk, this.fetchOptions, this.signParams)
+    this.id = id
   }
 }
 
@@ -148,11 +160,10 @@ export class DataListReader<
   }
 
   protected async downloadData(hex: Hex): Promise<T> {
-    const res = await this.chunkList.bzz.download(hex.value.slice(2), {
-      ...this.chunkList.fetchOptions,
-      mode: 'raw',
-    })
-    return await res.json()
+    return await this.chunkList.bzz.downloadData(
+      hex.value.slice(2),
+      this.chunkList.fetchOptions,
+    )
   }
 
   public async load(index: number): Promise<T | null> {
@@ -161,9 +172,10 @@ export class DataListReader<
   }
 
   public createBackwardsIterator(
-    initialIndex: number,
+    maxIndex: number,
+    minIndex?: number,
   ): AsyncIterator<T | null> {
-    const iterator = this.chunkList.createBackwardsIterator(initialIndex)
+    const iterator = this.chunkList.createBackwardsIterator(maxIndex, minIndex)
     return {
       // @ts-ignore
       [Symbol.asyncIterator]() {
@@ -183,8 +195,11 @@ export class DataListReader<
     }
   }
 
-  public createForwardsIterator(initialIndex = 0): ForwardsChunkIterator<T> {
-    const iterator = this.chunkList.createForwardsIterator(initialIndex)
+  public createForwardsIterator(
+    minIndex?: number,
+    maxIndex?: number,
+  ): ForwardsChunkIterator<T> {
+    const iterator = this.chunkList.createForwardsIterator(minIndex, maxIndex)
     return {
       // @ts-ignore
       [Symbol.asyncIterator]() {
@@ -218,8 +233,12 @@ export class DataListWriter<
     return this.chunkList.length
   }
 
+  public getID(): FeedID {
+    return this.chunkList.getID()
+  }
+
   public async push(data: T): Promise<string> {
-    const hash = await this.chunkList.bzz.uploadFile(JSON.stringify(data))
+    const hash = await this.chunkList.bzz.uploadData<T>(data)
     await this.chunkList.push(`0x${hash}`)
     return hash
   }
