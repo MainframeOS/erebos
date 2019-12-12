@@ -38,7 +38,7 @@ Input type used by the [`elliptic` library](https://github.com/indutny/elliptic)
 
 Key pair object as used by the [`elliptic` library](https://github.com/indutny/elliptic).
 
-## Public API
+## API
 
 ### createKeyPair()
 

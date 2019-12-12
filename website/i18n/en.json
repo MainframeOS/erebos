@@ -16,6 +16,9 @@
         "title": "Command-line interface",
         "sidebar_label": "CLI"
       },
+      "data-structures": {
+        "title": "Data structures"
+      },
       "examples-communications": {
         "title": "Communications examples"
       },
@@ -24,6 +27,9 @@
       },
       "examples-storage": {
         "title": "File storage examples"
+      },
+      "feed-list": {
+        "title": "Feed lists"
       },
       "getting-started": {
         "title": "Getting started"
@@ -91,6 +97,9 @@
       "timeline-spec": {
         "title": "Timeline specification"
       },
+      "timeline": {
+        "title": "Timeline"
+      },
       "transport-electron": {
         "title": "Electron transport"
       },
@@ -118,6 +127,7 @@
       "Docs": "Docs",
       "Swarm examples": "Swarm examples",
       "Swarm APIs and CLI": "Swarm APIs and CLI",
+      "Data structures": "Data structures",
       "Timeline protocol": "Timeline protocol",
       "Utility libraries": "Utility libraries",
       "RPC tools": "RPC tools"

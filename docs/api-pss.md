@@ -45,13 +45,15 @@ interface PssEvent {
 }
 ```
 
-## Public API
+## Constants
 
 ### EMPTY_ADDRESS
 
 [`hexValue`](#hexvalue) of the empty address (`0x`), can be used to broadcast a message to the entire network.
 
-### Pss class
+## Pss class
+
+### new Pss()
 
 Creates a Pss instance using the provided `StreamRPC` instance.
 

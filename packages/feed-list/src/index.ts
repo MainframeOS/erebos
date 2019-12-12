@@ -17,12 +17,18 @@ export interface ForwardsChunkIterator<T> extends AsyncIterator<T> {
   length: number
 }
 
-export interface ChunkListReaderConfig<
+export interface ListReaderConfig<
   Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
 > {
   bzz: Bzz
   feed: FeedID | FeedParams
   fetchOptions?: FetchOptions
+}
+
+export interface ListWriterConfig<
+  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
+> extends ListReaderConfig<Bzz> {
+  signParams?: any
 }
 
 export class ChunkListReader<
@@ -32,10 +38,16 @@ export class ChunkListReader<
   public fetchOptions: FetchOptions
   protected id: FeedID
 
-  constructor(config: ChunkListReaderConfig<Bzz>) {
+  constructor(config: ListReaderConfig<Bzz>) {
     this.bzz = config.bzz
     this.fetchOptions = config.fetchOptions || {}
-    this.id = FeedID.from(config.feed)
+    this.id =
+      config.feed instanceof FeedID
+        ? config.feed
+        : new FeedID({
+            ...config.feed,
+            time: config.feed.time == null ? -1 : config.feed.time,
+          })
   }
 
   public async load(index: number): Promise<Hex | null> {
@@ -55,7 +67,7 @@ export class ChunkListReader<
 
   public createBackwardsIterator(
     maxIndex: number,
-    minIndex = 1,
+    minIndex = 0,
   ): AsyncIterator<Hex | null> {
     const id = this.id.clone()
     id.time = maxIndex
@@ -78,7 +90,7 @@ export class ChunkListReader<
   }
 
   public createForwardsIterator(
-    minIndex = 1,
+    minIndex = 0,
     maxIndex?: number,
   ): ForwardsChunkIterator<Hex> {
     const doneIndex = maxIndex ? maxIndex + 1 : Number.MAX_SAFE_INTEGER
@@ -109,24 +121,18 @@ export class ChunkListReader<
   }
 }
 
-export interface ChunkListWriterConfig<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> extends ChunkListReaderConfig<Bzz> {
-  signParams?: any
-}
-
 export class ChunkListWriter<
   Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
 > extends ChunkListReader<Bzz> {
   protected signParams?: any
 
-  constructor(config: ChunkListWriterConfig<Bzz>) {
+  constructor(config: ListWriterConfig<Bzz>) {
     super(config)
     this.signParams = config.signParams
   }
 
   public get length(): number {
-    return this.id.time
+    return this.id.time + 1
   }
 
   public getID(): FeedID {
@@ -155,7 +161,7 @@ export class DataListReader<
 > {
   protected chunkList: ChunkListReader<Bzz>
 
-  constructor(config: ChunkListReaderConfig<Bzz>) {
+  constructor(config: ListReaderConfig<Bzz>) {
     this.chunkList = new ChunkListReader(config)
   }
 
@@ -224,7 +230,7 @@ export class DataListWriter<
 > extends DataListReader<T, Bzz> {
   protected chunkList: ChunkListWriter<Bzz>
 
-  constructor(config: ChunkListWriterConfig<Bzz>) {
+  constructor(config: ListWriterConfig<Bzz>) {
     super(config)
     this.chunkList = new ChunkListWriter<Bzz>(config)
   }

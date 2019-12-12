@@ -17,12 +17,12 @@ npm install @erebos/hex
 ## Usage
 
 ```javascript
-import { createHex } from '@erebos/hex'
+import { Hex } from '@erebos/hex'
 
-const fromString = createHex('Hello world!')
+const fromString = Hex.from('Hello world!')
 fromString.value // '0x48656c6c6f20776f726c6421'
 
-const fromHex = createHex('0x48656c6c6f20776f726c6421')
+const fromHex = Hex.from('0x48656c6c6f20776f726c6421')
 fromHex.toString() // 'Hello world!'
 ```
 
@@ -41,7 +41,7 @@ type hexValue = HexValue & string
 type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>
 ```
 
-## Public API
+## API
 
 ### isHexValue()
 
@@ -59,11 +59,21 @@ type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>
 
 **Returns** `Hex`
 
-### Hex class
+## Hex class
+
+### new Hex()
 
 **Arguments**
 
 1.  `value: hexInput | Hex`
+
+### Hex.from()
+
+**Arguments**
+
+1.  `value: hexInput | Hex`
+
+**Returns** `Hex` instance
 
 ### .value
 

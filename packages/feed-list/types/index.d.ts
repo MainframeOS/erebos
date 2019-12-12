@@ -7,33 +7,33 @@ export declare const MAX_CHUNK_VALUE_LENGTH: number;
 export interface ForwardsChunkIterator<T> extends AsyncIterator<T> {
     length: number;
 }
-export interface ChunkListReaderConfig<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
+export interface ListReaderConfig<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
     bzz: Bzz;
     feed: FeedID | FeedParams;
     fetchOptions?: FetchOptions;
+}
+export interface ListWriterConfig<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends ListReaderConfig<Bzz> {
+    signParams?: any;
 }
 export declare class ChunkListReader<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
     bzz: Bzz;
     fetchOptions: FetchOptions;
     protected id: FeedID;
-    constructor(config: ChunkListReaderConfig<Bzz>);
+    constructor(config: ListReaderConfig<Bzz>);
     load(index: number): Promise<Hex | null>;
     createBackwardsIterator(maxIndex: number, minIndex?: number): AsyncIterator<Hex | null>;
     createForwardsIterator(minIndex?: number, maxIndex?: number): ForwardsChunkIterator<Hex>;
 }
-export interface ChunkListWriterConfig<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends ChunkListReaderConfig<Bzz> {
-    signParams?: any;
-}
 export declare class ChunkListWriter<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends ChunkListReader<Bzz> {
     protected signParams?: any;
-    constructor(config: ChunkListWriterConfig<Bzz>);
+    constructor(config: ListWriterConfig<Bzz>);
     get length(): number;
     getID(): FeedID;
     push(data: hexInput): Promise<void>;
 }
 export declare class DataListReader<T = any, Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
     protected chunkList: ChunkListReader<Bzz>;
-    constructor(config: ChunkListReaderConfig<Bzz>);
+    constructor(config: ListReaderConfig<Bzz>);
     protected downloadData(hex: Hex): Promise<T>;
     load(index: number): Promise<T | null>;
     createBackwardsIterator(maxIndex: number, minIndex?: number): AsyncIterator<T | null>;
@@ -41,7 +41,7 @@ export declare class DataListReader<T = any, Bzz extends BaseBzz<BaseResponse, R
 }
 export declare class DataListWriter<T = any, Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends DataListReader<T, Bzz> {
     protected chunkList: ChunkListWriter<Bzz>;
-    constructor(config: ChunkListWriterConfig<Bzz>);
+    constructor(config: ListWriterConfig<Bzz>);
     get length(): number;
     getID(): FeedID;
     push(data: T): Promise<string>;

@@ -24,7 +24,7 @@ class MyRPC extends BaseRPC {
 }
 ```
 
-## Types
+## Interfaces and types
 
 ### RPCID
 
@@ -64,7 +64,7 @@ interface RPCResponse<T = any, E = any> {
 }
 ```
 
-## API
+## BaseRPC class
 
 ### new BaseRPC()
 

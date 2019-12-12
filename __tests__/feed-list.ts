@@ -37,10 +37,10 @@ describe('feed-list', () => {
       await writer.push(data)
       expect(writer.length).toBe(1)
 
-      const writerLoaded = await writer.load(1)
+      const writerLoaded = await writer.load(0)
       expect(writerLoaded.toObject()).toEqual(data)
 
-      const readerLoaded = await reader.load(1)
+      const readerLoaded = await reader.load(0)
       expect(readerLoaded.toObject()).toEqual(data)
     })
 
@@ -79,7 +79,7 @@ describe('feed-list', () => {
       await writer.push('four')
       expect(writer).toHaveLength(4)
 
-      const iteratorFromIndex = reader.createForwardsIterator(2)
+      const iteratorFromIndex = reader.createForwardsIterator(1)
       const dataFromIndex = []
       for await (const chunk of iteratorFromIndex) {
         dataFromIndex.push(chunk.toString())
@@ -87,7 +87,7 @@ describe('feed-list', () => {
       expect(dataFromIndex).toEqual(['two', 'three', 'four'])
       expect(iteratorFromIndex).toHaveLength(3)
 
-      const iteratorFromToIndex = reader.createForwardsIterator(2, 3)
+      const iteratorFromToIndex = reader.createForwardsIterator(1, 2)
       const dataFromToIndex = []
       for await (const chunk of iteratorFromToIndex) {
         dataFromToIndex.push(chunk.toString())
@@ -107,13 +107,13 @@ describe('feed-list', () => {
       expect(writer).toHaveLength(3)
 
       const dataFrom = []
-      for await (const chunk of reader.createBackwardsIterator(5)) {
+      for await (const chunk of reader.createBackwardsIterator(4)) {
         dataFrom.push(chunk === null ? null : chunk.toString())
       }
       expect(dataFrom).toEqual([null, null, 'three', 'two', 'one'])
 
       const dataFromTo = []
-      for await (const chunk of reader.createBackwardsIterator(4, 2)) {
+      for await (const chunk of reader.createBackwardsIterator(3, 1)) {
         dataFromTo.push(chunk === null ? null : chunk.toString())
       }
       expect(dataFromTo).toEqual([null, 'three', 'two'])
@@ -129,7 +129,7 @@ describe('feed-list', () => {
       await writer.push('three')
 
       const id = writer.getID()
-      expect(id.time).toBe(writer.length)
+      expect(id.time).toBe(writer.length - 1)
 
       const chunk = await reader.load(id.time)
       expect(chunk.toString()).toBe('three')
@@ -151,10 +151,10 @@ describe('feed-list', () => {
       await writer.push(data)
       expect(writer.length).toBe(1)
 
-      const writerData = await writer.load(1)
+      const writerData = await writer.load(0)
       expect(writerData).toEqual(data)
 
-      const readerData = await reader.load(1)
+      const readerData = await reader.load(0)
       expect(readerData).toEqual(data)
     })
 
@@ -184,7 +184,7 @@ describe('feed-list', () => {
       await writer.push({ test: 'four' })
       expect(writer).toHaveLength(4)
 
-      const iteratorFromIndex = reader.createForwardsIterator(2)
+      const iteratorFromIndex = reader.createForwardsIterator(1)
       const dataFromIndex = []
       for await (const data of iteratorFromIndex) {
         dataFromIndex.push(data)
@@ -196,7 +196,7 @@ describe('feed-list', () => {
       ])
       expect(iteratorFromIndex).toHaveLength(3)
 
-      const iteratorFromToIndex = reader.createForwardsIterator(2, 3)
+      const iteratorFromToIndex = reader.createForwardsIterator(1, 2)
       const dataFromToIndex = []
       for await (const data of iteratorFromToIndex) {
         dataFromToIndex.push(data)
@@ -216,7 +216,7 @@ describe('feed-list', () => {
       expect(writer).toHaveLength(3)
 
       const listFrom = []
-      for await (const data of reader.createBackwardsIterator(5)) {
+      for await (const data of reader.createBackwardsIterator(4)) {
         listFrom.push(data)
       }
       expect(listFrom).toEqual([
@@ -228,7 +228,7 @@ describe('feed-list', () => {
       ])
 
       const listFromTo = []
-      for await (const data of reader.createBackwardsIterator(4, 2)) {
+      for await (const data of reader.createBackwardsIterator(3, 1)) {
         listFromTo.push(data)
       }
       expect(listFromTo).toEqual([null, { test: 'three' }, { test: 'two' }])
@@ -244,7 +244,7 @@ describe('feed-list', () => {
       await writer.push({ test: 'three' })
 
       const id = writer.getID()
-      expect(id.time).toBe(writer.length)
+      expect(id.time).toBe(writer.length - 1)
 
       const data = await reader.load(id.time)
       expect(data).toEqual({ test: 'three' })
