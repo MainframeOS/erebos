@@ -35,22 +35,21 @@ const sendMessage = async content => {
   await aliceSend({ content })
 }
 
-// Bob's address must be know by Alice
-const bobsAddress = '...'
+// Alice's address must be known by Bob
 const bobTimeline = new TimelineReader({
   bzz,
-  feed: { user: bobAddress, name: FEED_NAME },
+  feed: { user: aliceAddress, name: FEED_NAME },
 })
 
 // This creates an AsyncIterator that can be used to retrieve previous messages in the timeline
 const getPreviousMessage = bobTimeline.createIterator()
 
-// Listen to new messages added to Bob's timeline
+// Listen to new messages added to Bob's timeline reader
 const bobsNewMessages = bobTimeline
   .live({ interval: 10000 }) // 10 seconds
   .subscribe(chapters => {
     chapters.forEach(c => {
-      console.log(`New message from Bob: ${c.content}`)
+      console.log(`New message from Alice: ${c.content}`)
     })
   })
 
@@ -58,7 +57,7 @@ const getMessageAndSayHello = async () => {
   // Iteration is performed in reverse chronological order
   const latestMessage = await getPreviousMessage.next()
   if (latestMessage != null) {
-    console.log(`Latest message from Bob: ${c.content}`)
+    console.log(`Latest message from Alice: ${c.content}`)
   }
   await sendMessage('Hello!')
 }
