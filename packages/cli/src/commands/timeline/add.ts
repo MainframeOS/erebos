@@ -1,6 +1,6 @@
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair } from '@erebos/secp256k1'
-import { Timeline, createChapter } from '@erebos/timeline'
+import { TimelineWriter, createChapter } from '@erebos/timeline'
 import { flags } from '@oclif/command'
 
 import { Command, DefaultFlags } from '../../Command'
@@ -47,7 +47,7 @@ export default class TimelineAddCommand extends Command<Flags, Args> {
     try {
       const keyPair = createKeyPair(this.flags['key-env'])
       const address = pubKeyToAddress(keyPair.getPublic('array'))
-      const timeline = new Timeline({
+      const timeline = new TimelineWriter({
         bzz: this.client.bzz,
         feed: {
           user: address,

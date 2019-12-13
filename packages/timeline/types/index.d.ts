@@ -31,28 +31,23 @@ export interface MaybeChapter extends Record<string, any> {
     version?: string;
 }
 export declare function validateChapter<T extends MaybeChapter>(chapter: T): T;
-export interface TimelineConfig<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
+export interface TimelineReaderConfig<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
     bzz: Bzz;
     feed: string | FeedParams;
     decode?: DecodeChapter<T>;
+}
+export interface TimelineWriterConfig<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> extends TimelineReaderConfig<T, Bzz> {
     encode?: EncodeChapter<T>;
     signParams?: any;
 }
-export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
+export declare class TimelineReader<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
     protected bzz: Bzz;
     protected decode: DecodeChapter<T>;
-    protected encode: EncodeChapter<T>;
     protected feed: string | FeedParams;
-    protected signParams: any;
-    constructor(config: TimelineConfig<T, Bzz>);
+    constructor(config: TimelineReaderConfig<T, Bzz>);
     getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>;
-    postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
     getLatestChapterID(options?: FetchOptions): Promise<string | null>;
     getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>;
-    setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
-    setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
-    addChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<Chapter<T>>;
-    createAddChapter(chapterDefaults?: Partial<PartialChapter<T>>, options?: UploadOptions): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>;
     createIterator(initialID?: string, options?: FetchOptions): AsyncIterator<Chapter<T>>;
     createLoader(newestID: string, // inclusive
     oldestID: string, // exclusive
@@ -63,4 +58,14 @@ export declare class Timeline<T = any, Bzz extends BaseBzz<BaseResponse, stream.
     pollLatestChapter(options: PollOptions): Observable<Chapter<T>>;
     live(options: LiveOptions): Observable<Array<Chapter<T>>>;
 }
-export declare function createTimeline<T>(config: TimelineConfig<T>): Timeline<T>;
+export declare class TimelineWriter<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> extends TimelineReader<T, Bzz> {
+    protected encode: EncodeChapter<T>;
+    protected signParams: any;
+    constructor(config: TimelineWriterConfig<T, Bzz>);
+    postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
+    setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
+    setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
+    addChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<Chapter<T>>;
+    createAddChapter(chapterDefaults?: Partial<PartialChapter<T>>, options?: UploadOptions): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>;
+}
+export declare function createTimeline<T>(config: TimelineWriterConfig<T>): TimelineWriter<T>;

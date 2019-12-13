@@ -8,7 +8,7 @@ title: Timeline example
 import { Bzz } from '@erebos/api-bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
-import { Timeline } from '@erebos/timeline'
+import { TimelineReader, TimelineWriter } from '@erebos/timeline'
 
 const BZZ_URL = 'http://localhost:8500'
 const FEED_NAME = 'alice-bob'
@@ -20,7 +20,7 @@ const bzz = new Bzz({ url: BZZ_URL, signBytes })
 
 // In this example we are Alice communicating with Bob
 const aliceAddress = pubKeyToAddress(keyPair.getPublic('array'))
-const aliceTimeline = new Timeline({
+const aliceTimeline = new TimelineWriter({
   bzz,
   feed: { user: aliceAddress, name: FEED_NAME },
 })
@@ -37,7 +37,7 @@ const sendMessage = async content => {
 
 // Bob's address must be know by Alice
 const bobsAddress = '...'
-const bobTimeline = new Timeline({
+const bobTimeline = new TimelineReader({
   bzz,
   feed: { user: bobAddress, name: FEED_NAME },
 })

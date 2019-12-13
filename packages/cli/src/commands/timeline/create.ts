@@ -1,6 +1,6 @@
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair } from '@erebos/secp256k1'
-import { Timeline, createChapter } from '@erebos/timeline'
+import { TimelineWriter, createChapter } from '@erebos/timeline'
 import { flags } from '@oclif/command'
 
 import { Command, DefaultFlags } from '../../Command'
@@ -64,7 +64,7 @@ export default class TimelineCreateCommand extends Command<Flags, Args> {
         this.spinner.succeed(`Feed manifest created with hash: ${hash}`)
       }
 
-      const timeline = new Timeline({
+      const timeline = new TimelineWriter({
         bzz: this.client.bzz,
         feed: {
           user: address,

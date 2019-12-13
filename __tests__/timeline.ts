@@ -1,12 +1,13 @@
 import { Bzz } from '../packages/api-bzz-node'
-import { createHex } from '../packages/hex'
+import { Hex } from '../packages/hex'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign, verify } from '../packages/secp256k1'
 import {
   PROTOCOL,
   VERSION,
   VERSION_RANGE,
-  Timeline,
+  TimelineReader,
+  TimelineWriter,
   createChapter,
   validateChapter,
 } from '../packages/timeline'
@@ -60,12 +61,17 @@ describe('timeline', () => {
     expect(validateChapter(valid)).toBe(valid)
   })
 
+  it('TimelineWriter extends TimelineReader', () => {
+    const timeline = new TimelineWriter({ bzz, feed: { user: author } })
+    expect(timeline).toBeInstanceOf(TimelineReader)
+  })
+
   it('getChapter() method downloads and decodes the chapter', async () => {
     const now = Date.now()
     // eslint-disable-next-line @typescript-eslint/unbound-method
     Date.now = jest.fn(() => now)
 
-    const timeline = new Timeline({ bzz })
+    const timeline = new TimelineReader({ bzz })
     const chapter = createChapter({ author, content: { ok: true } })
     const [validID, invalidID] = await Promise.all([
       bzz.uploadFile(JSON.stringify(chapter)),
@@ -89,7 +95,7 @@ describe('timeline', () => {
   })
 
   it('postChapter() method encodes and uploads the chapter', async () => {
-    const timeline = new Timeline({ bzz })
+    const timeline = new TimelineWriter({ bzz })
     const chapter = createChapter({ author, content: { ok: true } })
     const id = await timeline.postChapter(chapter)
     const downloaded = await timeline.getChapter(id)
@@ -100,19 +106,19 @@ describe('timeline', () => {
     const decode = jest.fn(async res => {
       const chapter = await res.json()
       const { signature, ...rest } = chapter
-      const msg = createHex(rest).toBytesArray()
-      const sig = createHex(signature).toBytesArray()
+      const msg = Hex.from(rest).toBytesArray()
+      const sig = Hex.from(signature).toBytesArray()
       expect(verify(msg, sig, keyPair.getPublic('hex'))).toBe(true)
       return chapter
     })
 
     const encode = jest.fn(async chapter => {
       // eslint-disable-next-line require-atomic-updates
-      chapter.signature = await bzz.sign(createHex(chapter).toBytesArray())
+      chapter.signature = await bzz.sign(Hex.from(chapter).toBytesArray())
       return JSON.stringify(chapter)
     })
 
-    const timeline = new Timeline({ bzz, decode, encode })
+    const timeline = new TimelineWriter({ bzz, decode, encode })
     const chapter = createChapter({ author, content: { ok: true } })
 
     const id = await timeline.postChapter(chapter)
@@ -130,7 +136,7 @@ describe('timeline', () => {
       user: author,
       name: 'test-hash',
     })
-    const timeline = new Timeline({ bzz, feed })
+    const timeline = new TimelineWriter({ bzz, feed })
 
     const chapter = createChapter({ author, content: { ok: true } })
     const chapterID = await timeline.postChapter(chapter)
@@ -143,14 +149,16 @@ describe('timeline', () => {
   it('setLatestChapter() and getLatestChapter() methods manipulate a chapter', async () => {
     jest.setTimeout(10000) // 10 secs
 
-    const timeline = new Timeline({
+    const config = {
       bzz,
       feed: { user: author, name: 'test-chapter' },
-    })
+    }
+    const reader = new TimelineReader(config)
+    const writer = new TimelineWriter(config)
 
     const chapter = createChapter({ author, content: { ok: true } })
-    const chapterID = await timeline.setLatestChapter(chapter)
-    const loadedChapter = await timeline.getLatestChapter()
+    const chapterID = await writer.setLatestChapter(chapter)
+    const loadedChapter = await reader.getLatestChapter()
 
     expect(loadedChapter).toEqual({ ...chapter, id: chapterID })
   })
@@ -158,15 +166,17 @@ describe('timeline', () => {
   it('addChapter() method retrieves the previous chapter when needed', async () => {
     jest.setTimeout(10000) // 10 secs
 
-    const timeline = new Timeline({
+    const config = {
       bzz,
       feed: { user: author, name: 'test-add-chapter' },
-    })
+    }
+    const reader = new TimelineReader(config)
+    const writer = new TimelineWriter(config)
 
     const chapter = createChapter({ author, content: { ok: true } })
-    const previousChapterID = await timeline.setLatestChapter(chapter)
-    const addedChapter = await timeline.addChapter(chapter)
-    const loadedChapter = await timeline.getLatestChapter()
+    const previousChapterID = await writer.setLatestChapter(chapter)
+    const addedChapter = await writer.addChapter(chapter)
+    const loadedChapter = await reader.getLatestChapter()
 
     expect(loadedChapter).toEqual({
       ...chapter,
@@ -179,19 +189,21 @@ describe('timeline', () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['first update', 'second update', 'third update']
-
-    const timeline = new Timeline({
+    const config = {
       bzz,
       feed: { user: author, name: 'test-updater' },
-    })
-    const addChapter = timeline.createAddChapter({
+    }
+    const reader = new TimelineReader(config)
+    const writer = new TimelineWriter(config)
+
+    const addChapter = writer.createAddChapter({
       author,
       type: 'text/plain',
     })
 
     for (const content of contents) {
       await addChapter({ content })
-      const chapter = await timeline.getLatestChapter()
+      const chapter = await reader.getLatestChapter()
       expect(chapter.content).toBe(content)
     }
   })
@@ -200,7 +212,7 @@ describe('timeline', () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three']
-    const timeline = new Timeline({
+    const timeline = new TimelineWriter({
       bzz,
       feed: { user: author, name: 'test-iterator' },
     })
@@ -237,7 +249,7 @@ describe('timeline', () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three', 'four', 'five']
-    const timeline = new Timeline({
+    const timeline = new TimelineWriter({
       bzz,
       feed: { user: author, name: 'test-loader' },
     })
@@ -273,7 +285,7 @@ describe('timeline', () => {
     jest.setTimeout(20000) // 20 secs
 
     const contents = ['one', 'two', 'three', 'four', 'five']
-    const timeline = new Timeline({
+    const timeline = new TimelineWriter({
       bzz,
       feed: { user: author, name: 'test-slice' },
     })
@@ -310,7 +322,7 @@ describe('timeline', () => {
     jest.setTimeout(40000) // 40 secs
 
     const contents = ['one', 'two', 'three']
-    const timeline = new Timeline({
+    const timeline = new TimelineWriter({
       bzz,
       feed: { user: author, name: 'test-poll' },
     })
@@ -347,7 +359,7 @@ describe('timeline', () => {
     jest.setTimeout(40000) // 40 secs
 
     const contents = [['one'], ['two', 'three', 'four'], ['five', 'six']]
-    const timeline = new Timeline({
+    const timeline = new TimelineWriter({
       bzz,
       feed: { user: author, name: 'test-live' },
     })

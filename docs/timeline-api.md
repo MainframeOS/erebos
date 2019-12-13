@@ -8,20 +8,23 @@ title: Timeline API
 npm install @erebos/timeline
 ```
 
-> The `Timeline` class must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
+> The Timeline classes must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
 
 ## Usage
 
 ```javascript
 import { Bzz } from '@erebos/api-bzz-node'
-import { Timeline } from '@erebos/timeline'
+import { TimelineReader, TimelineWriter } from '@erebos/timeline'
 
 const user = '0x...'
 const bzz = new Bzz({ ... }) // Check the Bzz API documentation for more details
-const timeline = new Timeline({ bzz, feed: { user, name: 'hello-timeline' } })
+const config = { bzz, feed: { user, name: 'hello-timeline' } }
 
-await timeline.addChapter({ author: user, contents: { hello: 'world' } })
-const chapterID = await timeline.getChapterID()
+const writer = new TimelineWriter(config)
+await writer.addChapter({ author: user, contents: { hello: 'world' } })
+
+const reader = new TimelineReader(config)
+const chapterID = await reader.getChapterID()
 ```
 
 ## Interfaces and types
@@ -79,7 +82,7 @@ interface LiveOptions extends PollOptions {
 }
 ```
 
-### TimelineConfig
+### TimelineReaderConfig
 
 `bzz` is a [Bzz instance](api-bzz.md#bzz-class) and `feed` can either be a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
 
@@ -91,6 +94,18 @@ interface TimelineConfig<
   bzz: Bzz
   feed: string | FeedParams
   decode?: DecodeChapter<T>
+}
+```
+
+### TimelineWriterConfig
+
+Extends [`TimelineReaderConfig`](#timelinereaderconfig)
+
+```typescript
+interface TimelineWriterConfig<
+  T = any,
+  Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>
+> extends TimelineReaderConfig<T, Bzz> {
   encode?: EncodeChapter<T>
   signParams?: any
 }
@@ -123,25 +138,23 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Returns** `T`
 
-## Timeline class
+## TimelineReader class
 
 **Types**
 
-- `T = any`: the type of the Timeline chapters data
+- `T = any`: the type of the TimelineReader chapters data
 
-### new Timeline()
+### new TimelineReader()
 
 **Arguments**
 
-1.  [`config: TimelineConfig<T>`](#timelineconfig), see below
+1.  [`config: TimelineReaderConfig<T>`](#timelinereaderconfig), see below
 
 **Configuration**
 
 - [`bzz: Bzz`](api-bzz.md#bzz-class-default-export): Bzz instance
 - `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
 - [`decode?: ?DecodeChapter<T>`](#decodechapter): optional chapter decoding function used when loading any chapter with this timeline instance
-- [`encode?: ?EncodeChapter<T>`](#encodechapter): optional chapter encoding function used when adding any chapter with this timeline instance
-- `signParams?: any`: optional signing parameters provided to the [`signBytes() function`](api-bzz.md#signbytesfunc) when updating a the timeline feed.
 
 ### .getChapter()
 
@@ -151,15 +164,6 @@ Validates that the provided object contains the `protocol` and `version` fields 
 1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
 
 **Returns** `Promise<Chapter<T>>`
-
-### .postChapter()
-
-**Arguments**
-
-1.  [`chapter: PartialChapter<T>`](#partialchapter)
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
-
-**Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
 
 ### .getLatestChapterID()
 
@@ -190,53 +194,6 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 1.  [`options: PollOptions`](api-bzz.md#polloptions): providing the `interval` field with the number of milliseconds between each query to the timeline
 
 **Returns** `Observable<Chapter<T>>`
-
-### .setLatestChapterID()
-
-Sets the ID of the latest chapter in the timeline.
-
-**Arguments**
-
-1.  `id: string`: the chapter ID (Swarm hash)
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
-
-**Returns** `Promise<void>`
-
-### .setLatestChapter()
-
-Sets the latest chapter of the timeline. This is equivalent of calling [`postChapter()`](#postchapter) and [`setLatestChapterID()`](#setlatestchapterid).
-
-**Arguments**
-
-1.  `chapter: PartialChapter<T>`
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
-
-**Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
-
-### .addChapter()
-
-Adds a chapter to the timeline. This is similar to [`setLatestChapter()`](#setlatestchapter), except [`getLatestChapterID()`](#getlatestchapterid) will be called to retrieved the id of the `previous` chapter if not provided.
-
-**Arguments**
-
-1.  `chapter: PartialChapter<T>`
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
-
-**Returns** `Promise<Chapter<T>>` the uploaded chapter
-
-### .createAddChapter()
-
-Creates a function that will add a chapter to the timeline every time it is called.
-
-⚠️ This function only keeps track of the updates it is making, not other possible updates on the timeline (such as performed when calling [`setLatestChapterID()`](#setlatestchapterid) and [`addChapter()`](#addchapter)).  
-Make sure all the timeline updates are performed using the created updater function for a given timeline.
-
-**Arguments**
-
-1.  [`chapterDefaults?: $Shape<PartialChapter<T>> = {}`](#partialchapter): default values for all the chapters that will be added
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
-
-**Returns** `(chapter: $Shape<PartialChapter<T>>) => Promise<Chapter<T>>` the chapter adding function
 
 ### .createIterator()
 
@@ -282,3 +239,83 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 1.  [`options: LiveOptions`](#liveoptions): providing the `interval` field with the number of milliseconds between each query to the timeline
 
 **Returns** `Observable<Array<Chapter<T>>>`
+
+## TimelineWriter class
+
+Extends [`TimelineReader`](#timelinereader-class)
+
+**Types**
+
+- `T = any`: the type of the TimelineWriter chapters data
+
+### new TimelineWriter()
+
+**Arguments**
+
+1.  [`config: TimelineWriterConfig<T>`](#timelinewriterconfig), see below
+
+**Configuration**
+
+Includes [`TimelineReaderConfig`](#timelinereaderconfig)
+
+- [`bzz: Bzz`](api-bzz.md#bzz-class-default-export): Bzz instance
+- `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
+- [`decode?: ?DecodeChapter<T>`](#decodechapter): optional chapter decoding function used when loading any chapter with this timeline instance
+- [`encode?: ?EncodeChapter<T>`](#encodechapter): optional chapter encoding function used when adding any chapter with this timeline instance
+- `signParams?: any`: optional signing parameters provided to the [`signBytes() function`](api-bzz.md#signbytesfunc) when updating a the timeline feed.
+
+### .postChapter()
+
+**Arguments**
+
+1.  [`chapter: PartialChapter<T>`](#partialchapter)
+1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+
+**Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
+
+### .setLatestChapterID()
+
+Sets the ID of the latest chapter in the timeline.
+
+**Arguments**
+
+1.  `id: string`: the chapter ID (Swarm hash)
+1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+
+**Returns** `Promise<void>`
+
+### .setLatestChapter()
+
+Sets the latest chapter of the timeline. This is equivalent of calling [`postChapter()`](#postchapter) and [`setLatestChapterID()`](#setlatestchapterid).
+
+**Arguments**
+
+1.  `chapter: PartialChapter<T>`
+1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+
+**Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
+
+### .addChapter()
+
+Adds a chapter to the timeline. This is similar to [`setLatestChapter()`](#setlatestchapter), except [`getLatestChapterID()`](#getlatestchapterid) will be called to retrieved the id of the `previous` chapter if not provided.
+
+**Arguments**
+
+1.  `chapter: PartialChapter<T>`
+1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+
+**Returns** `Promise<Chapter<T>>` the uploaded chapter
+
+### .createAddChapter()
+
+Creates a function that will add a chapter to the timeline every time it is called.
+
+⚠️ This function only keeps track of the updates it is making, not other possible updates on the timeline (such as performed when calling [`setLatestChapterID()`](#setlatestchapterid) and [`addChapter()`](#addchapter)).  
+Make sure all the timeline updates are performed using the created updater function for a given timeline.
+
+**Arguments**
+
+1.  [`chapterDefaults?: Partial<PartialChapter<T>> = {}`](#partialchapter): default values for all the chapters that will be added
+1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+
+**Returns** `(chapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>` the chapter adding function

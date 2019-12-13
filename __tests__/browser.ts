@@ -748,7 +748,7 @@ describe('browser', () => {
       )
 
       const valid = await evalClient(async (client, id) => {
-        const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
+        const timeline = new Erebos.timeline.TimelineReader({ bzz: client.bzz })
         return await timeline.getChapter(id)
       }, validID)
       expect(valid).toEqual({
@@ -762,7 +762,7 @@ describe('browser', () => {
       })
 
       const invalidError = await evalClient(async (client, id) => {
-        const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
+        const timeline = new Erebos.timeline.TimelineReader({ bzz: client.bzz })
         try {
           await timeline.getChapter(id)
         } catch (err) {
@@ -777,7 +777,7 @@ describe('browser', () => {
         return Erebos.timeline.createChapter({ author, content: { ok: true } })
       }, user)
       const [id, downloaded] = await evalClient(async (client, chapter) => {
-        const timeline = new Erebos.timeline.Timeline({ bzz: client.bzz })
+        const timeline = new Erebos.timeline.TimelineWriter({ bzz: client.bzz })
         const id = await timeline.postChapter(chapter)
         const downloaded = await timeline.getChapter(id)
         return [id, downloaded]
@@ -792,7 +792,7 @@ describe('browser', () => {
       }, user)
       const [chapterID, loadedID] = await evalClient(
         async (client, feed, chapter) => {
-          const timeline = new Erebos.timeline.Timeline({
+          const timeline = new Erebos.timeline.TimelineWriter({
             bzz: client.bzz,
             feed,
           })
@@ -814,7 +814,7 @@ describe('browser', () => {
       }, user)
       const [chapterID, loadedChapter] = await evalClient(
         async (client, feed, chapter) => {
-          const timeline = new Erebos.timeline.Timeline({
+          const timeline = new Erebos.timeline.TimelineWriter({
             bzz: client.bzz,
             feed,
           })
