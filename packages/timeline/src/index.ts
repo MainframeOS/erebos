@@ -106,7 +106,7 @@ function defaultEncode(chapter: any): Promise<string> {
   return Promise.resolve(JSON.stringify(chapter))
 }
 
-export interface TimelineConfig<
+export interface TimelineReaderConfig<
   T = any,
   Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
     BaseResponse,
@@ -116,11 +116,20 @@ export interface TimelineConfig<
   bzz: Bzz
   feed: string | FeedParams
   decode?: DecodeChapter<T>
+}
+
+export interface TimelineWriterConfig<
+  T = any,
+  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
+    BaseResponse,
+    stream.Readable
+  >
+> extends TimelineReaderConfig<T, Bzz> {
   encode?: EncodeChapter<T>
   signParams?: any
 }
 
-export class Timeline<
+export class TimelineReader<
   T = any,
   Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
     BaseResponse,
@@ -129,16 +138,12 @@ export class Timeline<
 > {
   protected bzz: Bzz
   protected decode: DecodeChapter<T>
-  protected encode: EncodeChapter<T>
   protected feed: string | FeedParams
-  protected signParams: any
 
-  public constructor(config: TimelineConfig<T, Bzz>) {
+  public constructor(config: TimelineReaderConfig<T, Bzz>) {
     this.bzz = config.bzz
     this.decode = config.decode || defaultDecode
-    this.encode = config.encode || defaultEncode
     this.feed = config.feed
-    this.signParams = config.signParams
   }
 
   public async getChapter(
@@ -149,14 +154,6 @@ export class Timeline<
     const chapter = await this.decode(res)
     chapter.id = id
     return chapter
-  }
-
-  public async postChapter(
-    chapter: PartialChapter<T>,
-    options: UploadOptions = {},
-  ): Promise<string> {
-    const encoded = await this.encode(chapter)
-    return await this.bzz.uploadFile(encoded, options)
   }
 
   public async getLatestChapterID(
@@ -181,73 +178,6 @@ export class Timeline<
       return null
     }
     return await this.getChapter(id, options)
-  }
-
-  public async setLatestChapterID(
-    chapterID: string,
-    options?: FetchOptions,
-  ): Promise<void> {
-    await this.bzz.setFeedContentHash(
-      this.feed,
-      chapterID,
-      options,
-      this.signParams,
-    )
-  }
-
-  public async setLatestChapter(
-    chapter: PartialChapter<T>,
-    options: UploadOptions = {},
-  ): Promise<string> {
-    const [chapterID, feedMeta] = await Promise.all([
-      this.postChapter(chapter, options),
-      this.bzz.getFeedMetadata(this.feed),
-    ])
-    await this.bzz.postFeedChunk(
-      feedMeta,
-      `0x${chapterID}`,
-      { headers: options.headers, timeout: options.timeout },
-      this.signParams,
-    )
-    return chapterID
-  }
-
-  public async addChapter(
-    chapter: PartialChapter<T>,
-    options: UploadOptions = {},
-  ): Promise<Chapter<T>> {
-    if (typeof chapter.previous === 'undefined') {
-      // eslint-disable-next-line require-atomic-updates
-      chapter.previous = await this.getLatestChapterID(options)
-    }
-    const id = await this.setLatestChapter(createChapter(chapter))
-    return { ...chapter, id }
-  }
-
-  public createAddChapter(
-    chapterDefaults: Partial<PartialChapter<T>> = {},
-    options: UploadOptions = {},
-  ): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>> {
-    let previous: string | null = null
-    let previousPromise: null | Promise<
-      string | null
-    > = this.getLatestChapterID(options)
-    const create = createChapterFactory(chapterDefaults)
-
-    return async (
-      partialChapter: Partial<PartialChapter<T>>,
-    ): Promise<Chapter<T>> => {
-      if (previous === null && previousPromise !== null) {
-        // eslint-disable-next-line require-atomic-updates
-        previous = await previousPromise
-        // eslint-disable-next-line require-atomic-updates
-        previousPromise = null
-      }
-      const chapter = create({ ...partialChapter, previous })
-      // eslint-disable-next-line require-atomic-updates
-      previous = await this.setLatestChapter(chapter, options)
-      return { ...chapter, id: previous }
-    }
   }
 
   public createIterator(
@@ -374,6 +304,100 @@ export class Timeline<
   }
 }
 
-export function createTimeline<T>(config: TimelineConfig<T>): Timeline<T> {
-  return new Timeline<T>(config)
+export class TimelineWriter<
+  T = any,
+  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
+    BaseResponse,
+    stream.Readable
+  >
+> extends TimelineReader<T, Bzz> {
+  protected encode: EncodeChapter<T>
+  protected signParams: any
+
+  public constructor(config: TimelineWriterConfig<T, Bzz>) {
+    super(config)
+    this.encode = config.encode || defaultEncode
+    this.signParams = config.signParams
+  }
+
+  public async postChapter(
+    chapter: PartialChapter<T>,
+    options: UploadOptions = {},
+  ): Promise<string> {
+    const encoded = await this.encode(chapter)
+    return await this.bzz.uploadFile(encoded, options)
+  }
+
+  public async setLatestChapterID(
+    chapterID: string,
+    options?: FetchOptions,
+  ): Promise<void> {
+    await this.bzz.setFeedContentHash(
+      this.feed,
+      chapterID,
+      options,
+      this.signParams,
+    )
+  }
+
+  public async setLatestChapter(
+    chapter: PartialChapter<T>,
+    options: UploadOptions = {},
+  ): Promise<string> {
+    const [chapterID, feedMeta] = await Promise.all([
+      this.postChapter(chapter, options),
+      this.bzz.getFeedMetadata(this.feed),
+    ])
+    await this.bzz.postFeedChunk(
+      feedMeta,
+      `0x${chapterID}`,
+      { headers: options.headers, timeout: options.timeout },
+      this.signParams,
+    )
+    return chapterID
+  }
+
+  public async addChapter(
+    chapter: PartialChapter<T>,
+    options: UploadOptions = {},
+  ): Promise<Chapter<T>> {
+    if (typeof chapter.previous === 'undefined') {
+      // eslint-disable-next-line require-atomic-updates
+      chapter.previous = await this.getLatestChapterID(options)
+    }
+    const id = await this.setLatestChapter(createChapter(chapter))
+    return { ...chapter, id }
+  }
+
+  public createAddChapter(
+    chapterDefaults: Partial<PartialChapter<T>> = {},
+    options: UploadOptions = {},
+  ): (partialChapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>> {
+    let previous: string | null = null
+    let previousPromise: null | Promise<
+      string | null
+    > = this.getLatestChapterID(options)
+    const create = createChapterFactory(chapterDefaults)
+
+    return async (
+      partialChapter: Partial<PartialChapter<T>>,
+    ): Promise<Chapter<T>> => {
+      if (previous === null && previousPromise !== null) {
+        // eslint-disable-next-line require-atomic-updates
+        previous = await previousPromise
+        // eslint-disable-next-line require-atomic-updates
+        previousPromise = null
+      }
+      const chapter = create({ ...partialChapter, previous })
+      // eslint-disable-next-line require-atomic-updates
+      previous = await this.setLatestChapter(chapter, options)
+      return { ...chapter, id: previous }
+    }
+  }
+}
+
+export function createTimeline<T>(
+  config: TimelineWriterConfig<T>,
+): TimelineWriter<T> {
+  return new TimelineWriter<T>(config)
 }

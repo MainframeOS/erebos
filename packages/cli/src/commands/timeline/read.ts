@@ -1,4 +1,4 @@
-import { Timeline } from '@erebos/timeline'
+import { TimelineReader } from '@erebos/timeline'
 import { flags } from '@oclif/command'
 
 import { Command, DefaultFlags } from '../../Command'
@@ -52,7 +52,7 @@ export default class TimelineReadCommand extends Command<Flags> {
       return
     }
     try {
-      const timeline = new Timeline({ bzz: this.client.bzz, feed })
+      const timeline = new TimelineReader({ bzz: this.client.bzz, feed })
       this.spinner.succeed().start('Querying feed...')
       const id = this.flags.chapter || (await timeline.getLatestChapterID())
       if (id === null) {
