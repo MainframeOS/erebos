@@ -44,7 +44,7 @@ const outgoingMessage = await handle(context, incomingMessage)
 // outgoingMessage = {jsonrpc: '2.0', id: 'test', result: 'hello bob'}
 ```
 
-## Types
+## Interfaces and types
 
 ### RPCRequest
 

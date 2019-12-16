@@ -8,7 +8,7 @@ title: Timeline API
 npm install @erebos/timeline
 ```
 
-⚠️ The `Timeline` class must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
+> The `Timeline` class must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
 
 ## Usage
 
@@ -96,7 +96,7 @@ interface TimelineConfig<
 }
 ```
 
-## Public API
+## API
 
 ### createChapter()
 
@@ -123,7 +123,13 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Returns** `T`
 
-### Timeline class
+## Timeline class
+
+**Types**
+
+- `T = any`: the type of the Timeline chapters data
+
+### new Timeline()
 
 **Arguments**
 

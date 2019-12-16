@@ -8,7 +8,6 @@ import {
   DirectoryData,
   UploadOptions,
 } from '@erebos/api-bzz-base'
-import { hexValue } from '@erebos/hex'
 
 export * from '@erebos/api-bzz-base'
 
@@ -21,7 +20,7 @@ export class Bzz extends BaseBzz<Response, stream.Readable> {
   public uploadDirectory(
     directory: DirectoryData,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
       form.append(

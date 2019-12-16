@@ -6,7 +6,6 @@ import {
   DirectoryData,
   UploadOptions,
 } from '@erebos/api-bzz-base'
-import { hexValue } from '@erebos/hex'
 import { Readable } from 'readable-stream'
 import { NodeReadable } from './utils'
 
@@ -31,29 +30,28 @@ export class Bzz extends BaseBzz<Response, Readable> {
     body: Buffer | FormData | Readable,
     options: UploadOptions,
     raw = false,
-  ): Promise<hexValue> {
+  ): Promise<string> {
     if (Buffer.isBuffer(body) || body instanceof FormData) {
       return super.uploadBody(body, options, raw)
     }
 
-    return new Promise(resolve => {
+    const data: Buffer = await new Promise(resolve => {
       const buffers: Array<Uint8Array> = []
-
       body.on('data', function(d) {
         buffers.push(d)
       })
-
       body.on('end', function() {
-        // @ts-ignore
         resolve(Buffer.concat(buffers))
       })
-    }).then(data => super.uploadBody(data as Buffer, options, raw))
+    })
+
+    return await super.uploadBody(data, options, raw)
   }
 
   public async uploadDirectory(
     directory: DirectoryData,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
       form.append(

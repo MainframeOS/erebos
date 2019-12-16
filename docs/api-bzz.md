@@ -83,28 +83,42 @@ interface ListResult {
 }
 ```
 
+### Feed
+
+```typescript
+interface Feed {
+  topic: string
+  user: string
+}
+```
+
+### FeedEpoch
+
+```typescript
+interface FeedEpoch {
+  time: number
+  level: number
+}
+```
+
+### FeedMetadata
+
+Uses [`Feed`](#feed) and [`FeedEpoch`](#feedepoch) interfaces
+
+```typescript
+interface FeedMetadata {
+  feed: Feed
+  epoch: FeedEpoch
+  protocolVersion: number
+}
+```
+
 ### FeedTopicParams
 
 ```typescript
 interface FeedTopicParams {
   name?: string
   topic?: string
-}
-```
-
-### FeedMetadata
-
-```typescript
-interface FeedMetadata {
-  feed: {
-    topic: hexValue
-    user: hexValue
-  }
-  epoch: {
-    time: number
-    level: number
-  }
-  protocolVersion: number
 }
 ```
 
@@ -286,7 +300,12 @@ interface BzzConfig {
 }
 ```
 
-## Public API
+## Constants
+
+- `FEED_MAX_DATA_LENGTH: number`: the max byte length a feed chunk data be (4KB minus headers and signature)
+- `FEED_ZERO_TOPIC: hexValue`: empty feed topic (zero-filled)
+
+## API
 
 ### createFeedDigest()
 
@@ -297,6 +316,24 @@ interface BzzConfig {
 
 **Returns** `Array<number>`
 
+():
+
+### feedMetaToBuffer()
+
+**Arguments**
+
+1.  [`meta: FeedMetadata`](#feedmetadata)
+
+**Returns** [`Buffer`](https://nodejs.org/api/buffer.html#buffer_class_buffer)
+
+### feedMetaToHash()
+
+**Arguments**
+
+1.  [`meta: FeedMetadata`](#feedmetadata)
+
+**Returns** `string`
+
 ### getFeedTopic()
 
 **Arguments**
@@ -305,7 +342,93 @@ interface BzzConfig {
 
 **Returns** [`hexValue`](#hexvalue)
 
-### HTTPError class
+### getFeedMetadata()
+
+**Arguments**
+
+1.  `input: FeedID | FeedMetadata | FeedParams`
+
+**Returns** [`FeedMetadata interface`](#feedmetadata) (Object or [`FeedID` instance](#feedid-class))
+
+## FeedID class
+
+Implements the [`FeedParams`](#feedparams) and [`FeedMetadata`](#feedmetadata) interfaces.
+
+### new FeedID()
+
+**Arguments**
+
+1.  [`params: FeedParams`](#feedparams)
+
+### FeedID.from()
+
+Creates a new `FeedID` from a [`Buffer`](https://nodejs.org/api/buffer.html#buffer_class_buffer) instance, an existing `FeedID` instance or an Object implementing the [`FeedMetadata`](#feedmetadata) or [`FeedParams`](#feedparams) interface.
+
+**Arguments**
+
+1.  `input: Buffer | FeedID | FeedMetadata | FeedParams`
+
+**Returns** `FeedID`
+
+### FeedID.fromBuffer()
+
+**Arguments**
+
+1.  `buffer: Buffer`: a [`Buffer`](https://nodejs.org/api/buffer.html#buffer_class_buffer) instance
+
+**Returns** `FeedID`
+
+### FeedID.fromMetadata()
+
+**Arguments**
+
+1.  [`meta: FeedMetadata`](#feedmetadata)
+
+**Returns** `FeedID`
+
+### .user
+
+**Returns** `string`
+
+### .topic
+
+**Returns** `string`
+
+### .time
+
+**Returns** `number`
+
+### .level
+
+**Returns** `number`
+
+### .protocolVersion
+
+**Returns** `number`
+
+### .feed
+
+**Returns** [`Feed`](#feed)
+
+### .epoch
+
+**Returns** [`FeedEpoch`](#feedepoch)
+
+### .clone()
+
+**Returns** `FeedID`
+
+### .toBuffer()
+
+**Returns** [`Buffer`](https://nodejs.org/api/buffer.html#buffer_class_buffer)
+
+### .toHash()
+
+**Returns** `string`
+
+## HTTPError class
+
+> This class is used when errors from Swarm are thrown
 
 **Arguments**
 
@@ -317,7 +440,9 @@ interface BzzConfig {
 - `status: number`: HTTP status code
 - `message: string`: error message
 
-### Bzz class
+## Bzz class
+
+### new Bzz()
 
 **Arguments**
 
@@ -384,6 +509,28 @@ Returns the hash of the provided `domain`.
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<string>`
+
+### .getTag()
+
+**Arguments**
+
+1.  `hash: string`
+1.  [`options: FetchOptions`](#fetchoptions)
+
+**Returns** `Promise<Tag>` the [`Tag`](#tag) of the given `hash`
+
+### .pollTag()
+
+Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`Tag`](#tag) of the given `hash`.
+
+**Arguments**
+
+1.  `hash: string`
+1.  [`options: PollOptions`](#polloptions)
+
+**Returns** `Observable<Tag>`
+
+## Immutables resources methods
 
 ### .list()
 
@@ -485,6 +632,44 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 
 **Returns** `Promise<string>`
 
+## Pinning methods
+
+> Pinning allows to persist files on a Swarm node. It has be enabled on the node for the following methods to work.
+
+### .pin()
+
+Pins the specified resource. To make sure the resource is available on the node, the `download` option can be set to explicitely download it before pinning.
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: PinOptions = {}`](#pinoptions)
+
+**Returns** `Promise<void>`
+
+### .unpin()
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<void>`
+
+### .pins()
+
+Returns the list of resources currently pinned on the node.
+
+**Arguments**
+
+1.  [`options?: FetchOptions = {}`](#fetchoptions)
+
+**Returns** `Promise<Array<PinnedFile>>` the list of [`PinnedFile`](#pinnedfile)
+
+## Feed methods
+
+> Feeds allow to write chunks to a determinitic location, acting as a mutable resource on Swarm.
+
 ### .createFeedManifest()
 
 **Arguments**
@@ -492,7 +677,7 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 1.  [`params: FeedParams`](#feedparams)
 1.  [`options?: UploadOptions = {}`](#uploadoptions)
 
-**Returns** `Promise<hexValue>`
+**Returns** `Promise<string>`
 
 ### .getFeedMetadata()
 
@@ -633,9 +818,9 @@ This method implements the flow of uploading the provided `data` and updating th
 
 **Returns** `Promise<string>`
 
-## Raw feed functionality
+## Raw feeds methods
 
-Raw feeds can be used to skip Swarm's builtin feed lookup mechanism and use the underlying resource interface directly. Internally Swarm uses a separate address space for `bzz-feed`s and they can be addressed with `FeedParams`. When uploading content, a node calculates the hash from the `FeedParams` and stores the content so that it can be acccessed with that hash.
+Raw feeds can be used to skip Swarm's built-in feed lookup mechanism and use the underlying resource interface directly. Internally Swarm uses a separate address space for `bzz-feed`s and they can be addressed with `FeedParams`. When uploading content, a node calculates the hash from the `FeedParams` and stores the content so that it can be acccessed with that hash.
 
 As with the normal feed API we can only store one chunk worth of data (4KB) in a feed chunk, so the best practice is to store a content hash in the feed chunk. Sometimes it can be useful to work directly with the content hashes and sometimes we just need the content. Hence we have two versions of each function when downloading or uploading the data.
 
@@ -685,61 +870,11 @@ This method implements the flow of uploading the provided `data` and updating th
 1.  [`options?: UploadOptions = {}`](#uploadoptions)
 1.  `signParams?: any`
 
-**Returns** `Promise<hexValue>`
+**Returns** `Promise<string>`
 
-### .pin()
+## Node-only methods
 
-Pins the specified resource. To make sure the resource is available on the node, the `download` option can be set to explicitely download it before pinning.
-
-**Arguments**
-
-1.  `hashOrDomain: string`: ENS name or Swarm hash
-1.  [`options?: PinOptions = {}`](#pinoptions)
-
-**Returns** `Promise<void>`
-
-### .unpin()
-
-**Arguments**
-
-1.  `hashOrDomain: string`: ENS name or Swarm hash
-1.  [`options?: FetchOptions = {}`](#fetchoptions)
-
-**Returns** `Promise<void>`
-
-### .pins()
-
-Returns the list of resources currently pinned on the node.
-
-**Arguments**
-
-1.  [`options?: FetchOptions = {}`](#fetchoptions)
-
-**Returns** `Promise<Array<PinnedFile>>` the list of [`PinnedFile`](#pinnedfile)
-
-### .getTag()
-
-**Arguments**
-
-1.  `hash: string`
-1.  [`options: FetchOptions`](#fetchoptions)
-
-**Returns** `Promise<Tag>` the [`Tag`](#tag) of the given `hash`
-
-### .pollTag()
-
-Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`Tag`](#tag) of the given `hash`.
-
-**Arguments**
-
-1.  `hash: string`
-1.  [`options: PollOptions`](#polloptions)
-
-**Returns** `Observable<Tag>`
-
-## Node-specific APIs
-
-_The following `Bzz` class methods are only available when using `@erebos/api-bzz-node`._
+> The following `Bzz` class methods are only available when using the `@erebos/api-bzz-node` package
 
 ### .downloadTarTo()
 

@@ -7,7 +7,6 @@ import {
   PollOptions,
   UploadOptions,
 } from '@erebos/api-bzz-base'
-import { hexValue } from '@erebos/hex'
 import { Observable, Observer } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
 import semver from 'semver'
@@ -155,7 +154,7 @@ export class Timeline<
   public async postChapter(
     chapter: PartialChapter<T>,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const encoded = await this.encode(chapter)
     return await this.bzz.uploadFile(encoded, options)
   }
@@ -199,7 +198,7 @@ export class Timeline<
   public async setLatestChapter(
     chapter: PartialChapter<T>,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const [chapterID, feedMeta] = await Promise.all([
       this.postChapter(chapter, options),
       this.bzz.getFeedMetadata(this.feed),
@@ -376,5 +375,5 @@ export class Timeline<
 }
 
 export function createTimeline<T>(config: TimelineConfig<T>): Timeline<T> {
-  return new Timeline(config)
+  return new Timeline<T>(config)
 }

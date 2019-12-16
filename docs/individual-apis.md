@@ -7,4 +7,4 @@ The [`SwarmClient` class](swarm-client.md) provides the following APIs, but they
 - [Bzz APIs](api-bzz.md) for file storage (includes feeds)
 - [Pss APIs](api-pss.md): Postal Services over Swarm (UDP-like messaging)
 
-Additionally, the [`Timeline` APIs](timeline-api.md) are exported in a separate package, providing an implementation of the [timeline protocol](timeline-spec.md).
+Additional [data structures](data-structures.md) built on top of these APIs are implemented in other packages.

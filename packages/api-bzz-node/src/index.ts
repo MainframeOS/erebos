@@ -8,7 +8,6 @@ import {
   DownloadOptions,
   UploadOptions,
 } from '@erebos/api-bzz-base'
-import { hexValue } from '@erebos/hex'
 import FormData from 'form-data'
 import fetch, { Response } from 'node-fetch'
 import tarFS from 'tar-fs'
@@ -72,7 +71,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
   public async uploadDirectory(
     directory: DirectoryData,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const form = new FormData()
     Object.keys(directory).forEach(key => {
       form.append(key, directory[key].data, {
@@ -99,7 +98,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
   public async uploadFileFrom(
     path: string,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const size = options.size == null ? await getSize(path) : options.size
     return await this.uploadFile(createReadStream(path), {
       ...options,
@@ -110,7 +109,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
   private async uploadTarStream(
     stream: Readable,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     if (options.headers == null) {
       options.headers = {}
     }
@@ -127,7 +126,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
   public async uploadTar(
     path: string,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const stream = (await isFile(path))
       ? createReadStream(path)
       : tarFS.pack(path)
@@ -137,7 +136,7 @@ export class Bzz extends BaseBzz<Response, Readable> {
   public async uploadDirectoryFrom(
     path: string,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     return await this.uploadTarStream(
       (tarFS.pack(path) as unknown) as Readable,
       options,
@@ -147,11 +146,9 @@ export class Bzz extends BaseBzz<Response, Readable> {
   public async uploadFrom(
     path: string,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
-    if (await isFile(path)) {
-      return await this.uploadFileFrom(path, options)
-    } else {
-      return await this.uploadDirectoryFrom(path, options)
-    }
+  ): Promise<string> {
+    return (await isFile(path))
+      ? await this.uploadFileFrom(path, options)
+      : await this.uploadDirectoryFrom(path, options)
   }
 }

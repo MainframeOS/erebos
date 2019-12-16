@@ -45,21 +45,25 @@ export interface ListResult {
   entries?: Array<ListEntry>
 }
 
-export interface FeedTopicParams {
-  name?: string
-  topic?: string
+export interface Feed {
+  topic: hexValue
+  user: hexValue
+}
+
+export interface FeedEpoch {
+  time: number
+  level: number
 }
 
 export interface FeedMetadata {
-  feed: {
-    topic: hexValue
-    user: hexValue
-  }
-  epoch: {
-    time: number
-    level: number
-  }
+  feed: Feed
+  epoch: FeedEpoch
   protocolVersion: number
+}
+
+export interface FeedTopicParams {
+  name?: string
+  topic?: string
 }
 
 export interface FetchOptions {

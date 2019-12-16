@@ -7,7 +7,7 @@ docker run $@ \
   --volume /tmp/swarm:/swarm \
   --interactive \
   --tty \
-  "ethersphere/swarm:0.5.3" \
+  "ethersphere/swarm:0.5.4" \
     --bzznetworkid=256 \
     --datadir /swarm/data \
     --password /swarm/password \

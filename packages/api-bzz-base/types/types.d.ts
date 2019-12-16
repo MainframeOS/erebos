@@ -34,20 +34,22 @@ export interface ListResult {
     common_prefixes?: Array<string>;
     entries?: Array<ListEntry>;
 }
+export interface Feed {
+    topic: hexValue;
+    user: hexValue;
+}
+export interface FeedEpoch {
+    time: number;
+    level: number;
+}
+export interface FeedMetadata {
+    feed: Feed;
+    epoch: FeedEpoch;
+    protocolVersion: number;
+}
 export interface FeedTopicParams {
     name?: string;
     topic?: string;
-}
-export interface FeedMetadata {
-    feed: {
-        topic: hexValue;
-        user: hexValue;
-    };
-    epoch: {
-        time: number;
-        level: number;
-    };
-    protocolVersion: number;
 }
 export interface FetchOptions {
     headers?: Record<string, any>;

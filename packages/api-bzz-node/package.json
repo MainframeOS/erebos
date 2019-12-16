@@ -20,7 +20,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.4",
+    "@babel/runtime": "^7.7.6",
     "@erebos/api-bzz-base": "^0.11.0",
     "form-data": "^3.0.0",
     "fs-extra": "^8.0.1",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.1",
-    "@types/node": "^12.12.14",
+    "@types/node": "^12.12.17",
     "@types/node-fetch": "^2.5.4",
     "@types/tar-fs": "^1.16.1",
     "@types/tar-stream": "^1.6.1"

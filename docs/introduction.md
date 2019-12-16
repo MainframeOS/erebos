@@ -29,11 +29,9 @@ It is meant to be a simple way to get started with Swarm in Node or browser envi
 
 ## Additional tools
 
-### Timeline protocol
+### Data structures
 
-The [`Timeline protocol`](timeline-spec.md) specifies a singly-linked list data structure based on Swarm feeds, that can be used to iterate over historical changes.
-
-The [`@erebos/timeline`](timeline-api.md) package exposes a reference implementation of the protocol.
+A few higher-level [data structures](data-structures.md) are implemented on top of Swarm APIs, helping support some common use-cases.
 
 ### Command-line interface
 

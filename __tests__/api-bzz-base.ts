@@ -1,14 +1,20 @@
 /* global fetch */
 
+import { randomBytes } from 'crypto'
 import {
+  FEED_ZERO_TOPIC,
   BaseBzz,
+  FeedID,
   HTTPError,
+  feedMetaToHash,
+  getFeedTopic,
   getModeProtocol,
+  isDirectoryData,
   resOrError,
   resJSON,
   resText,
-  isDirectoryData,
 } from '@erebos/api-bzz-base'
+import { Hex, hexValue } from '@erebos/hex'
 import { Readable } from 'readable-stream'
 
 describe('api-bzz-base', () => {
@@ -339,6 +345,134 @@ describe('api-bzz-base', () => {
       const [fetchUrl, { method }] = fetch.mock.calls[0]
       expect(fetchUrl).toBe(`${TEST_URL}bzz:/1234/test`)
       expect(method).toBe('DELETE')
+    })
+
+    it('uploadData() and downloadData() handle JSON data', async () => {
+      fetch.mockResponseOnce('1234')
+      const data = { hello: 'world' }
+      const hash = await bzz.uploadData(data)
+      expect(hash).toBe('1234')
+      expect(fetch.mock.calls).toHaveLength(1)
+      const [fetchUrl1, params1] = fetch.mock.calls[0]
+      expect(fetchUrl1).toBe(`${TEST_URL}bzz-raw:/`)
+      expect(params1.headers).toEqual({ 'content-length': 17 })
+
+      fetch.mockResponseOnce(JSON.stringify(data))
+      const loaded = await bzz.downloadData(hash)
+      expect(loaded).toEqual(data)
+      expect(fetch.mock.calls).toHaveLength(2)
+      expect(fetch.mock.calls[1][0]).toBe(`${TEST_URL}bzz-raw:/1234/`)
+    })
+  })
+
+  describe('FeedID class', () => {
+    function randomHex(size: number): hexValue {
+      return Hex.from(randomBytes(size)).value
+    }
+
+    it('handles feed params input', () => {
+      const user = randomHex(20)
+      const topic = randomHex(32)
+
+      const id1 = new FeedID({ user })
+      expect(id1.user).toBe(user)
+      expect(id1.topic).toBe(FEED_ZERO_TOPIC)
+      expect(id1.time).toBe(0)
+      expect(id1.level).toBe(0)
+      expect(id1.protocolVersion).toBe(0)
+
+      const id2 = new FeedID({ user, topic, time: 10, level: 1 })
+      expect(id2.topic).toBe(topic)
+      expect(id2.time).toBe(10)
+      expect(id2.level).toBe(1)
+
+      const id3 = new FeedID({ user, topic, name: 'test' })
+      expect(id3.topic).toBe(getFeedTopic({ topic, name: 'test' }))
+    })
+
+    it('provides a fromMetadata() static method', () => {
+      const metadata = {
+        feed: {
+          user: randomHex(20),
+          topic: randomHex(32),
+        },
+        epoch: {
+          time: 10,
+          level: 5,
+        },
+        protocolVersion: 1,
+      }
+      const id = FeedID.fromMetadata(metadata)
+      expect(id.feed).toEqual(metadata.feed)
+      expect(id.epoch).toEqual(metadata.epoch)
+      expect(id.protocolVersion).toBe(metadata.protocolVersion)
+    })
+
+    it('provides a toBuffer() method and fromBuffer() static method', () => {
+      const id = new FeedID({
+        user: randomHex(20),
+        topic: randomHex(32),
+        time: 20,
+        level: 1,
+      })
+      const other = FeedID.fromBuffer(id.toBuffer())
+      expect(other).not.toBe(id)
+      expect(other).toEqual(id)
+    })
+
+    it('provides a from() static method', () => {
+      const feed = {
+        user: randomHex(20),
+        topic: randomHex(32),
+      }
+      const epoch = {
+        time: 10,
+        level: 5,
+      }
+      const params = { ...feed, ...epoch }
+      const metadata = { feed, epoch, protocolVersion: 0 }
+
+      const id1 = new FeedID(params)
+      const id2 = FeedID.from(id1)
+      expect(id2).not.toBe(id1)
+      expect(id2).toEqual(id1)
+
+      const id3 = FeedID.from(params)
+      expect(id3).toEqual(id1)
+
+      const id4 = FeedID.from(metadata)
+      expect(id4).toEqual(id1)
+
+      const id5 = FeedID.from(id1.toBuffer())
+      expect(id5).toEqual(id1)
+    })
+
+    it('has a toHash() method', () => {
+      const meta = {
+        feed: {
+          user: randomHex(20),
+          topic: randomHex(32),
+        },
+        epoch: {
+          time: 20,
+          level: 1,
+        },
+        protocolVersion: 0,
+      }
+      const id = FeedID.from(meta)
+      expect(id.toHash()).toBe(feedMetaToHash(meta))
+    })
+
+    it('has a clone() method', () => {
+      const id = new FeedID({
+        user: randomHex(20),
+        topic: randomHex(32),
+        time: 20,
+        level: 1,
+      })
+      const other = id.clone()
+      expect(other).not.toBe(id)
+      expect(other).toEqual(id)
     })
   })
 })

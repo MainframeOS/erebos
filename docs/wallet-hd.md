@@ -41,9 +41,7 @@ interface TransactionParams {
 
 [Wallet instance as exported by the ethers.js library](https://docs.ethers.io/ethers.js/html/api-wallet.html#wallet).
 
-## Public API
-
-### HDWallet class
+## HDWallet class
 
 **Arguments**
 

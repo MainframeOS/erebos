@@ -34,7 +34,7 @@ const api = new MyAPI('/path/to/socket')
 api.getUser('1234')
 ```
 
-## API
+## StreamRPC class
 
 See the [`BaseRPC` documentation](rpc-base.md) for inherited methods and properties.
 

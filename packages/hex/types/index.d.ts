@@ -24,6 +24,7 @@ declare type HexInput = {
     value: string;
 };
 export declare class Hex {
+    static from(input: hexInput | Hex): Hex;
     protected input: HexInput;
     protected hexValue: hexValue;
     constructor(inputValue: hexInput | Hex);

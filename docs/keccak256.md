@@ -29,7 +29,7 @@ const address = pubKeyToAddress(pubKey)
 
 Hexadecimal-encoded string prefixed with `0x`. This type is exported by the [`@erebos/hex` package](hex.md).
 
-## Public API
+## API
 
 ### hash()
 

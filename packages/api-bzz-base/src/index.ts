@@ -1,21 +1,15 @@
 import * as stream from 'stream'
-import {
-  createHex,
-  hexInput,
-  hexValue,
-  toHexValue,
-  fromHexValue,
-} from '@erebos/hex'
+import { Hex, hexInput, hexValue, toHexValue } from '@erebos/hex'
 import { interval, merge, Observable, Observer } from 'rxjs'
 import { distinctUntilChanged, filter, flatMap } from 'rxjs/operators'
 import tarStream from 'tar-stream'
 
 import {
+  FeedID,
   createFeedDigest,
+  getFeedChunkData,
+  getFeedMetadata,
   getFeedTopic,
-  feedParamsToReference,
-  feedChunkToData,
-  feedParamsToMetadata,
 } from './feed'
 import {
   BaseResponse,
@@ -59,6 +53,10 @@ export function getModeProtocol(mode?: BzzMode): string {
   return (mode && BZZ_MODE_PROTOCOLS[mode]) || BZZ_MODE_PROTOCOLS.default
 }
 
+export function toSwarmHash(buffer: ArrayBuffer): string {
+  return Buffer.from(new Uint8Array(buffer)).toString('hex')
+}
+
 export class HTTPError extends Error {
   public status: number
 
@@ -98,18 +96,17 @@ export async function resText<R extends BaseResponse>(res: R): Promise<string> {
   return (await resOrError(res)).text()
 }
 
-export async function resHex<R extends BaseResponse>(
+export async function resArrayBuffer<R extends BaseResponse>(
   res: R,
-): Promise<hexValue> {
-  return (await resText(res)) as hexValue
+): Promise<ArrayBuffer> {
+  return (await resOrError(res)).arrayBuffer()
 }
 
 export async function resSwarmHash<R extends BaseResponse>(
   res: R,
 ): Promise<string> {
-  const resolvedRes = await resOrError(res)
-  const value = await resolvedRes.arrayBuffer()
-  return Buffer.from(new Uint8Array(value)).toString('hex')
+  const bytes = await resArrayBuffer<R>(res)
+  return toSwarmHash(bytes)
 }
 
 function defaultSignBytes(): Promise<Array<number>> {
@@ -302,12 +299,12 @@ export class BaseBzz<
   public async hash(
     domain: string,
     options: FetchOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const res = await this.fetchTimeout(
       `${this.url}bzz-hash:/${domain}`,
       options,
     )
-    return await resHex(res)
+    return await resText(res)
   }
 
   public async list(
@@ -338,6 +335,15 @@ export class BaseBzz<
     const url = this.getDownloadURL(hash, options)
     const res = await this.fetchTimeout(url, options)
     return this.normalizeStream(await resStream(res))
+  }
+
+  public async downloadData<T = any>(
+    hash: string,
+    options: DownloadOptions = {},
+  ): Promise<T> {
+    const url = this.getDownloadURL(hash, { ...options, mode: 'raw' })
+    const res = await this.fetchTimeout(url, options)
+    return await resJSON<Response, T>(res)
   }
 
   protected async downloadTar(
@@ -422,16 +428,16 @@ export class BaseBzz<
     body: Buffer | FormData | Readable,
     options: UploadOptions,
     raw = false,
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const url = this.getUploadURL(options, raw)
     const res = await this.fetchTimeout(url, options, { body, method: 'POST' })
-    return await resHex(res)
+    return await resText(res)
   }
 
   public async uploadFile(
     data: string | Buffer | Readable,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const body = typeof data === 'string' ? Buffer.from(data) : data
     const raw = options.contentType == null
 
@@ -456,17 +462,24 @@ export class BaseBzz<
     return await this.uploadBody(body, options, raw)
   }
 
+  public async uploadData<T = any>(
+    data: T,
+    options: UploadOptions = {},
+  ): Promise<string> {
+    return await this.uploadFile(JSON.stringify(data), options)
+  }
+
   public uploadDirectory(
     _directory: DirectoryData,
     _options?: UploadOptions,
-  ): Promise<hexValue> {
+  ): Promise<string> {
     return Promise.reject(new Error('Must be implemented in extending class'))
   }
 
   public async upload(
     data: string | Buffer | Readable | DirectoryData,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     return isDirectoryData(data)
       ? await this.uploadDirectory(data, options)
       : await this.uploadFile(data, options)
@@ -476,16 +489,16 @@ export class BaseBzz<
     hash: string,
     path: string,
     options: FetchOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const url = this.getUploadURL({ manifestHash: hash, path })
     const res = await this.fetchTimeout(url, options, { method: 'DELETE' })
-    return await resHex(res)
+    return await resText(res)
   }
 
   public async createFeedManifest(
     params: FeedParams,
     options: UploadOptions = {},
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const manifest = {
       entries: [
         {
@@ -628,7 +641,7 @@ export class BaseBzz<
     options?: FetchOptions,
     signParams?: any,
   ): Promise<Response> {
-    const body = createHex(data).toBuffer()
+    const body = Hex.from(data).toBuffer()
     const digest = createFeedDigest(meta, body)
     const signature = await this.sign(digest, signParams)
     return await this.postSignedFeedChunk(
@@ -674,7 +687,7 @@ export class BaseBzz<
     data: string | Buffer | DirectoryData,
     options: UploadOptions = {},
     signParams?: any,
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const { contentType: _c, ...feedOptions } = options
     const [hash, meta] = await Promise.all([
       this.upload(data, options),
@@ -694,13 +707,15 @@ export class BaseBzz<
       await this.download(hash, { mode: options.raw ? 'raw' : 'default' })
     }
     const url = this.getPinURL(hash, options.raw)
-    await this.fetchTimeout(url, options, { method: 'POST' })
+    const res = await this.fetchTimeout(url, options, { method: 'POST' })
+    resOrError(res)
   }
 
   public async unpin(hash: string, options: FetchOptions = {}): Promise<void> {
-    await this.fetchTimeout(this.getPinURL(hash), options, {
+    const res = await this.fetchTimeout(this.getPinURL(hash), options, {
       method: 'DELETE',
     })
+    resOrError(res)
   }
 
   public async pins(options: FetchOptions = {}): Promise<Array<PinnedFile>> {
@@ -729,53 +744,49 @@ export class BaseBzz<
     )
   }
 
-  private async getRawFeedChunk(
-    params: FeedParams,
+  public async getRawFeedChunk(
+    feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<Response> {
-    const reference = feedParamsToReference(params)
-    const hash = fromHexValue(reference).toString('hex')
+    const hash = FeedID.from(feed).toHash()
     const url = this.url + `${BZZ_MODE_PROTOCOLS.feedRaw}${hash}`
-    const response = await this.fetchTimeout(url, options)
-    return response
+    const res = await this.fetchTimeout(url, options)
+    return resOrError(res)
   }
 
-  private async getRawFeedChunkData(
-    params: FeedParams,
+  public async getRawFeedChunkData(
+    feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<ArrayBuffer> {
-    const response = await this.getRawFeedChunk(params, options)
-    const dataBuffer = await response.arrayBuffer()
-    const data = feedChunkToData(dataBuffer)
-    return data
+    const res = await this.getRawFeedChunk(feed, options)
+    const bytes = await res.arrayBuffer()
+    return getFeedChunkData(bytes)
   }
 
   public async getRawFeedContentHash(
-    params: FeedParams,
+    feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<string> {
-    const data = await this.getRawFeedChunkData(params, options)
-    const hash = Buffer.from(new Uint8Array(data)).toString('hex')
-    return hash
+    const bytes = await this.getRawFeedChunkData(feed, options)
+    return toSwarmHash(bytes)
   }
 
   public async getRawFeedContent(
-    params: FeedParams,
+    feed: FeedID | FeedMetadata | FeedParams,
     options: DownloadOptions = {},
   ): Promise<Response> {
-    const contentHash = await this.getRawFeedContentHash(params, options)
-    return this.download(contentHash, options)
+    const contentHash = await this.getRawFeedContentHash(feed, options)
+    return await this.download(contentHash, options)
   }
 
   public async setRawFeedContentHash(
-    params: FeedParams,
+    feed: FeedID | FeedMetadata | FeedParams,
     contentHash: string,
     options: UploadOptions = {},
     signParams?: any,
   ): Promise<Response> {
-    const meta = feedParamsToMetadata(params)
     return await this.postFeedChunk(
-      meta,
+      getFeedMetadata(feed),
       `0x${contentHash}`,
       options,
       signParams,
@@ -783,14 +794,14 @@ export class BaseBzz<
   }
 
   public async setRawFeedContent(
-    params: FeedParams,
+    feed: FeedID | FeedMetadata | FeedParams,
     data: string | Buffer | DirectoryData,
     options: UploadOptions = {},
     signParams?: any,
-  ): Promise<hexValue> {
+  ): Promise<string> {
     const { contentType: _c, ...feedOptions } = options
+    const meta = getFeedMetadata(feed)
     const hash = await this.upload(data, options)
-    const meta = feedParamsToMetadata(params)
     await this.postFeedChunk(meta, `0x${hash}`, feedOptions, signParams)
     return hash
   }

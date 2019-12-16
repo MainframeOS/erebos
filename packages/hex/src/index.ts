@@ -37,6 +37,10 @@ type HexInput =
   | { type: 'string'; value: string }
 
 export class Hex {
+  public static from(input: hexInput | Hex): Hex {
+    return new Hex(input)
+  }
+
   protected input!: HexInput
   protected hexValue!: hexValue
 
@@ -48,22 +52,20 @@ export class Hex {
     if (isHexValue(inputValue)) {
       this.input = { type: 'hex', value: inputValue }
       this.hexValue = inputValue
+    } else if (typeof inputValue === 'string') {
+      this.input = { type: 'string', value: inputValue }
+      this.hexValue = toHexValue(inputValue)
+    } else if (Array.isArray(inputValue)) {
+      this.input = { type: 'bytesArray', value: inputValue }
+      this.hexValue = toHexValue(inputValue)
+    } else if (Buffer.isBuffer(inputValue)) {
+      this.input = { type: 'buffer', value: inputValue }
+      this.hexValue = toHexValue(inputValue)
+    } else if (typeof inputValue === 'object') {
+      this.input = { type: 'object', value: inputValue }
+      this.hexValue = toHexValue(JSON.stringify(inputValue))
     } else {
-      if (typeof inputValue === 'string') {
-        this.input = { type: 'string', value: inputValue }
-        this.hexValue = toHexValue(inputValue)
-      } else if (Array.isArray(inputValue)) {
-        this.input = { type: 'bytesArray', value: inputValue }
-        this.hexValue = toHexValue(inputValue)
-      } else if (Buffer.isBuffer(inputValue)) {
-        this.input = { type: 'buffer', value: inputValue }
-        this.hexValue = toHexValue(inputValue)
-      } else if (typeof inputValue === 'object') {
-        this.input = { type: 'object', value: inputValue }
-        this.hexValue = toHexValue(JSON.stringify(inputValue))
-      } else {
-        throw new Error('Invalid input')
-      }
+      throw new Error('Invalid input')
     }
   }
 
@@ -72,7 +74,7 @@ export class Hex {
   }
 
   public equals(other: hexInput | Hex): boolean {
-    return new Hex(other).value === this.hexValue
+    return Hex.from(other).value === this.hexValue
   }
 
   public toBuffer(): Buffer {
@@ -122,5 +124,5 @@ export class Hex {
 }
 
 export function createHex(input: hexInput | Hex): Hex {
-  return new Hex(input)
+  return Hex.from(input)
 }

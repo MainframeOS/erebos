@@ -34,13 +34,13 @@ const api = new MyAPI('http://my-api-url')
 api.getUser('1234')
 ```
 
-## Types
+## Interfaces and types
 
 ```typescript
 type FetchFunction = <D = any, R = any>(data: D) => Promise<R>
 ```
 
-## API
+## RequestRPC class
 
 See the [`BaseRPC` documentation](rpc-base.md) for inherited methods and properties.
 
