@@ -39,11 +39,13 @@ npm install -g @erebos/cli
 | [`@erebos/swarm-node`](/packages/swarm-node) | [![npm version](https://img.shields.io/npm/v/@erebos/swarm-node.svg)](https://www.npmjs.com/package/@erebos/swarm-node)| ⚛️ ⚙️ | Electron and Node Erebos library for Swarm
 | **CLI**
 | [`@erebos/cli`](/packages/cli) | [![npm version](https://img.shields.io/npm/v/@erebos/cli.svg)](https://www.npmjs.com/package/@erebos/cli) |
-| **Individual APIs**
+| **Individual Swarm APIs**
 | [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | 🌐 | Browser-only Swarm (BZZ) APIs
 | [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | ⚛️ ⚙️ | Electron and Node Swarm (BZZ) APIs
 | [`@erebos/api-bzz-react-native`](/packages/api-bzz-react-native) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-react-native.svg)](https://www.npmjs.com/package/@erebos/api-bzz-react-native) | 📱 | Experimental React Native Swarm (BZZ) APIs
 | [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | ⚛️ ⚙️ 📱 🌐 | Postal Services over Swarm (PSS) APIs
+| **Higher-level APIs**
+| [`@erebos/feed-list`](/packages/feed-list) | [![npm version](https://img.shields.io/npm/v/@erebos/feed-list.svg)](https://www.npmjs.com/package/@erebos/feed-list) | ⚛️ ⚙️ 📱 🌐 | List APIs using raw Swarm feeds
 | [`@erebos/timeline`](/packages/timeline) | [![npm version](https://img.shields.io/npm/v/@erebos/timeline.svg)](https://www.npmjs.com/package/@erebos/timeline) | ⚛️ ⚙️ 📱 🌐 | Feed-based Timeline APIs
 | **Ethereum and Swarm utilities**
 | [`@erebos/hex`](/packages/hex) | [![npm version](https://img.shields.io/npm/v/@erebos/hex.svg)](https://www.npmjs.com/package/@erebos/hex) | ⚛️ ⚙️ 📱 🌐 | Hexadecimal values encoding and decoding

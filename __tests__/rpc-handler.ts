@@ -76,6 +76,7 @@ describe('rpc-handler', () => {
     )
     expect(() =>
       normalizeMethods({
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         ok: () => {},
         objectFails: {
           nohandler: true,

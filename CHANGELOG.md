@@ -1,3 +1,24 @@
+## v0.12.0 (2019-12-17)
+
+### Breaking change
+
+The `Timeline` class has been split between the [`TimelineReader`](https://erebos.js.org/docs/timeline-api#timelinereader-class) and [`TimelineWriter`](https://erebos.js.org/docs/timeline-api#timelinewriter-class) classes. `TimelineWriter` extends `TimelineReader` and therefore can be used as a dropped-in replacement for `Timeline`.
+
+### Additional features
+
+- Support for [raw Swarm feeds](https://erebos.js.org/docs/api-bzz#raw-feeds-methods) has been added thanks to [Attila Gazso's pull request](https://github.com/MainframeHQ/erebos/pull/122).
+- `@erebos/api-bzz-browser` can now be used in a Web Worker thanks to [Adam Uhlíř's pull request](https://github.com/MainframeHQ/erebos/pull/128).
+- The [`uploadData()`](https://erebos.js.org/docs/api-bzz#uploaddata) and [`downloadData()`](https://erebos.js.org/docs/api-bzz#downloaddata) methods have been added to the [Bzz APIs](https://erebos.js.org/docs/api-bzz).
+- The [`Hex.from()`](https://erebos.js.org/docs/hex#hexfrom) static method has been added as a replacement for `createHex()`.
+
+### Other change
+
+HTTP error messages from Swarm are now parsed when possible thanks to [Adam Uhlíř's pull request](https://github.com/MainframeHQ/erebos/pull/129).
+
+### New package
+
+The `@erebos/feed-list` package has been added, implementing [lists data structures](https://erebos.js.org/docs/feed-list) on top of raw Swarm feeds.
+
 ## v0.11.0 (2019-11-28)
 
 This release adds support for [Readable streams](https://nodejs.org/api/stream.html#stream_class_stream_readable) in `@erebos/api-bzz-base`, thanks to [Adam Uhlíř's pull request](https://github.com/MainframeHQ/erebos/pull/116).

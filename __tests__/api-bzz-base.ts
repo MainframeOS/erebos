@@ -149,6 +149,7 @@ describe('api-bzz-base', () => {
       expect(setTimeout).toHaveBeenCalledTimes(2)
 
       // Rejects with timeout error
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       fetch.mockResponseOnce(() => new Promise(() => {})) // Never resolves
       const req = bzzTimeout.fetchTimeout('test', {})
       expect(setTimeout).toHaveBeenCalledTimes(3)

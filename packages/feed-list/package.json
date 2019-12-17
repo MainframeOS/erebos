@@ -1,6 +1,6 @@
 {
   "name": "@erebos/feed-list",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Feed-based list data structure",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.6",
-    "@erebos/api-bzz-base": "^0.11.0",
-    "@erebos/hex": "^0.11.0"
+    "@erebos/api-bzz-base": "^0.12.0",
+    "@erebos/hex": "^0.12.0"
   }
 }

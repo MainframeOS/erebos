@@ -1,6 +1,6 @@
 {
   "name": "@erebos/hex",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Hex conversion utilities",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",

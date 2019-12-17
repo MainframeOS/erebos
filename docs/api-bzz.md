@@ -565,6 +565,17 @@ The `downloadStream()` method returns a NodeJs's compatible [`Readable` instance
 
 **Returns** `Promise<Readable>`
 
+### .downloadData()
+
+Downloads and parses JSON data.
+
+**Arguments**
+
+1.  `hashOrDomain: string`: ENS name or Swarm hash
+1.  [`options?: DownloadOptions = {}`](#downloadoptions)
+
+**Returns** `Promise<any>`
+
 ### .downloadObservable()
 
 Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitting the [`FileEntry`](#fileentry) objects as they are downloaded.
@@ -592,6 +603,17 @@ Uploads a single file and returns the hash. If the `contentType` option is provi
 **Arguments**
 
 1.  `data: string | Buffer | Readable`
+1.  [`options: UploadOptions = {}`](#uploadoptions)
+
+**Returns** `Promise<string>`
+
+### .uploadData()
+
+Stringifies and uploads JSON data.
+
+**Arguments**
+
+1.  `data: any`
 1.  [`options: UploadOptions = {}`](#uploadoptions)
 
 **Returns** `Promise<string>`

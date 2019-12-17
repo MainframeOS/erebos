@@ -9,7 +9,7 @@ import {
 } from '@erebos/api-bzz-base'
 import { Observable, Observer } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
-import semver from 'semver'
+import { satisfies as semverSatisfies, valid as semverValid } from 'semver'
 
 export const PROTOCOL = 'timeline'
 export const VERSION = '1.0.0'
@@ -87,8 +87,8 @@ export function validateChapter<T extends MaybeChapter>(chapter: T): T {
     throw new Error('Unsupported protocol')
   }
   if (
-    semver.valid(chapter.version) === null ||
-    !semver.satisfies(chapter.version, VERSION_RANGE)
+    semverValid(chapter.version) === null ||
+    !semverSatisfies(chapter.version, VERSION_RANGE)
   ) {
     throw new Error('Unsupported protocol version')
   }
