@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Feed lists · erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Purpose"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Feed lists · erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://erebos.js.org/"/><meta property="og:description" content="## Purpose"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/erebos-white.png" alt="erebos"/><h2 class="headerTitleWithLogo">erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/examples-storage" target="_self">Examples</a></li><li class="siteNavGroupActive"><a href="/docs/swarm-client" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Data structures</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started">Getting started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm examples</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/examples-storage">File storage examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-feeds">Feeds examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-communications">Communications examples</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm APIs and CLI</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/swarm-client">Swarm client</a></li><li class="navListItem"><a class="navItem" href="/docs/individual-apis">Individual APIs</a></li><li class="navListItem"><a class="navItem" href="/docs/api-bzz">Bzz API</a></li><li class="navListItem"><a class="navItem" href="/docs/api-pss">Pss API</a></li><li class="navListItem"><a class="navItem" href="/docs/cli">CLI</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Data structures</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/data-structures">Data structures</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/feed-list">Feed lists</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline">Timeline</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Timeline protocol</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/timeline-spec">Timeline specification</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-examples">Timeline example</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-api">Timeline API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Utility libraries</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/hex">Hexadecimal encoding</a></li><li class="navListItem"><a class="navItem" href="/docs/keccak256">Keccak256 hashing</a></li><li class="navListItem"><a class="navItem" href="/docs/secp256k1">SECP256k1 signing</a></li><li class="navListItem"><a class="navItem" href="/docs/wallet-hd">Hierarchical Deterministic wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">RPC tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rpc-intro">RPC clients, handler and transport</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-base">Base RPC class and types</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-error">RPC Errors</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-request">RequestRPC client (stateless)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-stream">StreamRPC client (stateful)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-handler">RPC handler</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-http">RPC client over HTTP</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ws">RPC client over WebSocket</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ipc">RPC client over IPC</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-browser">RPC client for browsers</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-node">RPC client for Node</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-electron">RPC client for Electron</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-http">HTTP transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ws">WebSocket transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ipc">IPC transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-electron">Electron transport</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MainframeHQ/erebos/edit/master/docs/feed-list.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Feed lists</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="purpose"></a><a href="#purpose" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Purpose</h2>
+<p>Feed lists are list-like data structures and APIs built on top of raw Swarm feeds.</p>
+<h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<pre><code class="hljs css language-sh">npm install @erebos/feed-list
+</code></pre>
+<blockquote>
+<p>The various feed list classes must be injected a <a href="/docs/api-bzz"><code>Bzz</code> instance</a>, so <code>@erebos/api-bzz-browser</code> or <code>@erebos/api-bzz-node</code> must also be installed alongside.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<h3><a class="anchor" aria-hidden="true" id="chunk-lists"></a><a href="#chunk-lists" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chunk lists</h3>
+<blockquote>
+<p>Feed chunks have a maximum size of <code>3963</code> bytes (4KB minus headers and signature)</p>
+</blockquote>
+<pre><code class="hljs css language-javascript"><span class="hljs-keyword">import</span> { Bzz } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/api-bzz-node'</span>
+<span class="hljs-keyword">import</span> { ChunkListReader, ChunkListWriter } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/feed-list'</span>
+<span class="hljs-keyword">import</span> { pubKeyToAddress } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/keccak256'</span>
+<span class="hljs-keyword">import</span> { createKeyPair, sign } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/secp256k1'</span>
+
+<span class="hljs-comment">// This setup is meant for demonstration purpose only - keys and signatures security must be handled by the application</span>
+<span class="hljs-keyword">const</span> keyPair = createKeyPair()
+<span class="hljs-keyword">const</span> signBytes = <span class="hljs-keyword">async</span> bytes =&gt; sign(bytes, keyPair)
+<span class="hljs-keyword">const</span> bzz = <span class="hljs-keyword">new</span> Bzz({ <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost:8500'</span>, signBytes })
+
+<span class="hljs-keyword">const</span> aliceAddress = pubKeyToAddress(keyPair.getPublic(<span class="hljs-string">'array'</span>))
+<span class="hljs-keyword">const</span> aliceWriter = <span class="hljs-keyword">new</span> ChunkListWriter({
+  bzz,
+  <span class="hljs-attr">feed</span>: { <span class="hljs-attr">user</span>: aliceAddress, <span class="hljs-attr">name</span>: <span class="hljs-string">'alice-bob'</span> },
+})
+<span class="hljs-keyword">await</span> aliceWriter.push(<span class="hljs-string">'one'</span>)
+<span class="hljs-keyword">await</span> aliceWriter.push(<span class="hljs-string">'two'</span>)
+
+<span class="hljs-keyword">const</span> feed = aliceWriter.getID()
+<span class="hljs-keyword">const</span> bobReader = <span class="hljs-keyword">new</span> ChunkListReader({ bzz, feed })
+<span class="hljs-keyword">const</span> chunk = <span class="hljs-keyword">await</span> bobReader.load(<span class="hljs-number">1</span>)
+<span class="hljs-keyword">const</span> text = chunk.toString() <span class="hljs-comment">// 'two'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="data-lists"></a><a href="#data-lists" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data lists</h3>
+<blockquote>
+<p>Data lists store entries in JSON files and reference them in feed chunks</p>
+</blockquote>
+<pre><code class="hljs css language-javascript"><span class="hljs-keyword">import</span> { Bzz } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/api-bzz-node'</span>
+<span class="hljs-keyword">import</span> { DataListReader, DataListWriter } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/feed-list'</span>
+<span class="hljs-keyword">import</span> { pubKeyToAddress } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/keccak256'</span>
+<span class="hljs-keyword">import</span> { createKeyPair, sign } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/secp256k1'</span>
+
+<span class="hljs-comment">// This setup is meant for demonstration purpose only - keys and signatures security must be handled by the application</span>
+<span class="hljs-keyword">const</span> keyPair = createKeyPair()
+<span class="hljs-keyword">const</span> signBytes = <span class="hljs-keyword">async</span> bytes =&gt; sign(bytes, keyPair)
+<span class="hljs-keyword">const</span> bzz = <span class="hljs-keyword">new</span> Bzz({ <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost:8500'</span>, signBytes })
+
+<span class="hljs-keyword">const</span> aliceAddress = pubKeyToAddress(keyPair.getPublic(<span class="hljs-string">'array'</span>))
+<span class="hljs-keyword">const</span> aliceWriter = <span class="hljs-keyword">new</span> DataListWriter({
+  bzz,
+  <span class="hljs-attr">feed</span>: { <span class="hljs-attr">user</span>: aliceAddress, <span class="hljs-attr">name</span>: <span class="hljs-string">'alice-bob'</span> },
+})
+<span class="hljs-keyword">await</span> aliceWriter.push({ <span class="hljs-attr">hello</span>: <span class="hljs-string">'world'</span> })
+<span class="hljs-keyword">await</span> aliceWriter.push({ <span class="hljs-attr">hello</span>: <span class="hljs-string">'Bob'</span> })
+
+<span class="hljs-keyword">const</span> feed = aliceWriter.getID()
+<span class="hljs-keyword">const</span> bobReader = <span class="hljs-keyword">new</span> DataListReader({ bzz, feed })
+<span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> bobReader.load(<span class="hljs-number">1</span>) <span class="hljs-comment">// { hello: 'Bob' }</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="interfaces-and-types"></a><a href="#interfaces-and-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Interfaces and types</h2>
+<h3><a class="anchor" aria-hidden="true" id="hex"></a><a href="#hex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hex</h3>
+<p><code>Hex</code> class instance as exported by the <a href="/docs/hex"><code>@erebos/hex</code> package</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="forwardschunkiterator"></a><a href="#forwardschunkiterator" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ForwardsChunkIterator</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> ForwardsChunkIterator&lt;T&gt; <span class="hljs-keyword">extends</span> AsyncIterator&lt;T&gt; {
+  length: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="listreaderconfig"></a><a href="#listreaderconfig" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ListReaderConfig</h3>
+<p>The <a href="/docs/api-bzz#bzz-class"><code>Bzz class</code></a>, <a href="/docs/api-bzz#feedid"><code>FeedID</code></a>, <a href="/docs/api-bzz#feedparams"><code>FeedParams</code></a> and <a href="/docs/api-bzz#fetchoptions"><code>FetchOptions</code></a> interfaces are exported by the <a href="/docs/api-bzz">Bzz APIs packages</a>.</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ListReaderConfig&lt;
+  Bzz <span class="hljs-keyword">extends</span> BaseBzz&lt;BaseResponse, Readable&gt; = BaseBzz&lt;BaseResponse, Readable&gt;
+&gt; {
+  bzz: Bzz
+  feed: FeedID | FeedParams
+  fetchOptions?: FetchOptions
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="listwriterconfig"></a><a href="#listwriterconfig" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ListWriterConfig</h3>
+<p>Extends <a href="#listwriterconfig"><code>ListReaderConfig</code></a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ListWriterConfig&lt;
+  Bzz <span class="hljs-keyword">extends</span> BaseBzz&lt;BaseResponse, Readable&gt; = BaseBzz&lt;BaseResponse, Readable&gt;
+&gt; <span class="hljs-keyword">extends</span> ListReaderConfig&lt;Bzz&gt; {
+  signParams?: <span class="hljs-built_in">any</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="chunklistreader-class"></a><a href="#chunklistreader-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ChunkListReader class</h2>
+<h3><a class="anchor" aria-hidden="true" id="new-chunklistreader"></a><a href="#new-chunklistreader" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new ChunkListReader()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#listreaderconfig"><code>config: ListReaderConfig</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="load"></a><a href="#load" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.load()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>index: number</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Hex | null</code></p>
+<h3><a class="anchor" aria-hidden="true" id="createbackwardsiterator"></a><a href="#createbackwardsiterator" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createBackwardsIterator()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>maxIndex: number</code></li>
+<li><code>minIndex?: number = 0</code></li>
+</ol>
+<p><strong>Returns</strong> <code>AsyncIterator&lt;Hex | null&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="createforwardsiterator"></a><a href="#createforwardsiterator" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createForwardsIterator()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>minIndex?: number = 0</code></li>
+<li><code>maxIndex?: number</code></li>
+</ol>
+<p><strong>Returns</strong> <a href="#forwardschunkiterator"><code>ForwardsChunkIterator&lt;Hex&gt;</code></a></p>
+<h2><a class="anchor" aria-hidden="true" id="chunklistwriter-class"></a><a href="#chunklistwriter-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ChunkListWriter class</h2>
+<p>Extends <a href="#chunklistreader"><code>ChunkListReader</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="new-chunklistwriter"></a><a href="#new-chunklistwriter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new ChunkListWriter()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#listwriterconfig"><code>config: ListWriterConfig</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="length"></a><a href="#length" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.length</h3>
+<p><strong>Returns</strong> <code>number</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getid"></a><a href="#getid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getID()</h3>
+<p><strong>Returns</strong> <a href="/docs/api-bzz#feedid"><code>FeedID</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="push"></a><a href="#push" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.push()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>data: hexInput</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h2><a class="anchor" aria-hidden="true" id="datalistreader-class"></a><a href="#datalistreader-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataListReader class</h2>
+<p><strong>Types</strong></p>
+<ul>
+<li><code>T = any</code>: the type of the list data</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="new-datalistreader"></a><a href="#new-datalistreader" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new DataListReader()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#listreaderconfig"><code>config: ListReaderConfig</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="load-1"></a><a href="#load-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.load()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>index: number</code></li>
+</ol>
+<p><strong>Returns</strong> <code>T</code></p>
+<h3><a class="anchor" aria-hidden="true" id="createbackwardsiterator-1"></a><a href="#createbackwardsiterator-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createBackwardsIterator()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>maxIndex: number</code></li>
+<li><code>minIndex?: number = 0</code></li>
+</ol>
+<p><strong>Returns</strong> <code>AsyncIterator&lt;T | null&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="createforwardsiterator-1"></a><a href="#createforwardsiterator-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createForwardsIterator()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>minIndex?: number = 0</code></li>
+<li><code>maxIndex?: number</code></li>
+</ol>
+<p><strong>Returns</strong> <a href="#forwardschunkiterator"><code>ForwardsChunkIterator&lt;T&gt;</code></a></p>
+<h2><a class="anchor" aria-hidden="true" id="datalistwriter-class"></a><a href="#datalistwriter-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataListWriter class</h2>
+<p>Extends <a href="#datalistreader"><code>DataListReader</code></a></p>
+<p><strong>Types</strong></p>
+<ul>
+<li><code>T = any</code>: the type of the list data</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="new-datalistwriter"></a><a href="#new-datalistwriter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new DataListWriter()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#listwriterconfig"><code>config: ListWriterConfig</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="length-1"></a><a href="#length-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.length</h3>
+<p><strong>Returns</strong> <code>number</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getid-1"></a><a href="#getid-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getID()</h3>
+<p><strong>Returns</strong> <a href="/docs/api-bzz#feedid"><code>FeedID</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="push-1"></a><a href="#push-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.push()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>data: T</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/data-structures"><span class="arrow-prev">← </span><span>Data structures</span></a><a class="docs-next button" href="/docs/timeline"><span>Timeline</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#purpose">Purpose</a></li><li><a href="#installation">Installation</a></li><li><a href="#usage">Usage</a><ul class="toc-headings"><li><a href="#chunk-lists">Chunk lists</a></li><li><a href="#data-lists">Data lists</a></li></ul></li><li><a href="#interfaces-and-types">Interfaces and types</a><ul class="toc-headings"><li><a href="#hex">Hex</a></li><li><a href="#forwardschunkiterator">ForwardsChunkIterator</a></li><li><a href="#listreaderconfig">ListReaderConfig</a></li><li><a href="#listwriterconfig">ListWriterConfig</a></li></ul></li><li><a href="#chunklistreader-class">ChunkListReader class</a><ul class="toc-headings"><li><a href="#new-chunklistreader">new ChunkListReader()</a></li><li><a href="#load">.load()</a></li><li><a href="#createbackwardsiterator">.createBackwardsIterator()</a></li><li><a href="#createforwardsiterator">.createForwardsIterator()</a></li></ul></li><li><a href="#chunklistwriter-class">ChunkListWriter class</a><ul class="toc-headings"><li><a href="#new-chunklistwriter">new ChunkListWriter()</a></li><li><a href="#length">.length</a></li><li><a href="#getid">.getID()</a></li><li><a href="#push">.push()</a></li></ul></li><li><a href="#datalistreader-class">DataListReader class</a><ul class="toc-headings"><li><a href="#new-datalistreader">new DataListReader()</a></li><li><a href="#load-1">.load()</a></li><li><a href="#createbackwardsiterator-1">.createBackwardsIterator()</a></li><li><a href="#createforwardsiterator-1">.createForwardsIterator()</a></li></ul></li><li><a href="#datalistwriter-class">DataListWriter class</a><ul class="toc-headings"><li><a href="#new-datalistwriter">new DataListWriter()</a></li><li><a href="#length-1">.length</a></li><li><a href="#getid-1">.getID()</a></li><li><a href="#push-1">.push()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/getting-started">Getting Started</a><a href="/docs/swarm-client">API Reference</a><a href="/docs/cli">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://beehive.ethswarm.org" target="_blank" rel="noreferrer noopener">Development chat</a></div></section><section class="copyright"><img src="/img/mainframe.png" class="mainframe-logo"/></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+                indexName: 'erebos',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {"facetFilters":["language:en"]}
+              });
+            </script></body></html>
