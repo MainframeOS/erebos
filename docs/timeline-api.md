@@ -138,18 +138,6 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Returns** `T`
 
-<<<<<<< HEAD
-
-## Timeline class
-
-**Types**
-
-- `T = any`: the type of the Timeline chapters data
-
-### new Timeline()
-
-=======
-
 ## TimelineReader class
 
 **Types**
@@ -157,8 +145,6 @@ Validates that the provided object contains the `protocol` and `version` fields 
 - `T = any`: the type of the TimelineReader chapters data
 
 ### new TimelineReader()
-
-> > > > > > > timeline-split
 
 **Arguments**
 
