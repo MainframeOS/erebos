@@ -1,17 +1,17 @@
 import {
   MAX_CHUNK_BYTE_LENGTH,
-  ChunkListReaderConfig,
   ChunkListReader,
   ChunkListWriter,
   DataListReader,
   DataListWriter,
+  ListReaderConfig,
 } from '@erebos/feed-list'
 import { Bzz } from '@erebos/api-bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
 describe('feed-list', () => {
-  function createConfig(): ChunkListReaderConfig {
+  function createConfig(): ListReaderConfig {
     const keyPair = createKeyPair()
     const user = pubKeyToAddress(keyPair.getPublic('array'))
     const bzz = new Bzz({

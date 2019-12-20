@@ -9,7 +9,11 @@ import {
 } from '@erebos/api-bzz-base'
 import { Observable, Observer } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
-import { satisfies as semverSatisfies, valid as semverValid } from 'semver'
+import {
+  satisfies as semverSatisfies,
+  valid as semverValid,
+  // @ts-ignore
+} from 'semver/preload'
 
 export const PROTOCOL = 'timeline'
 export const VERSION = '1.0.0'

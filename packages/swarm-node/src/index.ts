@@ -13,7 +13,7 @@ import { createRPC as createWS } from '@erebos/rpc-ws-node'
 // Re-exports from imported libraries
 export { Bzz } from '@erebos/api-bzz-node'
 export { Pss } from '@erebos/api-pss'
-export { Hex, createHex, hexInput, hexValue } from '@erebos/hex'
+export { Hex, hexInput, hexValue } from '@erebos/hex'
 export { createRPC } from '@erebos/rpc-node'
 
 const instantiateAPI = createInstantiateAPI(

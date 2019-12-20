@@ -50,7 +50,7 @@
     "postpublish": "del-cli oclif.manifest.json"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
+    "@babel/runtime": "^7.7.7",
     "@erebos/api-bzz-node": "^0.12.0",
     "@erebos/api-pss": "^0.12.0",
     "@erebos/hex": "^0.12.0",

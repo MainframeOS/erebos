@@ -9,6 +9,7 @@
       "@erebos/api-pss": ["api-pss/src"],
       "@erebos/cli": ["cli/src"],
       "@erebos/client-base": ["client-base/src"],
+      "@erebos/doc-sync": ["doc-sync/src"],
       "@erebos/feed-list": ["feed-list/src"],
       "@erebos/hex": ["hex/src"],
       "@erebos/keccak256": ["keccack256/src"],

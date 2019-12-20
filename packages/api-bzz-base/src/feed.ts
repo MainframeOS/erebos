@@ -184,8 +184,30 @@ export class FeedID implements FeedParams, FeedMetadata {
     }
   }
 
+  public get params(): FeedParams {
+    return {
+      user: this.user,
+      topic: this.topic,
+      time: this.time,
+      level: this.level,
+    }
+  }
+
   public clone(): FeedID {
     return new FeedID(this)
+  }
+
+  public matches(feed: Feed): boolean {
+    return this.user === feed.user && this.topic === feed.topic
+  }
+
+  public equals(other: FeedParams): boolean {
+    return (
+      this.user === other.user &&
+      this.topic === other.topic &&
+      this.time === other.time &&
+      this.level === other.level
+    )
   }
 
   public toBuffer(): Buffer {
@@ -194,6 +216,10 @@ export class FeedID implements FeedParams, FeedMetadata {
 
   public toHash(): string {
     return feedMetaToHash(this)
+  }
+
+  public toJSON(): FeedParams {
+    return this.params
   }
 }
 

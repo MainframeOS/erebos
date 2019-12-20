@@ -241,7 +241,7 @@ describe('api-bzz-base', () => {
         headers: { accept: 'application/json' },
         mode: 'raw',
       })
-      expect(res.body).toBe('OK')
+      expect(Buffer.from(res.body).toString()).toBe('OK')
       const [fetchUrl, { headers }] = fetch.mock.calls[0]
       expect(fetchUrl).toBe(`${TEST_URL}bzz-raw:/test/`)
       expect(headers).toEqual({ accept: 'application/json' })
@@ -474,6 +474,44 @@ describe('api-bzz-base', () => {
       const other = id.clone()
       expect(other).not.toBe(id)
       expect(other).toEqual(id)
+    })
+
+    it('has a matches() method', () => {
+      const feed = {
+        user: randomHex(20),
+        topic: randomHex(32),
+      }
+      const id1 = new FeedID({ ...feed, time: 20, level: 1 })
+      expect(id1.matches(feed)).toBe(true)
+      const id2 = new FeedID({ ...feed, time: 0, level: 0 })
+      expect(id2.matches(id1)).toBe(true)
+      const id3 = new FeedID({ ...id1.params, user: randomHex(20) })
+      expect(id3.matches(id1)).toBe(false)
+    })
+
+    it('has an equals() method', () => {
+      const params = {
+        user: randomHex(20),
+        topic: randomHex(32),
+        time: 20,
+        level: 1,
+      }
+      const id = new FeedID(params)
+      expect(id.equals(params)).toBe(true)
+      const other = id.clone()
+      expect(other.equals(id)).toBe(true)
+      other.time = 0
+      expect(other.equals(id)).toBe(false)
+    })
+
+    it('has a toJSON() method', () => {
+      const params = {
+        user: randomHex(20),
+        topic: randomHex(32),
+        time: 20,
+        level: 1,
+      }
+      expect(FeedID.from(params).toJSON()).toEqual(params)
     })
   })
 })

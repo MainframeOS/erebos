@@ -21,8 +21,12 @@ export declare class FeedID implements FeedParams, FeedMetadata {
     constructor(params: FeedParams);
     get feed(): Feed;
     get epoch(): FeedEpoch;
+    get params(): FeedParams;
     clone(): FeedID;
+    matches(feed: Feed): boolean;
+    equals(other: FeedParams): boolean;
     toBuffer(): Buffer;
     toHash(): string;
+    toJSON(): FeedParams;
 }
 export declare function getFeedMetadata(input: FeedID | FeedMetadata | FeedParams): FeedMetadata;

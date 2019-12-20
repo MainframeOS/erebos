@@ -13,7 +13,7 @@ export const MAX_CHUNK_BYTE_LENGTH = FEED_MAX_DATA_LENGTH
 // Hex value is a hex string (= byte length x 2) prefixed by `0x`
 export const MAX_CHUNK_VALUE_LENGTH = MAX_CHUNK_BYTE_LENGTH * 2 + 2
 
-export interface ForwardsChunkIterator<T> extends AsyncIterator<T> {
+export interface ForwardsChunkIterator<T> extends AsyncIterableIterator<T> {
   length: number
 }
 
@@ -50,8 +50,12 @@ export class ChunkListReader<
           })
   }
 
+  public getID(): FeedID {
+    return this.id.clone()
+  }
+
   public async load(index: number): Promise<Hex | null> {
-    const id = this.id.clone()
+    const id = this.getID()
     id.time = index
 
     try {
@@ -68,12 +72,11 @@ export class ChunkListReader<
   public createBackwardsIterator(
     maxIndex: number,
     minIndex = 0,
-  ): AsyncIterator<Hex | null> {
-    const id = this.id.clone()
+  ): AsyncIterableIterator<Hex | null> {
+    const id = this.getID()
     id.time = maxIndex
 
     return {
-      // @ts-ignore
       [Symbol.asyncIterator]() {
         return this
       },
@@ -98,7 +101,6 @@ export class ChunkListReader<
     id.time = minIndex
 
     return {
-      // @ts-ignore
       [Symbol.asyncIterator]() {
         return this
       },
@@ -135,10 +137,6 @@ export class ChunkListWriter<
     return this.id.time + 1
   }
 
-  public getID(): FeedID {
-    return this.id.clone()
-  }
-
   public async push(data: hexInput): Promise<void> {
     const chunk = Hex.from(data)
     if (chunk.value.length > MAX_CHUNK_VALUE_LENGTH) {
@@ -165,6 +163,10 @@ export class DataListReader<
     this.chunkList = new ChunkListReader(config)
   }
 
+  public getID(): FeedID {
+    return this.chunkList.getID()
+  }
+
   protected async downloadData(hex: Hex): Promise<T> {
     return await this.chunkList.bzz.downloadData(
       hex.value.slice(2),
@@ -180,10 +182,9 @@ export class DataListReader<
   public createBackwardsIterator(
     maxIndex: number,
     minIndex?: number,
-  ): AsyncIterator<T | null> {
+  ): AsyncIterableIterator<T | null> {
     const iterator = this.chunkList.createBackwardsIterator(maxIndex, minIndex)
     return {
-      // @ts-ignore
       [Symbol.asyncIterator]() {
         return this
       },
@@ -207,7 +208,6 @@ export class DataListReader<
   ): ForwardsChunkIterator<T> {
     const iterator = this.chunkList.createForwardsIterator(minIndex, maxIndex)
     return {
-      // @ts-ignore
       [Symbol.asyncIterator]() {
         return this
       },
@@ -237,10 +237,6 @@ export class DataListWriter<
 
   public get length(): number {
     return this.chunkList.length
-  }
-
-  public getID(): FeedID {
-    return this.chunkList.getID()
   }
 
   public async push(data: T): Promise<string> {

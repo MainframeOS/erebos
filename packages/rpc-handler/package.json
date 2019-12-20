@@ -20,9 +20,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
+    "@babel/runtime": "^7.7.7",
     "@erebos/rpc-base": "^0.10.0",
     "@erebos/rpc-error": "^0.10.0",
-    "fastest-validator": "0.6.18"
+    "fastest-validator": "1.0.0"
   }
 }
