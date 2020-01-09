@@ -40,13 +40,6 @@ describe('browser', () => {
     await page.addScriptTag({
       path: resolve(
         __dirname,
-        '../packages/swarm-browser/dist/readable-stream.js',
-      ),
-    })
-
-    await page.addScriptTag({
-      path: resolve(
-        __dirname,
         '../packages/timeline/dist/erebos.timeline.development.js',
       ),
     })
@@ -154,7 +147,7 @@ describe('browser', () => {
 
     it('uploads/downloads the file with bzz using streams', async () => {
       const manifestHash = await evalClient(async (client, uploadContent) => {
-        const s = new NodeStream.Readable()
+        const s = new Erebos.swarm.Readable()
         s.push(uploadContent)
         s.push(null)
 
@@ -301,6 +294,74 @@ describe('browser', () => {
       }, dir)
 
       expect(downloadedDir).toEqual(dir)
+    })
+
+    it('downloadDirectoryData() streams correctly big binary data provided to uploadDirectory()', async () => {
+      const result = await evalClient(async (client, uploadContent) => {
+        /**
+         * Utility function for generating random Buffer
+         * !!! IT IS NOT CRYPTO SAFE !!!
+         * For that use `crypto.randomBytes()`
+         *
+         * @param length
+         */
+        function randomBuffer(length: number): Buffer {
+          const buf = Erebos.swarm.Buffer.alloc(length)
+
+          for (let i = 0; i < length; ++i) {
+            buf[i] = (Math.random() * 0xff) << 0
+          }
+
+          return buf
+        }
+
+        const dir = {
+          [`foo-${uploadContent}.txt`]: {
+            data: `this is foo-${uploadContent}.txt`,
+          },
+          [`bar-${uploadContent}.txt`]: {
+            data: `this is bar-${uploadContent}.txt`,
+          },
+          bin: {
+            data: randomBuffer(200000),
+          },
+        }
+
+        const dirHash = await client.bzz.uploadDirectory(dir)
+        const response = await client.bzz.downloadDirectoryData(dirHash)
+
+        if (
+          !(`foo-${uploadContent}.txt` in response) ||
+          !(`bar-${uploadContent}.txt` in response) ||
+          !('bin' in response)
+        ) {
+          return 'Unknown keys: ' + Object.keys(response).toString()
+        }
+
+        if (
+          response[`foo-${uploadContent}.txt`].data.toString() !==
+          `this is foo-${uploadContent}.txt`
+        ) {
+          return 'foo does not equal!'
+        }
+
+        if (
+          response[`bar-${uploadContent}.txt`].data.toString() !==
+          `this is bar-${uploadContent}.txt`
+        ) {
+          return 'bar does not equal!'
+        }
+
+        if (!dir.bin.data.equals(response[`bin`].data)) {
+          return 'bin does not equal!'
+        }
+
+        return null
+      }, uploadContent)
+
+      if (result !== null) {
+        fail(result)
+      }
     })
 
     it('supports feeds posting and getting', async () => {

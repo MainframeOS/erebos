@@ -4,12 +4,33 @@ title: Swarm client
 
 The Erebos `SwarmClient` class provides an unified way of interacting with the Swarm APIs based on a provided configuration, or simply a server endpoint.
 
-```javascript
-import { SwarmClient } from '@erebos/swarm-browser' // browser
-// or
-import { SwarmClient } from '@erebos/swarm-node' // node
-// or
-import { SwarmClient } from '@erebos/swarm' // universal
+## Installation
+
+### For browser
+
+```sh
+npm install @erebos/swarm-browser
+```
+
+You can load this module also directly as bundle using a script tag, which will make `Erebos.swarm` object available
+through global namespace:
+
+```html
+<script src="https://unpkg.com/@erebos/swarm-browser/dist/erebos.swarm.production.js"></script>
+```
+        
+This bundle expose `Buffer` and `Readable` under the `Erebos.swarm` object.
+
+### For Node
+
+```sh
+npm install @erebos/swarm-node
+```
+
+### Universal
+
+```sh
+npm install @erebos/swarm
 ```
 
 ## RPC class

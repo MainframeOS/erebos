@@ -5,7 +5,7 @@ const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production'
 
-const main = () => {
+module.exports = () => {
   const envName = isProduction ? 'production' : 'development'
   return {
     bail: isProduction,
@@ -82,31 +82,4 @@ const main = () => {
     },
     stats: 'minimal',
   }
-}
-
-const readable = () => {
-  return {
-    bail: false,
-    mode: 'development',
-    devtool: 'cheap-module-source-map',
-    entry: path.join(__dirname, `..`, '..', 'node_modules', 'readable-stream', 'readable-browser.js'),
-    output: {
-      path: path.join(__dirname, `dist/`),
-      filename: `readable-stream.js`,
-      sourceMapFilename: `readable-stream.js.map`,
-      library: 'NodeStream',
-      libraryTarget: 'umd',
-      devtoolModuleFilenameTemplate: info =>
-        path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
-    },
-    node: {
-      Buffer: true,
-    },
-    target: 'web',
-    stats: 'minimal',
-  }
-}
-
-module.exports = () => {
-  return isProduction ? main() : [main(), readable()]
 }

@@ -15,6 +15,10 @@ export { Pss } from '@erebos/api-pss'
 export { Hex, createHex } from '@erebos/hex'
 export { createRPC } from '@erebos/rpc-browser'
 
+// Exporting internal tooling that might be handy
+export { Buffer } from 'buffer'
+export { Readable } from 'readable-stream'
+
 export interface SwarmConfig extends ClientConfig {
   bzz?: BzzConfig | Bzz
   pss?: string | Pss
