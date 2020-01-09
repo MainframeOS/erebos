@@ -39,7 +39,6 @@ export class NodeReadable extends Readable {
           return doRead()
         } else {
           this._reading = false
-          this._reader.releaseLock()
         }
       })
     }
