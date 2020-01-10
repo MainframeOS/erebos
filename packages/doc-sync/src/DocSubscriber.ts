@@ -5,25 +5,22 @@ import { Subscription, interval } from 'rxjs'
 import { DocReader } from './DocReader'
 import { downloadMeta } from './loaders'
 import {
-  BzzInstance,
+  Bzz,
   DataContent,
   DocSubscriberParams,
   FromJSONDocSubscriberParams,
   LoadDocSubscriberParams,
 } from './types'
 
-export class DocSubscriber<
-  T,
-  Bzz extends BzzInstance = BzzInstance
-> extends DocReader<T, Bzz> {
-  static fromJSON<T, Bzz extends BzzInstance = BzzInstance>(
-    params: FromJSONDocSubscriberParams<Bzz>,
-  ): DocSubscriber<T, Bzz> {
-    return new DocSubscriber<T, Bzz>({
+export class DocSubscriber<T, B extends Bzz = Bzz> extends DocReader<T, B> {
+  static fromJSON<T, B extends Bzz = Bzz>(
+    params: FromJSONDocSubscriberParams<B>,
+  ): DocSubscriber<T, B> {
+    return new DocSubscriber<T, B>({
       bzz: params.bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListReader<DataContent, Bzz>({
+      list: new DataListReader<DataContent, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
@@ -32,16 +29,16 @@ export class DocSubscriber<
     })
   }
 
-  static async load<T, Bzz extends BzzInstance = BzzInstance>(
-    params: LoadDocSubscriberParams<Bzz>,
-  ): Promise<DocSubscriber<T, Bzz>> {
+  static async load<T, B extends Bzz = Bzz>(
+    params: LoadDocSubscriberParams<B>,
+  ): Promise<DocSubscriber<T, B>> {
     const { bzz, feed } = params
     const meta = await downloadMeta(bzz, feed)
-    const subscriber = new DocSubscriber<T, Bzz>({
+    const subscriber = new DocSubscriber<T, B>({
       bzz,
       doc: Automerge.init<T>(),
       feed,
-      list: new DataListReader<DataContent, Bzz>({
+      list: new DataListReader<DataContent, B>({
         bzz,
         feed: meta.dataFeed,
       }),
@@ -55,7 +52,7 @@ export class DocSubscriber<
   private pullInterval: number
   private subscription: Subscription | null = null
 
-  constructor(params: DocSubscriberParams<T, Bzz>) {
+  constructor(params: DocSubscriberParams<T, B>) {
     super(params)
     this.pullInterval = params.pullInterval
     this.start()

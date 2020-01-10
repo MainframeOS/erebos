@@ -1,43 +1,43 @@
-import { FeedParams } from '@erebos/api-bzz-base'
+import { FeedParams } from '@erebos/bzz-feed'
 import { DataListReader } from '@erebos/feed-list'
 import Automerge, { Doc } from 'automerge'
 
-import { BzzInstance, DataContent, MetaContent } from './types'
+import { Bzz, DataContent, MetaContent } from './types'
 
-export async function downloadMeta<Bzz extends BzzInstance = BzzInstance>(
-  bzz: Bzz,
+export async function downloadMeta<B extends Bzz = Bzz>(
+  bzz: B,
   feed: FeedParams,
 ): Promise<MetaContent> {
   const res = await bzz.getFeedContent(feed, { mode: 'raw' })
   return await res.json<MetaContent>()
 }
 
-export async function uploadMeta<Bzz extends BzzInstance = BzzInstance>(
-  bzz: Bzz,
+export async function uploadMeta<B extends Bzz = Bzz>(
+  bzz: B,
   feed: FeedParams,
   content: MetaContent,
 ): Promise<string> {
   return await bzz.setFeedContent(feed, JSON.stringify(content))
 }
 
-export async function downloadSnapshot<
-  T,
-  Bzz extends BzzInstance = BzzInstance
->(bzz: Bzz, hash: string): Promise<Doc<T>> {
-  const res = await bzz.download(hash, { mode: 'raw' })
+export async function downloadSnapshot<T, B extends Bzz = Bzz>(
+  bzzFeed: B,
+  hash: string,
+): Promise<Doc<T>> {
+  const res = await bzzFeed.bzz.download(hash, { mode: 'raw' })
   const text = await res.text()
   return Automerge.load<T>(text)
 }
 
-export async function downloadDoc<T, Bzz extends BzzInstance = BzzInstance>(
-  bzz: Bzz,
+export async function downloadDoc<T, B extends Bzz = Bzz>(
+  bzz: B,
   feed: FeedParams,
-  list: DataListReader<DataContent, Bzz>,
+  list: DataListReader<DataContent, B>,
 ): Promise<Doc<T>> {
   const meta = await downloadMeta(bzz, feed)
 
   let doc = meta.snapshot
-    ? await downloadSnapshot<T, Bzz>(bzz, meta.snapshot.hash)
+    ? await downloadSnapshot<T, B>(bzz, meta.snapshot.hash)
     : Automerge.init<T>()
 
   const nextTime = meta.snapshot ? meta.snapshot.time + 1 : 0

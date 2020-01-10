@@ -25,20 +25,20 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-typescript": "^7.7.7",
-    "@types/jest": "^24.0.24",
+    "@types/jest": "^24.0.25",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "del-cli": "^3.0.0",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-config-mainframe": "^4.0.1",
     "jest": "^24.9.0",
-    "jest-fetch-mock": "^3.0.0",
+    "jest-fetch-mock": "^3.0.1",
     "jest-puppeteer": "^4.4.0",
-    "lerna": "^3.16.4",
+    "lerna": "^3.20.2",
     "prettier": "~1.19.1",
     "puppeteer": "^2.0.0",
-    "ts-jest": "^24.2.0",
-    "typescript": "~3.7.3"
+    "ts-jest": "^24.3.0",
+    "typescript": "~3.7.4"
   }
 }

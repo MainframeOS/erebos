@@ -6,7 +6,7 @@ import { DocSubscriber } from './DocSubscriber'
 import { DocWriter, getDocFeeds } from './DocWriter'
 import { downloadMeta } from './loaders'
 import {
-  BzzInstance,
+  Bzz,
   DataContent,
   DocSynchronizerParams,
   DocSynchronizerSerialized,
@@ -15,22 +15,20 @@ import {
   LoadDocSynchronizerParams,
 } from './types'
 
-export class DocSynchronizer<T, Bzz extends BzzInstance> extends Subject<
-  Doc<T>
-> {
-  static async init<T, Bzz extends BzzInstance = BzzInstance>(
-    params: InitDocSynchronizerParams<T, Bzz>,
-  ): Promise<DocSynchronizer<T, Bzz>> {
+export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
+  static async init<T, B extends Bzz = Bzz>(
+    params: InitDocSynchronizerParams<T, B>,
+  ): Promise<DocSynchronizer<T, B>> {
     const { bzz, pullInterval } = params
     const feeds = getDocFeeds(params.feed)
     const loadSources = (params.sources || []).map(async feed => {
-      return await DocSubscriber.load<T, Bzz>({ bzz, feed, pullInterval })
+      return await DocSubscriber.load<T, B>({ bzz, feed, pullInterval })
     })
-    const synchronizer = new DocSynchronizer<T, Bzz>({
+    const synchronizer = new DocSynchronizer<T, B>({
       bzz,
       doc: Automerge.from<T>(params.doc),
       feed: feeds.meta,
-      list: new DataListWriter<DataContent, Bzz>({
+      list: new DataListWriter<DataContent, B>({
         bzz,
         feed: feeds.data,
       }),
@@ -41,22 +39,22 @@ export class DocSynchronizer<T, Bzz extends BzzInstance> extends Subject<
     return synchronizer
   }
 
-  static fromJSON<T, Bzz extends BzzInstance = BzzInstance>(
-    params: FromJSONDocSynchronizerParams<Bzz>,
-  ): DocSynchronizer<T, Bzz> {
+  static fromJSON<T, B extends Bzz = Bzz>(
+    params: FromJSONDocSynchronizerParams<B>,
+  ): DocSynchronizer<T, B> {
     const { bzz, pullInterval } = params
     const sources = (params.sources || []).map(sourceParams => {
-      return DocSubscriber.fromJSON<T, Bzz>({
+      return DocSubscriber.fromJSON<T, B>({
         ...sourceParams,
         bzz,
         pullInterval,
       })
     })
-    return new DocSynchronizer<T, Bzz>({
+    return new DocSynchronizer<T, B>({
       bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListWriter<DataContent, Bzz>({
+      list: new DataListWriter<DataContent, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
@@ -65,12 +63,12 @@ export class DocSynchronizer<T, Bzz extends BzzInstance> extends Subject<
     })
   }
 
-  static async load<T, Bzz extends BzzInstance = BzzInstance>(
-    params: LoadDocSynchronizerParams<Bzz>,
-  ): Promise<DocSynchronizer<T, Bzz>> {
+  static async load<T, B extends Bzz = Bzz>(
+    params: LoadDocSynchronizerParams<B>,
+  ): Promise<DocSynchronizer<T, B>> {
     const { bzz, feed, pullInterval } = params
     const loadSources = (params.sources || []).map(async sourceFeed => {
-      return await DocSubscriber.load<T, Bzz>({
+      return await DocSubscriber.load<T, B>({
         bzz,
         feed: sourceFeed,
         pullInterval,
@@ -80,11 +78,11 @@ export class DocSynchronizer<T, Bzz extends BzzInstance> extends Subject<
       downloadMeta(bzz, feed),
       Promise.all(loadSources),
     ])
-    const synchronizer = new DocSynchronizer<T, Bzz>({
+    const synchronizer = new DocSynchronizer<T, B>({
       bzz,
       doc: Automerge.init<T>(),
       feed,
-      list: new DataListWriter<DataContent, Bzz>({
+      list: new DataListWriter<DataContent, B>({
         bzz,
         feed: meta.dataFeed,
       }),
@@ -95,14 +93,14 @@ export class DocSynchronizer<T, Bzz extends BzzInstance> extends Subject<
     return synchronizer
   }
 
-  protected writer: DocWriter<T, Bzz>
+  protected writer: DocWriter<T, B>
   protected pushInterval: number | null
-  protected sources: Array<DocSubscriber<T, Bzz>>
+  protected sources: Array<DocSubscriber<T, B>>
   protected subscription: Subscription | null = null
 
-  constructor(params: DocSynchronizerParams<T, Bzz>) {
+  constructor(params: DocSynchronizerParams<T, B>) {
     super()
-    this.writer = new DocWriter<T, Bzz>(params)
+    this.writer = new DocWriter<T, B>(params)
     this.writer.subscribe(this)
     this.pushInterval = params.pushInterval || null
     this.sources = params.sources || []

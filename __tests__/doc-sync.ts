@@ -4,7 +4,8 @@ import {
   DocSubscriber,
   DocSynchronizer,
 } from '@erebos/doc-sync'
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
@@ -21,10 +22,11 @@ describe('doc-sync', () => {
   function createConfig(): Config {
     const keyPair = createKeyPair()
     const user = pubKeyToAddress(keyPair.getPublic('array'))
-    const bzz = new Bzz({
-      signBytes: (bytes: Array<number>) =>
-        Promise.resolve(sign(bytes, keyPair)),
-      url: 'http://localhost:8500',
+    const bzz = new BzzFeed({
+      bzz: new BzzNode({ url: 'http://localhost:8500' }),
+      signBytes: (bytes: Array<number>) => {
+        return Promise.resolve(sign(bytes, keyPair))
+      },
     })
     return { bzz, feed: { user } }
   }

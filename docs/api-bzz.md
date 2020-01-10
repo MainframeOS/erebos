@@ -316,8 +316,6 @@ interface BzzConfig {
 
 **Returns** `Array<number>`
 
-():
-
 ### feedMetaToBuffer()
 
 **Arguments**

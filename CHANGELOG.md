@@ -6,7 +6,7 @@ The `Timeline` class has been split between the [`TimelineReader`](https://erebo
 
 ### Additional features
 
-- Support for [raw Swarm feeds](https://erebos.js.org/docs/api-bzz#raw-feeds-methods) has been added thanks to [Attila Gazso's pull request](https://github.com/MainframeHQ/erebos/pull/122).
+- Support for [raw Swarm feeds](https://erebos.js.org/docs/api-bzz#raw-feeds-methods) has been added thanks to [Attila Gazso's pull request](https://github.com/MainframeHQ/erebos/pull/127).
 - `@erebos/api-bzz-browser` can now be used in a Web Worker thanks to [Adam Uhlíř's pull request](https://github.com/MainframeHQ/erebos/pull/128).
 - The [`uploadData()`](https://erebos.js.org/docs/api-bzz#uploaddata) and [`downloadData()`](https://erebos.js.org/docs/api-bzz#downloaddata) methods have been added to the [Bzz APIs](https://erebos.js.org/docs/api-bzz).
 - The [`Hex.from()`](https://erebos.js.org/docs/hex#hexfrom) static method has been added as a replacement for `createHex()`.

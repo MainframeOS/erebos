@@ -5,7 +5,7 @@ import Automerge, { Change, ChangeFn, Doc } from 'automerge'
 import { DocReader } from './DocReader'
 import { downloadMeta, uploadMeta } from './loaders'
 import {
-  BzzInstance,
+  Bzz,
   CreateDocWriterParams,
   DataContent,
   DocFeeds,
@@ -33,34 +33,31 @@ export function getDocFeeds(feed: FeedFactoryParams): DocFeeds {
   }
 }
 
-export class DocWriter<
-  T,
-  Bzz extends BzzInstance = BzzInstance
-> extends DocReader<T, Bzz> {
-  static create<T, Bzz extends BzzInstance = BzzInstance>(
-    params: CreateDocWriterParams<Bzz>,
-  ): DocWriter<T, Bzz> {
+export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
+  static create<T, B extends Bzz = Bzz>(
+    params: CreateDocWriterParams<B>,
+  ): DocWriter<T, B> {
     const feeds = getDocFeeds(params.feed)
-    return new DocWriter<T, Bzz>({
+    return new DocWriter<T, B>({
       bzz: params.bzz,
       doc: Automerge.init(),
       feed: feeds.meta,
-      list: new DataListWriter<DataContent, Bzz>({
+      list: new DataListWriter<DataContent, B>({
         bzz: params.bzz,
         feed: feeds.data,
       }),
     })
   }
 
-  static async init<T, Bzz extends BzzInstance = BzzInstance>(
-    params: InitDocWriterParams<T, Bzz>,
-  ): Promise<DocWriter<T, Bzz>> {
+  static async init<T, B extends Bzz = Bzz>(
+    params: InitDocWriterParams<T, B>,
+  ): Promise<DocWriter<T, B>> {
     const feeds = getDocFeeds(params.feed)
-    const writer = new DocWriter<T, Bzz>({
+    const writer = new DocWriter<T, B>({
       bzz: params.bzz,
       doc: Automerge.from<T>(params.doc),
       feed: feeds.meta,
-      list: new DataListWriter<DataContent, Bzz>({
+      list: new DataListWriter<DataContent, B>({
         bzz: params.bzz,
         feed: feeds.data,
       }),
@@ -69,40 +66,40 @@ export class DocWriter<
     return writer
   }
 
-  static fromJSON<T, Bzz extends BzzInstance = BzzInstance>(
-    params: FromJSONDocParams<Bzz>,
-  ): DocReader<T, Bzz> {
-    return new DocWriter<T, Bzz>({
+  static fromJSON<T, B extends Bzz = Bzz>(
+    params: FromJSONDocParams<B>,
+  ): DocWriter<T, B> {
+    return new DocWriter<T, B>({
       bzz: params.bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListWriter<DataContent, Bzz>({
+      list: new DataListWriter<DataContent, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
     })
   }
 
-  static async load<T, Bzz extends BzzInstance = BzzInstance>(
-    params: LoadDocParams<Bzz>,
-  ): Promise<DocReader<T, Bzz>> {
+  static async load<T, B extends Bzz = Bzz>(
+    params: LoadDocParams<B>,
+  ): Promise<DocWriter<T, B>> {
     const { bzz, feed } = params
     const doc = Automerge.init<T>()
     const meta = await downloadMeta(bzz, feed)
-    const list = new DataListWriter<DataContent, Bzz>({
+    const list = new DataListWriter<DataContent, B>({
       bzz,
       feed: meta.dataFeed,
     })
-    const writer = new DocWriter<T, Bzz>({ bzz, doc, feed, list })
+    const writer = new DocWriter<T, B>({ bzz, doc, feed, list })
     await writer.pull()
     return writer
   }
 
-  protected list: DataListWriter<DataContent, Bzz>
+  protected list: DataListWriter<DataContent, B>
   protected pushedDoc: Doc<T> | null = null
   protected pushQueue: Promise<string> | null = null
 
-  public constructor(params: DocWriterParams<T, Bzz>) {
+  public constructor(params: DocWriterParams<T, B>) {
     super({ ...params, time: params.list.length })
     this.list = params.list
   }

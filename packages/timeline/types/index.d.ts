@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import * as stream from 'stream';
-import { BaseBzz, BaseResponse, FeedParams, FetchOptions, PollOptions, UploadOptions } from '@erebos/api-bzz-base';
+import { Response, FetchOptions, PollOptions, UploadOptions } from '@erebos/bzz';
+import { BzzFeed, FeedParams } from '@erebos/bzz-feed';
 import { Observable } from 'rxjs';
 export declare const PROTOCOL = "timeline";
 export declare const VERSION = "1.0.0";
@@ -19,7 +19,7 @@ export interface PartialChapter<T = any> {
 export interface Chapter<T = any> extends PartialChapter<T> {
     id: string;
 }
-export declare type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (res: R) => Promise<Chapter<T>>;
+export declare type DecodeChapter<T, R extends Response> = (res: R) => Promise<Chapter<T>>;
 export declare type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>;
 export interface LiveOptions extends PollOptions {
     previous?: string;
@@ -31,20 +31,20 @@ export interface MaybeChapter extends Record<string, any> {
     version?: string;
 }
 export declare function validateChapter<T extends MaybeChapter>(chapter: T): T;
-export interface TimelineReaderConfig<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
-    bzz: Bzz;
+export interface TimelineReaderConfig<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> {
+    bzz: B;
     feed: string | FeedParams;
-    decode?: DecodeChapter<T>;
+    decode?: DecodeChapter<T, Response<S>>;
 }
-export interface TimelineWriterConfig<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> extends TimelineReaderConfig<T, Bzz> {
+export interface TimelineWriterConfig<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> extends TimelineReaderConfig<T, S, B> {
     encode?: EncodeChapter<T>;
     signParams?: any;
 }
-export declare class TimelineReader<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> {
-    protected bzz: Bzz;
-    protected decode: DecodeChapter<T>;
-    protected feed: string | FeedParams;
-    constructor(config: TimelineReaderConfig<T, Bzz>);
+export declare class TimelineReader<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> {
+    protected readonly bzzFeed: B;
+    protected readonly decode: DecodeChapter<T, Response<S>>;
+    protected readonly feed: string | FeedParams;
+    constructor(config: TimelineReaderConfig<T, S, B>);
     getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>;
     getLatestChapterID(options?: FetchOptions): Promise<string | null>;
     getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>;
@@ -58,10 +58,10 @@ export declare class TimelineReader<T = any, Bzz extends BaseBzz<BaseResponse, s
     pollLatestChapter(options: PollOptions): Observable<Chapter<T>>;
     live(options: LiveOptions): Observable<Array<Chapter<T>>>;
 }
-export declare class TimelineWriter<T = any, Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<BaseResponse, stream.Readable>> extends TimelineReader<T, Bzz> {
+export declare class TimelineWriter<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> extends TimelineReader<T, S, B> {
     protected encode: EncodeChapter<T>;
     protected signParams: any;
-    constructor(config: TimelineWriterConfig<T, Bzz>);
+    constructor(config: TimelineWriterConfig<T, S, B>);
     postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
     setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
     setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;

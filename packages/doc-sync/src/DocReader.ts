@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs'
 
 import { downloadDoc, downloadMeta } from './loaders'
 import {
-  BzzInstance,
+  Bzz,
   DataContent,
   DocReaderParams,
   DocSerialized,
@@ -13,18 +13,15 @@ import {
   LoadDocParams,
 } from './types'
 
-export class DocReader<
-  T,
-  Bzz extends BzzInstance = BzzInstance
-> extends BehaviorSubject<Doc<T>> {
-  static fromJSON<T, Bzz extends BzzInstance = BzzInstance>(
-    params: FromJSONDocParams<Bzz>,
-  ): DocReader<T, Bzz> {
-    return new DocReader<T, Bzz>({
+export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
+  static fromJSON<T, B extends Bzz = Bzz>(
+    params: FromJSONDocParams<B>,
+  ): DocReader<T, B> {
+    return new DocReader<T, B>({
       bzz: params.bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListReader<DataContent, Bzz>({
+      list: new DataListReader<DataContent, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
@@ -32,16 +29,16 @@ export class DocReader<
     })
   }
 
-  static async load<T, Bzz extends BzzInstance = BzzInstance>(
-    params: LoadDocParams<Bzz>,
-  ): Promise<DocReader<T, Bzz>> {
+  static async load<T, B extends Bzz = Bzz>(
+    params: LoadDocParams<B>,
+  ): Promise<DocReader<T, B>> {
     const { bzz, feed } = params
     const meta = await downloadMeta(bzz, feed)
-    const reader = new DocReader<T, Bzz>({
+    const reader = new DocReader<T, B>({
       bzz,
       doc: Automerge.init<T>(),
       feed,
-      list: new DataListReader<DataContent, Bzz>({
+      list: new DataListReader<DataContent, B>({
         bzz,
         feed: meta.dataFeed,
       }),
@@ -51,13 +48,13 @@ export class DocReader<
     return reader
   }
 
-  protected bzz: Bzz
+  protected bzz: B
   protected feed: FeedParams
-  protected list: DataListReader<DataContent, Bzz>
+  protected list: DataListReader<DataContent, B>
   protected time: number
   private pullPromise: Promise<boolean> | null = null
 
-  constructor(params: DocReaderParams<T, Bzz>) {
+  constructor(params: DocReaderParams<T, B>) {
     super(params.doc)
     this.bzz = params.bzz
     this.feed = params.feed

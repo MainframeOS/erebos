@@ -25,14 +25,14 @@
     "form-data": "^3.0.0",
     "fs-extra": "^8.0.1",
     "node-fetch": "^2.6.0",
-    "rxjs": "^6.5.3",
+    "rxjs": "^6.5.4",
     "tar-fs": "^2.0.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.1",
-    "@types/node": "^12.12.21",
+    "@types/node": "^13.1.6",
     "@types/node-fetch": "^2.5.4",
-    "@types/tar-fs": "^1.16.1",
+    "@types/tar-fs": "^1.16.2",
     "@types/tar-stream": "^1.6.1"
   }
 }

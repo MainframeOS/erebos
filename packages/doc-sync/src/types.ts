@@ -1,10 +1,11 @@
-import { BaseBzz, BaseResponse, FeedParams } from '@erebos/api-bzz-base'
+import { Response } from '@erebos/bzz'
+import { BzzFeed, FeedParams } from '@erebos/bzz-feed'
 import { DataListReader, DataListWriter } from '@erebos/feed-list'
 import { Change, Doc } from 'automerge'
 
 import { DocSubscriber } from './DocSubscriber'
 
-export type BzzInstance = BaseBzz<BaseResponse, any>
+export type Bzz = BzzFeed<any, Response>
 
 export interface FeedFactoryParams {
   user: string
@@ -36,88 +37,80 @@ export interface DocSerialized {
   metaFeed: FeedParams
 }
 
-export interface LoadDocParams<Bzz extends BzzInstance = BzzInstance> {
-  bzz: Bzz
+export interface LoadDocParams<B extends Bzz = Bzz> {
+  bzz: B
   feed: FeedParams // params for meta feed
 }
 
-export interface FromJSONDocParams<Bzz extends BzzInstance = BzzInstance>
-  extends DocSerialized {
-  bzz: Bzz
+export interface FromJSONDocParams<B extends Bzz = Bzz> extends DocSerialized {
+  bzz: B
 }
 
-export interface DocReaderParams<T, Bzz extends BzzInstance = BzzInstance> {
-  bzz: Bzz
+export interface DocReaderParams<T, B extends Bzz = Bzz> {
+  bzz: B
   doc: Doc<T>
   feed: FeedParams
-  list: DataListReader<DataContent, Bzz>
+  list: DataListReader<DataContent, B>
   time: number
 }
 
-export interface DocSubscriberParams<T, Bzz extends BzzInstance = BzzInstance>
-  extends DocReaderParams<T, Bzz> {
+export interface DocSubscriberParams<T, B extends Bzz = Bzz>
+  extends DocReaderParams<T, B> {
   pullInterval: number
 }
 
-export interface FromJSONDocSubscriberParams<
-  Bzz extends BzzInstance = BzzInstance
-> extends FromJSONDocParams<Bzz> {
+export interface FromJSONDocSubscriberParams<B extends Bzz = Bzz>
+  extends FromJSONDocParams<B> {
   pullInterval: number
 }
 
-export interface LoadDocSubscriberParams<Bzz extends BzzInstance = BzzInstance>
-  extends LoadDocParams<Bzz> {
+export interface LoadDocSubscriberParams<B extends Bzz = Bzz>
+  extends LoadDocParams<B> {
   pullInterval: number
 }
 
-export interface CreateDocWriterParams<Bzz extends BzzInstance = BzzInstance> {
-  bzz: Bzz
+export interface CreateDocWriterParams<B extends Bzz = Bzz> {
+  bzz: B
   feed: FeedFactoryParams // params used to create both data and meta feeds
 }
 
-export interface InitDocWriterParams<T, Bzz extends BzzInstance = BzzInstance>
-  extends CreateDocWriterParams<Bzz> {
+export interface InitDocWriterParams<T, B extends Bzz = Bzz>
+  extends CreateDocWriterParams<B> {
   doc: T
 }
 
-export interface DocWriterParams<T, Bzz extends BzzInstance = BzzInstance> {
-  bzz: Bzz
+export interface DocWriterParams<T, B extends Bzz = Bzz> {
+  bzz: B
   doc: Doc<T>
   feed: FeedParams
-  list: DataListWriter<DataContent, Bzz>
+  list: DataListWriter<DataContent, B>
 }
 
-export interface InitDocSynchronizerParams<
-  T,
-  Bzz extends BzzInstance = BzzInstance
-> extends InitDocWriterParams<T, Bzz> {
+export interface InitDocSynchronizerParams<T, B extends Bzz = Bzz>
+  extends InitDocWriterParams<T, B> {
   pullInterval: number
   pushInterval?: number
   sources?: Array<FeedParams>
 }
 
-export interface FromJSONDocSynchronizerParams<
-  Bzz extends BzzInstance = BzzInstance
-> extends FromJSONDocParams<Bzz> {
+export interface FromJSONDocSynchronizerParams<B extends Bzz = Bzz>
+  extends FromJSONDocParams<B> {
   pullInterval: number
   pushInterval?: number
   sources?: Array<DocSerialized>
 }
 
-export interface LoadDocSynchronizerParams<
-  Bzz extends BzzInstance = BzzInstance
-> extends LoadDocParams<Bzz> {
+export interface LoadDocSynchronizerParams<B extends Bzz = Bzz>
+  extends LoadDocParams<B> {
   pullInterval: number
   pushInterval?: number
   sources?: Array<FeedParams>
 }
 
-export interface DocSynchronizerParams<
-  T,
-  Bzz extends BzzInstance = BzzInstance
-> extends DocWriterParams<T, Bzz> {
+export interface DocSynchronizerParams<T, B extends Bzz = Bzz>
+  extends DocWriterParams<T, B> {
   pushInterval?: number
-  sources?: Array<DocSubscriber<T, Bzz>>
+  sources?: Array<DocSubscriber<T, B>>
 }
 
 export interface DocSynchronizerSerialized extends DocSerialized {

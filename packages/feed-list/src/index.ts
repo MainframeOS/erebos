@@ -1,13 +1,12 @@
-import { Readable } from 'stream'
+import { Response, toSwarmHash } from '@erebos/bzz'
 import {
   FEED_MAX_DATA_LENGTH,
-  BaseBzz,
-  BaseResponse,
+  BzzFeed,
   FeedID,
   FeedParams,
   FetchOptions,
-} from '@erebos/api-bzz-base'
-import { Hex, hexInput } from '@erebos/hex'
+} from '@erebos/bzz-feed'
+import { Hex } from '@erebos/hex'
 
 export const MAX_CHUNK_BYTE_LENGTH = FEED_MAX_DATA_LENGTH
 // Hex value is a hex string (= byte length x 2) prefixed by `0x`
@@ -17,29 +16,28 @@ export interface ForwardsChunkIterator<T> extends AsyncIterableIterator<T> {
   length: number
 }
 
-export interface ListReaderConfig<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> {
-  bzz: Bzz
+type Res = Response<any>
+type Bzz = BzzFeed<any, Res>
+
+export interface ListReaderConfig<T = any, B extends Bzz = Bzz> {
+  bzz: B
   feed: FeedID | FeedParams
   fetchOptions?: FetchOptions
 }
 
-export interface ListWriterConfig<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> extends ListReaderConfig<Bzz> {
+export interface ListWriterConfig<T = any, B extends Bzz = Bzz>
+  extends ListReaderConfig<T, B> {
   signParams?: any
 }
 
-export class ChunkListReader<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> {
-  public bzz: Bzz
-  public fetchOptions: FetchOptions
+export class ChunkListReader<T = Hex, B extends Bzz = Bzz> {
+  protected readonly bzzFeed: B
+  protected readonly fetchOptions: FetchOptions
+
   protected id: FeedID
 
-  constructor(config: ListReaderConfig<Bzz>) {
-    this.bzz = config.bzz
+  constructor(config: ListReaderConfig<T, B>) {
+    this.bzzFeed = config.bzz
     this.fetchOptions = config.fetchOptions || {}
     this.id =
       config.feed instanceof FeedID
@@ -54,13 +52,17 @@ export class ChunkListReader<
     return this.id.clone()
   }
 
-  public async load(index: number): Promise<Hex | null> {
+  public async decode(data: ArrayBuffer): Promise<T> {
+    return Promise.resolve((Hex.from(Buffer.from(data)) as any) as T)
+  }
+
+  public async load(index: number): Promise<T | null> {
     const id = this.getID()
     id.time = index
 
     try {
-      const data = await this.bzz.getRawFeedChunkData(id, this.fetchOptions)
-      return Hex.from(Buffer.from(data))
+      const data = await this.bzzFeed.getRawFeedChunkData(id, this.fetchOptions)
+      return await this.decode(data)
     } catch (err) {
       if (err.status === 404) {
         return null
@@ -72,7 +74,7 @@ export class ChunkListReader<
   public createBackwardsIterator(
     maxIndex: number,
     minIndex = 0,
-  ): AsyncIterableIterator<Hex | null> {
+  ): AsyncIterableIterator<T | null> {
     const id = this.getID()
     id.time = maxIndex
 
@@ -80,7 +82,7 @@ export class ChunkListReader<
       [Symbol.asyncIterator]() {
         return this
       },
-      next: async (): Promise<IteratorResult<Hex | null>> => {
+      next: async (): Promise<IteratorResult<T | null>> => {
         if (id.time === minIndex - 1) {
           return { done: true, value: undefined }
         }
@@ -95,7 +97,7 @@ export class ChunkListReader<
   public createForwardsIterator(
     minIndex = 0,
     maxIndex?: number,
-  ): ForwardsChunkIterator<Hex> {
+  ): ForwardsChunkIterator<T> {
     const doneIndex = maxIndex ? maxIndex + 1 : Number.MAX_SAFE_INTEGER
     const id = this.id.clone()
     id.time = minIndex
@@ -107,7 +109,7 @@ export class ChunkListReader<
       get length(): number {
         return id.time - minIndex
       },
-      next: async (): Promise<IteratorResult<Hex>> => {
+      next: async (): Promise<IteratorResult<T>> => {
         if (id.time === doneIndex) {
           return { done: true, value: undefined }
         }
@@ -124,11 +126,12 @@ export class ChunkListReader<
 }
 
 export class ChunkListWriter<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> extends ChunkListReader<Bzz> {
-  protected signParams?: any
+  T = Hex,
+  B extends Bzz = Bzz
+> extends ChunkListReader<T, B> {
+  protected readonly signParams?: any
 
-  constructor(config: ListWriterConfig<Bzz>) {
+  constructor(config: ListWriterConfig<T, B>) {
     super(config)
     this.signParams = config.signParams
   }
@@ -137,8 +140,12 @@ export class ChunkListWriter<
     return this.id.time + 1
   }
 
-  public async push(data: hexInput): Promise<void> {
-    const chunk = Hex.from(data)
+  public async encode(data: T): Promise<Hex> {
+    return Promise.resolve(Hex.from(data))
+  }
+
+  public async push(data: T): Promise<void> {
+    const chunk = await this.encode(data)
     if (chunk.value.length > MAX_CHUNK_VALUE_LENGTH) {
       throw new Error(
         `Chunk exceeds max length of ${MAX_CHUNK_BYTE_LENGTH} bytes`,
@@ -148,100 +155,41 @@ export class ChunkListWriter<
     const id = this.getID()
     id.time += 1
 
-    await this.bzz.postFeedChunk(id, chunk, this.fetchOptions, this.signParams)
+    await this.bzzFeed.postFeedChunk(
+      id,
+      chunk,
+      this.fetchOptions,
+      this.signParams,
+    )
     this.id = id
   }
 }
 
 export class DataListReader<
   T = any,
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> {
-  protected chunkList: ChunkListReader<Bzz>
-
-  constructor(config: ListReaderConfig<Bzz>) {
-    this.chunkList = new ChunkListReader(config)
-  }
-
-  public getID(): FeedID {
-    return this.chunkList.getID()
-  }
-
-  protected async downloadData(hex: Hex): Promise<T> {
-    return await this.chunkList.bzz.downloadData(
-      hex.value.slice(2),
-      this.chunkList.fetchOptions,
+  B extends Bzz = Bzz
+> extends ChunkListReader<T, B> {
+  public async decode(chunk: ArrayBuffer): Promise<T> {
+    return await this.bzzFeed.bzz.downloadData(
+      toSwarmHash(chunk),
+      this.fetchOptions,
     )
-  }
-
-  public async load(index: number): Promise<T | null> {
-    const hex = await this.chunkList.load(index)
-    return hex ? await this.downloadData(hex) : null
-  }
-
-  public createBackwardsIterator(
-    maxIndex: number,
-    minIndex?: number,
-  ): AsyncIterableIterator<T | null> {
-    const iterator = this.chunkList.createBackwardsIterator(maxIndex, minIndex)
-    return {
-      [Symbol.asyncIterator]() {
-        return this
-      },
-      next: async (): Promise<IteratorResult<T | null>> => {
-        const res = await iterator.next()
-        if (res.done) {
-          return { done: true, value: undefined }
-        }
-        if (res.value === null) {
-          return { done: false, value: null }
-        }
-        const value = await this.downloadData(res.value)
-        return { done: false, value }
-      },
-    }
-  }
-
-  public createForwardsIterator(
-    minIndex?: number,
-    maxIndex?: number,
-  ): ForwardsChunkIterator<T> {
-    const iterator = this.chunkList.createForwardsIterator(minIndex, maxIndex)
-    return {
-      [Symbol.asyncIterator]() {
-        return this
-      },
-      get length(): number {
-        return iterator.length
-      },
-      next: async (): Promise<IteratorResult<T>> => {
-        const res = await iterator.next()
-        return res.done
-          ? { done: true, value: undefined }
-          : { done: false, value: await this.downloadData(res.value) }
-      },
-    }
   }
 }
 
 export class DataListWriter<
   T = any,
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> extends DataListReader<T, Bzz> {
-  protected chunkList: ChunkListWriter<Bzz>
-
-  constructor(config: ListWriterConfig<Bzz>) {
-    super(config)
-    this.chunkList = new ChunkListWriter<Bzz>(config)
+  B extends Bzz = Bzz
+> extends ChunkListWriter<T, B> {
+  public async decode(chunk: ArrayBuffer): Promise<T> {
+    return await this.bzzFeed.bzz.downloadData(
+      toSwarmHash(chunk),
+      this.fetchOptions,
+    )
   }
 
-  public get length(): number {
-    return this.chunkList.length
-  }
-
-  public async push(data: T): Promise<string> {
-    const hash = await this.chunkList.bzz.uploadData<T>(data)
-    await this.chunkList.push(`0x${hash}`)
-    return hash
+  public async encode(data: T): Promise<Hex> {
+    const hash = await this.bzzFeed.bzz.uploadData<T>(data)
+    return Hex.from(`0x${hash}`)
   }
 }

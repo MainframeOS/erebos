@@ -21,12 +21,12 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.7",
-    "rxjs": "^6.5.3"
+    "rxjs": "^6.5.4"
   },
   "peerDependencies": {
     "electron": ">= 6 < 8"
   },
   "devDependencies": {
-    "electron": "^7.1.7"
+    "electron": "^7.1.8"
   }
 }
