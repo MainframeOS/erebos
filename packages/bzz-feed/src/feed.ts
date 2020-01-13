@@ -49,7 +49,7 @@ export function getFeedChunkData(chunk: ArrayBuffer): ArrayBuffer {
 }
 
 export function getFeedTopic(params: FeedTopicParams): hexValue {
-  const topicHex = Hex.from(params.topic || FEED_ZERO_TOPIC)
+  const topicHex = Hex.from(params.topic ?? FEED_ZERO_TOPIC)
   if (params.name == null) {
     return topicHex.value
   }
@@ -166,8 +166,8 @@ export class FeedID implements FeedParams, FeedMetadata {
   public constructor(params: FeedParams) {
     this.user = params.user as hexValue
     this.topic = getFeedTopic(params)
-    this.time = params.time || 0
-    this.level = params.level || 0
+    this.time = params.time ?? 0
+    this.level = params.level ?? 0
   }
 
   public get feed(): Feed {

@@ -1,8 +1,11 @@
 import { resolve } from 'path'
 import { inspect } from 'util'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzFS } from '@erebos/bzz-fs'
 import { sign } from '@erebos/secp256k1'
 import { SwarmClient } from '@erebos/swarm-node'
 import { Command as Cmd, flags } from '@oclif/command'
+import { Response } from 'node-fetch'
 // eslint-disable-next-line import/default
 import ora from 'ora'
 
@@ -44,9 +47,6 @@ export abstract class Command<
     if (this.clientInstance == null) {
       this.clientInstance = new SwarmClient({
         bzz: {
-          signBytes: (bytes: Array<number>, key: any) => {
-            return Promise.resolve(sign(bytes, key))
-          },
           timeout: this.flags.timeout,
           url: this.flags['http-gateway'],
         },
@@ -55,6 +55,22 @@ export abstract class Command<
       })
     }
     return this.clientInstance
+  }
+
+  public getBzzFeed(): BzzFeed<NodeJS.ReadableStream, Response> {
+    return new BzzFeed({
+      bzz: this.client.bzz,
+      signBytes: (bytes: Array<number>, key: any) => {
+        return Promise.resolve(sign(bytes, key))
+      },
+    })
+  }
+
+  public getBzzFS(): BzzFS {
+    return new BzzFS({
+      basePath: process.cwd(),
+      bzz: this.client.bzz,
+    })
   }
 
   public resolvePath(path: string): string {

@@ -22,7 +22,7 @@ export declare class ChunkListReader<T = Hex, B extends Bzz = Bzz> {
     protected id: FeedID;
     constructor(config: ListReaderConfig<T, B>);
     getID(): FeedID;
-    decode(data: ArrayBuffer): Promise<T>;
+    read(data: ArrayBuffer): Promise<T>;
     load(index: number): Promise<T | null>;
     createBackwardsIterator(maxIndex: number, minIndex?: number): AsyncIterableIterator<T | null>;
     createForwardsIterator(minIndex?: number, maxIndex?: number): ForwardsChunkIterator<T>;
@@ -31,14 +31,14 @@ export declare class ChunkListWriter<T = Hex, B extends Bzz = Bzz> extends Chunk
     protected readonly signParams?: any;
     constructor(config: ListWriterConfig<T, B>);
     get length(): number;
-    encode(data: T): Promise<Hex>;
+    write(data: T): Promise<Hex>;
     push(data: T): Promise<void>;
 }
 export declare class DataListReader<T = any, B extends Bzz = Bzz> extends ChunkListReader<T, B> {
-    decode(chunk: ArrayBuffer): Promise<T>;
+    read(chunk: ArrayBuffer): Promise<T>;
 }
-export declare class DataListWriter<T = any, B extends Bzz = Bzz> extends ChunkListWriter<T, B> {
-    decode(chunk: ArrayBuffer): Promise<T>;
-    encode(data: T): Promise<Hex>;
+export declare class DataListWriter<T = any, B extends Bzz = Bzz> extends ChunkListWriter<T, B> implements DataListReader<T, B> {
+    read(chunk: ArrayBuffer): Promise<T>;
+    write(data: T): Promise<Hex>;
 }
 export {};

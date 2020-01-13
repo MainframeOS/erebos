@@ -44,7 +44,7 @@ export class BzzBrowser extends Bzz<Readable, Response<Readable>, FormData> {
       }
     })
 
-    const writeChunk = (chunk: Uint8Array) => {
+    const writeChunk = (chunk: Uint8Array): Promise<void> => {
       return new Promise((resolve, reject) => {
         extract.write(chunk, err => {
           if (err == null) resolve()
@@ -54,12 +54,16 @@ export class BzzBrowser extends Bzz<Readable, Response<Readable>, FormData> {
     }
 
     const res = await this.downloadTar(hash, options)
-    // @ts-ignore
-    for await (const chunk of res.body.getReader()) {
-      await writeChunk(chunk)
-    }
-    await finished
+    const reader = res.body.getReader()
 
+    let chunk = await reader.read()
+    while (!chunk.done) {
+      await writeChunk(chunk.value)
+      chunk = await reader.read()
+    }
+    extract.end()
+
+    await finished
     return directoryData
   }
 

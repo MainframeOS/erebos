@@ -89,5 +89,5 @@ export type SignBytesFunc = (
 
 export interface BzzFeedConfig<S, R extends Response<S>> {
   bzz: Bzz<S, R>
-  signBytes: SignBytesFunc
+  signBytes?: SignBytesFunc
 }

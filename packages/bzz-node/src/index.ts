@@ -13,7 +13,7 @@ export * from '@erebos/bzz'
 
 export class BzzNode extends Bzz<NodeJS.ReadableStream, Response, FormData> {
   public constructor(config: BzzConfig<Response>) {
-    const fetch = config.fetch || nodeFetch
+    const fetch = config.fetch ?? nodeFetch
     super({ ...config, fetch })
   }
 
@@ -69,7 +69,7 @@ export class BzzNode extends Bzz<NodeJS.ReadableStream, Response, FormData> {
       }
     }
 
-    const headers = options.headers || {}
+    const headers = options.headers ?? {}
     if (options.pin) {
       headers['x-swarm-pin'] = true
     }

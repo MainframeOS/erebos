@@ -1,19 +1,20 @@
-/// <reference types="node" />
-import { Readable } from 'stream';
-import { BaseBzz, BzzConfig, DirectoryData, DownloadOptions, UploadOptions } from '@erebos/api-bzz-base';
-import { Response } from 'node-fetch';
-export * from '@erebos/api-bzz-base';
-export declare class Bzz extends BaseBzz<Response, Readable> {
-    constructor(config: BzzConfig);
-    protected normalizeStream(stream: NodeJS.ReadableStream): Readable;
+import { BzzNode, DownloadOptions, UploadOptions } from '@erebos/bzz-node';
+export * from './fs';
+export interface BzzFSConfig {
+    basePath?: string;
+    bzz: BzzNode | string;
+}
+export declare class BzzFS {
+    readonly bzz: BzzNode;
+    readonly resolvePath: (path: string) => string;
+    constructor(config: BzzFSConfig);
     downloadTarTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadFileTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
     downloadDirectoryTo(hash: string, toPath: string, options?: DownloadOptions): Promise<number>;
     downloadTo(hash: string, toPath: string, options?: DownloadOptions): Promise<void>;
-    uploadDirectory(directory: DirectoryData, options?: UploadOptions): Promise<string>;
-    uploadFileFrom(path: string, options?: UploadOptions): Promise<string>;
+    uploadFileFrom(fromPath: string, options?: UploadOptions): Promise<string>;
     private uploadTarStream;
-    uploadTar(path: string, options?: UploadOptions): Promise<string>;
-    uploadDirectoryFrom(path: string, options?: UploadOptions): Promise<string>;
-    uploadFrom(path: string, options?: UploadOptions): Promise<string>;
+    uploadTar(fromPath: string, options?: UploadOptions): Promise<string>;
+    uploadDirectoryFrom(fromPath: string, options?: UploadOptions): Promise<string>;
+    uploadFrom(fromPath: string, options?: UploadOptions): Promise<string>;
 }

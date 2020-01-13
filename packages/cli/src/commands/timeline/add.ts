@@ -48,7 +48,7 @@ export default class TimelineAddCommand extends Command<Flags, Args> {
       const keyPair = createKeyPair(this.flags['key-env'])
       const address = pubKeyToAddress(keyPair.getPublic('array'))
       const timeline = new TimelineWriter({
-        bzz: this.client.bzz,
+        bzz: this.getBzzFeed(),
         feed: {
           user: address,
           name: this.flags.name,

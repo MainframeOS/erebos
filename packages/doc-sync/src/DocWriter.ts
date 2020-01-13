@@ -1,4 +1,4 @@
-import { getFeedTopic } from '@erebos/api-bzz-base'
+import { getFeedTopic } from '@erebos/bzz-feed'
 import { DataListWriter } from '@erebos/feed-list'
 import Automerge, { Change, ChangeFn, Doc } from 'automerge'
 
@@ -136,7 +136,7 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
 
     const value = this.value
     const changes = Automerge.getChanges(
-      this.pushedDoc || Automerge.init<T>(),
+      this.pushedDoc ?? Automerge.init<T>(),
       value,
     )
     if (changes.length === 0) {

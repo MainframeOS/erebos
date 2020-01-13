@@ -123,7 +123,16 @@ describe('timeline', () => {
       return JSON.stringify(chapter)
     })
 
-    const timeline = new TimelineWriter({ bzz: bzzFeed, decode, encode })
+    class CustomTimeline extends TimelineWriter {
+      read(res): Promise<any> {
+        return decode(res)
+      }
+      write(chapter): Promise<string> {
+        return encode(chapter)
+      }
+    }
+
+    const timeline = new CustomTimeline({ bzz: bzzFeed })
     const chapter = createChapter({ author, content: { ok: true } })
 
     const id = await timeline.postChapter(chapter)
@@ -137,7 +146,7 @@ describe('timeline', () => {
   it('setLatestChapterID() and getLatestChapterID() methods manipulate a feed hash', async () => {
     jest.setTimeout(10000) // 10 secs
 
-    const feed = await bzzFeed.createFeedManifest({
+    const feed = await bzzFeed.createManifest({
       user: author,
       name: 'test-hash',
     })

@@ -37,16 +37,17 @@ export default class WebsitePublishCommand extends Command<Flags, Args> {
 
   public async run(): Promise<void> {
     this.spinner.start('Publishing website contents...')
+    const bzzFeed = this.getBzzFeed()
     try {
       const keyPair = createKeyPair(this.flags['key-env'])
 
       const [dataHash, feedMeta] = await Promise.all([
-        this.client.bzz.uploadFrom(this.resolvePath(this.args.path), {
+        this.getBzzFS().uploadFrom(this.args.path, {
           defaultPath: 'index.html',
         }),
-        this.client.bzz.getFeedMetadata(this.flags.hash),
+        bzzFeed.getMetadata(this.flags.hash),
       ])
-      await this.client.bzz.postFeedChunk(
+      await bzzFeed.postChunk(
         feedMeta,
         `0x${dataHash}`,
         {},

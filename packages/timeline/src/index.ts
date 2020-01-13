@@ -92,16 +92,6 @@ export function validateChapter<T extends MaybeChapter>(chapter: T): T {
   return chapter
 }
 
-async function defaultDecode<T extends MaybeChapter, R extends Response>(
-  res: R,
-): Promise<T> {
-  return validateChapter<T>(await res.json())
-}
-
-function defaultEncode(chapter: any): Promise<string> {
-  return Promise.resolve(JSON.stringify(chapter))
-}
-
 export interface TimelineReaderConfig<
   T = any,
   S = any,
@@ -109,7 +99,6 @@ export interface TimelineReaderConfig<
 > {
   bzz: B
   feed: string | FeedParams
-  decode?: DecodeChapter<T, Response<S>>
 }
 
 export interface TimelineWriterConfig<
@@ -117,7 +106,6 @@ export interface TimelineWriterConfig<
   S = any,
   B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
 > extends TimelineReaderConfig<T, S, B> {
-  encode?: EncodeChapter<T>
   signParams?: any
 }
 
@@ -127,13 +115,15 @@ export class TimelineReader<
   B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
 > {
   protected readonly bzzFeed: B
-  protected readonly decode: DecodeChapter<T, Response<S>>
   protected readonly feed: string | FeedParams
 
   public constructor(config: TimelineReaderConfig<T, S, B>) {
     this.bzzFeed = config.bzz
-    this.decode = config.decode || defaultDecode
     this.feed = config.feed
+  }
+
+  protected async read(res: Response<S>): Promise<Chapter<T>> {
+    return validateChapter<Chapter<T>>(await res.json())
   }
 
   public async getChapter(
@@ -141,7 +131,7 @@ export class TimelineReader<
     options: FetchOptions = {},
   ): Promise<Chapter<T>> {
     const res = await this.bzzFeed.bzz.download(id, { ...options, mode: 'raw' })
-    const chapter = await this.decode(res)
+    const chapter = await this.read(res)
     chapter.id = id
     return chapter
   }
@@ -150,7 +140,7 @@ export class TimelineReader<
     options: FetchOptions = {},
   ): Promise<string | null> {
     try {
-      return await this.bzzFeed.getFeedContentHash(this.feed, options)
+      return await this.bzzFeed.getContentHash(this.feed, options)
     } catch (err) {
       if (err.status === 404) {
         return null
@@ -241,7 +231,7 @@ export class TimelineReader<
       mode: 'raw',
     }
     return this.bzzFeed
-      .pollFeedContentHash(this.feed, {
+      .pollContentHash(this.feed, {
         whenEmpty: 'ignore',
         changedOnly: true,
         ...options,
@@ -254,8 +244,8 @@ export class TimelineReader<
   }
 
   public live(options: LiveOptions): Observable<Array<Chapter<T>>> {
-    let minTimestamp = options.timestamp || Date.now()
-    let previousID = options.previous || null
+    let minTimestamp = options.timestamp ?? Date.now()
+    let previousID = options.previous ?? null
 
     return this.pollLatestChapter(options).pipe(
       flatMap(async chapter => {
@@ -299,20 +289,22 @@ export class TimelineWriter<
   S = any,
   B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
 > extends TimelineReader<T, S, B> {
-  protected encode: EncodeChapter<T>
   protected signParams: any
 
   public constructor(config: TimelineWriterConfig<T, S, B>) {
     super(config)
-    this.encode = config.encode || defaultEncode
     this.signParams = config.signParams
+  }
+
+  protected async write(chapter: PartialChapter<T>): Promise<string> {
+    return Promise.resolve(JSON.stringify(chapter))
   }
 
   public async postChapter(
     chapter: PartialChapter<T>,
     options: UploadOptions = {},
   ): Promise<string> {
-    const encoded = await this.encode(chapter)
+    const encoded = await this.write(chapter)
     return await this.bzzFeed.bzz.uploadFile(encoded, options)
   }
 
@@ -320,7 +312,7 @@ export class TimelineWriter<
     chapterID: string,
     options?: FetchOptions,
   ): Promise<void> {
-    await this.bzzFeed.setFeedContentHash(
+    await this.bzzFeed.setContentHash(
       this.feed,
       chapterID,
       options,
@@ -334,9 +326,9 @@ export class TimelineWriter<
   ): Promise<string> {
     const [chapterID, feedMeta] = await Promise.all([
       this.postChapter(chapter, options),
-      this.bzzFeed.getFeedMetadata(this.feed),
+      this.bzzFeed.getMetadata(this.feed),
     ])
-    await this.bzzFeed.postFeedChunk(
+    await this.bzzFeed.postChunk(
       feedMeta,
       `0x${chapterID}`,
       { headers: options.headers, timeout: options.timeout },

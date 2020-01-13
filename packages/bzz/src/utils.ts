@@ -48,7 +48,8 @@ export function getGlobal(): typeof globalThis {
 }
 
 export function getGlobalFetch<R extends Response>(): Fetch<R> {
-  return (getGlobal().fetch as any) as Fetch<R>
+  const global = getGlobal()
+  return (global.fetch.bind(global) as any) as Fetch<R>
 }
 
 export function toSwarmHash(buffer: ArrayBuffer): string {

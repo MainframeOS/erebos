@@ -34,17 +34,15 @@ export declare function validateChapter<T extends MaybeChapter>(chapter: T): T;
 export interface TimelineReaderConfig<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> {
     bzz: B;
     feed: string | FeedParams;
-    decode?: DecodeChapter<T, Response<S>>;
 }
 export interface TimelineWriterConfig<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> extends TimelineReaderConfig<T, S, B> {
-    encode?: EncodeChapter<T>;
     signParams?: any;
 }
 export declare class TimelineReader<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> {
     protected readonly bzzFeed: B;
-    protected readonly decode: DecodeChapter<T, Response<S>>;
     protected readonly feed: string | FeedParams;
     constructor(config: TimelineReaderConfig<T, S, B>);
+    protected read(res: Response<S>): Promise<Chapter<T>>;
     getChapter(id: string, options?: FetchOptions): Promise<Chapter<T>>;
     getLatestChapterID(options?: FetchOptions): Promise<string | null>;
     getLatestChapter(options?: FetchOptions): Promise<Chapter<T> | null>;
@@ -59,9 +57,9 @@ export declare class TimelineReader<T = any, S = any, B extends BzzFeed<S, Respo
     live(options: LiveOptions): Observable<Array<Chapter<T>>>;
 }
 export declare class TimelineWriter<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> extends TimelineReader<T, S, B> {
-    protected encode: EncodeChapter<T>;
     protected signParams: any;
     constructor(config: TimelineWriterConfig<T, S, B>);
+    protected write(chapter: PartialChapter<T>): Promise<string>;
     postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
     setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
     setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;

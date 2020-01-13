@@ -49,6 +49,7 @@ export default class TimelineCreateCommand extends Command<Flags, Args> {
 
   public async run(): Promise<void> {
     try {
+      const bzzFeed = this.getBzzFeed()
       const keyValue = this.flags['key-env']
       const hasKey = keyValue != null && keyValue.length !== 0
       const keyPair = createKeyPair(hasKey ? keyValue : undefined)
@@ -57,7 +58,7 @@ export default class TimelineCreateCommand extends Command<Flags, Args> {
 
       if (this.flags.manifest) {
         this.spinner.start('Creating feed manifest...')
-        hash = await this.client.bzz.createFeedManifest({
+        hash = await bzzFeed.createManifest({
           user: address,
           name: this.flags.name,
         })
@@ -65,7 +66,7 @@ export default class TimelineCreateCommand extends Command<Flags, Args> {
       }
 
       const timeline = new TimelineWriter({
-        bzz: this.client.bzz,
+        bzz: bzzFeed,
         feed: {
           user: address,
           name: this.flags.name,

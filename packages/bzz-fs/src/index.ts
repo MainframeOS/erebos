@@ -8,20 +8,19 @@ export * from './fs'
 
 export interface BzzFSConfig {
   basePath?: string
-  bzz: BzzNode
+  bzz: BzzNode | string
 }
 
 export class BzzFS {
-  public readonly basePath: string | void
   public readonly bzz: BzzNode
+  public readonly resolvePath: (path: string) => string
 
   public constructor(config: BzzFSConfig) {
-    this.basePath = config.basePath
-    this.bzz = config.bzz
-  }
-
-  protected resolvePath(path: string): string {
-    return this.basePath == null ? path : resolvePath(this.basePath, path)
+    const { basePath, bzz } = config
+    this.bzz = bzz instanceof BzzNode ? bzz : new BzzNode({ url: bzz })
+    this.resolvePath = basePath
+      ? (path: string) => resolvePath(basePath, path)
+      : (path: string) => path
   }
 
   public async downloadTarTo(
@@ -69,7 +68,7 @@ export class BzzFS {
     options: UploadOptions = {},
   ): Promise<string> {
     const path = this.resolvePath(fromPath)
-    const size = options.size == null ? await getSize(path) : options.size
+    const size = options.size ?? (await getSize(path))
     return await this.bzz.uploadFile(createReadStream(path), {
       ...options,
       size,

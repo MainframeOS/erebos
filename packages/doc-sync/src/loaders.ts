@@ -5,19 +5,19 @@ import Automerge, { Doc } from 'automerge'
 import { Bzz, DataContent, MetaContent } from './types'
 
 export async function downloadMeta<B extends Bzz = Bzz>(
-  bzz: B,
+  bzzFeed: B,
   feed: FeedParams,
 ): Promise<MetaContent> {
-  const res = await bzz.getFeedContent(feed, { mode: 'raw' })
+  const res = await bzzFeed.getContent(feed, { mode: 'raw' })
   return await res.json<MetaContent>()
 }
 
 export async function uploadMeta<B extends Bzz = Bzz>(
-  bzz: B,
+  bzzFeed: B,
   feed: FeedParams,
   content: MetaContent,
 ): Promise<string> {
-  return await bzz.setFeedContent(feed, JSON.stringify(content))
+  return await bzzFeed.setContent(feed, JSON.stringify(content))
 }
 
 export async function downloadSnapshot<T, B extends Bzz = Bzz>(
@@ -30,14 +30,14 @@ export async function downloadSnapshot<T, B extends Bzz = Bzz>(
 }
 
 export async function downloadDoc<T, B extends Bzz = Bzz>(
-  bzz: B,
+  bzzFeed: B,
   feed: FeedParams,
   list: DataListReader<DataContent, B>,
 ): Promise<Doc<T>> {
-  const meta = await downloadMeta(bzz, feed)
+  const meta = await downloadMeta(bzzFeed, feed)
 
   let doc = meta.snapshot
-    ? await downloadSnapshot<T, B>(bzz, meta.snapshot.hash)
+    ? await downloadSnapshot<T, B>(bzzFeed, meta.snapshot.hash)
     : Automerge.init<T>()
 
   const nextTime = meta.snapshot ? meta.snapshot.time + 1 : 0

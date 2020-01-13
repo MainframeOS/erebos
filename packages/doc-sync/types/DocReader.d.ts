@@ -1,4 +1,4 @@
-import { FeedParams } from '@erebos/api-bzz-base';
+import { FeedParams } from '@erebos/bzz-feed';
 import { DataListReader } from '@erebos/feed-list';
 import { Doc } from 'automerge';
 import { BehaviorSubject } from 'rxjs';

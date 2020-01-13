@@ -43,9 +43,8 @@ export class Bzz<S, R extends Response<S>, F = any> {
 
   public constructor(config: BzzConfig<R>) {
     const { fetch, timeout, url } = config
-    const fetchFunc = typeof fetch === 'undefined' ? getGlobalFetch<R>() : fetch
-    this.fetch = fetchFunc.bind(fetchFunc)
-    this.defaultTimeout = timeout ? timeout : 0
+    this.fetch = fetch ?? getGlobalFetch<R>()
+    this.defaultTimeout = timeout ?? 0
     this.url = url.endsWith('/') ? url : `${url}/`
   }
 
@@ -54,8 +53,7 @@ export class Bzz<S, R extends Response<S>, F = any> {
     options: FetchOptions,
     params: RequestInit = {},
   ): Promise<R> {
-    const timeout =
-      options.timeout == null ? this.defaultTimeout : options.timeout
+    const timeout = options.timeout ?? this.defaultTimeout
     if (options.headers != null) {
       params.headers = options.headers
     }

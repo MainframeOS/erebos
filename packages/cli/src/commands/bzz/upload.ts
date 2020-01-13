@@ -39,7 +39,7 @@ export default class BzzUploadCommand extends Command<Flags, Args> {
   public async run(): Promise<void> {
     this.spinner.start(`Uploading contents from: ${this.args.path}`)
     try {
-      const hash = await this.client.bzz.uploadFrom(
+      const hash = await this.getBzzFS().uploadFrom(
         this.resolvePath(this.args.path),
         {
           contentType: this.flags['content-type'],

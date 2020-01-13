@@ -52,7 +52,7 @@ export class ChunkListReader<T = Hex, B extends Bzz = Bzz> {
     return this.id.clone()
   }
 
-  public async decode(data: ArrayBuffer): Promise<T> {
+  public async read(data: ArrayBuffer): Promise<T> {
     return Promise.resolve((Hex.from(Buffer.from(data)) as any) as T)
   }
 
@@ -61,8 +61,8 @@ export class ChunkListReader<T = Hex, B extends Bzz = Bzz> {
     id.time = index
 
     try {
-      const data = await this.bzzFeed.getRawFeedChunkData(id, this.fetchOptions)
-      return await this.decode(data)
+      const data = await this.bzzFeed.getRawChunkData(id, this.fetchOptions)
+      return await this.read(data)
     } catch (err) {
       if (err.status === 404) {
         return null
@@ -140,12 +140,12 @@ export class ChunkListWriter<
     return this.id.time + 1
   }
 
-  public async encode(data: T): Promise<Hex> {
+  public async write(data: T): Promise<Hex> {
     return Promise.resolve(Hex.from(data))
   }
 
   public async push(data: T): Promise<void> {
-    const chunk = await this.encode(data)
+    const chunk = await this.write(data)
     if (chunk.value.length > MAX_CHUNK_VALUE_LENGTH) {
       throw new Error(
         `Chunk exceeds max length of ${MAX_CHUNK_BYTE_LENGTH} bytes`,
@@ -155,12 +155,7 @@ export class ChunkListWriter<
     const id = this.getID()
     id.time += 1
 
-    await this.bzzFeed.postFeedChunk(
-      id,
-      chunk,
-      this.fetchOptions,
-      this.signParams,
-    )
+    await this.bzzFeed.postChunk(id, chunk, this.fetchOptions, this.signParams)
     this.id = id
   }
 }
@@ -169,7 +164,7 @@ export class DataListReader<
   T = any,
   B extends Bzz = Bzz
 > extends ChunkListReader<T, B> {
-  public async decode(chunk: ArrayBuffer): Promise<T> {
+  public async read(chunk: ArrayBuffer): Promise<T> {
     return await this.bzzFeed.bzz.downloadData(
       toSwarmHash(chunk),
       this.fetchOptions,
@@ -177,18 +172,17 @@ export class DataListReader<
   }
 }
 
-export class DataListWriter<
-  T = any,
-  B extends Bzz = Bzz
-> extends ChunkListWriter<T, B> {
-  public async decode(chunk: ArrayBuffer): Promise<T> {
+export class DataListWriter<T = any, B extends Bzz = Bzz>
+  extends ChunkListWriter<T, B>
+  implements DataListReader<T, B> {
+  public async read(chunk: ArrayBuffer): Promise<T> {
     return await this.bzzFeed.bzz.downloadData(
       toSwarmHash(chunk),
       this.fetchOptions,
     )
   }
 
-  public async encode(data: T): Promise<Hex> {
+  public async write(data: T): Promise<Hex> {
     const hash = await this.bzzFeed.bzz.uploadData<T>(data)
     return Hex.from(`0x${hash}`)
   }

@@ -36,6 +36,10 @@ import {
 export * from './feed'
 export * from './types'
 
+function defaultSignBytes(): Promise<Array<number>> {
+  return Promise.reject(new Error('Missing `signBytes()` function'))
+}
+
 export class BzzFeed<S, R extends Response<S>> {
   protected readonly signBytes: SignBytesFunc
 
@@ -43,7 +47,7 @@ export class BzzFeed<S, R extends Response<S>> {
 
   public constructor(config: BzzFeedConfig<S, R>) {
     this.bzz = config.bzz
-    this.signBytes = config.signBytes
+    this.signBytes = config.signBytes ?? defaultSignBytes
   }
 
   public async sign(bytes: Array<number>, params?: any): Promise<hexValue> {
@@ -51,7 +55,7 @@ export class BzzFeed<S, R extends Response<S>> {
     return toHexValue(signed)
   }
 
-  public getFeedURL(
+  public getURL(
     hashOrParams: string | FeedParams | FeedUpdateParams,
     flag?: 'meta',
   ): string {
@@ -79,7 +83,7 @@ export class BzzFeed<S, R extends Response<S>> {
     return query.length > 0 ? `${url}?${query.join('&')}` : url
   }
 
-  public async createFeedManifest(
+  public async createManifest(
     params: FeedParams,
     options: UploadOptions = {},
   ): Promise<string> {
@@ -95,44 +99,44 @@ export class BzzFeed<S, R extends Response<S>> {
     return await this.bzz.uploadFile(JSON.stringify(manifest), options)
   }
 
-  public async getFeedMetadata(
+  public async getMetadata(
     hashOrParams: string | FeedParams,
     options: FetchOptions = {},
   ): Promise<FeedMetadata> {
-    const url = this.getFeedURL(hashOrParams, 'meta')
+    const url = this.getURL(hashOrParams, 'meta')
     const res = await this.bzz.fetchTimeout(url, options)
     return await resJSON<R, FeedMetadata>(res)
   }
 
-  public async getFeedChunk(
+  public async getChunk(
     hashOrParams: string | FeedParams,
     options: FetchOptions = {},
   ): Promise<R> {
-    const url = this.getFeedURL(hashOrParams)
+    const url = this.getURL(hashOrParams)
     const res = await this.bzz.fetchTimeout(url, options)
     return resOrError<R>(res)
   }
 
-  public async getFeedContentHash(
+  public async getContentHash(
     hashOrParams: string | FeedParams,
     options: FetchOptions = {},
   ): Promise<string> {
-    const res = await this.getFeedChunk(hashOrParams, options)
+    const res = await this.getChunk(hashOrParams, options)
     return await resSwarmHash<R>(res)
   }
 
-  public async getFeedContent(
+  public async getContent(
     hashOrParams: string | FeedParams,
     options: DownloadOptions = {},
   ): Promise<R> {
-    const hash = await this.getFeedContentHash(hashOrParams, {
+    const hash = await this.getContentHash(hashOrParams, {
       headers: options.headers,
       timeout: options.timeout,
     })
     return await this.bzz.download(hash, options)
   }
 
-  public pollFeedChunk(
+  public pollChunk(
     hashOrParams: string | FeedParams,
     options: PollFeedOptions,
   ): Observable<R> {
@@ -152,9 +156,9 @@ export class BzzFeed<S, R extends Response<S>> {
 
     // Handle whether the subscription should fail if the feed doesn't have a value
     if (options.whenEmpty === 'error') {
-      pipeline.push(flatMap(() => this.getFeedChunk(hashOrParams, options)))
+      pipeline.push(flatMap(() => this.getChunk(hashOrParams, options)))
     } else {
-      const url = this.getFeedURL(hashOrParams)
+      const url = this.getURL(hashOrParams)
       pipeline.push(
         flatMap(() => {
           return this.bzz.fetchTimeout(url, options).then(res => {
@@ -179,7 +183,7 @@ export class BzzFeed<S, R extends Response<S>> {
     return merge(interval(options.interval), ...sources).pipe(...pipeline)
   }
 
-  public pollFeedContentHash(
+  public pollContentHash(
     hashOrParams: string | FeedParams,
     options: PollFeedContentHashOptions,
   ): Observable<string | null> {
@@ -193,14 +197,14 @@ export class BzzFeed<S, R extends Response<S>> {
       pipeline.push(distinctUntilChanged())
     }
     // @ts-ignore
-    return this.pollFeedChunk(hashOrParams, options).pipe(...pipeline)
+    return this.pollChunk(hashOrParams, options).pipe(...pipeline)
   }
 
-  public pollFeedContent(
+  public pollContent(
     hashOrParams: string | FeedParams,
     options: PollFeedContentOptions,
   ): Observable<R | null> {
-    return this.pollFeedContentHash(hashOrParams, options).pipe(
+    return this.pollContentHash(hashOrParams, options).pipe(
       flatMap(hash => {
         return hash === null
           ? Promise.resolve(null)
@@ -209,12 +213,12 @@ export class BzzFeed<S, R extends Response<S>> {
     )
   }
 
-  public async postSignedFeedChunk(
+  public async postSignedChunk(
     params: FeedUpdateParams,
     body: Buffer,
     options: FetchOptions = {},
   ): Promise<R> {
-    const url = this.getFeedURL(params)
+    const url = this.getURL(params)
     const res = await this.bzz.fetchTimeout(url, options, {
       method: 'POST',
       body,
@@ -222,7 +226,7 @@ export class BzzFeed<S, R extends Response<S>> {
     return resOrError<R>(res)
   }
 
-  public async postFeedChunk(
+  public async postChunk(
     meta: FeedMetadata,
     data: hexInput,
     options?: FetchOptions,
@@ -231,7 +235,7 @@ export class BzzFeed<S, R extends Response<S>> {
     const body = Hex.from(data).toBuffer()
     const digest = createFeedDigest(meta, body)
     const signature = await this.sign(digest, signParams)
-    return await this.postSignedFeedChunk(
+    return await this.postSignedChunk(
       {
         user: meta.feed.user,
         topic: meta.feed.topic,
@@ -244,32 +248,27 @@ export class BzzFeed<S, R extends Response<S>> {
     )
   }
 
-  public async setFeedChunk(
+  public async setChunk(
     hashOrParams: string | FeedParams,
     data: hexInput,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<R> {
-    const meta = await this.getFeedMetadata(hashOrParams, options)
-    return await this.postFeedChunk(meta, data, options, signParams)
+    const meta = await this.getMetadata(hashOrParams, options)
+    return await this.postChunk(meta, data, options, signParams)
   }
 
-  public async setFeedContentHash(
+  public async setContentHash(
     hashOrParams: string | FeedParams,
     contentHash: string,
     options?: FetchOptions,
     signParams?: any,
   ): Promise<R> {
-    const meta = await this.getFeedMetadata(hashOrParams, options)
-    return await this.postFeedChunk(
-      meta,
-      `0x${contentHash}`,
-      options,
-      signParams,
-    )
+    const meta = await this.getMetadata(hashOrParams, options)
+    return await this.postChunk(meta, `0x${contentHash}`, options, signParams)
   }
 
-  public async setFeedContent(
+  public async setContent(
     hashOrParams: string | FeedParams,
     content: string | Buffer | S,
     options: UploadOptions = {},
@@ -278,13 +277,13 @@ export class BzzFeed<S, R extends Response<S>> {
     const { contentType: _c, ...feedOptions } = options
     const [hash, meta] = await Promise.all([
       this.bzz.uploadFile(content, options),
-      this.getFeedMetadata(hashOrParams, feedOptions),
+      this.getMetadata(hashOrParams, feedOptions),
     ])
-    await this.postFeedChunk(meta, `0x${hash}`, feedOptions, signParams)
+    await this.postChunk(meta, `0x${hash}`, feedOptions, signParams)
     return hash
   }
 
-  public async getRawFeedChunk(
+  public async getRawChunk(
     feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<R> {
@@ -294,38 +293,38 @@ export class BzzFeed<S, R extends Response<S>> {
     return resOrError<R>(res)
   }
 
-  public async getRawFeedChunkData(
+  public async getRawChunkData(
     feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<ArrayBuffer> {
-    const res = await this.getRawFeedChunk(feed, options)
+    const res = await this.getRawChunk(feed, options)
     const bytes = await res.arrayBuffer()
     return getFeedChunkData(bytes)
   }
 
-  public async getRawFeedContentHash(
+  public async getRawContentHash(
     feed: FeedID | FeedMetadata | FeedParams,
     options: FetchOptions = {},
   ): Promise<string> {
-    const bytes = await this.getRawFeedChunkData(feed, options)
+    const bytes = await this.getRawChunkData(feed, options)
     return toSwarmHash(bytes)
   }
 
-  public async getRawFeedContent(
+  public async getRawContent(
     feed: FeedID | FeedMetadata | FeedParams,
     options: DownloadOptions = {},
   ): Promise<R> {
-    const contentHash = await this.getRawFeedContentHash(feed, options)
+    const contentHash = await this.getRawContentHash(feed, options)
     return await this.bzz.download(contentHash, options)
   }
 
-  public async setRawFeedContentHash(
+  public async setRawContentHash(
     feed: FeedID | FeedMetadata | FeedParams,
     contentHash: string,
     options: UploadOptions = {},
     signParams?: any,
   ): Promise<R> {
-    return await this.postFeedChunk(
+    return await this.postChunk(
       getFeedMetadata(feed),
       `0x${contentHash}`,
       options,
@@ -333,7 +332,7 @@ export class BzzFeed<S, R extends Response<S>> {
     )
   }
 
-  public async setRawFeedContent(
+  public async setRawContent(
     feed: FeedID | FeedMetadata | FeedParams,
     content: string | Buffer | S,
     options: UploadOptions = {},
@@ -342,7 +341,7 @@ export class BzzFeed<S, R extends Response<S>> {
     const { contentType: _c, ...feedOptions } = options
     const meta = getFeedMetadata(feed)
     const hash = await this.bzz.uploadFile(content, options)
-    await this.postFeedChunk(meta, `0x${hash}`, feedOptions, signParams)
+    await this.postChunk(meta, `0x${hash}`, feedOptions, signParams)
     return hash
   }
 }

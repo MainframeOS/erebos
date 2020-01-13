@@ -1,19 +1,20 @@
-import { Bzz, BzzConfig } from '@erebos/api-bzz-node'
-import { Pss } from '@erebos/api-pss'
+import { BzzNode, BzzConfig } from '@erebos/bzz-node'
 import {
   BaseClient,
   ClientConfig,
   createInstantiateAPI,
 } from '@erebos/client-base'
+import { Pss } from '@erebos/pss'
 import { createRPC as createIPC } from '@erebos/rpc-ipc'
 import { createRPC } from '@erebos/rpc-node'
 import { StreamRPC } from '@erebos/rpc-stream'
 import { createRPC as createWS } from '@erebos/rpc-ws-node'
+import { Response } from 'node-fetch'
 
 // Re-exports from imported libraries
-export { Bzz } from '@erebos/api-bzz-node'
-export { Pss } from '@erebos/api-pss'
-export { Hex, hexInput, hexValue } from '@erebos/hex'
+export { BzzNode } from '@erebos/bzz-node'
+export { Pss } from '@erebos/pss'
+export { Hex } from '@erebos/hex'
 export { createRPC } from '@erebos/rpc-node'
 
 const instantiateAPI = createInstantiateAPI(
@@ -21,13 +22,13 @@ const instantiateAPI = createInstantiateAPI(
 )
 
 export interface SwarmConfig extends ClientConfig {
-  bzz?: BzzConfig | Bzz
+  bzz?: BzzConfig<Response> | BzzNode
   pss?: string | Pss
   rpc?: StreamRPC
 }
 
 export class SwarmClient extends BaseClient {
-  protected bzzInstance: Bzz | void = undefined
+  protected bzzInstance: BzzNode | void = undefined
   protected pssInstance: Pss | void = undefined
 
   public constructor(config: SwarmConfig) {
@@ -42,19 +43,19 @@ export class SwarmClient extends BaseClient {
     }
 
     if (config.bzz != null) {
-      if (config.bzz instanceof Bzz) {
+      if (config.bzz instanceof BzzNode) {
         this.bzzInstance = config.bzz
       } else {
-        this.bzzInstance = new Bzz(config.bzz)
+        this.bzzInstance = new BzzNode(config.bzz)
       }
     } else if (typeof config.http === 'string') {
-      this.bzzInstance = new Bzz({ url: config.http })
+      this.bzzInstance = new BzzNode({ url: config.http })
     }
 
     this.pssInstance = instantiateAPI(config.pss, Pss)
   }
 
-  public get bzz(): Bzz {
+  public get bzz(): BzzNode {
     if (this.bzzInstance == null) {
       throw new Error('Missing Bzz instance or HTTP URL')
     }

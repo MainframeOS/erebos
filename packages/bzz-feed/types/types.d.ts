@@ -70,5 +70,5 @@ export interface FeedUpdateParams {
 export declare type SignBytesFunc = (digest: Array<number>, params?: any) => Promise<Array<number>>;
 export interface BzzFeedConfig<S, R extends Response<S>> {
     bzz: Bzz<S, R>;
-    signBytes: SignBytesFunc;
+    signBytes?: SignBytesFunc;
 }

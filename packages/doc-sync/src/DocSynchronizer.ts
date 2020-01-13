@@ -21,7 +21,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
   ): Promise<DocSynchronizer<T, B>> {
     const { bzz, pullInterval } = params
     const feeds = getDocFeeds(params.feed)
-    const loadSources = (params.sources || []).map(async feed => {
+    const loadSources = (params.sources ?? []).map(async feed => {
       return await DocSubscriber.load<T, B>({ bzz, feed, pullInterval })
     })
     const synchronizer = new DocSynchronizer<T, B>({
@@ -43,7 +43,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     params: FromJSONDocSynchronizerParams<B>,
   ): DocSynchronizer<T, B> {
     const { bzz, pullInterval } = params
-    const sources = (params.sources || []).map(sourceParams => {
+    const sources = (params.sources ?? []).map(sourceParams => {
       return DocSubscriber.fromJSON<T, B>({
         ...sourceParams,
         bzz,
@@ -67,7 +67,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     params: LoadDocSynchronizerParams<B>,
   ): Promise<DocSynchronizer<T, B>> {
     const { bzz, feed, pullInterval } = params
-    const loadSources = (params.sources || []).map(async sourceFeed => {
+    const loadSources = (params.sources ?? []).map(async sourceFeed => {
       return await DocSubscriber.load<T, B>({
         bzz,
         feed: sourceFeed,
@@ -103,7 +103,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     this.writer = new DocWriter<T, B>(params)
     this.writer.subscribe(this)
     this.pushInterval = params.pushInterval || null
-    this.sources = params.sources || []
+    this.sources = params.sources ?? []
     this.start()
   }
 

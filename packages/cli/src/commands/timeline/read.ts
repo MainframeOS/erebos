@@ -52,7 +52,7 @@ export default class TimelineReadCommand extends Command<Flags> {
       return
     }
     try {
-      const timeline = new TimelineReader({ bzz: this.client.bzz, feed })
+      const timeline = new TimelineReader({ bzz: this.getBzzFeed(), feed })
       this.spinner.succeed().start('Querying feed...')
       const id = this.flags.chapter || (await timeline.getLatestChapterID())
       if (id === null) {
