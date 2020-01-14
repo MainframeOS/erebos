@@ -1,16 +1,16 @@
-# @erebos/api-bzz-node
+# @erebos/bzz-fs
 
-Swarm (BZZ) APIs for node.
+Swarm (BZZ) APIs interacting with the file system.
 
 ## Installation
 
 ```sh
-yarn add @erebos/api-bzz-node
+yarn add @erebos/bzz-fs
 ```
 
 ## API
 
-See the [library documentation website](https://erebos.js.org/docs/api-bzz).
+See the [library documentation website](https://erebos.js.org/docs/bzz-fs).
 
 ## License
 

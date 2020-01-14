@@ -24,8 +24,9 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.0",
-    "@erebos/api-bzz-base": "^0.12.0",
+    "@babel/runtime": "^7.8.3",
+    "@erebos/bzz": "^0.12.0",
+    "@erebos/bzz-feed": "^0.12.0",
     "@erebos/hex": "^0.12.0"
   }
 }

@@ -1,16 +1,20 @@
-# @erebos/api-bzz-base
+# @erebos/bzz
 
-Base class for Swarm (BZZ) APIs interactions. Used by `@erebos/api-bzz-browser` and `@erebos/api-bzz-node`.
+Core Swarm (BZZ) APIs interactions.
+
+Extended by `@erebos/bzz-browser`, `@erebos/bzz-node` or `@erebos/bzz-react-native` for additional platform-specific APIs.
+
+Use `@erebos/bzz-feed` to interact with Swarm feeds.
 
 ## Installation
 
 ```sh
-yarn add @erebos/api-bzz-base
+yarn add @erebos/bzz
 ```
 
 ## API
 
-See the [library documentation website](https://erebos.js.org/docs/api-bzz).
+See the [library documentation website](https://erebos.js.org/docs/bzz).
 
 ## License
 

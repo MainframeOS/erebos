@@ -25,7 +25,6 @@ export declare class Bzz<S, R extends Response<S>, F = any> {
     hash(domain: string, options?: FetchOptions): Promise<string>;
     list(hash: string, options?: DownloadOptions): Promise<ListResult>;
     download(hash: string, options?: DownloadOptions): Promise<R>;
-    downloadStream(hash: string, options?: DownloadOptions): Promise<S>;
     downloadData<T = any>(hash: string, options?: DownloadOptions): Promise<T>;
     downloadTar(hash: string, options: DownloadOptions): Promise<R>;
     protected uploadBody(body: Buffer | F | S, options: UploadOptions, raw?: boolean): Promise<string>;

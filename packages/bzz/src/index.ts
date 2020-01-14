@@ -1,4 +1,4 @@
-import { resOrError, resJSON, resStream, resText } from './http'
+import { resOrError, resJSON, resText } from './http'
 import {
   RequestInit,
   Response,
@@ -149,15 +149,6 @@ export class Bzz<S, R extends Response<S>, F = any> {
     const url = this.getDownloadURL(hash, options)
     const res = await this.fetchTimeout(url, options)
     return resOrError<R>(res)
-  }
-
-  public async downloadStream(
-    hash: string,
-    options: DownloadOptions = {},
-  ): Promise<S> {
-    const url = this.getDownloadURL(hash, options)
-    const res = await this.fetchTimeout(url, options)
-    return await resStream<S, R>(res)
   }
 
   public async downloadData<T = any>(

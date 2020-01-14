@@ -27,10 +27,6 @@ export async function resJSON<R extends Response, T = any>(res: R): Promise<T> {
   return (await resOrError(res)).json<T>()
 }
 
-export async function resStream<S, R extends Response<S>>(res: R): Promise<S> {
-  return (await resOrError(res)).body
-}
-
 export async function resText<R extends Response>(res: R): Promise<string> {
   return (await resOrError(res)).text()
 }

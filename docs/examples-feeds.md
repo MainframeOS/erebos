@@ -2,12 +2,13 @@
 title: Feeds examples
 ---
 
-[File storage APIs reference (contains feeds APIs)](api-bzz.md)
+[Feed APIs reference](bzz-feed.md)
 
 ## Publishing a website with a permanent URL
 
 ```javascript
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
@@ -17,10 +18,11 @@ const BZZ_URL = 'http://localhost:8500'
 const keyPair = createKeyPair()
 const user = pubKeyToAddress(keyPair.getPublic('array'))
 const signBytes = async bytes => sign(bytes, keyPair)
-const bzz = new Bzz({ url: BZZ_URL, signBytes })
+const bzz = new BzzNode({ url: BZZ_URL })
+const bzzFeed = new BzzFeed({ bzz, signBytes })
 
 // website will be accessible with the URL `${BZZ_URL}/bzz:/${feedHash}`
-const feedHash = await bzz.createFeedManifest({
+const feedHash = await bzzFeed.createManifest({
   user,
   name: 'my-awesome-website',
 })
@@ -28,7 +30,7 @@ const feedHash = await bzz.createFeedManifest({
 // This function can be called any time the website contents change
 const publishContents = async contents => {
   // setFeedContent() uploads the given contents and updates the feed to point to the contents hash
-  await bzz.setFeedContent(feedHash, contents, { defaultPath: 'index.html' })
+  await bzzFeed.setContent(feedHash, contents, { defaultPath: 'index.html' })
 }
 
 // Example use of publishContents()

@@ -1,7 +1,7 @@
 {
-  "name": "@erebos/api-bzz-base",
+  "name": "@erebos/bzz-react-native",
   "version": "0.12.0",
-  "description": "Base Bzz API",
+  "description": "Bzz API for react-native",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
@@ -15,23 +15,15 @@
   ],
   "scripts": {
     "clean": "del cjs esm types",
-    "test:types": "tsc --noEmit -p tsconfig.build.json",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
     "build:js": "yarn build:cjs && yarn build:esm",
     "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
-    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
+    "build": "yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.0",
-    "@erebos/hex": "^0.12.0",
-    "@erebos/keccak256": "^0.12.0",
-    "readable-stream": "^3.1.1",
-    "rxjs": "^6.5.4",
-    "tar-stream": "^2.1.0"
-  },
-  "devDependencies": {
-    "@types/readable-stream": "^2.3.5"
+    "@babel/runtime": "^7.8.3",
+    "@erebos/bzz": "^0.12.0"
   }
 }

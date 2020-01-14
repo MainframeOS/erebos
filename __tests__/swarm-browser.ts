@@ -133,8 +133,8 @@ describe('swarm-browser', () => {
       }, uploadContent)
 
       const bytes = await evalClient(async (client, manifestHash) => {
-        const stream = await client.bzz.downloadStream(manifestHash)
-        const reader = stream.getReader()
+        const res = await client.bzz.download(manifestHash)
+        const reader = res.body.getReader()
 
         let bytes: Array<number> = []
         let chunk = await reader.read()

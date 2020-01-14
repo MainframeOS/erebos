@@ -40,13 +40,14 @@ describe('bzz-node', () => {
     })
 
     const data: Array<Uint8Array> = []
-    const responseStream = await bzz.downloadStream(manifestHash)
-    responseStream.on('data', (d: Uint8Array) => {
+    const res = await bzz.download(manifestHash)
+    const stream = res.body
+    stream.on('data', (d: Uint8Array) => {
       data.push(d)
     })
 
     return new Promise(resolve => {
-      responseStream.on('end', () => {
+      stream.on('end', () => {
         expect(Buffer.concat(data).toString()).toBe(uploadContent)
         resolve()
       })
@@ -77,15 +78,14 @@ describe('bzz-node', () => {
     const manifestHash = await bzz.uploadFile(s, { size: uploadContent.length })
 
     const data: Array<Uint8Array> = []
-    const responseStream = await bzz.downloadStream(manifestHash, {
-      mode: 'raw',
-    })
-    responseStream.on('data', (d: Uint8Array) => {
+    const res = await bzz.download(manifestHash, { mode: 'raw' })
+    const stream = res.body
+    stream.on('data', (d: Uint8Array) => {
       data.push(d)
     })
 
     return new Promise(resolve => {
-      responseStream.on('end', () => {
+      stream.on('end', () => {
         expect(Buffer.concat(data).toString()).toBe(uploadContent)
         resolve()
       })

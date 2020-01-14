@@ -40,11 +40,15 @@ npm install -g @erebos/cli
 | **CLI**
 | [`@erebos/cli`](/packages/cli) | [![npm version](https://img.shields.io/npm/v/@erebos/cli.svg)](https://www.npmjs.com/package/@erebos/cli) |
 | **Individual Swarm APIs**
-| [`@erebos/api-bzz-browser`](/packages/api-bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-browser.svg)](https://www.npmjs.com/package/@erebos/api-bzz-browser) | 🌐 | Browser-only Swarm (BZZ) APIs
-| [`@erebos/api-bzz-node`](/packages/api-bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-node.svg)](https://www.npmjs.com/package/@erebos/api-bzz-node) | ⚛️ ⚙️ | Electron and Node Swarm (BZZ) APIs
-| [`@erebos/api-bzz-react-native`](/packages/api-bzz-react-native) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-react-native.svg)](https://www.npmjs.com/package/@erebos/api-bzz-react-native) | 📱 | Experimental React Native Swarm (BZZ) APIs
-| [`@erebos/api-pss`](/packages/api-pss) | [![npm version](https://img.shields.io/npm/v/@erebos/api-pss.svg)](https://www.npmjs.com/package/@erebos/api-pss) | ⚛️ ⚙️ 📱 🌐 | Postal Services over Swarm (PSS) APIs
-| **Higher-level APIs**
+| [`@erebos/bzz`](/packages/bzz) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz.svg)](https://www.npmjs.com/package/@erebos/bzz) | ⚛️ ⚙️ 📱 🌐 | Core Swarm (BZZ) APIs
+| [`@erebos/bzz-browser`](/packages/bzz-browser) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz-browser.svg)](https://www.npmjs.com/package/@erebos/bzz-browser) | 🌐 | Browser-only Swarm (BZZ) APIs
+| [`@erebos/bzz-node`](/packages/bzz-node) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz-node.svg)](https://www.npmjs.com/package/@erebos/bzz-node) | ⚛️ ⚙️ | Electron and Node Swarm (BZZ) APIs
+| [`@erebos/bzz-react-native`](/packages/bzz-react-native) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz-react-native.svg)](https://www.npmjs.com/package/@erebos/bzz-react-native) | 📱 | Experimental React Native Swarm (BZZ) APIs
+| [`@erebos/pss`](/packages/pss) | [![npm version](https://img.shields.io/npm/v/@erebos/pss.svg)](https://www.npmjs.com/package/@erebos/pss) | ⚛️ ⚙️ 📱 🌐 | Postal Services over Swarm (PSS) APIs
+| **Additional Swarm APIs**
+| [`@erebos/bzz-feed`](/packages/bzz-feed) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz-feed.svg)](https://www.npmjs.com/package/@erebos/bzz-feed) | ⚛️ ⚙️ 📱 🌐 | Swarm feeds interactions
+| [`@erebos/bzz-fs`](/packages/bzz-fs) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz-fs.svg)](https://www.npmjs.com/package/@erebos/bzz-fs) | ⚛️ ⚙️ | File system interactions
+| **Data structures**
 | [`@erebos/feed-list`](/packages/feed-list) | [![npm version](https://img.shields.io/npm/v/@erebos/feed-list.svg)](https://www.npmjs.com/package/@erebos/feed-list) | ⚛️ ⚙️ 📱 🌐 | List APIs using raw Swarm feeds
 | [`@erebos/timeline`](/packages/timeline) | [![npm version](https://img.shields.io/npm/v/@erebos/timeline.svg)](https://www.npmjs.com/package/@erebos/timeline) | ⚛️ ⚙️ 📱 🌐 | Feed-based Timeline APIs
 | **Ethereum and Swarm utilities**
@@ -73,7 +77,6 @@ npm install -g @erebos/cli
 | [`@erebos/transport-electron`](/packages/transport-electron) | [![npm version](https://img.shields.io/npm/v/@erebos/transport-electron.svg)](https://www.npmjs.com/package/@erebos/transport-electron) | ⚛️ | IPC transport for Electron
 | [`@erebos/transport-ipc`](/packages/transport-ipc) | [![npm version](https://img.shields.io/npm/v/@erebos/transport-ipc.svg)](https://www.npmjs.com/package/@erebos/transport-ipc) | ⚙️ | IPC transport for Node
 | **Base classes**
-| [`@erebos/api-bzz-base`](/packages/api-bzz-base) | [![npm version](https://img.shields.io/npm/v/@erebos/api-bzz-base.svg)](https://www.npmjs.com/package/@erebos/api-bzz-base) | ⚛️ ⚙️ 📱 🌐 | Shared logic for Swarm (BZZ) APIs
 | [`@erebos/client-base`](/packages/client-base) | [![npm version](https://img.shields.io/npm/v/@erebos/client-base.svg)](https://www.npmjs.com/package/@erebos/client-base) | ⚛️ ⚙️ 📱 🌐 | Shared logic for Client APIs
 | [`@erebos/rpc-base`](/packages/rpc-base) | [![npm version](https://img.shields.io/npm/v/@erebos/rpc-base.svg)](https://www.npmjs.com/package/@erebos/rpc-base) | ⚛️ ⚙️ 📱 🌐 | Shared logic for RPC clients
 

@@ -19,12 +19,12 @@
     "start": "yarn build && yarn test:all"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.0",
-    "@babel/core": "^7.8.0",
-    "@babel/plugin-proposal-class-properties": "^7.8.0",
-    "@babel/plugin-transform-runtime": "^7.8.0",
-    "@babel/preset-env": "^7.8.2",
-    "@babel/preset-typescript": "^7.8.0",
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
     "@types/expect-puppeteer": "^3.3.3",
     "@types/jest": "^24.0.25",
     "@types/jest-environment-puppeteer": "^4.3.1",

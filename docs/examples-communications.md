@@ -2,7 +2,7 @@
 title: Communications examples
 ---
 
-[Communication APIs reference](api-pss.md)
+[Communication APIs reference](pss.md)
 
 ## Communication between two nodes using asymmetric encryption
 

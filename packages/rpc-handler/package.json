@@ -20,7 +20,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.0",
+    "@babel/runtime": "^7.8.3",
     "@erebos/rpc-base": "^0.10.0",
     "@erebos/rpc-error": "^0.10.0",
     "fastest-validator": "1.0.0"

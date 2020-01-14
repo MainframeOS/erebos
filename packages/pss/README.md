@@ -1,11 +1,11 @@
-# @erebos/api-pss
+# @erebos/pss
 
 Postal Services over Swarm (PSS) APIs.
 
 ## Installation
 
 ```sh
-yarn add @erebos/api-pss
+yarn add @erebos/pss
 ```
 
 ## Example
@@ -14,7 +14,7 @@ See the [examples folder](https://github.com/MainframeHQ/erebos/blob/master/exam
 
 ## API
 
-See the [library documentation website](https://erebos.js.org/docs/api-pss).
+See the [library documentation website](https://erebos.js.org/docs/pss).
 
 ## License
 

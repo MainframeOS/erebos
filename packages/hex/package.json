@@ -24,6 +24,6 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.0"
+    "@babel/runtime": "^7.8.3"
   }
 }

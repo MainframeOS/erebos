@@ -11,13 +11,15 @@ If you are not familiar with Swarm yet, the [Swarm introduction](https://swarm-g
 
 ### Individual packages
 
-The `@erebos/api-bzz-browser` and `@erebos/api-bzz-node` packages expose the [Bzz APIs](api-bzz.md), to interact with files in Swarm. Because some of the methods exported are only available in Node, these packages are environment-specific.
+The `@erebos/bzz-browser` and `@erebos/bzz-node` packages expose the [Bzz APIs](bzz.md), to interact with files in Swarm.
 
-The `@erebos/api-pss` package expose the [Pss APIs](api-pss.md), for communications over Swarm.
+The `@erebos/bzz-feed` package provides [additional APIs to interact with Swarm feeds](bzz-feed.md) while the `@erebos/bzz-fs` package provides [additional APIs to interact with the local file system](bzz-fs.md).
+
+The `@erebos/pss` package exposes the [Pss APIs](pss.md), for communications over Swarm.
 
 ### Swarm client
 
-The `@erebos/swarm-browser` and `@erebos/swarm-node` packages expose the [SwarmClient class](swarm-client.md) that includes either `@erebos/api-bzz-browser` (in `@erebos/swarm-browser`) or `@erebos/api-bzz-node` (in `@erebos/swarm-node`) and `@erebos/api-pss`.\
+The `@erebos/swarm-browser` and `@erebos/swarm-node` packages expose the [SwarmClient class](swarm-client.md) that includes either `@erebos/bzz-browser` (in `@erebos/swarm-browser`) or `@erebos/bzz-node` (in `@erebos/swarm-node`) and `@erebos/pss`.\
 It is meant to be a simple way to get started with Swarm in Node or browser environments.
 
 ## Utility packages

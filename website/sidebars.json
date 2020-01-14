@@ -9,8 +9,10 @@
     "Swarm APIs and CLI": [
       "swarm-client",
       "individual-apis",
-      "api-bzz",
-      "api-pss",
+      "bzz",
+      "bzz-feed",
+      "bzz-fs",
+      "pss",
       "cli"
     ],
     "Data structures": ["data-structures", "feed-list", "timeline"],
