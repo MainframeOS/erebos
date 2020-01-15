@@ -51,14 +51,6 @@ type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>
 
 **Returns** `boolean`
 
-### createHex()
-
-**Arguments**
-
-1.  `value: hexInput | Hex`
-
-**Returns** `Hex`
-
 ## Hex class
 
 ### new Hex()
@@ -73,7 +65,7 @@ type hexInput = hexValue | string | Record<string, any> | Buffer | Array<number>
 
 1.  `value: hexInput | Hex`
 
-**Returns** `Hex` instance
+**Returns** `Hex`
 
 ### .value
 

@@ -3,9 +3,12 @@ import {
   DocWriter,
   DocSubscriber,
   DocSynchronizer,
+  downloadDoc,
+  downloadMeta,
 } from '@erebos/doc-sync'
 import { BzzFeed } from '@erebos/bzz-feed'
 import { BzzNode } from '@erebos/bzz-node'
+import { DataListReader } from '@erebos/feed-list'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
@@ -14,7 +17,7 @@ interface FeedUser {
 }
 
 interface Config {
-  bzz: Bzz
+  bzz: BzzFeed<any, any>
   feed: FeedUser
 }
 
@@ -69,6 +72,30 @@ describe('doc-sync', () => {
       })
       await writer.push()
       await reader.pull()
+    })
+
+    it.only('uses snapshots', async () => {
+      interface T {
+        count: string
+      }
+      const config = createConfig()
+
+      const writer = DocWriter.create<T>({ ...config, snapshotFrequency: 2 })
+      for (const count of ['one', 'two', 'three', 'four', 'five', 'six']) {
+        writer.change(doc => {
+          doc.count = count
+        })
+        await writer.push()
+      }
+
+      const meta = await downloadMeta(config.bzz, writer.metaFeed)
+      const list = new DataListReader({ bzz: config.bzz, feed: meta.dataFeed })
+      const spy = jest.spyOn(list, 'createForwardsIterator')
+
+      const doc = await downloadDoc<T>(config.bzz, writer.metaFeed, list)
+      expect(doc.count).toBe('six')
+      // Iteration for changes should start from the 5th index as the 4th one should contain the snapshot
+      expect(spy.mock.calls[0][0]).toBe(5)
     })
   })
 

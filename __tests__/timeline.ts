@@ -6,7 +6,6 @@ import { createKeyPair, sign, verify } from '../packages/secp256k1'
 import {
   PROTOCOL,
   VERSION,
-  VERSION_RANGE,
   TimelineReader,
   TimelineWriter,
   createChapter,
@@ -23,10 +22,9 @@ describe('timeline', () => {
     signBytes: bytes => Promise.resolve(sign(bytes, keyPair)),
   })
 
-  it('exports the PROTOCOL, VERSION and VERSION_RANGE constants', () => {
+  it('exports the PROTOCOL and VERSION constants', () => {
     expect(PROTOCOL).toBe('timeline')
     expect(VERSION).toBe('1.0.0')
-    expect(VERSION_RANGE).toBe('^1.0.0')
   })
 
   it('provides a createChapter() function', () => {

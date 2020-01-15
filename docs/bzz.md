@@ -277,8 +277,6 @@ Returns the hash of the provided `domain`.
 
 **Returns** `Promise<Tag>` the [`Tag`](#tag) of the given `hash`
 
-## Immutables resources methods
-
 ### .list()
 
 Returns the manifest data for the provided `hashOrDomain` and optional `path`.
@@ -345,10 +343,6 @@ Deletes the resource with at the provided `path` in the manifest and returns the
 1.  [`options?: FetchOptions = {}`](#fetchoptions)
 
 **Returns** `Promise<string>`
-
-## Pinning methods
-
-> Pinning allows to persist files on a Swarm node. It has be enabled on the node for the following methods to work.
 
 ### .pin()
 

@@ -6,7 +6,7 @@ import { DocReader } from './DocReader'
 import { downloadMeta } from './loaders'
 import {
   Bzz,
-  DataContent,
+  DataPayload,
   DocSubscriberParams,
   FromJSONDocSubscriberParams,
   LoadDocSubscriberParams,
@@ -20,7 +20,7 @@ export class DocSubscriber<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       bzz: params.bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListReader<DataContent, B>({
+      list: new DataListReader<DataPayload, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
@@ -38,7 +38,7 @@ export class DocSubscriber<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       bzz,
       doc: Automerge.init<T>(),
       feed,
-      list: new DataListReader<DataContent, B>({
+      list: new DataListReader<DataPayload, B>({
         bzz,
         feed: meta.dataFeed,
       }),

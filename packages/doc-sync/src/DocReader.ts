@@ -6,22 +6,22 @@ import { BehaviorSubject } from 'rxjs'
 import { downloadDoc, downloadMeta } from './loaders'
 import {
   Bzz,
-  DataContent,
+  DataPayload,
   DocReaderParams,
   DocSerialized,
-  FromJSONDocParams,
-  LoadDocParams,
+  FromJSONDocReaderParams,
+  LoadDocReaderParams,
 } from './types'
 
 export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
   static fromJSON<T, B extends Bzz = Bzz>(
-    params: FromJSONDocParams<B>,
+    params: FromJSONDocReaderParams<B>,
   ): DocReader<T, B> {
     return new DocReader<T, B>({
       bzz: params.bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListReader<DataContent, B>({
+      list: new DataListReader<DataPayload, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
@@ -30,7 +30,7 @@ export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
   }
 
   static async load<T, B extends Bzz = Bzz>(
-    params: LoadDocParams<B>,
+    params: LoadDocReaderParams<B>,
   ): Promise<DocReader<T, B>> {
     const { bzz, feed } = params
     const meta = await downloadMeta(bzz, feed)
@@ -38,7 +38,7 @@ export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
       bzz,
       doc: Automerge.init<T>(),
       feed,
-      list: new DataListReader<DataContent, B>({
+      list: new DataListReader<DataPayload, B>({
         bzz,
         feed: meta.dataFeed,
       }),
@@ -50,7 +50,7 @@ export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
 
   protected bzz: B
   protected feed: FeedParams
-  protected list: DataListReader<DataContent, B>
+  protected list: DataListReader<DataPayload, B>
   protected time: number
   private pullPromise: Promise<boolean> | null = null
 

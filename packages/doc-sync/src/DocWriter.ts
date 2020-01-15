@@ -3,22 +3,29 @@ import { DataListWriter } from '@erebos/feed-list'
 import Automerge, { Change, ChangeFn, Doc } from 'automerge'
 
 import { DocReader } from './DocReader'
-import { downloadMeta, uploadMeta } from './loaders'
+import {
+  PROTOCOL,
+  downloadMeta,
+  uploadData,
+  uploadMeta,
+  uploadSnapshot,
+} from './loaders'
 import {
   Bzz,
   CreateDocWriterParams,
-  DataContent,
+  DataPayload,
   DocFeeds,
   DocSerialized,
   DocWriterParams,
   FeedFactoryParams,
-  FromJSONDocParams,
+  FromJSONDocWriterParams,
   InitDocWriterParams,
-  LoadDocParams,
+  LoadDocWriterParams,
+  MetaSnapshot,
 } from './types'
 
-export const DATA_FEED_NAME = 'doc-sync/data'
-export const META_FEED_NAME = 'doc-sync/meta'
+export const DATA_FEED_NAME = `${PROTOCOL}/data`
+export const META_FEED_NAME = `${PROTOCOL}/meta`
 
 export function getDocFeeds(feed: FeedFactoryParams): DocFeeds {
   return {
@@ -42,10 +49,11 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       bzz: params.bzz,
       doc: Automerge.init(),
       feed: feeds.meta,
-      list: new DataListWriter<DataContent, B>({
+      list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: feeds.data,
       }),
+      snapshotFrequency: params.snapshotFrequency,
     })
   }
 
@@ -57,51 +65,62 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       bzz: params.bzz,
       doc: Automerge.from<T>(params.doc),
       feed: feeds.meta,
-      list: new DataListWriter<DataContent, B>({
+      list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: feeds.data,
       }),
+      snapshotFrequency: params.snapshotFrequency,
     })
     await writer.push()
     return writer
   }
 
   static fromJSON<T, B extends Bzz = Bzz>(
-    params: FromJSONDocParams<B>,
+    params: FromJSONDocWriterParams<B>,
   ): DocWriter<T, B> {
     return new DocWriter<T, B>({
       bzz: params.bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListWriter<DataContent, B>({
+      list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
+      snapshotFrequency: params.snapshotFrequency,
     })
   }
 
   static async load<T, B extends Bzz = Bzz>(
-    params: LoadDocParams<B>,
+    params: LoadDocWriterParams<B>,
   ): Promise<DocWriter<T, B>> {
-    const { bzz, feed } = params
+    const { bzz, feed, snapshotFrequency } = params
     const doc = Automerge.init<T>()
     const meta = await downloadMeta(bzz, feed)
-    const list = new DataListWriter<DataContent, B>({
+    const list = new DataListWriter<DataPayload, B>({
       bzz,
       feed: meta.dataFeed,
     })
-    const writer = new DocWriter<T, B>({ bzz, doc, feed, list })
+    const writer = new DocWriter<T, B>({
+      bzz,
+      doc,
+      feed,
+      list,
+      snapshotFrequency,
+    })
     await writer.pull()
     return writer
   }
 
-  protected list: DataListWriter<DataContent, B>
+  protected list: DataListWriter<DataPayload, B>
   protected pushedDoc: Doc<T> | null = null
   protected pushQueue: Promise<string> | null = null
+  protected snapshot: MetaSnapshot | undefined
+  protected snapshotFrequency: number | null
 
   public constructor(params: DocWriterParams<T, B>) {
     super({ ...params, time: params.list.length })
     this.list = params.list
+    this.snapshotFrequency = params.snapshotFrequency || null
   }
 
   public get length(): number {
@@ -120,12 +139,26 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
 
   private async pushChanges(changes: Array<Change>): Promise<string> {
     const doc = this.value
-    // TODO: add other content data, such as protocol name and version
-    await this.list.push({ changes })
+
+    // Upload the changes
+    await uploadData(this.list, { changes })
     this.pushedDoc = doc
-    // TODO: based on snapshot config, eventually push snapshot
+    const dataFeed = this.list.getID().params
+
+    // Upload a snapshot if needed based on the configuration
+    const time = dataFeed.time ?? -1
+    if (
+      this.snapshotFrequency != null &&
+      time > 0 &&
+      time % this.snapshotFrequency === 0
+    ) {
+      this.snapshot = { hash: await uploadSnapshot(this.bzz, doc), time }
+    }
+
+    // Update the metadata
     return await uploadMeta(this.bzz, this.feed, {
-      dataFeed: this.list.getID().params,
+      dataFeed,
+      snapshot: this.snapshot,
     })
   }
 

@@ -63,7 +63,7 @@ If your usage is limited to Bzz or Pss APIs, using the [individual APIs](individ
 
 ## Node setup
 
-⚠️ Erebos is only tested against Node.js v10 (LTS), it does not work with older versions and may not work with more recent ones.
+> ⚠️ Erebos is only tested against Node.js v12, it may not work with older or more recent versions.
 
 The simplest way to get started is to install and import the `@erebos/swarm-node` package:
 

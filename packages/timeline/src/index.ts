@@ -2,15 +2,9 @@ import { Response, FetchOptions, PollOptions, UploadOptions } from '@erebos/bzz'
 import { BzzFeed, FeedParams } from '@erebos/bzz-feed'
 import { Observable, Observer } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
-import {
-  satisfies as semverSatisfies,
-  valid as semverValid,
-  // @ts-ignore
-} from 'semver/preload'
 
 export const PROTOCOL = 'timeline'
 export const VERSION = '1.0.0'
-export const VERSION_RANGE = '^1.0.0'
 
 export interface PartialChapter<T = any> {
   protocol: string
@@ -27,13 +21,6 @@ export interface PartialChapter<T = any> {
 export interface Chapter<T = any> extends PartialChapter<T> {
   id: string
 }
-
-export type DecodeChapter<T, R extends Response> = (
-  res: R,
-) => Promise<Chapter<T>>
-export type EncodeChapter<T> = (
-  chapter: PartialChapter<T>,
-) => Promise<string | Buffer>
 
 export interface LiveOptions extends PollOptions {
   previous?: string
@@ -83,10 +70,7 @@ export function validateChapter<T extends MaybeChapter>(chapter: T): T {
   if (chapter.protocol !== PROTOCOL) {
     throw new Error('Unsupported protocol')
   }
-  if (
-    semverValid(chapter.version) === null ||
-    !semverSatisfies(chapter.version, VERSION_RANGE)
-  ) {
+  if (chapter.version !== VERSION) {
     throw new Error('Unsupported protocol version')
   }
   return chapter

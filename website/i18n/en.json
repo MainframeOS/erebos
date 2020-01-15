@@ -21,6 +21,9 @@
       "data-structures": {
         "title": "Data structures"
       },
+      "doc-sync": {
+        "title": "Document synchronization"
+      },
       "examples-communications": {
         "title": "Communications examples"
       },

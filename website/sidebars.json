@@ -15,7 +15,7 @@
       "pss",
       "cli"
     ],
-    "Data structures": ["data-structures", "feed-list", "timeline"],
+    "Data structures": ["data-structures", "feed-list", "doc-sync", "timeline"],
     "Timeline protocol": ["timeline-spec", "timeline-examples", "timeline-api"],
     "Utility libraries": ["hex", "keccak256", "secp256k1", "wallet-hd"],
     "RPC tools": [

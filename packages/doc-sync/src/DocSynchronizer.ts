@@ -1,13 +1,13 @@
 import { DataListWriter } from '@erebos/feed-list'
-import Automerge, { ChangeFn, Doc } from 'automerge'
-import { Subject, Subscription, interval } from 'rxjs'
+import Automerge from 'automerge'
+import { Subscription, interval } from 'rxjs'
 
 import { DocSubscriber } from './DocSubscriber'
 import { DocWriter, getDocFeeds } from './DocWriter'
 import { downloadMeta } from './loaders'
 import {
   Bzz,
-  DataContent,
+  DataPayload,
   DocSynchronizerParams,
   DocSynchronizerSerialized,
   FromJSONDocSynchronizerParams,
@@ -15,7 +15,7 @@ import {
   LoadDocSynchronizerParams,
 } from './types'
 
-export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
+export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
   static async init<T, B extends Bzz = Bzz>(
     params: InitDocSynchronizerParams<T, B>,
   ): Promise<DocSynchronizer<T, B>> {
@@ -28,11 +28,12 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
       bzz,
       doc: Automerge.from<T>(params.doc),
       feed: feeds.meta,
-      list: new DataListWriter<DataContent, B>({
+      list: new DataListWriter<DataPayload, B>({
         bzz,
         feed: feeds.data,
       }),
       pushInterval: params.pushInterval,
+      snapshotFrequency: params.snapshotFrequency,
       sources: await Promise.all(loadSources),
     })
     await synchronizer.push()
@@ -54,7 +55,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
       bzz,
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
-      list: new DataListWriter<DataContent, B>({
+      list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
       }),
@@ -82,7 +83,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
       bzz,
       doc: Automerge.init<T>(),
       feed,
-      list: new DataListWriter<DataContent, B>({
+      list: new DataListWriter<DataPayload, B>({
         bzz,
         feed: meta.dataFeed,
       }),
@@ -93,22 +94,15 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     return synchronizer
   }
 
-  protected writer: DocWriter<T, B>
   protected pushInterval: number | null
   protected sources: Array<DocSubscriber<T, B>>
   protected subscription: Subscription | null = null
 
   constructor(params: DocSynchronizerParams<T, B>) {
-    super()
-    this.writer = new DocWriter<T, B>(params)
-    this.writer.subscribe(this)
+    super(params)
     this.pushInterval = params.pushInterval || null
     this.sources = params.sources ?? []
     this.start()
-  }
-
-  get value(): Doc<T> {
-    return this.writer.value
   }
 
   public start(): void {
@@ -118,7 +112,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     for (const source of this.sources) {
       sub.add(
         source.subscribe(doc => {
-          this.writer.merge(doc)
+          this.merge(doc)
         }),
       )
       source.start()
@@ -126,7 +120,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     if (this.pushInterval != null) {
       sub.add(
         interval(this.pushInterval).subscribe(() => {
-          this.writer.push()
+          this.push()
         }),
       )
     }
@@ -144,25 +138,19 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends Subject<Doc<T>> {
     }
   }
 
-  public change(updater: ChangeFn<T>): boolean {
-    return this.writer.change(updater)
-  }
-
-  public async push(): Promise<string | null> {
-    return await this.writer.push()
-  }
-
-  public async pull(): Promise<boolean> {
-    return await this.writer.pull()
-  }
-
   public async pullSources(): Promise<boolean> {
-    const anyChanged = await Promise.all(this.sources.map(s => s.pull()))
-    return anyChanged.find(Boolean) || false
+    const changes = await Promise.all(this.sources.map(s => s.pull()))
+    return changes.reduce((anyChanged, changed, index) => {
+      if (changed) {
+        this.merge(this.sources[index].value)
+        return true
+      }
+      return anyChanged
+    }, false)
   }
 
   public toJSON(): DocSynchronizerSerialized {
-    const serialized = this.writer.toJSON()
+    const serialized = super.toJSON()
     return {
       ...serialized,
       sources: this.sources.map(s => s.toJSON()),
