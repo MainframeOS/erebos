@@ -1,23 +1,25 @@
 import {
   MAX_CHUNK_BYTE_LENGTH,
-  ChunkListReaderConfig,
   ChunkListReader,
   ChunkListWriter,
   DataListReader,
   DataListWriter,
+  ListReaderConfig,
 } from '@erebos/feed-list'
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
 describe('feed-list', () => {
-  function createConfig(): ChunkListReaderConfig {
+  function createConfig(): ListReaderConfig {
     const keyPair = createKeyPair()
     const user = pubKeyToAddress(keyPair.getPublic('array'))
-    const bzz = new Bzz({
-      signBytes: (bytes: Array<number>) =>
-        Promise.resolve(sign(bytes, keyPair)),
-      url: 'http://localhost:8500',
+    const bzz = new BzzFeed({
+      bzz: new BzzNode({ url: 'http://localhost:8500' }),
+      signBytes: (bytes: Array<number>) => {
+        return Promise.resolve(sign(bytes, keyPair))
+      },
     })
     return { bzz, feed: { user } }
   }
@@ -137,9 +139,9 @@ describe('feed-list', () => {
   })
 
   describe('data list', () => {
-    it('DataListWriter extends DataListReader', () => {
+    it('DataListWriter extends ChunkListWriter', () => {
       const writer = new DataListWriter(createConfig())
-      expect(writer).toBeInstanceOf(DataListReader)
+      expect(writer).toBeInstanceOf(ChunkListWriter)
     })
 
     it('works with a simple flow', async () => {

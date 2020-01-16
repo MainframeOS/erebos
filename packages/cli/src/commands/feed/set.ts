@@ -42,7 +42,7 @@ export default class FeedSetCommand extends Command<Flags, Args> {
       const address = pubKeyToAddress(keyPair.getPublic('array'))
       this.spinner.start('Publishing to feed...')
 
-      await this.client.bzz.setFeedChunk(
+      await this.getBzzFeed().setChunk(
         { user: address, name: this.flags.name },
         this.args.value,
         {},

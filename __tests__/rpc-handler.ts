@@ -64,7 +64,7 @@ describe('rpc-handler', () => {
           expected: undefined,
           actual: undefined,
           field: 'name',
-          message: "The 'name' field is required!",
+          message: "The 'name' field is required.",
         },
       ])
     }
@@ -228,7 +228,7 @@ describe('rpc-handler', () => {
             expected: undefined,
             actual: undefined,
             field: 'name',
-            message: "The 'name' field is required!",
+            message: "The 'name' field is required.",
           },
         ],
       },

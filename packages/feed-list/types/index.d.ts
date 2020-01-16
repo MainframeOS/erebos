@@ -1,48 +1,44 @@
-/// <reference types="node" />
-import { Readable } from 'stream';
-import { BaseBzz, BaseResponse, FeedID, FeedParams, FetchOptions } from '@erebos/api-bzz-base';
-import { Hex, hexInput } from '@erebos/hex';
+import { Response } from '@erebos/bzz';
+import { BzzFeed, FeedID, FeedParams, FetchOptions } from '@erebos/bzz-feed';
+import { Hex } from '@erebos/hex';
 export declare const MAX_CHUNK_BYTE_LENGTH: number;
 export declare const MAX_CHUNK_VALUE_LENGTH: number;
-export interface ForwardsChunkIterator<T> extends AsyncIterator<T> {
+export interface ForwardsChunkIterator<T> extends AsyncIterableIterator<T> {
     length: number;
 }
-export interface ListReaderConfig<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
-    bzz: Bzz;
+declare type Res = Response<any>;
+declare type Bzz = BzzFeed<any, Res>;
+export interface ListReaderConfig<T = any, B extends Bzz = Bzz> {
+    bzz: B;
     feed: FeedID | FeedParams;
     fetchOptions?: FetchOptions;
 }
-export interface ListWriterConfig<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends ListReaderConfig<Bzz> {
+export interface ListWriterConfig<T = any, B extends Bzz = Bzz> extends ListReaderConfig<T, B> {
     signParams?: any;
 }
-export declare class ChunkListReader<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
-    bzz: Bzz;
-    fetchOptions: FetchOptions;
+export declare class ChunkListReader<T = Hex, B extends Bzz = Bzz> {
+    protected readonly bzzFeed: B;
+    protected readonly fetchOptions: FetchOptions;
     protected id: FeedID;
-    constructor(config: ListReaderConfig<Bzz>);
-    load(index: number): Promise<Hex | null>;
-    createBackwardsIterator(maxIndex: number, minIndex?: number): AsyncIterator<Hex | null>;
-    createForwardsIterator(minIndex?: number, maxIndex?: number): ForwardsChunkIterator<Hex>;
-}
-export declare class ChunkListWriter<Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends ChunkListReader<Bzz> {
-    protected signParams?: any;
-    constructor(config: ListWriterConfig<Bzz>);
-    get length(): number;
+    constructor(config: ListReaderConfig<T, B>);
     getID(): FeedID;
-    push(data: hexInput): Promise<void>;
-}
-export declare class DataListReader<T = any, Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> {
-    protected chunkList: ChunkListReader<Bzz>;
-    constructor(config: ListReaderConfig<Bzz>);
-    protected downloadData(hex: Hex): Promise<T>;
+    read(data: ArrayBuffer): Promise<T>;
     load(index: number): Promise<T | null>;
-    createBackwardsIterator(maxIndex: number, minIndex?: number): AsyncIterator<T | null>;
+    createBackwardsIterator(maxIndex: number, minIndex?: number): AsyncIterableIterator<T | null>;
     createForwardsIterator(minIndex?: number, maxIndex?: number): ForwardsChunkIterator<T>;
 }
-export declare class DataListWriter<T = any, Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>> extends DataListReader<T, Bzz> {
-    protected chunkList: ChunkListWriter<Bzz>;
-    constructor(config: ListWriterConfig<Bzz>);
+export declare class ChunkListWriter<T = Hex, B extends Bzz = Bzz> extends ChunkListReader<T, B> {
+    protected readonly signParams?: any;
+    constructor(config: ListWriterConfig<T, B>);
     get length(): number;
-    getID(): FeedID;
-    push(data: T): Promise<string>;
+    write(data: T): Promise<Hex>;
+    push(data: T): Promise<void>;
 }
+export declare class DataListReader<T = any, B extends Bzz = Bzz> extends ChunkListReader<T, B> {
+    read(chunk: ArrayBuffer): Promise<T>;
+}
+export declare class DataListWriter<T = any, B extends Bzz = Bzz> extends ChunkListWriter<T, B> implements DataListReader<T, B> {
+    read(chunk: ArrayBuffer): Promise<T>;
+    write(data: T): Promise<Hex>;
+}
+export {};

@@ -1,32 +1,35 @@
-import { Bzz, BzzConfig } from '@erebos/api-bzz-browser'
-import { Pss } from '@erebos/api-pss'
+import { Bzz, Response } from '@erebos/bzz'
+import { BzzBrowser, BzzConfig } from '@erebos/bzz-browser'
 import {
   BaseClient,
   ClientConfig,
   createInstantiateAPI,
 } from '@erebos/client-base'
+import { Pss } from '@erebos/pss'
 import { createRPC } from '@erebos/rpc-browser'
 import { StreamRPC } from '@erebos/rpc-stream'
 import { createRPC as createWS } from '@erebos/rpc-ws-browser'
 
 // Re-exports from imported libraries
-export { Bzz } from '@erebos/api-bzz-browser'
-export { Pss } from '@erebos/api-pss'
-export { Hex, createHex } from '@erebos/hex'
+export { BzzBrowser } from '@erebos/bzz-browser'
+export { Pss } from '@erebos/pss'
+export { Hex } from '@erebos/hex'
 export { createRPC } from '@erebos/rpc-browser'
 
-export interface SwarmConfig extends ClientConfig {
-  bzz?: BzzConfig | Bzz
-  pss?: string | Pss
-  rpc?: StreamRPC
-}
+type Res = Response<ReadableStream<Uint8Array>>
 
 const instantiateAPI = createInstantiateAPI(
   createRPC as (endpoint: string) => StreamRPC,
 )
 
+export interface SwarmConfig extends ClientConfig {
+  bzz?: BzzBrowser | BzzConfig<Res>
+  pss?: string | Pss
+  rpc?: StreamRPC
+}
+
 export class SwarmClient extends BaseClient {
-  protected bzzInstance: Bzz | void = undefined
+  protected bzzInstance: BzzBrowser | void = undefined
   protected pssInstance: Pss | void = undefined
 
   public constructor(config: SwarmConfig) {
@@ -40,16 +43,16 @@ export class SwarmClient extends BaseClient {
       if (config.bzz instanceof Bzz) {
         this.bzzInstance = config.bzz
       } else {
-        this.bzzInstance = new Bzz(config.bzz)
+        this.bzzInstance = new BzzBrowser(config.bzz)
       }
     } else if (typeof config.http === 'string') {
-      this.bzzInstance = new Bzz({ url: config.http })
+      this.bzzInstance = new BzzBrowser({ url: config.http })
     }
 
     this.pssInstance = instantiateAPI(config.pss, Pss)
   }
 
-  public get bzz(): Bzz {
+  public get bzz(): BzzBrowser {
     if (this.bzzInstance == null) {
       throw new Error('Missing Bzz instance or HTTP URL')
     }

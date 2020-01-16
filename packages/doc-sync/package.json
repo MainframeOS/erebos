@@ -1,0 +1,34 @@
+{
+  "name": "@erebos/doc-sync",
+  "version": "0.13.0",
+  "description": "Feed-based JSON state",
+  "repository": "git@github.com:MainframeHQ/erebos.git",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
+  "author": "Mainframe",
+  "license": "MIT",
+  "files": [
+    "cjs/*",
+    "esm/*",
+    "types/*"
+  ],
+  "scripts": {
+    "clean": "del cjs esm types",
+    "test:types": "tsc --noEmit -p tsconfig.build.json",
+    "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
+    "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
+    "build:js": "yarn build:cjs && yarn build:esm",
+    "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
+    "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.3",
+    "@erebos/bzz": "^0.13.0",
+    "@erebos/bzz-feed": "^0.13.0",
+    "@erebos/feed-list": "^0.13.0",
+    "automerge": "^0.12.1",
+    "rxjs": "^6.5.4"
+  }
+}

@@ -35,5 +35,4 @@ export declare class Hex {
     toObject<T = Record<string, any>>(): T;
     toString(): string;
 }
-export declare function createHex(input: hexInput | Hex): Hex;
 export {};

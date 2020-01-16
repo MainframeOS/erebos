@@ -8,8 +8,7 @@ module.exports = {
     },
   },
   preset: 'jest-puppeteer',
-  setupFiles: ['./jest.setup.js'],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.ts$': 'ts-jest',
   },
 }

@@ -1,20 +1,22 @@
-import { Bzz, BzzConfig } from '@erebos/api-bzz-browser';
-import { Pss } from '@erebos/api-pss';
+import { Response } from '@erebos/bzz';
+import { BzzBrowser, BzzConfig } from '@erebos/bzz-browser';
 import { BaseClient, ClientConfig } from '@erebos/client-base';
+import { Pss } from '@erebos/pss';
 import { StreamRPC } from '@erebos/rpc-stream';
-export { Bzz } from '@erebos/api-bzz-browser';
-export { Pss } from '@erebos/api-pss';
-export { Hex, createHex } from '@erebos/hex';
+export { BzzBrowser } from '@erebos/bzz-browser';
+export { Pss } from '@erebos/pss';
+export { Hex } from '@erebos/hex';
 export { createRPC } from '@erebos/rpc-browser';
+declare type Res = Response<ReadableStream<Uint8Array>>;
 export interface SwarmConfig extends ClientConfig {
-    bzz?: BzzConfig | Bzz;
+    bzz?: BzzBrowser | BzzConfig<Res>;
     pss?: string | Pss;
     rpc?: StreamRPC;
 }
 export declare class SwarmClient extends BaseClient {
-    protected bzzInstance: Bzz | void;
+    protected bzzInstance: BzzBrowser | void;
     protected pssInstance: Pss | void;
     constructor(config: SwarmConfig);
-    get bzz(): Bzz;
+    get bzz(): BzzBrowser;
     get pss(): Pss;
 }

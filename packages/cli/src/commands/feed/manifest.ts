@@ -36,7 +36,7 @@ export default class FeedManifestCommand extends Command<Flags, Args> {
     this.spinner.start('Creating feed manifest...')
 
     try {
-      const hash = await this.client.bzz.createFeedManifest({
+      const hash = await this.getBzzFeed().createManifest({
         user: this.args.user,
         name: this.flags.name,
         topic: this.flags.topic,

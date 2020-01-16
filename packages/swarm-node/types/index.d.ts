@@ -1,20 +1,21 @@
-import { Bzz, BzzConfig } from '@erebos/api-bzz-node';
-import { Pss } from '@erebos/api-pss';
+import { BzzNode, BzzConfig } from '@erebos/bzz-node';
 import { BaseClient, ClientConfig } from '@erebos/client-base';
+import { Pss } from '@erebos/pss';
 import { StreamRPC } from '@erebos/rpc-stream';
-export { Bzz } from '@erebos/api-bzz-node';
-export { Pss } from '@erebos/api-pss';
-export { Hex, createHex, hexInput, hexValue } from '@erebos/hex';
+import { Response } from 'node-fetch';
+export { BzzNode } from '@erebos/bzz-node';
+export { Pss } from '@erebos/pss';
+export { Hex } from '@erebos/hex';
 export { createRPC } from '@erebos/rpc-node';
 export interface SwarmConfig extends ClientConfig {
-    bzz?: BzzConfig | Bzz;
+    bzz?: BzzConfig<Response> | BzzNode;
     pss?: string | Pss;
     rpc?: StreamRPC;
 }
 export declare class SwarmClient extends BaseClient {
-    protected bzzInstance: Bzz | void;
+    protected bzzInstance: BzzNode | void;
     protected pssInstance: Pss | void;
     constructor(config: SwarmConfig);
-    get bzz(): Bzz;
+    get bzz(): BzzNode;
     get pss(): Pss;
 }

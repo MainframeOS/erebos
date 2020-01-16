@@ -24,11 +24,11 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
+    "@babel/runtime": "^7.8.3",
     "elliptic": "^6.5.2"
   },
   "devDependencies": {
-    "@types/bn.js": "^4.11.5",
-    "@types/elliptic": "^6.4.10"
+    "@types/bn.js": "^4.11.6",
+    "@types/elliptic": "^6.4.11"
   }
 }

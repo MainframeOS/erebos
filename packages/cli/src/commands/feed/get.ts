@@ -37,6 +37,7 @@ export default class FeedGetCommand extends Command<Flags> {
 
   public async run(): Promise<void> {
     this.spinner.start('Retrieving feed...')
+    const bzzFeed = this.getBzzFeed()
 
     try {
       const feed = this.flags.hash || {
@@ -45,10 +46,10 @@ export default class FeedGetCommand extends Command<Flags> {
       }
 
       if (this.flags.type === 'hash') {
-        const hash = await this.client.bzz.getFeedContentHash(feed)
+        const hash = await bzzFeed.getContentHash(feed)
         this.spinner.succeed(`Feed content hash: ${hash}`)
       } else {
-        const res = await this.client.bzz.getFeedChunk(feed)
+        const res = await bzzFeed.getChunk(feed)
         if (this.flags.type === 'json') {
           const json = await res.json()
           this.spinner.succeed('Feed content loaded')

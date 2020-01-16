@@ -1,5 +1,5 @@
 import repl from 'repl'
-import { EMPTY_ADDRESS } from '@erebos/api-pss'
+import { EMPTY_ADDRESS } from '@erebos/pss'
 import { isHexValue, hexValue } from '@erebos/hex'
 import { flags } from '@oclif/command'
 

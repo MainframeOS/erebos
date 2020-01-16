@@ -135,7 +135,7 @@ const Features = () => (
           imageAlign: 'top',
           title: 'Decentralized file storage',
           content: `Securely distribute you files accross the entire network using the [Bzz APIs](${docUrl(
-            'api-bzz',
+            'bzz',
           )})`,
         },
         {
@@ -143,7 +143,7 @@ const Features = () => (
           imageAlign: 'top',
           title: 'Peer-to-peer communications',
           content: `Encrypted communications between nodes with no dedicated servers required using the [Pss APIs](${docUrl(
-            'api-pss',
+            'pss',
           )})`,
         },
       ]}

@@ -12,7 +12,7 @@ Feed lists are list-like data structures and APIs built on top of raw Swarm feed
 npm install @erebos/feed-list
 ```
 
-> The various feed list classes must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
+> The various feed list classes must be injected a [`BzzFeed` instance](bzz-feed.md), so `@erebos/bzz-feed` must also be installed alongside.
 
 ## Usage
 
@@ -21,7 +21,8 @@ npm install @erebos/feed-list
 > Feed chunks have a maximum size of `3963` bytes (4KB minus headers and signature)
 
 ```javascript
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { ChunkListReader, ChunkListWriter } from '@erebos/feed-list'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
@@ -29,18 +30,19 @@ import { createKeyPair, sign } from '@erebos/secp256k1'
 // This setup is meant for demonstration purpose only - keys and signatures security must be handled by the application
 const keyPair = createKeyPair()
 const signBytes = async bytes => sign(bytes, keyPair)
-const bzz = new Bzz({ url: 'http://localhost:8500', signBytes })
+const bzz = new BzzNode({ url: 'http://localhost:8500' })
+const bzzFeed = new BzzFeed({ bzz, signBytes })
 
 const aliceAddress = pubKeyToAddress(keyPair.getPublic('array'))
 const aliceWriter = new ChunkListWriter({
-  bzz,
+  bzz: bzzFeed,
   feed: { user: aliceAddress, name: 'alice-bob' },
 })
 await aliceWriter.push('one')
 await aliceWriter.push('two')
 
 const feed = aliceWriter.getID()
-const bobReader = new ChunkListReader({ bzz, feed })
+const bobReader = new ChunkListReader({ bzz: bzzFeed, feed })
 const chunk = await bobReader.load(1)
 const text = chunk.toString() // 'two'
 ```
@@ -50,7 +52,8 @@ const text = chunk.toString() // 'two'
 > Data lists store entries in JSON files and reference them in feed chunks
 
 ```javascript
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { DataListReader, DataListWriter } from '@erebos/feed-list'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
@@ -58,18 +61,19 @@ import { createKeyPair, sign } from '@erebos/secp256k1'
 // This setup is meant for demonstration purpose only - keys and signatures security must be handled by the application
 const keyPair = createKeyPair()
 const signBytes = async bytes => sign(bytes, keyPair)
-const bzz = new Bzz({ url: 'http://localhost:8500', signBytes })
+const bzz = new BzzNode({ url: 'http://localhost:8500' })
+const bzzFeed = new BzzFeed({ bzz, signBytes })
 
 const aliceAddress = pubKeyToAddress(keyPair.getPublic('array'))
 const aliceWriter = new DataListWriter({
-  bzz,
+  bzz: bzzFeed,
   feed: { user: aliceAddress, name: 'alice-bob' },
 })
 await aliceWriter.push({ hello: 'world' })
 await aliceWriter.push({ hello: 'Bob' })
 
 const feed = aliceWriter.getID()
-const bobReader = new DataListReader({ bzz, feed })
+const bobReader = new DataListReader({ bzz: bzzFeed, feed })
 const data = await bobReader.load(1) // { hello: 'Bob' }
 ```
 
@@ -89,13 +93,15 @@ interface ForwardsChunkIterator<T> extends AsyncIterator<T> {
 
 ### ListReaderConfig
 
-The [`Bzz class`](api-bzz.md#bzz-class), [`FeedID`](api-bzz.md#feedid), [`FeedParams`](api-bzz.md#feedparams) and [`FetchOptions`](api-bzz.md#fetchoptions) interfaces are exported by the [Bzz APIs packages](api-bzz.md).
+The [`BzzFeed class`](bzz-feed.md#bzzfeed-class), [`FeedID class`](bzz-feed.md#feedid-class), [`FeedParams`](bzz-feed.md#feedparams) are exported by the [`@erebos/bzz-feed` package](bzz-feed.md).
+
+The and [`FetchOptions`](bzz.md#fetchoptions) interface is exported by the [`@erebos/bzz` package](bzz.md).
 
 ```typescript
 export interface ListReaderConfig<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
+  B extends BzzFeed<any,  Response<any> = BzzFeed<any,  Response<any>
 > {
-  bzz: Bzz
+  bzz: B
   feed: FeedID | FeedParams
   fetchOptions?: FetchOptions
 }
@@ -107,8 +113,8 @@ Extends [`ListReaderConfig`](#listwriterconfig)
 
 ```typescript
 export interface ListWriterConfig<
-  Bzz extends BaseBzz<BaseResponse, Readable> = BaseBzz<BaseResponse, Readable>
-> extends ListReaderConfig<Bzz> {
+  B extends BzzFeed<any,  Response<any> = BzzFeed<any,  Response<any>
+> extends ListReaderConfig<B> {
   signParams?: any
 }
 ```
@@ -163,7 +169,7 @@ Extends [`ChunkListReader`](#chunklistreader)
 
 ### .getID()
 
-**Returns** [`FeedID`](api-bzz.md#feedid)
+**Returns** [`FeedID`](bzz-feed.md#feedid-class)
 
 ### .push()
 
@@ -231,7 +237,7 @@ Extends [`DataListReader`](#datalistreader)
 
 ### .getID()
 
-**Returns** [`FeedID`](api-bzz.md#feedid)
+**Returns** [`FeedID`](bzz-feed.md#feedid-class)
 
 ### .push()
 

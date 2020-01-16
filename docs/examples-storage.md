@@ -2,7 +2,7 @@
 title: File storage examples
 ---
 
-[File storage APIs reference](api-bzz.md)
+[File storage APIs reference](bzz.md)
 
 ## Using the standalone browser library
 
@@ -14,7 +14,7 @@ title: File storage examples
       http: 'https://swarm-gateways.net',
     })
     client.bzz
-      .upload('Hello world!', { contentType: 'text/plain' })
+      .uploadFile('Hello world!', { contentType: 'text/plain' })
       .then(hash => client.bzz.download(hash))
       .then(res => res.text())
       .then(text => {
@@ -28,13 +28,15 @@ title: File storage examples
 
 ```javascript
 import path from 'path'
-import { SwarmClient } from '@erebos/swarm-node'
+import { BzzFS } from '@erebos/bzz-fs'
+import { BzzNode } from '@erebos/bzz-node'
 
-const client = new SwarmClient({ bzz: { url: 'http://localhost:8500' } })
+const bzz = new BzzNode({ url: 'http://localhost:8500' })
+const bzzFS = new BzzFS({ basePath: __dirname, bzz })
 
-client.bzz
-  .uploadDirectoryFrom(path.join(__dirname, 'my-files'))
-  .then(hash => client.bzz.list(hash))
+bzzFS
+  .uploadDirectoryFrom('my-files')
+  .then(hash => bzz.list(hash))
   .then(contents => {
     console.log(contents) // Manifest contents describing the uploaded files
   })

@@ -1,19 +1,10 @@
-import * as stream from 'stream'
-import {
-  BaseBzz,
-  BaseResponse,
-  FeedParams,
-  FetchOptions,
-  PollOptions,
-  UploadOptions,
-} from '@erebos/api-bzz-base'
+import { Response, FetchOptions, PollOptions, UploadOptions } from '@erebos/bzz'
+import { BzzFeed, FeedParams } from '@erebos/bzz-feed'
 import { Observable, Observer } from 'rxjs'
 import { flatMap } from 'rxjs/operators'
-import { satisfies as semverSatisfies, valid as semverValid } from 'semver'
 
 export const PROTOCOL = 'timeline'
 export const VERSION = '1.0.0'
-export const VERSION_RANGE = '^1.0.0'
 
 export interface PartialChapter<T = any> {
   protocol: string
@@ -30,13 +21,6 @@ export interface PartialChapter<T = any> {
 export interface Chapter<T = any> extends PartialChapter<T> {
   id: string
 }
-
-export type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (
-  res: R,
-) => Promise<Chapter<T>>
-export type EncodeChapter<T> = (
-  chapter: PartialChapter<T>,
-) => Promise<string | Buffer>
 
 export interface LiveOptions extends PollOptions {
   previous?: string
@@ -86,72 +70,52 @@ export function validateChapter<T extends MaybeChapter>(chapter: T): T {
   if (chapter.protocol !== PROTOCOL) {
     throw new Error('Unsupported protocol')
   }
-  if (
-    semverValid(chapter.version) === null ||
-    !semverSatisfies(chapter.version, VERSION_RANGE)
-  ) {
+  if (chapter.version !== VERSION) {
     throw new Error('Unsupported protocol version')
   }
   return chapter
 }
 
-async function defaultDecode<
-  T extends MaybeChapter,
-  R extends BaseResponse = BaseResponse
->(res: R): Promise<T> {
-  return validateChapter<T>(await res.json())
-}
-
-function defaultEncode(chapter: any): Promise<string> {
-  return Promise.resolve(JSON.stringify(chapter))
-}
-
 export interface TimelineReaderConfig<
   T = any,
-  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
-    BaseResponse,
-    stream.Readable
-  >
+  S = any,
+  B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
 > {
-  bzz: Bzz
+  bzz: B
   feed: string | FeedParams
-  decode?: DecodeChapter<T>
 }
 
 export interface TimelineWriterConfig<
   T = any,
-  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
-    BaseResponse,
-    stream.Readable
-  >
-> extends TimelineReaderConfig<T, Bzz> {
-  encode?: EncodeChapter<T>
+  S = any,
+  B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
+> extends TimelineReaderConfig<T, S, B> {
   signParams?: any
 }
 
 export class TimelineReader<
   T = any,
-  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
-    BaseResponse,
-    stream.Readable
-  >
+  S = any,
+  B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
 > {
-  protected bzz: Bzz
-  protected decode: DecodeChapter<T>
-  protected feed: string | FeedParams
+  protected readonly bzzFeed: B
+  protected readonly feed: string | FeedParams
 
-  public constructor(config: TimelineReaderConfig<T, Bzz>) {
-    this.bzz = config.bzz
-    this.decode = config.decode || defaultDecode
+  public constructor(config: TimelineReaderConfig<T, S, B>) {
+    this.bzzFeed = config.bzz
     this.feed = config.feed
+  }
+
+  protected async read(res: Response<S>): Promise<Chapter<T>> {
+    return validateChapter<Chapter<T>>(await res.json())
   }
 
   public async getChapter(
     id: string,
     options: FetchOptions = {},
   ): Promise<Chapter<T>> {
-    const res = await this.bzz.download(id, { ...options, mode: 'raw' })
-    const chapter = await this.decode(res)
+    const res = await this.bzzFeed.bzz.download(id, { ...options, mode: 'raw' })
+    const chapter = await this.read(res)
     chapter.id = id
     return chapter
   }
@@ -160,7 +124,7 @@ export class TimelineReader<
     options: FetchOptions = {},
   ): Promise<string | null> {
     try {
-      return await this.bzz.getFeedContentHash(this.feed, options)
+      return await this.bzzFeed.getContentHash(this.feed, options)
     } catch (err) {
       if (err.status === 404) {
         return null
@@ -250,8 +214,8 @@ export class TimelineReader<
       headers: options.headers,
       mode: 'raw',
     }
-    return this.bzz
-      .pollFeedContentHash(this.feed, {
+    return this.bzzFeed
+      .pollContentHash(this.feed, {
         whenEmpty: 'ignore',
         changedOnly: true,
         ...options,
@@ -264,8 +228,8 @@ export class TimelineReader<
   }
 
   public live(options: LiveOptions): Observable<Array<Chapter<T>>> {
-    let minTimestamp = options.timestamp || Date.now()
-    let previousID = options.previous || null
+    let minTimestamp = options.timestamp ?? Date.now()
+    let previousID = options.previous ?? null
 
     return this.pollLatestChapter(options).pipe(
       flatMap(async chapter => {
@@ -306,33 +270,33 @@ export class TimelineReader<
 
 export class TimelineWriter<
   T = any,
-  Bzz extends BaseBzz<BaseResponse, stream.Readable> = BaseBzz<
-    BaseResponse,
-    stream.Readable
-  >
-> extends TimelineReader<T, Bzz> {
-  protected encode: EncodeChapter<T>
+  S = any,
+  B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>
+> extends TimelineReader<T, S, B> {
   protected signParams: any
 
-  public constructor(config: TimelineWriterConfig<T, Bzz>) {
+  public constructor(config: TimelineWriterConfig<T, S, B>) {
     super(config)
-    this.encode = config.encode || defaultEncode
     this.signParams = config.signParams
+  }
+
+  protected async write(chapter: PartialChapter<T>): Promise<string> {
+    return Promise.resolve(JSON.stringify(chapter))
   }
 
   public async postChapter(
     chapter: PartialChapter<T>,
     options: UploadOptions = {},
   ): Promise<string> {
-    const encoded = await this.encode(chapter)
-    return await this.bzz.uploadFile(encoded, options)
+    const encoded = await this.write(chapter)
+    return await this.bzzFeed.bzz.uploadFile(encoded, options)
   }
 
   public async setLatestChapterID(
     chapterID: string,
     options?: FetchOptions,
   ): Promise<void> {
-    await this.bzz.setFeedContentHash(
+    await this.bzzFeed.setContentHash(
       this.feed,
       chapterID,
       options,
@@ -346,9 +310,9 @@ export class TimelineWriter<
   ): Promise<string> {
     const [chapterID, feedMeta] = await Promise.all([
       this.postChapter(chapter, options),
-      this.bzz.getFeedMetadata(this.feed),
+      this.bzzFeed.getMetadata(this.feed),
     ])
-    await this.bzz.postFeedChunk(
+    await this.bzzFeed.postChunk(
       feedMeta,
       `0x${chapterID}`,
       { headers: options.headers, timeout: options.timeout },

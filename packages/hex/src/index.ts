@@ -122,7 +122,3 @@ export class Hex {
     }
   }
 }
-
-export function createHex(input: hexInput | Hex): Hex {
-  return Hex.from(input)
-}

@@ -5,12 +5,14 @@
     "previous": "Previous",
     "tagline": "JavaScript client and CLI for Swarm v0.5.x",
     "docs": {
-      "api-bzz": {
-        "title": "Bzz API"
+      "bzz-feed": {
+        "title": "Bzz Feed API"
       },
-      "api-pss": {
-        "title": "Postal Services over Swarm (Pss) API",
-        "sidebar_label": "Pss API"
+      "bzz-fs": {
+        "title": "Bzz FS API"
+      },
+      "bzz": {
+        "title": "Bzz API"
       },
       "cli": {
         "title": "Command-line interface",
@@ -18,6 +20,9 @@
       },
       "data-structures": {
         "title": "Data structures"
+      },
+      "doc-sync": {
+        "title": "Document synchronization"
       },
       "examples-communications": {
         "title": "Communications examples"
@@ -45,6 +50,10 @@
       },
       "keccak256": {
         "title": "Keccak256 hashing"
+      },
+      "pss": {
+        "title": "Postal Services over Swarm (Pss) API",
+        "sidebar_label": "Pss API"
       },
       "rpc-base": {
         "title": "Base RPC class and types"

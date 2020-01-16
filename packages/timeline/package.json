@@ -1,44 +1,32 @@
 {
   "name": "@erebos/timeline",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Linked-list data structure for Swarm feeds",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
   "module": "esm/index.js",
-  "browser": "dist/erebos.timeline.production.js",
   "types": "types/index.d.ts",
   "author": "Mainframe",
   "license": "MIT",
   "files": [
     "cjs/*",
-    "dist/*",
     "esm/*",
     "types/*"
   ],
   "scripts": {
-    "clean": "del cjs dist esm types",
+    "clean": "del cjs esm types",
     "test:types": "tsc --noEmit -p tsconfig.build.json",
     "build:cjs": "BABEL_ENV='browser-cjs' babel src --out-dir cjs --extensions \".ts\"",
     "build:esm": "BABEL_ENV='browser-esm' babel src --out-dir esm --extensions \".ts\"",
-    "build:dist:dev": "BABEL_ENV='browser-esm' NODE_ENV=development webpack",
-    "build:dist:prod": "BABEL_ENV='browser-esm' NODE_ENV=production webpack",
-    "build:dist": "yarn build:dist:dev && yarn build:dist:prod",
-    "build:js": "yarn build:cjs && yarn build:esm && yarn build:dist",
+    "build:js": "yarn build:cjs && yarn build:esm",
     "build:types": "tsc --emitDeclarationOnly -p tsconfig.build.json",
     "build": "yarn test:types && yarn clean && yarn build:js && yarn build:types",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.6",
-    "@erebos/api-bzz-base": "^0.12.0",
-    "rxjs": "^6.5.3",
-    "semver": "^6.3.0"
-  },
-  "devDependencies": {
-    "@types/semver": "^6.0.2",
-    "babel-loader": "^8.0.5",
-    "terser-webpack-plugin": "^2.3.0",
-    "webpack": "^4.41.3",
-    "webpack-cli": "^3.3.8"
+    "@babel/runtime": "^7.8.3",
+    "@erebos/bzz": "^0.13.0",
+    "@erebos/bzz-feed": "^0.13.0",
+    "rxjs": "^6.5.4"
   }
 }

@@ -5,7 +5,8 @@ title: Timeline example
 ## Asynchronous messaging
 
 ```javascript
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 import { TimelineReader, TimelineWriter } from '@erebos/timeline'
@@ -16,12 +17,13 @@ const FEED_NAME = 'alice-bob'
 // This setup is meant for demonstration purpose only - keys and signatures security must be handled by the application
 const keyPair = createKeyPair()
 const signBytes = async bytes => sign(bytes, keyPair)
-const bzz = new Bzz({ url: BZZ_URL, signBytes })
+const bzz = new BzzNode({ url: BZZ_URL })
+const bzzFeed = new BzzFeed({ bzz, signBytes })
 
 // In this example we are Alice communicating with Bob
 const aliceAddress = pubKeyToAddress(keyPair.getPublic('array'))
 const aliceTimeline = new TimelineWriter({
-  bzz,
+  bzz: bzzFeed,
   feed: { user: aliceAddress, name: FEED_NAME },
 })
 
@@ -37,7 +39,7 @@ const sendMessage = async content => {
 
 // Alice's address must be known by Bob
 const bobTimeline = new TimelineReader({
-  bzz,
+  bzz: bzzFeed,
   feed: { user: aliceAddress, name: FEED_NAME },
 })
 

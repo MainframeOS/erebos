@@ -1,7 +1,8 @@
 import { utils } from 'ethers'
 
-import { Bzz } from '../packages/api-bzz-node'
-import { HDWallet } from '../packages/wallet-hd'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
+import { HDWallet } from '@erebos/wallet-hd'
 
 const MNEMONIC =
   'roof kind control velvet proud attack rose hour episode impulse venture manage'
@@ -86,14 +87,14 @@ describe('HDWallet', () => {
     const wallet = new HDWallet(MNEMONIC)
     const params = { user: FIRST_ACCOUNT, name: 'test' }
     const data = { test: 'test' }
-    const bzz = new Bzz({
+    const bzzFeed = new BzzFeed({
+      bzz: new BzzNode({ url: 'http://localhost:8500' }),
       signBytes: bytes => {
         return Promise.resolve(wallet.signBytes(FIRST_ACCOUNT, bytes))
       },
-      url: 'http://localhost:8500',
     })
-    await bzz.setFeedChunk(params, data)
-    const res = await bzz.getFeedChunk(params)
+    await bzzFeed.setChunk(params, data)
+    const res = await bzzFeed.getChunk(params)
     const value = await res.json()
     expect(value).toEqual(data)
   })

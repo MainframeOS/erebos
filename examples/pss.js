@@ -1,9 +1,9 @@
-const { PssAPI, createRPC } = require('../packages/swarm')
+const { Pss, createRPC } = require('../packages/swarm')
 
 const run = async () => {
   // Create PSS clients over WebSocket
-  const alice = new PssAPI(createRPC('ws://127.0.0.1:8501'))
-  const bob = new PssAPI(createRPC('ws://127.0.0.1:8502'))
+  const alice = new Pss(createRPC('ws://127.0.0.1:8501'))
+  const bob = new Pss(createRPC('ws://127.0.0.1:8502'))
 
   // Retrieve Alice's public key and create the topic
   const [key, topic] = await Promise.all([

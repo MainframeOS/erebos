@@ -1,5 +1,5 @@
 import { dirname, join } from 'path'
-import { DownloadOptions } from '@erebos/api-bzz-node'
+import { DownloadOptions } from '@erebos/bzz'
 import { flags } from '@oclif/command'
 import { ensureDir, lstat, writeFile } from 'fs-extra'
 
@@ -77,7 +77,7 @@ export default class BzzDownloadCommand extends Command<Flags, Args> {
     }
 
     try {
-      await this.client.bzz.downloadTo(this.args.hash, toPath, options)
+      await this.getBzzFS().downloadTo(this.args.hash, toPath, options)
       this.spinner.succeed(`Contents successfully downloaded to: ${toPath}`)
     } catch (err) {
       this.spinner.fail(err.message)

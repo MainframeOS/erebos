@@ -1,4 +1,4 @@
-import { EMPTY_ADDRESS } from '@erebos/api-pss'
+import { EMPTY_ADDRESS } from '@erebos/pss'
 import { hexValue, isHexValue } from '@erebos/hex'
 import { flags } from '@oclif/command'
 

@@ -1,11 +1,11 @@
-import { Bzz } from '../packages/api-bzz-node'
+import { BzzFeed } from '../packages/bzz-feed'
+import { BzzNode } from '../packages/bzz-node'
 import { Hex } from '../packages/hex'
 import { pubKeyToAddress } from '../packages/keccak256'
 import { createKeyPair, sign, verify } from '../packages/secp256k1'
 import {
   PROTOCOL,
   VERSION,
-  VERSION_RANGE,
   TimelineReader,
   TimelineWriter,
   createChapter,
@@ -16,15 +16,15 @@ describe('timeline', () => {
   const keyPair = createKeyPair()
   const author = pubKeyToAddress(keyPair.getPublic('array'))
 
-  const bzz = new Bzz({
+  const bzz = new BzzNode({ url: 'http://localhost:8500/' })
+  const bzzFeed = new BzzFeed({
+    bzz,
     signBytes: bytes => Promise.resolve(sign(bytes, keyPair)),
-    url: 'http://localhost:8500/',
   })
 
-  it('exports the PROTOCOL, VERSION and VERSION_RANGE constants', () => {
+  it('exports the PROTOCOL and VERSION constants', () => {
     expect(PROTOCOL).toBe('timeline')
     expect(VERSION).toBe('1.0.0')
-    expect(VERSION_RANGE).toBe('^1.0.0')
   })
 
   it('provides a createChapter() function', () => {
@@ -62,7 +62,10 @@ describe('timeline', () => {
   })
 
   it('TimelineWriter extends TimelineReader', () => {
-    const timeline = new TimelineWriter({ bzz, feed: { user: author } })
+    const timeline = new TimelineWriter({
+      bzz: bzzFeed,
+      feed: { user: author },
+    })
     expect(timeline).toBeInstanceOf(TimelineReader)
   })
 
@@ -71,7 +74,7 @@ describe('timeline', () => {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     Date.now = jest.fn(() => now)
 
-    const timeline = new TimelineReader({ bzz })
+    const timeline = new TimelineReader({ bzz: bzzFeed })
     const chapter = createChapter({ author, content: { ok: true } })
     const [validID, invalidID] = await Promise.all([
       bzz.uploadFile(JSON.stringify(chapter)),
@@ -95,7 +98,7 @@ describe('timeline', () => {
   })
 
   it('postChapter() method encodes and uploads the chapter', async () => {
-    const timeline = new TimelineWriter({ bzz })
+    const timeline = new TimelineWriter({ bzz: bzzFeed })
     const chapter = createChapter({ author, content: { ok: true } })
     const id = await timeline.postChapter(chapter)
     const downloaded = await timeline.getChapter(id)
@@ -114,11 +117,20 @@ describe('timeline', () => {
 
     const encode = jest.fn(async chapter => {
       // eslint-disable-next-line require-atomic-updates
-      chapter.signature = await bzz.sign(Hex.from(chapter).toBytesArray())
+      chapter.signature = await bzzFeed.sign(Hex.from(chapter).toBytesArray())
       return JSON.stringify(chapter)
     })
 
-    const timeline = new TimelineWriter({ bzz, decode, encode })
+    class CustomTimeline extends TimelineWriter {
+      read(res): Promise<any> {
+        return decode(res)
+      }
+      write(chapter): Promise<string> {
+        return encode(chapter)
+      }
+    }
+
+    const timeline = new CustomTimeline({ bzz: bzzFeed })
     const chapter = createChapter({ author, content: { ok: true } })
 
     const id = await timeline.postChapter(chapter)
@@ -132,11 +144,11 @@ describe('timeline', () => {
   it('setLatestChapterID() and getLatestChapterID() methods manipulate a feed hash', async () => {
     jest.setTimeout(10000) // 10 secs
 
-    const feed = await bzz.createFeedManifest({
+    const feed = await bzzFeed.createManifest({
       user: author,
       name: 'test-hash',
     })
-    const timeline = new TimelineWriter({ bzz, feed })
+    const timeline = new TimelineWriter({ bzz: bzzFeed, feed })
 
     const chapter = createChapter({ author, content: { ok: true } })
     const chapterID = await timeline.postChapter(chapter)
@@ -150,7 +162,7 @@ describe('timeline', () => {
     jest.setTimeout(10000) // 10 secs
 
     const config = {
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-chapter' },
     }
     const reader = new TimelineReader(config)
@@ -167,7 +179,7 @@ describe('timeline', () => {
     jest.setTimeout(10000) // 10 secs
 
     const config = {
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-add-chapter' },
     }
     const reader = new TimelineReader(config)
@@ -190,7 +202,7 @@ describe('timeline', () => {
 
     const contents = ['first update', 'second update', 'third update']
     const config = {
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-updater' },
     }
     const reader = new TimelineReader(config)
@@ -213,7 +225,7 @@ describe('timeline', () => {
 
     const contents = ['one', 'two', 'three']
     const timeline = new TimelineWriter({
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-iterator' },
     })
 
@@ -250,7 +262,7 @@ describe('timeline', () => {
 
     const contents = ['one', 'two', 'three', 'four', 'five']
     const timeline = new TimelineWriter({
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-loader' },
     })
 
@@ -286,7 +298,7 @@ describe('timeline', () => {
 
     const contents = ['one', 'two', 'three', 'four', 'five']
     const timeline = new TimelineWriter({
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-slice' },
     })
 
@@ -323,7 +335,7 @@ describe('timeline', () => {
 
     const contents = ['one', 'two', 'three']
     const timeline = new TimelineWriter({
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-poll' },
     })
 
@@ -360,7 +372,7 @@ describe('timeline', () => {
 
     const contents = [['one'], ['two', 'three', 'four'], ['five', 'six']]
     const timeline = new TimelineWriter({
-      bzz,
+      bzz: bzzFeed,
       feed: { user: author, name: 'test-live' },
     })
 

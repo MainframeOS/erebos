@@ -8,17 +8,19 @@ title: Timeline API
 npm install @erebos/timeline
 ```
 
-> The Timeline classes must be injected a [`Bzz` instance](api-bzz.md), so `@erebos/api-bzz-browser` or `@erebos/api-bzz-node` must also be installed alongside.
+> The Timeline classes must be injected a [`BzzFeed` instance](bzz-feed.md), so `@erebos/bzz-feed` must also be installed alongside.
 
 ## Usage
 
 ```javascript
-import { Bzz } from '@erebos/api-bzz-node'
+import { BzzFeed } from '@erebos/bzz-feed'
+import { BzzNode } from '@erebos/bzz-node'
 import { TimelineReader, TimelineWriter } from '@erebos/timeline'
 
 const user = '0x...'
-const bzz = new Bzz({ ... }) // Check the Bzz API documentation for more details
-const config = { bzz, feed: { user, name: 'hello-timeline' } }
+const bzz = new BzzNode({ ... }) // Check the Bzz API documentation for more details
+const bzzFeed = new BzzFeed({ ... }) // Check the Bzz API documentation for more details
+const config = { bzz: bzzFeed, feed: { user, name: 'hello-timeline' } }
 
 const writer = new TimelineWriter(config)
 await writer.addChapter({ author: user, contents: { hello: 'world' } })
@@ -57,23 +59,9 @@ interface Chapter<T = any> extends PartialChapter<T> {
 }
 ```
 
-### DecodeChapter
-
-```typescript
-type DecodeChapter<T, R extends BaseResponse = BaseResponse> = (
-  res: R,
-) => Promise<Chapter<T>>
-```
-
-### EncodeChapter
-
-```typescript
-type EncodeChapter<T> = (chapter: PartialChapter<T>) => Promise<string | Buffer>
-```
-
 ### LiveOptions
 
-Extends [PollOptions](api-bzz.md#polloptions)
+Extends [PollOptions](bzz.md#polloptions)
 
 ```typescript
 interface LiveOptions extends PollOptions {
@@ -84,16 +72,15 @@ interface LiveOptions extends PollOptions {
 
 ### TimelineReaderConfig
 
-`bzz` is a [Bzz instance](api-bzz.md#bzz-class) and `feed` can either be a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
+`bzz` is a [BzzFeed instance](bzz-feed.md#bzzfeed-class) and `feed` can either be a feed manifest hash or [feed parameters](bzz-feed.md#feedparams).
 
 ```typescript
 interface TimelineConfig<
   T = any,
-  Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>
+  B extends BzzFeed<any,  Response<any> = BzzFeed<any,  Response<any>
 > {
-  bzz: Bzz
+  bzz: B
   feed: string | FeedParams
-  decode?: DecodeChapter<T>
 }
 ```
 
@@ -104,9 +91,8 @@ Extends [`TimelineReaderConfig`](#timelinereaderconfig)
 ```typescript
 interface TimelineWriterConfig<
   T = any,
-  Bzz extends BzzBase<BaseResponse> = BzzBase<BaseResponse>
-> extends TimelineReaderConfig<T, Bzz> {
-  encode?: EncodeChapter<T>
+  B extends BzzFeed<any,  Response<any> = BzzFeed<any,  Response<any>
+> extends TimelineReaderConfig<T, B> {
   signParams?: any
 }
 ```
@@ -152,16 +138,15 @@ Validates that the provided object contains the `protocol` and `version` fields 
 
 **Configuration**
 
-- [`bzz: Bzz`](api-bzz.md#bzz-class-default-export): Bzz instance
-- `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
-- [`decode?: ?DecodeChapter<T>`](#decodechapter): optional chapter decoding function used when loading any chapter with this timeline instance
+- [`bzz: BzzFeed`](bzz-feed.md#bzzfeed-class): Bzz instance
+- `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](bzz-feed.md#feedparams).
 
 ### .getChapter()
 
 **Arguments**
 
 1.  `id: string`: ID of the chapter (Swarm hash)
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `Promise<Chapter<T>>`
 
@@ -171,7 +156,7 @@ Retrieves the ID of the latest chapter in the timeline.
 
 **Arguments**
 
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `Promise<hexValue | null>` the ID of the chapter (Swarm hash) if found, `null` otherwise
 
@@ -181,7 +166,7 @@ Loads the latest chapter in the timeline.
 
 **Arguments**
 
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `Promise<Chapter<T> | null>` the chapter if found, `null` otherwise
 
@@ -191,7 +176,7 @@ Returns a [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emitt
 
 **Arguments**
 
-1.  [`options: PollOptions`](api-bzz.md#polloptions): providing the `interval` field with the number of milliseconds between each query to the timeline
+1.  [`options: PollOptions`](bzz.md#polloptions): providing the `interval` field with the number of milliseconds between each query to the timeline
 
 **Returns** `Observable<Chapter<T>>`
 
@@ -202,7 +187,7 @@ Creates an async iterator of chapters, from the latest to oldest chapter.
 **Arguments**
 
 1.  `initialID?: string`: optional initial chapter ID, if not provided the latest chapter ID of the timeline will be fetched when the iteration starts
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `AsyncIterator<Chapter<T>>`
 
@@ -214,7 +199,7 @@ Returns [RxJS `Observable`](https://rxjs.dev/api/index/class/Observable) emittin
 
 1.  `newestID: string`: newest chapter ID to load
 1.  `oldestID: string`: oldest chapter ID, this chapter will **not** be emitted by the created Observable
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `Observable<Chapter<T>>`
 
@@ -226,7 +211,7 @@ Loads a range of chapters between the given newest (inclusive) and oldest (exclu
 
 1.  `newestID: string`: newest chapter ID to load
 1.  `oldestID: string`: oldest chapter ID, this chapter will **not** be returned in the resulting array
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `Array<Chapter<T>>`
 
@@ -258,18 +243,16 @@ Extends [`TimelineReader`](#timelinereader-class)
 
 Includes [`TimelineReaderConfig`](#timelinereaderconfig)
 
-- [`bzz: Bzz`](api-bzz.md#bzz-class-default-export): Bzz instance
-- `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](api-bzz.md#feedparams).
-- [`decode?: ?DecodeChapter<T>`](#decodechapter): optional chapter decoding function used when loading any chapter with this timeline instance
-- [`encode?: ?EncodeChapter<T>`](#encodechapter): optional chapter encoding function used when adding any chapter with this timeline instance
-- `signParams?: any`: optional signing parameters provided to the [`signBytes() function`](api-bzz.md#signbytesfunc) when updating a the timeline feed.
+- [`bzz: BzzFeed`](bzz-feed.md#bzzfeed-class): BzzFeed instance
+- `feed: string | FeedParams`: either a feed manifest hash or [feed parameters](bzz-feed.md#feedparams).
+- `signParams?: any`: optional signing parameters provided to the [`signBytes() function`](bzz-feed.md#signbytesfunc) when updating a the timeline feed.
 
 ### .postChapter()
 
 **Arguments**
 
 1.  [`chapter: PartialChapter<T>`](#partialchapter)
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+1.  [`options?: UploadOptions = {}`](bzz.md#uploadoptions)
 
 **Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
 
@@ -280,7 +263,7 @@ Sets the ID of the latest chapter in the timeline.
 **Arguments**
 
 1.  `id: string`: the chapter ID (Swarm hash)
-1.  [`options?: FetchOptions = {}`](api-bzz.md#fetchoptions)
+1.  [`options?: FetchOptions = {}`](bzz.md#fetchoptions)
 
 **Returns** `Promise<void>`
 
@@ -291,7 +274,7 @@ Sets the latest chapter of the timeline. This is equivalent of calling [`postCha
 **Arguments**
 
 1.  `chapter: PartialChapter<T>`
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+1.  [`options?: UploadOptions = {}`](bzz.md#uploadoptions)
 
 **Returns** `Promise<hexValue>` the ID of the uploaded chapter (Swarm hash)
 
@@ -302,7 +285,7 @@ Adds a chapter to the timeline. This is similar to [`setLatestChapter()`](#setla
 **Arguments**
 
 1.  `chapter: PartialChapter<T>`
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+1.  [`options?: UploadOptions = {}`](bzz.md#uploadoptions)
 
 **Returns** `Promise<Chapter<T>>` the uploaded chapter
 
@@ -316,6 +299,6 @@ Make sure all the timeline updates are performed using the created updater funct
 **Arguments**
 
 1.  [`chapterDefaults?: Partial<PartialChapter<T>> = {}`](#partialchapter): default values for all the chapters that will be added
-1.  [`options?: UploadOptions = {}`](api-bzz.md#uploadoptions)
+1.  [`options?: UploadOptions = {}`](bzz.md#uploadoptions)
 
 **Returns** `(chapter: Partial<PartialChapter<T>>) => Promise<Chapter<T>>` the chapter adding function
