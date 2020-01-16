@@ -845,14 +845,7 @@
     "@babel/helper-plugin-utils" "^7.8.3"
     "@babel/plugin-transform-typescript" "^7.8.3"
 
-"@babel/runtime@^7.7.4":
-  version "7.7.7"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.7.tgz#194769ca8d6d7790ec23605af9ee3e42a0aa79cf"
-  integrity sha512-uCnC2JEVAu8AKB5do1WRIsvrdJ0flYx/A/9f/6chdacnEZ7LmavjdsDXr5ksYBegxtuTPR5Va9/+13QF/kFkCA==
-  dependencies:
-    regenerator-runtime "^0.13.2"
-
-"@babel/runtime@^7.8.3":
+"@babel/runtime@^7.7.6", "@babel/runtime@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.3.tgz#0811944f73a6c926bb2ad35e918dcc1bfab279f1"
   integrity sha512-fVHx1rzEmwB130VTkLnxR+HmxcTjGzH12LYQcFFoBwakMd3aOMD4OsRN7tGG/UOYE2ektgFrS8uACAoRk1CY0w==
@@ -948,21 +941,12 @@
     global-agent "^2.0.2"
     global-tunnel-ng "^2.7.1"
 
-"@erebos/hex@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@erebos/hex/-/hex-0.11.0.tgz#a35a8b0437e92cb08e82909aafd2950911dbb947"
-  integrity sha512-N2oabvaQwDnjbhJ/VF2p5/MEZJTnnplDuB5CqbONXkdAC0ED0XSgYRMWfAFNoIGn4rqfqDlel5mIZYr2gtSvfA==
+"@erebos/hex@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@erebos/hex/-/hex-0.12.0.tgz#aa1df94705015a9b72aa3940a59f619f72e824d3"
+  integrity sha512-3pqwNnjHkH3n30vnEvPp6V5rX8/ocevNzKdjZbZ2pA+JGRljXKxjnjC35DGPipgNzeEfvXaisvGNmc2Dkt3Htg==
   dependencies:
-    "@babel/runtime" "^7.7.4"
-
-"@erebos/keccak256@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@erebos/keccak256/-/keccak256-0.11.0.tgz#9228de7f4b94064699157c0d14467b1881b45fa4"
-  integrity sha512-eUk4R2jgvyRusGVh+KN/jfwmxYPkZd5xdwjNaJnjjqONBmJcuXj/L3xvipnCFUa85y3IVc8bJw+NlFbE9q18WQ==
-  dependencies:
-    "@babel/runtime" "^7.7.4"
-    "@erebos/hex" "^0.11.0"
-    js-sha3 "^0.8.0"
+    "@babel/runtime" "^7.7.6"
 
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"

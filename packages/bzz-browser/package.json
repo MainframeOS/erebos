@@ -1,6 +1,6 @@
 {
   "name": "@erebos/bzz-browser",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Bzz API for browsers",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",
-    "@erebos/bzz": "^0.12.0",
+    "@erebos/bzz": "^0.13.0",
     "tar-stream": "^2.1.0"
   },
   "devDependencies": {

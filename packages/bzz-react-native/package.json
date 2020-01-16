@@ -1,6 +1,6 @@
 {
   "name": "@erebos/bzz-react-native",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Bzz API for react-native",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",
@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",
-    "@erebos/bzz": "^0.12.0"
+    "@erebos/bzz": "^0.13.0"
   }
 }

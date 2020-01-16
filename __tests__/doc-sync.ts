@@ -74,7 +74,7 @@ describe('doc-sync', () => {
       await reader.pull()
     })
 
-    it.only('uses snapshots', async () => {
+    it('uses snapshots', async () => {
       interface T {
         count: string
       }

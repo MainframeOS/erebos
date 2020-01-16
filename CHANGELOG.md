@@ -1,3 +1,41 @@
+## v0.13.0 (2020-01-16)
+
+### Breaking changes
+
+- The `bzz`-related packages have been refactored, the `@erebos/api-bzz-base`, `@erebos/api-bzz-browser` and `@erebos/api-bzz-node` packages are discontinued and should be replaced by `@erebos/bzz`, `@erebos/bzz-browser`, `@erebos/bzz-node`, `@erebos/bzz-feed` and `@erebos/bzz-fs` depending on the use cases, see below.
+- The `@erebos/api-pss` package has been renamed to `@erebos/pss` for consistency with the `bzz`-related packages.
+- In the `@erebos/timeline` package, the `decode` option has been removed from `TimelineReaderConfig` and the `encode` option from `TimelineWriterConfig`, instead the `read()` and `write()` methods could be overwritten to cover the use case.
+- The `createHex()` function has been removed from `@erebos/hex`, `Hex.from()` should be used instead.
+- The `@erebos/feed-list` and `@erebos/timeline` packages classes now need to be injected a [`BzzFeed` instance](https://erebos.js.org/docs/bzz-feed#bzzfeed-class).
+
+### Bzz packages changes
+
+One goal for Erebos has been to stay quite low-level, at least for the core packages interacting with Swarm.
+As the `bzz`-related packages have been growing over the past releases, it's been time to reconsider how to best organize them:
+
+- Support for Swarm feeds requires additional dependencies such as `@erebos/hex`, `@erebos/keccak256` and `rxjs` that can be an additional burden for apps that don't need feeds, so all the feed-related methods have been extracted to the [`@erebos/bzz-feed` package](https://erebos.js.org/docs/bzz-feed).
+- `@erebos/api-bzz-node` provided additional methods to interact with the file system. These methods are now provided by the dedicated [`@erebos/bzz-fs` package](https://erebos.js.org/docs/bzz-fs).
+- The [`@erebos/bzz` package](https://erebos.js.org/docs/bzz) can now be used directly in browsers. However, it does not provide the `downloadDirectory()` and `uploadDirectory()` methods added in the `@erebos/bzz-browser` and `@erebos/bzz-node` packages.
+
+So what package should you use?
+
+- If you use node: `@erebos/bzz-node`
+- Target a browser environment?
+  - If you need to use the `downloadDirectory()` or `uploadDirectory()` method: `@erebos/bzz-browser`
+  - Otherwise: `@erebos/bzz`
+- Use React Native?
+  - Try the experimental `@erebos/bzz-react-native`
+  - Extend `@erebos/bzz` as needed
+- For any other environment, try extending `@erebos/bzz`
+
+If you need to interact with feeds, use [`@erebos/bzz-feed`](https://erebos.js.org/docs/bzz-feed).
+
+If you want to interact with the file sytem when using node, the [`@erebos/bzz-fs` package](https://erebos.js.org/docs/bzz-fs) provides the utility methods previously implemented in `@erebos/api-bzz-node`.
+
+### New package
+
+The [`@erebos/doc-sync` package](https://erebos.js.org/docs/doc-sync) has been added, allowing to synchronize JSON documents.
+
 ## v0.12.0 (2019-12-17)
 
 ### Breaking change

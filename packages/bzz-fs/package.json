@@ -1,6 +1,6 @@
 {
   "name": "@erebos/bzz-fs",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Bzz API for node using file system",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "lib/index.js",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.8.3",
-    "@erebos/bzz-node": "^0.12.0",
+    "@erebos/bzz-node": "^0.13.0",
     "fs-extra": "^8.0.1",
     "tar-fs": "^2.0.0"
   },
