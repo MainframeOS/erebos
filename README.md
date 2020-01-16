@@ -50,6 +50,7 @@ npm install -g @erebos/cli
 | [`@erebos/bzz-fs`](/packages/bzz-fs) | [![npm version](https://img.shields.io/npm/v/@erebos/bzz-fs.svg)](https://www.npmjs.com/package/@erebos/bzz-fs) | ⚛️ ⚙️ | File system interactions
 | **Data structures**
 | [`@erebos/feed-list`](/packages/feed-list) | [![npm version](https://img.shields.io/npm/v/@erebos/feed-list.svg)](https://www.npmjs.com/package/@erebos/feed-list) | ⚛️ ⚙️ 📱 🌐 | List APIs using raw Swarm feeds
+| [`@erebos/doc-sync`](/packages/doc-sync) | [![npm version](https://img.shields.io/npm/v/@erebos/doc-sync.svg)](https://www.npmjs.com/package/@erebos/doc-sync) | ⚛️ ⚙️ 📱 🌐 | JSON documents synchronization using CRDTs
 | [`@erebos/timeline`](/packages/timeline) | [![npm version](https://img.shields.io/npm/v/@erebos/timeline.svg)](https://www.npmjs.com/package/@erebos/timeline) | ⚛️ ⚙️ 📱 🌐 | Feed-based Timeline APIs
 | **Ethereum and Swarm utilities**
 | [`@erebos/hex`](/packages/hex) | [![npm version](https://img.shields.io/npm/v/@erebos/hex.svg)](https://www.npmjs.com/package/@erebos/hex) | ⚛️ ⚙️ 📱 🌐 | Hexadecimal values encoding and decoding
