@@ -280,7 +280,9 @@ export class TimelineWriter<
     this.signParams = config.signParams
   }
 
-  protected async write(chapter: PartialChapter<T>): Promise<string> {
+  protected async write(
+    chapter: PartialChapter<T>,
+  ): Promise<string | S | Buffer> {
     return Promise.resolve(JSON.stringify(chapter))
   }
 

@@ -30,7 +30,7 @@ Finally, the [CLI](cli.md) can be a useful tool to simply interact with Swarm.
 
 ## Browser setup
 
-⚠️ Erebos is only tested against a recent version of Chromium. Only evergreen browsers are supported.
+> ⚠️ Erebos is only tested against a recent version of Chromium. Only evergreen browsers are supported.
 
 If you are bundling JavaScript assets, the simplest way to get started is to install and import the `@erebos/swarm-browser` package:
 

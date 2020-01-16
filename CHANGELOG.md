@@ -1,3 +1,8 @@
+## v0.13.1 (2020-01-16)
+
+- Fix type signature of the `write()` method of `TimelineWriter`.
+- Bump dependency version of `@erebos/hex` in `@erebos/keccak256`.
+
 ## v0.13.0 (2020-01-16)
 
 ### Breaking changes

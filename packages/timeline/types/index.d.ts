@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { Response, FetchOptions, PollOptions, UploadOptions } from '@erebos/bzz';
 import { BzzFeed, FeedParams } from '@erebos/bzz-feed';
 import { Observable } from 'rxjs';
@@ -55,7 +56,7 @@ export declare class TimelineReader<T = any, S = any, B extends BzzFeed<S, Respo
 export declare class TimelineWriter<T = any, S = any, B extends BzzFeed<S, Response<S>> = BzzFeed<S, Response<S>>> extends TimelineReader<T, S, B> {
     protected signParams: any;
     constructor(config: TimelineWriterConfig<T, S, B>);
-    protected write(chapter: PartialChapter<T>): Promise<string>;
+    protected write(chapter: PartialChapter<T>): Promise<string | S | Buffer>;
     postChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;
     setLatestChapterID(chapterID: string, options?: FetchOptions): Promise<void>;
     setLatestChapter(chapter: PartialChapter<T>, options?: UploadOptions): Promise<string>;

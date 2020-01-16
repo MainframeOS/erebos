@@ -845,7 +845,7 @@
     "@babel/helper-plugin-utils" "^7.8.3"
     "@babel/plugin-transform-typescript" "^7.8.3"
 
-"@babel/runtime@^7.7.6", "@babel/runtime@^7.8.3":
+"@babel/runtime@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.3.tgz#0811944f73a6c926bb2ad35e918dcc1bfab279f1"
   integrity sha512-fVHx1rzEmwB130VTkLnxR+HmxcTjGzH12LYQcFFoBwakMd3aOMD4OsRN7tGG/UOYE2ektgFrS8uACAoRk1CY0w==
@@ -940,13 +940,6 @@
   optionalDependencies:
     global-agent "^2.0.2"
     global-tunnel-ng "^2.7.1"
-
-"@erebos/hex@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@erebos/hex/-/hex-0.12.0.tgz#aa1df94705015a9b72aa3940a59f619f72e824d3"
-  integrity sha512-3pqwNnjHkH3n30vnEvPp6V5rX8/ocevNzKdjZbZ2pA+JGRljXKxjnjC35DGPipgNzeEfvXaisvGNmc2Dkt3Htg==
-  dependencies:
-    "@babel/runtime" "^7.7.6"
 
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
