@@ -1,0 +1,368 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Bzz API · erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Installation"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Bzz API · erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://erebos.js.org/"/><meta property="og:description" content="## Installation"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/erebos-white.png" alt="erebos"/><h2 class="headerTitleWithLogo">erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/examples-storage" target="_self">Examples</a></li><li class="siteNavGroupActive"><a href="/docs/swarm-client" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Swarm APIs and CLI</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started">Getting started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm examples</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/examples-storage">File storage examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-feeds">Feeds examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-communications">Communications examples</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm APIs and CLI</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/swarm-client">Swarm client</a></li><li class="navListItem"><a class="navItem" href="/docs/individual-apis">Individual APIs</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/bzz">Bzz API</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz-feed">Bzz Feed API</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz-fs">Bzz FS API</a></li><li class="navListItem"><a class="navItem" href="/docs/pss">Pss API</a></li><li class="navListItem"><a class="navItem" href="/docs/cli">CLI</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Data structures</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/data-structures">Data structures</a></li><li class="navListItem"><a class="navItem" href="/docs/feed-list">Feed lists</a></li><li class="navListItem"><a class="navItem" href="/docs/doc-sync">Document synchronization</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline">Timeline</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Timeline protocol</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/timeline-spec">Timeline specification</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-examples">Timeline example</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-api">Timeline API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Utility libraries</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/hex">Hexadecimal encoding</a></li><li class="navListItem"><a class="navItem" href="/docs/keccak256">Keccak256 hashing</a></li><li class="navListItem"><a class="navItem" href="/docs/secp256k1">SECP256k1 signing</a></li><li class="navListItem"><a class="navItem" href="/docs/wallet-hd">Hierarchical Deterministic wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">RPC tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rpc-intro">RPC clients, handler and transport</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-base">Base RPC class and types</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-error">RPC Errors</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-request">RequestRPC client (stateless)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-stream">StreamRPC client (stateful)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-handler">RPC handler</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-http">RPC client over HTTP</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ws">RPC client over WebSocket</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ipc">RPC client over IPC</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-browser">RPC client for browsers</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-node">RPC client for Node</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-electron">RPC client for Electron</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-http">HTTP transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ws">WebSocket transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ipc">IPC transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-electron">Electron transport</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MainframeHQ/erebos/edit/master/docs/bzz.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Bzz API</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<h3><a class="anchor" aria-hidden="true" id="core-package"></a><a href="#core-package" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core package</h3>
+<blockquote>
+<p>This package doesn't use third-party dependencies but does not support all the APIs provided by <code>@erebos/bzz-browser</code> and <code>@erebos/bzz-node</code></p>
+</blockquote>
+<pre><code class="hljs css language-sh">npm install @erebos/bzz
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="for-browser"></a><a href="#for-browser" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For browser</h3>
+<pre><code class="hljs css language-sh">npm install @erebos/bzz-browser
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="for-node"></a><a href="#for-node" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Node</h3>
+<pre><code class="hljs css language-sh">npm install @erebos/bzz-node
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre><code class="hljs css language-javacript"><span class="hljs-keyword">import</span> { Bzz } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz'</span> <span class="hljs-comment">// core</span>
+<span class="hljs-comment">// or</span>
+<span class="hljs-keyword">import</span> { BzzBrowser <span class="hljs-keyword">as</span> Bzz } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz-browser'</span> <span class="hljs-comment">// browser</span>
+<span class="hljs-comment">// or</span>
+<span class="hljs-keyword">import</span> { BzzNode <span class="hljs-keyword">as</span> Bzz } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz-node'</span> <span class="hljs-comment">// node</span>
+
+<span class="hljs-keyword">const</span> bzz = <span class="hljs-keyword">new</span> Bzz({ <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost:8500'</span> })
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="interfaces-and-types"></a><a href="#interfaces-and-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Interfaces and types</h2>
+<h3><a class="anchor" aria-hidden="true" id="directoryentry"></a><a href="#directoryentry" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DirectoryEntry</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DirectoryEntry {
+  data: <span class="hljs-built_in">string</span> | Buffer
+  contentType?: <span class="hljs-built_in">string</span>
+  size?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="directorydata"></a><a href="#directorydata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DirectoryData</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">type</span> DirectoryData = Record&lt;<span class="hljs-built_in">string</span>, DirectoryEntry&gt;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fileentry"></a><a href="#fileentry" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FileEntry</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FileEntry {
+  data: <span class="hljs-built_in">string</span> | Buffer
+  path: <span class="hljs-built_in">string</span>
+  size?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="listentry"></a><a href="#listentry" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ListEntry</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> ListEntry {
+  hash: <span class="hljs-built_in">string</span>
+  path: <span class="hljs-built_in">string</span>
+  contentType: <span class="hljs-built_in">string</span>
+  size: <span class="hljs-built_in">number</span>
+  mod_time: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="listresult"></a><a href="#listresult" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ListResult</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> ListResult {
+  common_prefixes?: <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">string</span>&gt;
+  entries?: <span class="hljs-built_in">Array</span>&lt;ListEntry&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fetchoptions"></a><a href="#fetchoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FetchOptions</h3>
+<p>Common options to all HTTP requests. The <code>timeout</code> value can be set to <code>0</code> to prevent applying any timeout, for example if a default timeout is set at the instance level, but a particular request needs to ignore it.</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FetchOptions {
+  headers?: Record&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;
+  timeout?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fileoptions"></a><a href="#fileoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FileOptions</h3>
+<p>Extends <a href="#fetchoptions">FetchOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FileOptions <span class="hljs-keyword">extends</span> FetchOptions {
+  contentType?: <span class="hljs-built_in">string</span>
+  path?: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="bzzmode"></a><a href="#bzzmode" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzMode</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">type</span> BzzMode = <span class="hljs-string">'default'</span> | <span class="hljs-string">'immutable'</span> | <span class="hljs-string">'raw'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="downloadoptions"></a><a href="#downloadoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DownloadOptions</h3>
+<p>Extends <a href="#fileoptions">FileOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DownloadOptions <span class="hljs-keyword">extends</span> FileOptions {
+  mode?: BzzMode
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="uploadoptions"></a><a href="#uploadoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>UploadOptions</h3>
+<p>Extends <a href="#fileoptions">FileOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> UploadOptions <span class="hljs-keyword">extends</span> FileOptions {
+  defaultPath?: <span class="hljs-built_in">string</span>
+  encrypt?: <span class="hljs-built_in">boolean</span>
+  manifestHash?: <span class="hljs-built_in">string</span>
+  pin?: <span class="hljs-built_in">boolean</span>
+  size?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="polloptions"></a><a href="#polloptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PollOptions</h3>
+<p>Extends <a href="#fetchoptions">FetchOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> PollOptions <span class="hljs-keyword">extends</span> FetchOptions {
+  interval: <span class="hljs-built_in">number</span> <span class="hljs-comment">// in milliseconds</span>
+  immediate?: <span class="hljs-built_in">boolean</span> <span class="hljs-comment">// defaults to true</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="pinoptions"></a><a href="#pinoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PinOptions</h3>
+<p>Extends <a href="#fetchoptions">FetchOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> PinOptions <span class="hljs-keyword">extends</span> FetchOptions {
+  download?: <span class="hljs-built_in">boolean</span>
+  raw?: <span class="hljs-built_in">boolean</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="pinnedfile"></a><a href="#pinnedfile" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PinnedFile</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> PinnedFile {
+  address: <span class="hljs-built_in">string</span>
+  counter: <span class="hljs-built_in">number</span>
+  raw: <span class="hljs-built_in">boolean</span>
+  size: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="tag"></a><a href="#tag" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tag</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> Tag {
+  uid: <span class="hljs-built_in">number</span>
+  name: <span class="hljs-built_in">string</span>
+  address: <span class="hljs-built_in">string</span>
+  total: <span class="hljs-built_in">number</span>
+  split: <span class="hljs-built_in">number</span>
+  seen: <span class="hljs-built_in">number</span>
+  stored: <span class="hljs-built_in">number</span>
+  sent: <span class="hljs-built_in">number</span>
+  synced: <span class="hljs-built_in">number</span>
+  startedAt: <span class="hljs-built_in">Date</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="bzzconfig"></a><a href="#bzzconfig" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzConfig</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> BzzConfig {
+  timeout?: <span class="hljs-built_in">number</span>
+  url: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="httperror-class"></a><a href="#httperror-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTPError class</h2>
+<blockquote>
+<p>This class is used when errors from Swarm are thrown</p>
+</blockquote>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>status: number</code>: HTTP status code</li>
+<li><code>message: string</code>: error message</li>
+</ol>
+<p><strong>Properties</strong></p>
+<ul>
+<li><code>status: number</code>: HTTP status code</li>
+<li><code>message: string</code>: error message</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="bzz-class"></a><a href="#bzz-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bzz class</h2>
+<h3><a class="anchor" aria-hidden="true" id="new-bzz"></a><a href="#new-bzz" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new Bzz()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#bzzconfig"><code>config: BzzConfig</code></a>, see below</li>
+</ol>
+<p><strong>Configuration</strong></p>
+<ul>
+<li><code>url: string</code>: address of the Swarm HTTP gateway</li>
+<li><code>timeout?: number</code>: default timeout to apply to all requests</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="getdownloadurl"></a><a href="#getdownloadurl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getDownloadURL()</h3>
+<p>Returns the Swarm download URL for a given resource based on the provided arguments.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a>: optional object providing the <code>path</code>.</li>
+<li><code>raw?: boolean</code></li>
+</ol>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getuploadurl"></a><a href="#getuploadurl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getUploadURL()</h3>
+<p>Returns the Swarm upload URL for a given resource based on the provided arguments.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+<li><code>raw?: boolean</code></li>
+</ol>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getpinurl"></a><a href="#getpinurl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getPinURL()</h3>
+<p>Returns the Swarm URL for a pin based on the provided arguments.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash?: string</code>: hash of the resource</li>
+<li><code>raw: boolean = false</code></li>
+</ol>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="hash"></a><a href="#hash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.hash()</h3>
+<p>Returns the hash of the provided <code>domain</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>domain: string</code></li>
+<li><a href="#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="gettag"></a><a href="#gettag" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getTag()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hash: string</code></li>
+<li><a href="#fetchoptions"><code>options: FetchOptions</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Tag&gt;</code> the <a href="#tag"><code>Tag</code></a> of the given <code>hash</code></p>
+<h3><a class="anchor" aria-hidden="true" id="list"></a><a href="#list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.list()</h3>
+<p>Returns the manifest data for the provided <code>hashOrDomain</code> and optional <code>path</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a>: optional object providing the <code>path</code>.</li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;ListResult&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="download"></a><a href="#download" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.download()</h3>
+<p>The <code>download()</code> method returns a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response"><code>Response</code> instance</a> if the request succeeds, or throws a <code>HTTPError</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a> optional object providing the <code>path</code>, <code>mode</code> and <code>contentType</code>.</li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="downloaddata"></a><a href="#downloaddata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.downloadData()</h3>
+<p>Downloads and parses JSON data.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;any&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploadfile"></a><a href="#uploadfile" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadFile()</h3>
+<p>Uploads a single file and returns the hash. If the <code>contentType</code> option is provided, it will return the manifest hash, otherwise the file will be uploaded as raw data and will return the hash of the data itself.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>data: string | Buffer | Readable</code></li>
+<li><a href="#uploadoptions"><code>options: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploaddata"></a><a href="#uploaddata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadData()</h3>
+<p>Stringifies and uploads JSON data.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>data: any</code></li>
+<li><a href="#uploadoptions"><code>options: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="deleteresource"></a><a href="#deleteresource" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.deleteResource()</h3>
+<p>Deletes the resource with at the provided <code>path</code> in the manifest and returns the hash of the new manifest without this resource.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><code>path: string</code></li>
+<li><a href="#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="pin"></a><a href="#pin" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pin()</h3>
+<p>Pins the specified resource. To make sure the resource is available on the node, the <code>download</code> option can be set to explicitely download it before pinning.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#pinoptions"><code>options?: PinOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="unpin"></a><a href="#unpin" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.unpin()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="pins"></a><a href="#pins" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pins()</h3>
+<p>Returns the list of resources currently pinned on the node.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Array&lt;PinnedFile&gt;&gt;</code> the list of <a href="#pinnedfile"><code>PinnedFile</code></a></p>
+<h2><a class="anchor" aria-hidden="true" id="bzzbrowser-and-bzznode-class"></a><a href="#bzzbrowser-and-bzznode-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzBrowser and BzzNode class</h2>
+<blockquote>
+<p>The following methods are only provided by <code>@erebos/bzz-browser</code> and <code>@erebos/bzz-node</code></p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="downloaddirectory"></a><a href="#downloaddirectory" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.downloadDirectory()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DirectoryData&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploaddirectory"></a><a href="#uploaddirectory" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadDirectory()</h3>
+<p>Uploads multiple files and returns the hash of the manifest containing these files.</p>
+<p>By setting the <code>defaultPath</code> option, a file can be defined as the default one when resolving a manifest root, for example a static website could be uploaded with the <code>index.html</code> default path so that accessing <code>bzz://domain.eth</code> would resolve to <code>bzz://domain.eth/index.html</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#directorydata"><code>data: DirectoryData</code></a></li>
+<li><a href="#uploadoptions"><code>options: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/individual-apis"><span class="arrow-prev">← </span><span>Individual APIs</span></a><a class="docs-next button" href="/docs/bzz-feed"><span>Bzz Feed API</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installation">Installation</a><ul class="toc-headings"><li><a href="#core-package">Core package</a></li><li><a href="#for-browser">For browser</a></li><li><a href="#for-node">For Node</a></li></ul></li><li><a href="#usage">Usage</a></li><li><a href="#interfaces-and-types">Interfaces and types</a><ul class="toc-headings"><li><a href="#directoryentry">DirectoryEntry</a></li><li><a href="#directorydata">DirectoryData</a></li><li><a href="#fileentry">FileEntry</a></li><li><a href="#listentry">ListEntry</a></li><li><a href="#listresult">ListResult</a></li><li><a href="#fetchoptions">FetchOptions</a></li><li><a href="#fileoptions">FileOptions</a></li><li><a href="#bzzmode">BzzMode</a></li><li><a href="#downloadoptions">DownloadOptions</a></li><li><a href="#uploadoptions">UploadOptions</a></li><li><a href="#polloptions">PollOptions</a></li><li><a href="#pinoptions">PinOptions</a></li><li><a href="#pinnedfile">PinnedFile</a></li><li><a href="#tag">Tag</a></li><li><a href="#bzzconfig">BzzConfig</a></li></ul></li><li><a href="#httperror-class">HTTPError class</a></li><li><a href="#bzz-class">Bzz class</a><ul class="toc-headings"><li><a href="#new-bzz">new Bzz()</a></li><li><a href="#getdownloadurl">.getDownloadURL()</a></li><li><a href="#getuploadurl">.getUploadURL()</a></li><li><a href="#getpinurl">.getPinURL()</a></li><li><a href="#hash">.hash()</a></li><li><a href="#gettag">.getTag()</a></li><li><a href="#list">.list()</a></li><li><a href="#download">.download()</a></li><li><a href="#downloaddata">.downloadData()</a></li><li><a href="#uploadfile">.uploadFile()</a></li><li><a href="#uploaddata">.uploadData()</a></li><li><a href="#deleteresource">.deleteResource()</a></li><li><a href="#pin">.pin()</a></li><li><a href="#unpin">.unpin()</a></li><li><a href="#pins">.pins()</a></li></ul></li><li><a href="#bzzbrowser-and-bzznode-class">BzzBrowser and BzzNode class</a><ul class="toc-headings"><li><a href="#downloaddirectory">.downloadDirectory()</a></li><li><a href="#uploaddirectory">.uploadDirectory()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/getting-started">Getting Started</a><a href="/docs/swarm-client">API Reference</a><a href="/docs/cli">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://beehive.ethswarm.org" target="_blank" rel="noreferrer noopener">Development chat</a></div></section><section class="copyright"><img src="/img/mainframe.png" class="mainframe-logo"/></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+                indexName: 'erebos',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {"facetFilters":["language:en"]}
+              });
+            </script></body></html>

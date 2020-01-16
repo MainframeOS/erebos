@@ -1,0 +1,480 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Document synchronization · erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Purpose"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Document synchronization · erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://erebos.js.org/"/><meta property="og:description" content="## Purpose"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/erebos-white.png" alt="erebos"/><h2 class="headerTitleWithLogo">erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/examples-storage" target="_self">Examples</a></li><li class="siteNavGroupActive"><a href="/docs/swarm-client" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Data structures</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started">Getting started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm examples</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/examples-storage">File storage examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-feeds">Feeds examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-communications">Communications examples</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm APIs and CLI</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/swarm-client">Swarm client</a></li><li class="navListItem"><a class="navItem" href="/docs/individual-apis">Individual APIs</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz">Bzz API</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz-feed">Bzz Feed API</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz-fs">Bzz FS API</a></li><li class="navListItem"><a class="navItem" href="/docs/pss">Pss API</a></li><li class="navListItem"><a class="navItem" href="/docs/cli">CLI</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Data structures</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/data-structures">Data structures</a></li><li class="navListItem"><a class="navItem" href="/docs/feed-list">Feed lists</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/doc-sync">Document synchronization</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline">Timeline</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Timeline protocol</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/timeline-spec">Timeline specification</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-examples">Timeline example</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-api">Timeline API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Utility libraries</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/hex">Hexadecimal encoding</a></li><li class="navListItem"><a class="navItem" href="/docs/keccak256">Keccak256 hashing</a></li><li class="navListItem"><a class="navItem" href="/docs/secp256k1">SECP256k1 signing</a></li><li class="navListItem"><a class="navItem" href="/docs/wallet-hd">Hierarchical Deterministic wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">RPC tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rpc-intro">RPC clients, handler and transport</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-base">Base RPC class and types</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-error">RPC Errors</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-request">RequestRPC client (stateless)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-stream">StreamRPC client (stateful)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-handler">RPC handler</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-http">RPC client over HTTP</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ws">RPC client over WebSocket</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ipc">RPC client over IPC</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-browser">RPC client for browsers</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-node">RPC client for Node</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-electron">RPC client for Electron</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-http">HTTP transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ws">WebSocket transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ipc">IPC transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-electron">Electron transport</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MainframeHQ/erebos/edit/master/docs/doc-sync.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Document synchronization</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="purpose"></a><a href="#purpose" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Purpose</h2>
+<p>Synchronizes JSON documents from multiple sources using <a href="https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type">Conflict-free Replicated Data Types</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<pre><code class="hljs css language-sh">npm install @erebos/doc-sync
+</code></pre>
+<blockquote>
+<p>The various feed list classes must be injected a <a href="/docs/bzz-feed"><code>BzzFeed</code> instance</a>, so <code>@erebos/bzz-feed</code> must also be installed alongside.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre><code class="hljs css language-javascript"><span class="hljs-keyword">import</span> { DocSynchronizer, DocWriter } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/doc-sync'</span>
+
+<span class="hljs-comment">// simplified for brievity</span>
+<span class="hljs-keyword">const</span> [alice, bob, chloe] = <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([
+  DocWriter.init({ ... doc: { <span class="hljs-attr">alice</span>: <span class="hljs-string">'hello'</span> } }),
+  DocWriter.init({ ... doc: { <span class="hljs-attr">bob</span>: <span class="hljs-string">'hello'</span> } }),
+])
+
+<span class="hljs-keyword">const</span> chloe = <span class="hljs-keyword">await</span> DocSynchronizer.init({
+  ... <span class="hljs-comment">// simplified for brievity</span>
+  <span class="hljs-attr">doc</span>: { <span class="hljs-attr">chloe</span>: <span class="hljs-string">'hello'</span> },
+  <span class="hljs-attr">sources</span>: [alice.metaFeed, bob.metaFeed],
+})
+chloe.subscribe(<span class="hljs-function"><span class="hljs-params">doc</span> =&gt;</span> {
+  <span class="hljs-comment">// doc will change over time to become</span>
+  <span class="hljs-comment">// { alice: 'one', bob: 'two', chloe: 'three' }</span>
+})
+
+alice.change(<span class="hljs-function"><span class="hljs-params">doc</span> =&gt;</span> {
+  doc.alice = <span class="hljs-string">'one'</span>
+})
+bob.change(<span class="hljs-function"><span class="hljs-params">doc</span> =&gt;</span> {
+  doc.bob = <span class="hljs-string">'two'</span>
+})
+<span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all([alice.push(), bob.push()])
+
+chloe.change(<span class="hljs-function"><span class="hljs-params">doc</span> =&gt;</span> {
+  doc.chloe = <span class="hljs-string">'three'</span>
+})
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="interfaces-and-types"></a><a href="#interfaces-and-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Interfaces and types</h2>
+<h3><a class="anchor" aria-hidden="true" id="change"></a><a href="#change" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change</h3>
+<p><code>Change</code> interface exported by <a href="https://github.com/automerge/automerge">Automerge</a></p>
+<h3><a class="anchor" aria-hidden="true" id="doc"></a><a href="#doc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Doc</h3>
+<p><code>Doc</code> interface exported by <a href="https://github.com/automerge/automerge">Automerge</a></p>
+<h3><a class="anchor" aria-hidden="true" id="bzz"></a><a href="#bzz" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bzz</h3>
+<p>Alias type using the <a href="/docs/bzz-feed#bzzfeed-class"><code>BzzFeed</code> class</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">type</span> Bzz = BzzFeed&lt;<span class="hljs-built_in">any</span>, Response&gt;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="feedfactoryparams"></a><a href="#feedfactoryparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedFactoryParams</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FeedFactoryParams {
+  user: <span class="hljs-built_in">string</span>
+  topic?: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="datacontent"></a><a href="#datacontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataContent</h3>
+<p>Uses <a href="#change">Change</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DataContent {
+  changes: <span class="hljs-built_in">Array</span>&lt;Change&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="metasnapshot"></a><a href="#metasnapshot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MetaSnapshot</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> MetaSnapshot {
+  hash: <span class="hljs-built_in">string</span>
+  time: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="metacontent"></a><a href="#metacontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MetaContent</h3>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a> and <a href="#metasnapshot">MetaSnapshot</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> MetaContent {
+  dataFeed: FeedParams
+  snapshot?: MetaSnapshot | <span class="hljs-literal">undefined</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="protocolcontent"></a><a href="#protocolcontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ProtocolContent</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> ProtocolContent {
+  protocol: <span class="hljs-built_in">string</span>
+  version: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="datapayload"></a><a href="#datapayload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataPayload</h3>
+<p>Extends <a href="#datacontent">DataContent</a> and <a href="#protocolcontent">ProtocolContent</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DataPayload <span class="hljs-keyword">extends</span> DataContent, ProtocolContent {}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="metapayload"></a><a href="#metapayload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>MetaPayload</h3>
+<p>Extends <a href="#metacontent">MetaContent</a> and <a href="#protocolcontent">ProtocolContent</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> MetaPayload <span class="hljs-keyword">extends</span> MetaContent, ProtocolContent {}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docfeeds"></a><a href="#docfeeds" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocFeeds</h3>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocFeeds {
+  data: FeedParams
+  meta: FeedParams
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docserialized"></a><a href="#docserialized" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSerialized</h3>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocSerialized {
+  docString: <span class="hljs-built_in">string</span>
+  dataFeed: FeedParams
+  metaFeed: FeedParams
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="loaddocreaderparams"></a><a href="#loaddocreaderparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LoadDocReaderParams</h3>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a> and <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> LoadDocReaderParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt; {
+  bzz: B
+  feed: FeedParams <span class="hljs-comment">// params for meta feed</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fromjsondocreaderparams"></a><a href="#fromjsondocreaderparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FromJSONDocReaderParams</h3>
+<p>Extends <a href="#docserialized">DocSerialized</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FromJSONDocReaderParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt; <span class="hljs-keyword">extends</span> DocSerialized {
+  bzz: B
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docreaderparams"></a><a href="#docreaderparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocReaderParams</h3>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a>, <a href="/docs/feed-list#datalistreader-class">DataListReader class</a>, <a href="#bzz">Bzz</a>, <a href="#doc">Doc</a> and <a href="#datapayload">DataPayload</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocReaderParams&lt;T, B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt; {
+  bzz: B
+  doc: Doc&lt;T&gt;
+  feed: FeedParams
+  list: DataListReader&lt;DataPayload, B&gt;
+  time: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docsubscriberparams"></a><a href="#docsubscriberparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSubscriberParams</h3>
+<p>Extends <a href="#docreaderparams">DocReaderParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocSubscriberParams&lt;T, B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> DocReaderParams&lt;T, B&gt; {
+  pullInterval: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fromjsondocsubscriberparams"></a><a href="#fromjsondocsubscriberparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FromJSONDocSubscriberParams</h3>
+<p>Extends <a href="#fromjsondocreaderparams">FromJSONDocReaderParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FromJSONDocSubscriberParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> FromJSONDocReaderParams&lt;B&gt; {
+  pullInterval: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="loaddocsubscriberparams"></a><a href="#loaddocsubscriberparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LoadDocSubscriberParams</h3>
+<p>Extends <a href="#loaddocreaderparams">LoadDocReaderParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> LoadDocSubscriberParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> LoadDocReaderParams&lt;B&gt; {
+  pullInterval: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="createdocwriterparams"></a><a href="#createdocwriterparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CreateDocWriterParams</h3>
+<p>Uses <a href="#bzz">Bzz</a> and <a href="#feedfactoryparams">FeedFactoryParams</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> CreateDocWriterParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt; {
+  bzz: B
+  feed: FeedFactoryParams
+  snapshotFrequency?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="initdocwriterparams"></a><a href="#initdocwriterparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>InitDocWriterParams</h3>
+<p>Extends <a href="#createdocwriterparams">CreateDocWriterParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> InitDocWriterParams&lt;T, B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> CreateDocWriterParams&lt;B&gt; {
+  doc: T
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fromjsondocwriterparams"></a><a href="#fromjsondocwriterparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FromJSONDocWriterParams</h3>
+<p>Extends <a href="#fromjsondocreaderparams">FromJSONDocReaderParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FromJSONDocWriterParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> FromJSONDocReaderParams&lt;B&gt; {
+  snapshotFrequency?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="loaddocwriterparams"></a><a href="#loaddocwriterparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LoadDocWriterParams</h3>
+<p>Extends <a href="#loaddocreaderparams">LoadDocReaderParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> LoadDocWriterParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> LoadDocReaderParams&lt;B&gt; {
+  snapshotFrequency?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docwriterparams"></a><a href="#docwriterparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocWriterParams</h3>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a>, <a href="/docs/feed-list#datalistwriter-class">DataListWriter class</a>, <a href="#bzz">Bzz</a>, <a href="#doc">Doc</a> and <a href="#datapayload">DataPayload</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocWriterParams&lt;T, B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt; {
+  bzz: B
+  doc: Doc&lt;T&gt;
+  feed: FeedParams
+  list: DataListWriter&lt;DataPayload, B&gt;
+  snapshotFrequency?: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="initdocsynchronizerparams"></a><a href="#initdocsynchronizerparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>InitDocSynchronizerParams</h3>
+<p>Extends <a href="#initdocwriterparams">InitDocWriterParams</a></p>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a> and <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> InitDocSynchronizerParams&lt;T, B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> InitDocWriterParams&lt;T, B&gt; {
+  pullInterval: <span class="hljs-built_in">number</span>
+  pushInterval?: <span class="hljs-built_in">number</span>
+  sources?: <span class="hljs-built_in">Array</span>&lt;FeedParams&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="fromjsonsynchronizerparams"></a><a href="#fromjsonsynchronizerparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FromJSONSynchronizerParams</h3>
+<p>Extends <a href="#fromjsondocwriterparams">FromJSONDocWriterParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a> and <a href="#docserialized">DocSerialized</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FromJSONDocSynchronizerParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> FromJSONDocWriterParams&lt;B&gt; {
+  pullInterval: <span class="hljs-built_in">number</span>
+  pushInterval?: <span class="hljs-built_in">number</span>
+  sources?: <span class="hljs-built_in">Array</span>&lt;DocSerialized&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="loaddocsynchronizerparams"></a><a href="#loaddocsynchronizerparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LoadDocSynchronizerParams</h3>
+<p>Extends <a href="#loaddocwriterparams">LoadDocWriterParams</a></p>
+<p>Uses <a href="/docs/bzz-feed#feedparams">FeedParams</a> and <a href="#bzz">Bzz</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> LoadDocSynchronizerParams&lt;B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> LoadDocWriterParams&lt;B&gt; {
+  pullInterval: <span class="hljs-built_in">number</span>
+  pushInterval?: <span class="hljs-built_in">number</span>
+  sources?: <span class="hljs-built_in">Array</span>&lt;FeedParams&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docsynchronizerparams"></a><a href="#docsynchronizerparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSynchronizerParams</h3>
+<p>Extends <a href="#docwriterparams">DocWriterParams</a></p>
+<p>Uses <a href="#bzz">Bzz</a> and <a href="#docsubscriber-class">DocSubscriber</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocSynchronizerParams&lt;T, B <span class="hljs-keyword">extends</span> Bzz = Bzz&gt;
+  <span class="hljs-keyword">extends</span> DocWriterParams&lt;T, B&gt; {
+  pushInterval?: <span class="hljs-built_in">number</span>
+  sources?: <span class="hljs-built_in">Array</span>&lt;DocSubscriber&lt;T, B&gt;&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="docsynchronizerserialized"></a><a href="#docsynchronizerserialized" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSynchronizerSerialized</h3>
+<p>Extends and uses <a href="#docserialized">DocSerialized</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> DocSynchronizerSerialized <span class="hljs-keyword">extends</span> DocSerialized {
+  sources: <span class="hljs-built_in">Array</span>&lt;DocSerialized&gt;
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="docreader-class"></a><a href="#docreader-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocReader class</h2>
+<p>Extends <a href="https://rxjs.dev/api/index/class/BehaviorSubject"><code>BehaviorSubject&lt;Doc&lt;T&gt;&gt;</code></a></p>
+<p><strong>Types</strong></p>
+<ul>
+<li><code>T = any</code>: the type of the document data</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="new-docreader"></a><a href="#new-docreader" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new DocReader()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docreaderparams"><code>params: DocReaderParams</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="docreaderfromjson"></a><a href="#docreaderfromjson" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocReader.fromJSON()</h3>
+<p>Creates a <code>DocReader</code> instance using a serialized document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docreaderfromjsonparams"><code>params: DocReaderFromJSONParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>DocReader</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docreaderload"></a><a href="#docreaderload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocReader.load()</h3>
+<p>Creates a <code>DocReader</code> instance loading the remote document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docreaderloadparams"><code>params: DocReaderLoadParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DocReader&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="metafeed"></a><a href="#metafeed" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.metaFeed</h3>
+<p><strong>Returns</strong> <a href="/docs/bzz-feed#feedparams"><code>FeedParams</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="pull"></a><a href="#pull" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pull()</h3>
+<p><strong>Returns</strong> <code>Promise&lt;boolean&gt;</code> whether the document has changed or not</p>
+<h3><a class="anchor" aria-hidden="true" id="tojson"></a><a href="#tojson" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.toJSON()</h3>
+<p><strong>Returns</strong> <a href="#docserialized"><code>DocSerialized</code></a></p>
+<h2><a class="anchor" aria-hidden="true" id="docsubscriber-class"></a><a href="#docsubscriber-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSubscriber class</h2>
+<p>Extends <a href="#docreader-class"><code>DocReader&lt;T&gt;</code></a></p>
+<p><strong>Types</strong></p>
+<ul>
+<li><code>T = any</code>: the type of the document data</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="new-docsubscriber"></a><a href="#new-docsubscriber" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new DocSubscriber()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsubscriberparams"><code>params: DocSubscriberParams</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="docsubscriberfromjson"></a><a href="#docsubscriberfromjson" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSubscriber.fromJSON()</h3>
+<p>Creates a <code>DocSubscriber</code> instance using a serialized document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsubscriberfromjsonparams"><code>params: DocSubscriberFromJSONParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>DocSubscriber</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docsubscriberload"></a><a href="#docsubscriberload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSubscriber.load()</h3>
+<p>Creates a <code>DocSubscriber</code> instance loading the remote document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsubscriberloadparams"><code>params: DocSubscriberLoadParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DocSubscriber&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="start"></a><a href="#start" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.start()</h3>
+<p>Start polling changes</p>
+<p><strong>Returns</strong> <code>void</code></p>
+<h3><a class="anchor" aria-hidden="true" id="stop"></a><a href="#stop" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.stop()</h3>
+<p>Stop polling changes</p>
+<p><strong>Returns</strong> <code>void</code></p>
+<h2><a class="anchor" aria-hidden="true" id="docwriter-class"></a><a href="#docwriter-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocWriter class</h2>
+<p>Extends <a href="#docreader-class"><code>DocReader&lt;T&gt;</code></a></p>
+<p><strong>Types</strong></p>
+<ul>
+<li><code>T = any</code>: the type of the document data</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="new-docwriter"></a><a href="#new-docwriter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new DocWriter()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docwriterparams"><code>params: DocWriterParams</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="docwritercreate"></a><a href="#docwritercreate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocWriter.create()</h3>
+<p>Creates a new <code>DocWriter</code> instance with an empty document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docwritercreateparams"><code>params: DocWriterCreateParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>DocWriter</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docwriterinit"></a><a href="#docwriterinit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocWriter.init()</h3>
+<p>Creates a new <code>DocWriter</code> instance with a provided document and push it remotely</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docwriterinitparams"><code>params: DocWriterInitParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DocWriter&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docwriterfromjson"></a><a href="#docwriterfromjson" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocWriter.fromJSON()</h3>
+<p>Creates a <code>DocWriter</code> instance using a serialized document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docwriterfromjsonparams"><code>params: DocWriterFromJSONParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>DocWriter</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docwriterload"></a><a href="#docwriterload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocWriter.load()</h3>
+<p>Creates a <code>DocWriter</code> instance loading the remote document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docwriterloadparams"><code>params: DocWriterLoadParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DocWriter&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="length"></a><a href="#length" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.length</h3>
+<p><strong>Returns</strong> <code>number</code> the number of changes that have been published</p>
+<h3><a class="anchor" aria-hidden="true" id="change-1"></a><a href="#change-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.change()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>updater: (doc: T) =&gt; void</code> the function mutating the document data</li>
+</ol>
+<p><strong>Returns</strong> <code>boolean</code> whether the document has changed or not</p>
+<h3><a class="anchor" aria-hidden="true" id="merge"></a><a href="#merge" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.merge()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>other: Doc&lt;T&gt;</code> the other document to merge with</li>
+</ol>
+<p><strong>Returns</strong> <code>boolean</code> whether the document has changed or not</p>
+<h3><a class="anchor" aria-hidden="true" id="push"></a><a href="#push" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.push()</h3>
+<p>Pushes the changes to the remote feed. If there is no change to push, it will return <code>null</code>, otherwise it will return the Swarm hash where the updated metadata has been uploaded.</p>
+<p><strong>Returns</strong> <code>Promise&lt;string | null&gt;</code></p>
+<h2><a class="anchor" aria-hidden="true" id="docsynchronizer-class"></a><a href="#docsynchronizer-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSynchronizer class</h2>
+<p>Extends <a href="#docwriter-class"><code>DocWriter&lt;T&gt;</code></a></p>
+<p><strong>Types</strong></p>
+<ul>
+<li><code>T = any</code>: the type of the document data</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="new-docsynchronizer"></a><a href="#new-docsynchronizer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new DocSynchronizer()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsynchronizerparams"><code>params: DocSynchronizerParams</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="docsynchronizerinit"></a><a href="#docsynchronizerinit" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSynchronizer.init()</h3>
+<p>Creates a new <code>DocSynchronizer</code> instance with a provided document and push it remotely</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsynchronizerinitparams"><code>params: DocWSynchronizerInitParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DocSynchronizer&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docsynchronizerfromjson"></a><a href="#docsynchronizerfromjson" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSynchronizer.fromJSON()</h3>
+<p>Creates a <code>DocSynchronizer</code> instance using a serialized document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsynchronizerfromjsonparams"><code>params: DocSynchronizerFromJSONParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>DocSynchronizer</code></p>
+<h3><a class="anchor" aria-hidden="true" id="docsynchronizerload"></a><a href="#docsynchronizerload" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DocSynchronizer.load()</h3>
+<p>Creates a <code>DocSynchronizer</code> instance loading the remote document</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#docsynchronizerloadparams"><code>params: DocSynchronizerLoadParams</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;DocSynchronizer&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="start-1"></a><a href="#start-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.start()</h3>
+<p>Start polling changes from sources and pushing own changes</p>
+<p><strong>Returns</strong> <code>void</code></p>
+<h3><a class="anchor" aria-hidden="true" id="stop-1"></a><a href="#stop-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.stop()</h3>
+<p>Stop polling changes from sources and pushing own changes</p>
+<p><strong>Returns</strong> <code>void</code></p>
+<h3><a class="anchor" aria-hidden="true" id="pullsources"></a><a href="#pullsources" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pullSources()</h3>
+<p>Pull changes from sources</p>
+<p><strong>Returns</strong> <code>Promise&lt;boolean&gt;</code> whether the document has changed or not</p>
+<h3><a class="anchor" aria-hidden="true" id="tojson-1"></a><a href="#tojson-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.toJSON()</h3>
+<p><strong>Returns</strong> <a href="#docsynchronizerserialized"><code>DocSynchronizerSerialized</code></a></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/feed-list"><span class="arrow-prev">← </span><span>Feed lists</span></a><a class="docs-next button" href="/docs/timeline"><span>Timeline</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#purpose">Purpose</a></li><li><a href="#installation">Installation</a></li><li><a href="#usage">Usage</a></li><li><a href="#interfaces-and-types">Interfaces and types</a><ul class="toc-headings"><li><a href="#change">Change</a></li><li><a href="#doc">Doc</a></li><li><a href="#bzz">Bzz</a></li><li><a href="#feedfactoryparams">FeedFactoryParams</a></li><li><a href="#datacontent">DataContent</a></li><li><a href="#metasnapshot">MetaSnapshot</a></li><li><a href="#metacontent">MetaContent</a></li><li><a href="#protocolcontent">ProtocolContent</a></li><li><a href="#datapayload">DataPayload</a></li><li><a href="#metapayload">MetaPayload</a></li><li><a href="#docfeeds">DocFeeds</a></li><li><a href="#docserialized">DocSerialized</a></li><li><a href="#loaddocreaderparams">LoadDocReaderParams</a></li><li><a href="#fromjsondocreaderparams">FromJSONDocReaderParams</a></li><li><a href="#docreaderparams">DocReaderParams</a></li><li><a href="#docsubscriberparams">DocSubscriberParams</a></li><li><a href="#fromjsondocsubscriberparams">FromJSONDocSubscriberParams</a></li><li><a href="#loaddocsubscriberparams">LoadDocSubscriberParams</a></li><li><a href="#createdocwriterparams">CreateDocWriterParams</a></li><li><a href="#initdocwriterparams">InitDocWriterParams</a></li><li><a href="#fromjsondocwriterparams">FromJSONDocWriterParams</a></li><li><a href="#loaddocwriterparams">LoadDocWriterParams</a></li><li><a href="#docwriterparams">DocWriterParams</a></li><li><a href="#initdocsynchronizerparams">InitDocSynchronizerParams</a></li><li><a href="#fromjsonsynchronizerparams">FromJSONSynchronizerParams</a></li><li><a href="#loaddocsynchronizerparams">LoadDocSynchronizerParams</a></li><li><a href="#docsynchronizerparams">DocSynchronizerParams</a></li><li><a href="#docsynchronizerserialized">DocSynchronizerSerialized</a></li></ul></li><li><a href="#docreader-class">DocReader class</a><ul class="toc-headings"><li><a href="#new-docreader">new DocReader()</a></li><li><a href="#docreaderfromjson">DocReader.fromJSON()</a></li><li><a href="#docreaderload">DocReader.load()</a></li><li><a href="#metafeed">.metaFeed</a></li><li><a href="#pull">.pull()</a></li><li><a href="#tojson">.toJSON()</a></li></ul></li><li><a href="#docsubscriber-class">DocSubscriber class</a><ul class="toc-headings"><li><a href="#new-docsubscriber">new DocSubscriber()</a></li><li><a href="#docsubscriberfromjson">DocSubscriber.fromJSON()</a></li><li><a href="#docsubscriberload">DocSubscriber.load()</a></li><li><a href="#start">.start()</a></li><li><a href="#stop">.stop()</a></li></ul></li><li><a href="#docwriter-class">DocWriter class</a><ul class="toc-headings"><li><a href="#new-docwriter">new DocWriter()</a></li><li><a href="#docwritercreate">DocWriter.create()</a></li><li><a href="#docwriterinit">DocWriter.init()</a></li><li><a href="#docwriterfromjson">DocWriter.fromJSON()</a></li><li><a href="#docwriterload">DocWriter.load()</a></li><li><a href="#length">.length</a></li><li><a href="#change-1">.change()</a></li><li><a href="#merge">.merge()</a></li><li><a href="#push">.push()</a></li></ul></li><li><a href="#docsynchronizer-class">DocSynchronizer class</a><ul class="toc-headings"><li><a href="#new-docsynchronizer">new DocSynchronizer()</a></li><li><a href="#docsynchronizerinit">DocSynchronizer.init()</a></li><li><a href="#docsynchronizerfromjson">DocSynchronizer.fromJSON()</a></li><li><a href="#docsynchronizerload">DocSynchronizer.load()</a></li><li><a href="#start-1">.start()</a></li><li><a href="#stop-1">.stop()</a></li><li><a href="#pullsources">.pullSources()</a></li><li><a href="#tojson-1">.toJSON()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/getting-started">Getting Started</a><a href="/docs/swarm-client">API Reference</a><a href="/docs/cli">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://beehive.ethswarm.org" target="_blank" rel="noreferrer noopener">Development chat</a></div></section><section class="copyright"><img src="/img/mainframe.png" class="mainframe-logo"/></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+                indexName: 'erebos',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {"facetFilters":["language:en"]}
+              });
+            </script></body></html>

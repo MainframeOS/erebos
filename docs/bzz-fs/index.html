@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Bzz FS API · erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Installation"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Bzz FS API · erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://erebos.js.org/"/><meta property="og:description" content="## Installation"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/erebos-white.png" alt="erebos"/><h2 class="headerTitleWithLogo">erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/examples-storage" target="_self">Examples</a></li><li class="siteNavGroupActive"><a href="/docs/swarm-client" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Swarm APIs and CLI</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started">Getting started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm examples</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/examples-storage">File storage examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-feeds">Feeds examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-communications">Communications examples</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm APIs and CLI</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/swarm-client">Swarm client</a></li><li class="navListItem"><a class="navItem" href="/docs/individual-apis">Individual APIs</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz">Bzz API</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz-feed">Bzz Feed API</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/bzz-fs">Bzz FS API</a></li><li class="navListItem"><a class="navItem" href="/docs/pss">Pss API</a></li><li class="navListItem"><a class="navItem" href="/docs/cli">CLI</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Data structures</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/data-structures">Data structures</a></li><li class="navListItem"><a class="navItem" href="/docs/feed-list">Feed lists</a></li><li class="navListItem"><a class="navItem" href="/docs/doc-sync">Document synchronization</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline">Timeline</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Timeline protocol</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/timeline-spec">Timeline specification</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-examples">Timeline example</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-api">Timeline API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Utility libraries</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/hex">Hexadecimal encoding</a></li><li class="navListItem"><a class="navItem" href="/docs/keccak256">Keccak256 hashing</a></li><li class="navListItem"><a class="navItem" href="/docs/secp256k1">SECP256k1 signing</a></li><li class="navListItem"><a class="navItem" href="/docs/wallet-hd">Hierarchical Deterministic wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">RPC tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rpc-intro">RPC clients, handler and transport</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-base">Base RPC class and types</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-error">RPC Errors</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-request">RequestRPC client (stateless)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-stream">StreamRPC client (stateful)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-handler">RPC handler</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-http">RPC client over HTTP</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ws">RPC client over WebSocket</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ipc">RPC client over IPC</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-browser">RPC client for browsers</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-node">RPC client for Node</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-electron">RPC client for Electron</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-http">HTTP transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ws">WebSocket transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ipc">IPC transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-electron">Electron transport</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MainframeHQ/erebos/edit/master/docs/bzz-fs.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Bzz FS API</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<pre><code class="hljs css language-sh">npm install @erebos/bzz-fs
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre><code class="hljs css language-javacript"><span class="hljs-keyword">import</span> { BzzFS } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz-fs'</span>
+<span class="hljs-keyword">import</span> { BzzNode } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz-node'</span>
+
+<span class="hljs-keyword">const</span> bzz = <span class="hljs-keyword">new</span> BzzNode({ <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost:8500'</span> })
+<span class="hljs-keyword">const</span> bzzFS = <span class="hljs-keyword">new</span> BzzFS({ bzz })
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="bzzfsconfig"></a><a href="#bzzfsconfig" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzFSConfig</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> BzzFSConfig {
+  basePath?: <span class="hljs-built_in">string</span>
+  bzz: BzzNode | <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="bzzfs-class"></a><a href="#bzzfs-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzFS class</h2>
+<h3><a class="anchor" aria-hidden="true" id="new-bzzfs"></a><a href="#new-bzzfs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new BzzFS()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#bzzfsconfig"><code>config: BzzFSConfig</code></a>, see below</li>
+</ol>
+<p><strong>Configuration</strong></p>
+<ul>
+<li><code>basePath?: string</code>: the base path to resolve relative paths to</li>
+<li><code>bzz: BzzNode | string</code>: the <code>BzzNode</code> instance or gateway URL</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="downloadtarto"></a><a href="#downloadtarto" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.downloadTarTo()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><code>path: string</code>: tar file path</li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="downloadfileto"></a><a href="#downloadfileto" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.downloadFileTo()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><code>path: string</code></li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="downloaddirectoryto"></a><a href="#downloaddirectoryto" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.downloadDirectoryTo()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><code>path: string</code></li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;number&gt;</code> the number of files written.</p>
+<h3><a class="anchor" aria-hidden="true" id="downloadto"></a><a href="#downloadto" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.downloadTo()</h3>
+<p>Call <code>downloadFileTo()</code> or <code>downloadDirectoryTo()</code> depending on the provided <code>path</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrDomain: string</code>: ENS name or Swarm hash</li>
+<li><code>path: string</code></li>
+<li><a href="#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;void&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploadtar"></a><a href="#uploadtar" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadTar()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>path: string</code>: path to an existing tar archive or a directory to pack</li>
+<li><a href="#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploadfilefrom"></a><a href="#uploadfilefrom" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadFileFrom()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>path: string</code>: file to upload</li>
+<li><a href="#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploaddirectoryfrom"></a><a href="#uploaddirectoryfrom" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadDirectoryFrom()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>path: string</code>: directory to upload</li>
+<li><a href="#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="uploadfrom"></a><a href="#uploadfrom" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.uploadFrom()</h3>
+<p>Calls <code>uploadFileFrom()</code> or <code>uploadDirectoryFrom()</code> depending on the provided <code>path</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>path: string</code>: file or directory to upload</li>
+<li><a href="#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/bzz-feed"><span class="arrow-prev">← </span><span>Bzz Feed API</span></a><a class="docs-next button" href="/docs/pss"><span>Pss API</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installation">Installation</a></li><li><a href="#usage">Usage</a><ul class="toc-headings"><li><a href="#bzzfsconfig">BzzFSConfig</a></li></ul></li><li><a href="#bzzfs-class">BzzFS class</a><ul class="toc-headings"><li><a href="#new-bzzfs">new BzzFS()</a></li><li><a href="#downloadtarto">.downloadTarTo()</a></li><li><a href="#downloadfileto">.downloadFileTo()</a></li><li><a href="#downloaddirectoryto">.downloadDirectoryTo()</a></li><li><a href="#downloadto">.downloadTo()</a></li><li><a href="#uploadtar">.uploadTar()</a></li><li><a href="#uploadfilefrom">.uploadFileFrom()</a></li><li><a href="#uploaddirectoryfrom">.uploadDirectoryFrom()</a></li><li><a href="#uploadfrom">.uploadFrom()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/getting-started">Getting Started</a><a href="/docs/swarm-client">API Reference</a><a href="/docs/cli">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://beehive.ethswarm.org" target="_blank" rel="noreferrer noopener">Development chat</a></div></section><section class="copyright"><img src="/img/mainframe.png" class="mainframe-logo"/></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+                indexName: 'erebos',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {"facetFilters":["language:en"]}
+              });
+            </script></body></html>

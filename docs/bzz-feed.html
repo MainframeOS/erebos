@@ -1,0 +1,430 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Bzz Feed API · erebos</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Installation"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Bzz Feed API · erebos"/><meta property="og:type" content="website"/><meta property="og:url" content="https://erebos.js.org/"/><meta property="og:description" content="## Installation"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/favicon/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/mono-blue.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/erebos-white.png" alt="erebos"/><h2 class="headerTitleWithLogo">erebos</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/introduction" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/examples-storage" target="_self">Examples</a></li><li class="siteNavGroupActive"><a href="/docs/swarm-client" target="_self">API</a></li><li class=""><a href="/help" target="_self">Help</a></li><li class=""><a href="https://github.com/MainframeHQ/erebos" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Swarm APIs and CLI</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/getting-started">Getting started</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm examples</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/examples-storage">File storage examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-feeds">Feeds examples</a></li><li class="navListItem"><a class="navItem" href="/docs/examples-communications">Communications examples</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Swarm APIs and CLI</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/swarm-client">Swarm client</a></li><li class="navListItem"><a class="navItem" href="/docs/individual-apis">Individual APIs</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz">Bzz API</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/bzz-feed">Bzz Feed API</a></li><li class="navListItem"><a class="navItem" href="/docs/bzz-fs">Bzz FS API</a></li><li class="navListItem"><a class="navItem" href="/docs/pss">Pss API</a></li><li class="navListItem"><a class="navItem" href="/docs/cli">CLI</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Data structures</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/data-structures">Data structures</a></li><li class="navListItem"><a class="navItem" href="/docs/feed-list">Feed lists</a></li><li class="navListItem"><a class="navItem" href="/docs/doc-sync">Document synchronization</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline">Timeline</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Timeline protocol</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/timeline-spec">Timeline specification</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-examples">Timeline example</a></li><li class="navListItem"><a class="navItem" href="/docs/timeline-api">Timeline API</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Utility libraries</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/hex">Hexadecimal encoding</a></li><li class="navListItem"><a class="navItem" href="/docs/keccak256">Keccak256 hashing</a></li><li class="navListItem"><a class="navItem" href="/docs/secp256k1">SECP256k1 signing</a></li><li class="navListItem"><a class="navItem" href="/docs/wallet-hd">Hierarchical Deterministic wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">RPC tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rpc-intro">RPC clients, handler and transport</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-base">Base RPC class and types</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-error">RPC Errors</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-request">RequestRPC client (stateless)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-stream">StreamRPC client (stateful)</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-handler">RPC handler</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-http">RPC client over HTTP</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ws">RPC client over WebSocket</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-ipc">RPC client over IPC</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-browser">RPC client for browsers</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-node">RPC client for Node</a></li><li class="navListItem"><a class="navItem" href="/docs/rpc-electron">RPC client for Electron</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-http">HTTP transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ws">WebSocket transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-ipc">IPC transport</a></li><li class="navListItem"><a class="navItem" href="/docs/transport-electron">Electron transport</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/MainframeHQ/erebos/edit/master/docs/bzz-feed.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Bzz Feed API</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="installation"></a><a href="#installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<pre><code class="hljs css language-sh">npm install @erebos/bzz-feed
+</code></pre>
+<blockquote>
+<p>The BzzFeed class must be injected a <a href="/docs/bzz"><code>Bzz</code> instance</a>, so <code>@erebos/bzz</code> or a package extending it must also be installed alongside.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre><code class="hljs css language-javacript"><span class="hljs-keyword">import</span> { Bzz } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz'</span>
+<span class="hljs-keyword">import</span> { BzzFeed } <span class="hljs-keyword">from</span> <span class="hljs-string">'@erebos/bzz-feed'</span>
+
+<span class="hljs-keyword">const</span> bzz = <span class="hljs-keyword">new</span> Bzz({ <span class="hljs-attr">url</span>: <span class="hljs-string">'http://localhost:8500'</span> })
+<span class="hljs-keyword">const</span> bzzFeed = <span class="hljs-keyword">new</span> BzzFeed({ bzz })
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="interfaces-and-types"></a><a href="#interfaces-and-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Interfaces and types</h2>
+<h3><a class="anchor" aria-hidden="true" id="feed"></a><a href="#feed" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Feed</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> Feed {
+  topic: <span class="hljs-built_in">string</span>
+  user: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="feedepoch"></a><a href="#feedepoch" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedEpoch</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FeedEpoch {
+  time: <span class="hljs-built_in">number</span>
+  level: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="feedmetadata"></a><a href="#feedmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedMetadata</h3>
+<p>Uses <a href="#feed"><code>Feed</code></a> and <a href="#feedepoch"><code>FeedEpoch</code></a> interfaces</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FeedMetadata {
+  feed: Feed
+  epoch: FeedEpoch
+  protocolVersion: <span class="hljs-built_in">number</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="feedtopicparams"></a><a href="#feedtopicparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedTopicParams</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FeedTopicParams {
+  name?: <span class="hljs-built_in">string</span>
+  topic?: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="pollfeedoptions"></a><a href="#pollfeedoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PollFeedOptions</h3>
+<p>Extends <a href="/docs/bzz#polloptions">PollOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> PollFeedOptions <span class="hljs-keyword">extends</span> PollOptions {
+  whenEmpty?: <span class="hljs-string">'accept'</span> | <span class="hljs-string">'ignore'</span> | <span class="hljs-string">'error'</span> <span class="hljs-comment">// defaults to 'accept'</span>
+  trigger?: Observable&lt;<span class="hljs-built_in">void</span>&gt;
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="pollfeedcontenthashoptions"></a><a href="#pollfeedcontenthashoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PollFeedContentHashOptions</h3>
+<p>Extends <a href="#pollfeedoptions">PollFeedOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> PollFeedContentHashOptions <span class="hljs-keyword">extends</span> PollFeedOptions {
+  changedOnly?: <span class="hljs-built_in">boolean</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="pollfeedcontentoptions"></a><a href="#pollfeedcontentoptions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PollFeedContentOptions</h3>
+<p>Extends <a href="/docs/bzz#downloadoptions">DownloadOptions</a> and <a href="#pollfeedcontenthashoptions">PollFeedContentHashOptions</a></p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> PollFeedContentOptions
+  <span class="hljs-keyword">extends</span> DownloadOptions,
+    PollFeedContentHashOptions {}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="feedparams"></a><a href="#feedparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedParams</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FeedParams {
+  user: <span class="hljs-built_in">string</span>
+  level?: <span class="hljs-built_in">number</span>
+  name?: <span class="hljs-built_in">string</span>
+  time?: <span class="hljs-built_in">number</span>
+  topic?: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="feedupdateparams"></a><a href="#feedupdateparams" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedUpdateParams</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> FeedUpdateParams {
+  user: <span class="hljs-built_in">string</span>
+  level: <span class="hljs-built_in">number</span>
+  time: <span class="hljs-built_in">number</span>
+  topic: <span class="hljs-built_in">string</span>
+  signature: <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="signbytesfunc"></a><a href="#signbytesfunc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SignBytesFunc</h3>
+<p>Function to provide in order to sign feed updates</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">type</span> SignBytesFunc = (
+  digest: <span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">number</span>&gt;,
+  params?: <span class="hljs-built_in">any</span>,
+) =&gt; <span class="hljs-built_in">Promise</span>&lt;<span class="hljs-built_in">Array</span>&lt;<span class="hljs-built_in">number</span>&gt;&gt;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="bzzfeedconfig"></a><a href="#bzzfeedconfig" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzFeedConfig</h3>
+<pre><code class="hljs css language-typescript"><span class="hljs-keyword">interface</span> BzzFeedConfig {
+  bzz: Bzz
+  signBytes?: SignBytesFunc
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="constants"></a><a href="#constants" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constants</h2>
+<ul>
+<li><code>FEED_MAX_DATA_LENGTH: number</code>: the max byte length a feed chunk data be (4KB minus headers and signature)</li>
+<li><code>FEED_ZERO_TOPIC: hexValue</code>: empty feed topic (zero-filled)</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="api"></a><a href="#api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API</h2>
+<h3><a class="anchor" aria-hidden="true" id="createfeeddigest"></a><a href="#createfeeddigest" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>createFeedDigest()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedmetadata"><code>meta: FeedMetadata</code></a></li>
+<li><a href="/docs/hex#hexinput"><code>data: hexInput</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Array&lt;number&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="feedmetatobuffer"></a><a href="#feedmetatobuffer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>feedMetaToBuffer()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedmetadata"><code>meta: FeedMetadata</code></a></li>
+</ol>
+<p><strong>Returns</strong> <a href="https://nodejs.org/api/buffer.html#buffer_class_buffer"><code>Buffer</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="feedmetatohash"></a><a href="#feedmetatohash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>feedMetaToHash()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedmetadata"><code>meta: FeedMetadata</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getfeedtopic"></a><a href="#getfeedtopic" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getFeedTopic()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedtopicparams"><code>params?: FeedTopicParams = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <a href="/docs/hex#hexvalue"><code>hexValue</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="getfeedmetadata"></a><a href="#getfeedmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getFeedMetadata()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>input: FeedID | FeedMetadata | FeedParams</code></li>
+</ol>
+<p><strong>Returns</strong> <a href="#feedmetadata"><code>FeedMetadata interface</code></a> (Object or <a href="#feedid-class"><code>FeedID</code> instance</a>)</p>
+<h2><a class="anchor" aria-hidden="true" id="feedid-class"></a><a href="#feedid-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedID class</h2>
+<p>Implements the <a href="#feedparams"><code>FeedParams</code></a> and <a href="#feedmetadata"><code>FeedMetadata</code></a> interfaces.</p>
+<h3><a class="anchor" aria-hidden="true" id="new-feedid"></a><a href="#new-feedid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new FeedID()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedparams"><code>params: FeedParams</code></a></li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="feedidfrom"></a><a href="#feedidfrom" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedID.from()</h3>
+<p>Creates a new <code>FeedID</code> from a <a href="https://nodejs.org/api/buffer.html#buffer_class_buffer"><code>Buffer</code></a> instance, an existing <code>FeedID</code> instance or an Object implementing the <a href="#feedmetadata"><code>FeedMetadata</code></a> or <a href="#feedparams"><code>FeedParams</code></a> interface.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>input: Buffer | FeedID | FeedMetadata | FeedParams</code></li>
+</ol>
+<p><strong>Returns</strong> <code>FeedID</code></p>
+<h3><a class="anchor" aria-hidden="true" id="feedidfrombuffer"></a><a href="#feedidfrombuffer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedID.fromBuffer()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>buffer: Buffer</code>: a <a href="https://nodejs.org/api/buffer.html#buffer_class_buffer"><code>Buffer</code></a> instance</li>
+</ol>
+<p><strong>Returns</strong> <code>FeedID</code></p>
+<h3><a class="anchor" aria-hidden="true" id="feedidfrommetadata"></a><a href="#feedidfrommetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FeedID.fromMetadata()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedmetadata"><code>meta: FeedMetadata</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>FeedID</code></p>
+<h3><a class="anchor" aria-hidden="true" id="user"></a><a href="#user" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.user</h3>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="topic"></a><a href="#topic" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.topic</h3>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="time"></a><a href="#time" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.time</h3>
+<p><strong>Returns</strong> <code>number</code></p>
+<h3><a class="anchor" aria-hidden="true" id="level"></a><a href="#level" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.level</h3>
+<p><strong>Returns</strong> <code>number</code></p>
+<h3><a class="anchor" aria-hidden="true" id="protocolversion"></a><a href="#protocolversion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.protocolVersion</h3>
+<p><strong>Returns</strong> <code>number</code></p>
+<h3><a class="anchor" aria-hidden="true" id="feed-1"></a><a href="#feed-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.feed</h3>
+<p><strong>Returns</strong> <a href="#feed"><code>Feed</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="epoch"></a><a href="#epoch" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.epoch</h3>
+<p><strong>Returns</strong> <a href="#feedepoch"><code>FeedEpoch</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="clone"></a><a href="#clone" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.clone()</h3>
+<p><strong>Returns</strong> <code>FeedID</code></p>
+<h3><a class="anchor" aria-hidden="true" id="tobuffer"></a><a href="#tobuffer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.toBuffer()</h3>
+<p><strong>Returns</strong> <a href="https://nodejs.org/api/buffer.html#buffer_class_buffer"><code>Buffer</code></a></p>
+<h3><a class="anchor" aria-hidden="true" id="tohash"></a><a href="#tohash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.toHash()</h3>
+<p><strong>Returns</strong> <code>string</code></p>
+<h2><a class="anchor" aria-hidden="true" id="bzzfeed-class"></a><a href="#bzzfeed-class" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BzzFeed class</h2>
+<h3><a class="anchor" aria-hidden="true" id="new-bzzfeed"></a><a href="#new-bzzfeed" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new BzzFeed()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#bzzfeedconfig"><code>config: BzzFeedConfig</code></a>, see below</li>
+</ol>
+<p><strong>Configuration</strong></p>
+<ul>
+<li><a href="/docs/bzz#bzz-class"><code>bzz: Bzz</code></a>: Bzz instance</li>
+<li><a href="#signbytesfunc"><code>signBytes?: SignBytesFunc</code></a>: needed in order to use feed updates APIs</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="geturl"></a><a href="#geturl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getURL()</h3>
+<p>Returns the Swarm URL for a feed based on the provided arguments.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams | FeedUpdateParams</code>: ENS name, hash of the feed manifest, <a href="#feedparams">feed parameters</a> or <a href="#feedupdateparams">feed update parameters</a></li>
+<li><code>flag?: 'meta'</code></li>
+</ol>
+<p><strong>Returns</strong> <code>string</code></p>
+<h3><a class="anchor" aria-hidden="true" id="createmanifest"></a><a href="#createmanifest" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.createManifest()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedparams"><code>params: FeedParams</code></a></li>
+<li><a href="/docs/bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getmetadata"></a><a href="#getmetadata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getMetadata()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;FeedMetadata&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getchunk"></a><a href="#getchunk" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getChunk()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: : ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getcontenthash"></a><a href="#getcontenthash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getContentHash()</h3>
+<p>Returns the feed contents hash.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: : ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getcontent"></a><a href="#getcontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getContent()</h3>
+<p>Returns the feed contents <code>Response</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: : ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="pollchunk"></a><a href="#pollchunk" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pollChunk()</h3>
+<p>Returns a <a href="https://rxjs.dev/api/index/class/Observable">RxJS <code>Observable</code></a> emitting the <code>Response</code> objects or <code>null</code> depending on the <code>options</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#pollfeedoptions"><code>options: PollFeedOptions</code></a>, see below</li>
+</ol>
+<p><strong>Options</strong></p>
+<ul>
+<li><code>interval: number</code>: the number of milliseconds between each query</li>
+<li><code>immediate?: boolean</code>: by default, a query will be performed as soon as the returned <code>Observable</code> is subscribed to. Set this option to <code>false</code> in order to wait for the first <code>interval</code> tick to perform the first query.</li>
+<li><code>whenEmpty?: 'accept' | 'ignore' | 'error'</code>: behaviour to apply when the feed response is an HTTP 404 status: <code>accept</code> (default) will push a <code>null</code> value to the subscriber, <code>ignore</code> will not push any empty value, and <code>error</code> will push the error response to the subscriber, causing it to error</li>
+<li><code>trigger?: Observable&lt;void&gt;</code>: provides an external <code>Observable</code> that can be used to execute queries</li>
+</ul>
+<p><strong>Returns</strong> <code>Observable&lt;Response | null&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="pollcontenthash"></a><a href="#pollcontenthash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pollContentHash()</h3>
+<p>Returns a <a href="https://rxjs.dev/api/index/class/Observable">RxJS <code>Observable</code></a> emitting the contents hash or <code>null</code> depending on the <code>options</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="#pollcontenthashoptions"><code>options: PollContentHashOptions</code></a>, see below</li>
+</ol>
+<p><strong>Options</strong></p>
+<ul>
+<li>All the options of <a href="#pollfeedchunk"><code>pollFeedChunk()</code></a>.</li>
+<li><code>changedOnly?: boolean</code>: set it to <code>true</code> in order to only push when the content has changed rather than on every interval tick</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="pollcontent"></a><a href="#pollcontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.pollContent()</h3>
+<p>Returns a <a href="https://rxjs.dev/api/index/class/Observable">RxJS <code>Observable</code></a> emitting the contents <code>Response</code> objects or <code>null</code> depending on the <code>options</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><a href="#pollcontentoptions"><code>options: PollContentOptions</code></a>: includes all the options of <a href="#pollfeedcontenthash"><code>pollFeedContentHash()</code></a> as well as <a href="/docs/bzz#downloadoptions"><code>DownloadOptions</code></a>.</li>
+</ol>
+<p><strong>Returns</strong> <code>Observable&lt;Response | null&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="postsignedchunk"></a><a href="#postsignedchunk" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.postSignedChunk()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedupdateparams"><code>params: FeedUpdateParams</code></a></li>
+<li><code>body: Buffer</code></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="postchunk"></a><a href="#postchunk" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.postChunk()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><a href="#feedmetadata"><code>meta: FeedMetadata</code></a></li>
+<li><code>data: string | Record&lt;string, any&gt; | Buffer</code></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+<li><code>signParams?: any</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="setchunk"></a><a href="#setchunk" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.setChunk()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><code>data: string | Record&lt;string, any&gt; | Buffer</code></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+<li><code>signParams?: any</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="setcontenthash"></a><a href="#setcontenthash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.setContentHash()</h3>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><code>contentHash: string</code></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+<li><code>signParams?: any</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="setcontent"></a><a href="#setcontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.setContent()</h3>
+<p>This method implements the flow of uploading the provided <code>data</code> and updating the feed identified by the provided <code>userOrHash</code> and eventually <code>feedParams</code> with the immutable hash of the uploaded contents, and returns this hash.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>hashOrParams: string | FeedParams</code>: ENS name, hash of the feed manifest or <a href="#feedparams">feed parameters</a></li>
+<li><code>data: string | Record&lt;string, any&gt; | Buffer</code></li>
+<li><a href="/docs/bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+<li><code>signParams?: any</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h2><a class="anchor" aria-hidden="true" id="raw-feeds-methods"></a><a href="#raw-feeds-methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Raw feeds methods</h2>
+<p>Raw feeds can be used to skip Swarm's built-in feed lookup mechanism and use the underlying resource interface directly. Internally Swarm uses a separate address space for <code>bzz-feed</code>s and they can be addressed with <code>FeedParams</code>. When uploading content, a node calculates the hash from the <code>FeedParams</code> and stores the content so that it can be acccessed with that hash.</p>
+<p>As with the normal feed API we can only store one chunk worth of data (4KB) in a feed chunk, so the best practice is to store a content hash in the feed chunk. Sometimes it can be useful to work directly with the content hashes and sometimes we just need the content. Hence we have two versions of each function when downloading or uploading the data.</p>
+<h3><a class="anchor" aria-hidden="true" id="getrawcontenthash"></a><a href="#getrawcontenthash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getRawContentHash()</h3>
+<p>This method downloads the hash that can be found on the address specified by the <code>FeedParams</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>params: FeedParams</code> <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#fetchoptions"><code>options?: FetchOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="getrawcontent"></a><a href="#getrawcontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.getRawContent()</h3>
+<p>This method downloads the contents of the hash that can be found on the address specified by the <code>FeedParams</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>params: FeedParams</code> <a href="#feedparams">feed parameters</a></li>
+<li><a href="/docs/bzz#downloadoptions"><code>options?: DownloadOptions = {}</code></a></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="setrawcontenthash"></a><a href="#setrawcontenthash" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.setRawContentHash()</h3>
+<p>This method uploads a hash to the raw feed that can be found on the address specified by the <code>FeedParams</code>.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>params: FeedParams</code> <a href="#feedparams">feed parameters</a></li>
+<li><code>contentHash: string</code></li>
+<li><a href="/docs/bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+<li><code>signParams?: any</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;Response&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="setrawcontent"></a><a href="#setrawcontent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.setRawContent()</h3>
+<p>This method implements the flow of uploading the provided <code>data</code> and updating the raw feed identified by the provided <code>FeedParams</code> with the immutable hash of the uploaded contents, and returns this hash.</p>
+<p><strong>Arguments</strong></p>
+<ol>
+<li><code>params: FeedParams</code> <a href="#feedparams">feed parameters</a></li>
+<li><code>data: string | Buffer | DirectoryData</code></li>
+<li><a href="/docs/bzz#uploadoptions"><code>options?: UploadOptions = {}</code></a></li>
+<li><code>signParams?: any</code></li>
+</ol>
+<p><strong>Returns</strong> <code>Promise&lt;string&gt;</code></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/bzz"><span class="arrow-prev">← </span><span>Bzz API</span></a><a class="docs-next button" href="/docs/bzz-fs"><span>Bzz FS API</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installation">Installation</a></li><li><a href="#usage">Usage</a></li><li><a href="#interfaces-and-types">Interfaces and types</a><ul class="toc-headings"><li><a href="#feed">Feed</a></li><li><a href="#feedepoch">FeedEpoch</a></li><li><a href="#feedmetadata">FeedMetadata</a></li><li><a href="#feedtopicparams">FeedTopicParams</a></li><li><a href="#pollfeedoptions">PollFeedOptions</a></li><li><a href="#pollfeedcontenthashoptions">PollFeedContentHashOptions</a></li><li><a href="#pollfeedcontentoptions">PollFeedContentOptions</a></li><li><a href="#feedparams">FeedParams</a></li><li><a href="#feedupdateparams">FeedUpdateParams</a></li><li><a href="#signbytesfunc">SignBytesFunc</a></li><li><a href="#bzzfeedconfig">BzzFeedConfig</a></li></ul></li><li><a href="#constants">Constants</a></li><li><a href="#api">API</a><ul class="toc-headings"><li><a href="#createfeeddigest">createFeedDigest()</a></li><li><a href="#feedmetatobuffer">feedMetaToBuffer()</a></li><li><a href="#feedmetatohash">feedMetaToHash()</a></li><li><a href="#getfeedtopic">getFeedTopic()</a></li><li><a href="#getfeedmetadata">getFeedMetadata()</a></li></ul></li><li><a href="#feedid-class">FeedID class</a><ul class="toc-headings"><li><a href="#new-feedid">new FeedID()</a></li><li><a href="#feedidfrom">FeedID.from()</a></li><li><a href="#feedidfrombuffer">FeedID.fromBuffer()</a></li><li><a href="#feedidfrommetadata">FeedID.fromMetadata()</a></li><li><a href="#user">.user</a></li><li><a href="#topic">.topic</a></li><li><a href="#time">.time</a></li><li><a href="#level">.level</a></li><li><a href="#protocolversion">.protocolVersion</a></li><li><a href="#feed-1">.feed</a></li><li><a href="#epoch">.epoch</a></li><li><a href="#clone">.clone()</a></li><li><a href="#tobuffer">.toBuffer()</a></li><li><a href="#tohash">.toHash()</a></li></ul></li><li><a href="#bzzfeed-class">BzzFeed class</a><ul class="toc-headings"><li><a href="#new-bzzfeed">new BzzFeed()</a></li><li><a href="#geturl">.getURL()</a></li><li><a href="#createmanifest">.createManifest()</a></li><li><a href="#getmetadata">.getMetadata()</a></li><li><a href="#getchunk">.getChunk()</a></li><li><a href="#getcontenthash">.getContentHash()</a></li><li><a href="#getcontent">.getContent()</a></li><li><a href="#pollchunk">.pollChunk()</a></li><li><a href="#pollcontenthash">.pollContentHash()</a></li><li><a href="#pollcontent">.pollContent()</a></li><li><a href="#postsignedchunk">.postSignedChunk()</a></li><li><a href="#postchunk">.postChunk()</a></li><li><a href="#setchunk">.setChunk()</a></li><li><a href="#setcontenthash">.setContentHash()</a></li><li><a href="#setcontent">.setContent()</a></li></ul></li><li><a href="#raw-feeds-methods">Raw feeds methods</a><ul class="toc-headings"><li><a href="#getrawcontenthash">.getRawContentHash()</a></li><li><a href="#getrawcontent">.getRawContent()</a></li><li><a href="#setrawcontenthash">.setRawContentHash()</a></li><li><a href="#setrawcontent">.setRawContent()</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/getting-started">Getting Started</a><a href="/docs/swarm-client">API Reference</a><a href="/docs/cli">CLI</a></div><div><h5>Community</h5><a href="https://gitter.im/MainframeHQ/erebos">Gitter chat</a><a href="https://github.com/MainframeHQ/erebos">GitHub repository</a><a class="github-button" href="https://github.com/MainframeHQ/erebos" data-icon="octicon-star" data-count-href="/MainframeHQ/erebos/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div><div><h5>Swarm</h5><a href="https://swarm-guide.readthedocs.io/en/latest/index.html" target="_blank" rel="noreferrer noopener">Official documentation</a><a href="https://swarm-gateways.net/" target="_blank" rel="noreferrer noopener">HTTP gateway</a><a href="https://beehive.ethswarm.org" target="_blank" rel="noreferrer noopener">Development chat</a></div></section><section class="copyright"><img src="/img/mainframe.png" class="mainframe-logo"/></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'dd61149aed25a2c9c7e6f13d6b0632c0',
+                indexName: 'erebos',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {"facetFilters":["language:en"]}
+              });
+            </script></body></html>
