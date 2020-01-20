@@ -18,10 +18,6 @@ export interface FeedTopicParams {
     name?: string;
     topic?: string;
 }
-export interface FetchOptions {
-    headers?: Record<string, any>;
-    timeout?: number;
-}
 export interface PollFeedOptions extends PollOptions {
     whenEmpty?: 'accept' | 'ignore' | 'error';
     trigger?: Observable<void>;
@@ -30,28 +26,6 @@ export interface PollFeedContentHashOptions extends PollFeedOptions {
     changedOnly?: boolean;
 }
 export interface PollFeedContentOptions extends DownloadOptions, PollFeedContentHashOptions {
-}
-export interface PinOptions extends FetchOptions {
-    download?: boolean;
-    raw?: boolean;
-}
-export interface PinnedFile {
-    address: string;
-    counter: number;
-    raw: boolean;
-    size: number;
-}
-export interface Tag {
-    uid: number;
-    name: string;
-    address: string;
-    total: number;
-    split: number;
-    seen: number;
-    stored: number;
-    sent: number;
-    synced: number;
-    startedAt: Date;
 }
 export interface FeedParams {
     user: string;

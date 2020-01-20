@@ -1,5 +1,5 @@
 import { Response } from '@erebos/bzz';
-import { BzzFeed, FeedParams } from '@erebos/bzz-feed';
+import { BzzFeed, Feed, FeedParams } from '@erebos/bzz-feed';
 import { DataListReader, DataListWriter } from '@erebos/feed-list';
 import { Change, Doc } from 'automerge';
 import { DocSubscriber } from './DocSubscriber';
@@ -28,17 +28,17 @@ export interface DataPayload extends DataContent, ProtocolContent {
 export interface MetaPayload extends MetaContent, ProtocolContent {
 }
 export interface DocFeeds {
-    data: FeedParams;
-    meta: FeedParams;
+    data: Feed;
+    meta: Feed;
 }
 export interface DocSerialized {
     docString: string;
     dataFeed: FeedParams;
-    metaFeed: FeedParams;
+    metaFeed: Feed;
 }
 export interface LoadDocReaderParams<B extends Bzz = Bzz> {
     bzz: B;
-    feed: FeedParams;
+    feed: Feed;
 }
 export interface FromJSONDocReaderParams<B extends Bzz = Bzz> extends DocSerialized {
     bzz: B;
@@ -46,54 +46,51 @@ export interface FromJSONDocReaderParams<B extends Bzz = Bzz> extends DocSeriali
 export interface DocReaderParams<T, B extends Bzz = Bzz> {
     bzz: B;
     doc: Doc<T>;
-    feed: FeedParams;
+    feed: Feed;
     list: DataListReader<DataPayload, B>;
     time: number;
 }
-export interface DocSubscriberParams<T, B extends Bzz = Bzz> extends DocReaderParams<T, B> {
+interface SubscriberParams {
     pullInterval: number;
 }
-export interface FromJSONDocSubscriberParams<B extends Bzz = Bzz> extends FromJSONDocReaderParams<B> {
-    pullInterval: number;
+export interface DocSubscriberParams<T, B extends Bzz = Bzz> extends DocReaderParams<T, B>, SubscriberParams {
 }
-export interface LoadDocSubscriberParams<B extends Bzz = Bzz> extends LoadDocReaderParams<B> {
-    pullInterval: number;
+export interface FromJSONDocSubscriberParams<B extends Bzz = Bzz> extends FromJSONDocReaderParams<B>, SubscriberParams {
 }
-export interface CreateDocWriterParams<B extends Bzz = Bzz> {
+export interface LoadDocSubscriberParams<B extends Bzz = Bzz> extends LoadDocReaderParams<B>, SubscriberParams {
+}
+interface WriterParams {
+    signParams?: any;
+    snapshotFrequency?: number;
+}
+export interface CreateDocWriterParams<B extends Bzz = Bzz> extends WriterParams {
     bzz: B;
     feed: FeedFactoryParams;
-    snapshotFrequency?: number;
 }
 export interface InitDocWriterParams<T, B extends Bzz = Bzz> extends CreateDocWriterParams<B> {
     doc: T;
 }
-export interface FromJSONDocWriterParams<B extends Bzz = Bzz> extends FromJSONDocReaderParams<B> {
-    snapshotFrequency?: number;
+export interface FromJSONDocWriterParams<B extends Bzz = Bzz> extends FromJSONDocReaderParams<B>, WriterParams {
 }
-export interface LoadDocWriterParams<B extends Bzz = Bzz> extends LoadDocReaderParams<B> {
-    snapshotFrequency?: number;
+export interface LoadDocWriterParams<B extends Bzz = Bzz> extends LoadDocReaderParams<B>, WriterParams {
 }
-export interface DocWriterParams<T, B extends Bzz = Bzz> {
+export interface DocWriterParams<T, B extends Bzz = Bzz> extends WriterParams {
     bzz: B;
     doc: Doc<T>;
-    feed: FeedParams;
+    feed: Feed;
     list: DataListWriter<DataPayload, B>;
-    snapshotFrequency?: number;
 }
-export interface InitDocSynchronizerParams<T, B extends Bzz = Bzz> extends InitDocWriterParams<T, B> {
-    pullInterval: number;
+interface SynchronizerParams extends SubscriberParams {
     pushInterval?: number;
-    sources?: Array<FeedParams>;
 }
-export interface FromJSONDocSynchronizerParams<B extends Bzz = Bzz> extends FromJSONDocWriterParams<B> {
-    pullInterval: number;
-    pushInterval?: number;
+export interface InitDocSynchronizerParams<T, B extends Bzz = Bzz> extends InitDocWriterParams<T, B>, SynchronizerParams {
+    sources?: Array<Feed>;
+}
+export interface FromJSONDocSynchronizerParams<B extends Bzz = Bzz> extends FromJSONDocWriterParams<B>, SynchronizerParams {
     sources?: Array<DocSerialized>;
 }
-export interface LoadDocSynchronizerParams<B extends Bzz = Bzz> extends LoadDocWriterParams<B> {
-    pullInterval: number;
-    pushInterval?: number;
-    sources?: Array<FeedParams>;
+export interface LoadDocSynchronizerParams<B extends Bzz = Bzz> extends LoadDocWriterParams<B>, SynchronizerParams {
+    sources?: Array<Feed>;
 }
 export interface DocSynchronizerParams<T, B extends Bzz = Bzz> extends DocWriterParams<T, B> {
     pushInterval?: number;
@@ -102,3 +99,4 @@ export interface DocSynchronizerParams<T, B extends Bzz = Bzz> extends DocWriter
 export interface DocSynchronizerSerialized extends DocSerialized {
     sources: Array<DocSerialized>;
 }
+export {};

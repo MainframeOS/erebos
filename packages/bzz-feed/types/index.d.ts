@@ -1,9 +1,9 @@
 /// <reference types="node" />
-import { Bzz, DownloadOptions, Response, UploadOptions } from '@erebos/bzz';
+import { Bzz, DownloadOptions, FetchOptions, Response, UploadOptions } from '@erebos/bzz';
 import { hexInput, hexValue } from '@erebos/hex';
 import { Observable } from 'rxjs';
 import { FeedID } from './feed';
-import { BzzFeedConfig, FeedMetadata, FeedParams, FeedUpdateParams, FetchOptions, PollFeedOptions, PollFeedContentHashOptions, PollFeedContentOptions, SignBytesFunc } from './types';
+import { BzzFeedConfig, FeedMetadata, FeedParams, FeedUpdateParams, PollFeedOptions, PollFeedContentHashOptions, PollFeedContentOptions, SignBytesFunc } from './types';
 export * from './feed';
 export * from './types';
 export declare class BzzFeed<S, R extends Response<S>> {

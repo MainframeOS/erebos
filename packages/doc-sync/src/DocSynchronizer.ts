@@ -19,7 +19,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
   static async init<T, B extends Bzz = Bzz>(
     params: InitDocSynchronizerParams<T, B>,
   ): Promise<DocSynchronizer<T, B>> {
-    const { bzz, pullInterval } = params
+    const { bzz, pullInterval, signParams } = params
     const feeds = getDocFeeds(params.feed)
     const loadSources = (params.sources ?? []).map(async feed => {
       return await DocSubscriber.load<T, B>({ bzz, feed, pullInterval })
@@ -31,8 +31,10 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
       list: new DataListWriter<DataPayload, B>({
         bzz,
         feed: feeds.data,
+        signParams,
       }),
       pushInterval: params.pushInterval,
+      signParams,
       snapshotFrequency: params.snapshotFrequency,
       sources: await Promise.all(loadSources),
     })
@@ -43,7 +45,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
   static fromJSON<T, B extends Bzz = Bzz>(
     params: FromJSONDocSynchronizerParams<B>,
   ): DocSynchronizer<T, B> {
-    const { bzz, pullInterval } = params
+    const { bzz, pullInterval, signParams } = params
     const sources = (params.sources ?? []).map(sourceParams => {
       return DocSubscriber.fromJSON<T, B>({
         ...sourceParams,
@@ -56,9 +58,11 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
       doc: Automerge.load<T>(params.docString),
       feed: params.metaFeed,
       list: new DataListWriter<DataPayload, B>({
-        bzz: params.bzz,
+        bzz,
         feed: params.dataFeed,
+        signParams,
       }),
+      signParams,
       sources,
       pushInterval: params.pushInterval,
     })
@@ -67,7 +71,7 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
   static async load<T, B extends Bzz = Bzz>(
     params: LoadDocSynchronizerParams<B>,
   ): Promise<DocSynchronizer<T, B>> {
-    const { bzz, feed, pullInterval } = params
+    const { bzz, feed, pullInterval, signParams } = params
     const loadSources = (params.sources ?? []).map(async sourceFeed => {
       return await DocSubscriber.load<T, B>({
         bzz,
@@ -86,7 +90,9 @@ export class DocSynchronizer<T, B extends Bzz = Bzz> extends DocWriter<T, B> {
       list: new DataListWriter<DataPayload, B>({
         bzz,
         feed: meta.dataFeed,
+        signParams,
       }),
+      signParams,
       pushInterval: params.pushInterval,
       sources,
     })

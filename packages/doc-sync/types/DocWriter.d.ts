@@ -13,6 +13,7 @@ export declare class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
     protected list: DataListWriter<DataPayload, B>;
     protected pushedDoc: Doc<T> | null;
     protected pushQueue: Promise<string> | null;
+    protected signParams: any | undefined;
     protected snapshot: MetaSnapshot | undefined;
     protected snapshotFrequency: number | null;
     constructor(params: DocWriterParams<T, B>);

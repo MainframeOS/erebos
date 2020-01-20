@@ -1,4 +1,4 @@
-import { FeedParams } from '@erebos/bzz-feed'
+import { Feed } from '@erebos/bzz-feed'
 import { DataListReader } from '@erebos/feed-list'
 import Automerge, { Doc } from 'automerge'
 import { BehaviorSubject } from 'rxjs'
@@ -49,7 +49,7 @@ export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
   }
 
   protected bzz: B
-  protected feed: FeedParams
+  protected feed: Feed
   protected list: DataListReader<DataPayload, B>
   protected time: number
   private pullPromise: Promise<boolean> | null = null
@@ -62,7 +62,7 @@ export class DocReader<T, B extends Bzz = Bzz> extends BehaviorSubject<Doc<T>> {
     this.time = params.time
   }
 
-  public get metaFeed(): FeedParams {
+  public get metaFeed(): Feed {
     return this.feed
   }
 

@@ -1,3 +1,8 @@
+## v0.13.2 (2020-01-20)
+
+- Fix providing the `signParams` to `DataListWriter` constructors in `@erebos/doc-sync`.
+- Remove duplicate `@erebos/bzz` types from `@erebos/bzz-feed`.
+
 ## v0.13.1 (2020-01-16)
 
 - Fix type signature of the `write()` method of `TimelineWriter`.

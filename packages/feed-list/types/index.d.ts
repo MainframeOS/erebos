@@ -1,5 +1,5 @@
-import { Response } from '@erebos/bzz';
-import { BzzFeed, FeedID, FeedParams, FetchOptions } from '@erebos/bzz-feed';
+import { FetchOptions, Response } from '@erebos/bzz';
+import { BzzFeed, FeedID, FeedParams } from '@erebos/bzz-feed';
 import { Hex } from '@erebos/hex';
 export declare const MAX_CHUNK_BYTE_LENGTH: number;
 export declare const MAX_CHUNK_VALUE_LENGTH: number;

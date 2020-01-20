@@ -1,4 +1,5 @@
 import { getFeedTopic } from '@erebos/bzz-feed'
+import { hexValue } from '@erebos/hex'
 import { DataListWriter } from '@erebos/feed-list'
 import Automerge, { Change, ChangeFn, Doc } from 'automerge'
 
@@ -30,11 +31,11 @@ export const META_FEED_NAME = `${PROTOCOL}/meta`
 export function getDocFeeds(feed: FeedFactoryParams): DocFeeds {
   return {
     data: {
-      user: feed.user,
+      user: feed.user as hexValue,
       topic: getFeedTopic({ topic: feed.topic, name: DATA_FEED_NAME }),
     },
     meta: {
-      user: feed.user,
+      user: feed.user as hexValue,
       topic: getFeedTopic({ topic: feed.topic, name: META_FEED_NAME }),
     },
   }
@@ -52,7 +53,9 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: feeds.data,
+        signParams: params.signParams,
       }),
+      signParams: params.signParams,
       snapshotFrequency: params.snapshotFrequency,
     })
   }
@@ -68,7 +71,9 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: feeds.data,
+        signParams: params.signParams,
       }),
+      signParams: params.signParams,
       snapshotFrequency: params.snapshotFrequency,
     })
     await writer.push()
@@ -85,7 +90,9 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
       list: new DataListWriter<DataPayload, B>({
         bzz: params.bzz,
         feed: params.dataFeed,
+        signParams: params.signParams,
       }),
+      signParams: params.signParams,
       snapshotFrequency: params.snapshotFrequency,
     })
   }
@@ -93,18 +100,20 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
   static async load<T, B extends Bzz = Bzz>(
     params: LoadDocWriterParams<B>,
   ): Promise<DocWriter<T, B>> {
-    const { bzz, feed, snapshotFrequency } = params
+    const { bzz, feed, signParams, snapshotFrequency } = params
     const doc = Automerge.init<T>()
     const meta = await downloadMeta(bzz, feed)
     const list = new DataListWriter<DataPayload, B>({
       bzz,
       feed: meta.dataFeed,
+      signParams,
     })
     const writer = new DocWriter<T, B>({
       bzz,
       doc,
       feed,
       list,
+      signParams,
       snapshotFrequency,
     })
     await writer.pull()
@@ -114,12 +123,14 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
   protected list: DataListWriter<DataPayload, B>
   protected pushedDoc: Doc<T> | null = null
   protected pushQueue: Promise<string> | null = null
+  protected signParams: any | undefined
   protected snapshot: MetaSnapshot | undefined
   protected snapshotFrequency: number | null
 
   public constructor(params: DocWriterParams<T, B>) {
     super({ ...params, time: params.list.length })
     this.list = params.list
+    this.signParams = params.signParams
     this.snapshotFrequency = params.snapshotFrequency || null
   }
 
@@ -156,10 +167,12 @@ export class DocWriter<T, B extends Bzz = Bzz> extends DocReader<T, B> {
     }
 
     // Update the metadata
-    return await uploadMeta(this.bzz, this.feed, {
-      dataFeed,
-      snapshot: this.snapshot,
-    })
+    return await uploadMeta(
+      this.bzz,
+      this.feed,
+      { dataFeed, snapshot: this.snapshot },
+      this.signParams,
+    )
   }
 
   public async push(): Promise<string | null> {

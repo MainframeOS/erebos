@@ -96,11 +96,11 @@ interface MetaSnapshot {
 
 ### MetaContent
 
-Uses [FeedParams](bzz-feed.md#feedparams) and [MetaSnapshot](#metasnapshot)
+Uses [Feed](bzz-feed.md#feed) and [MetaSnapshot](#metasnapshot)
 
 ```typescript
 interface MetaContent {
-  dataFeed: FeedParams
+  dataFeed: Feed
   snapshot?: MetaSnapshot | undefined
 }
 ```
@@ -132,35 +132,35 @@ interface MetaPayload extends MetaContent, ProtocolContent {}
 
 ### DocFeeds
 
-Uses [FeedParams](bzz-feed.md#feedparams)
+Uses [Feed](bzz-feed.md#feed)
 
 ```typescript
 interface DocFeeds {
-  data: FeedParams
-  meta: FeedParams
+  data: Feed
+  meta: Feed
 }
 ```
 
 ### DocSerialized
 
-Uses [FeedParams](bzz-feed.md#feedparams)
+Uses [Feed](bzz-feed.md#feed) and [FeedParams](bzz-feed.md#feedparams)
 
 ```typescript
 interface DocSerialized {
   docString: string
   dataFeed: FeedParams
-  metaFeed: FeedParams
+  metaFeed: Feed
 }
 ```
 
 ### LoadDocReaderParams
 
-Uses [FeedParams](bzz-feed.md#feedparams) and [Bzz](#bzz)
+Uses [Feed](bzz-feed.md#feed) and [Bzz](#bzz)
 
 ```typescript
 interface LoadDocReaderParams<B extends Bzz = Bzz> {
   bzz: B
-  feed: FeedParams // params for meta feed
+  feed: Feed // meta feed
 }
 ```
 
@@ -178,13 +178,13 @@ interface FromJSONDocReaderParams<B extends Bzz = Bzz> extends DocSerialized {
 
 ### DocReaderParams
 
-Uses [FeedParams](bzz-feed.md#feedparams), [DataListReader class](feed-list.md#datalistreader-class), [Bzz](#bzz), [Doc](#doc) and [DataPayload](#datapayload)
+Uses [Feed](bzz-feed.md#feed), [DataListReader class](feed-list.md#datalistreader-class), [Bzz](#bzz), [Doc](#doc) and [DataPayload](#datapayload)
 
 ```typescript
 interface DocReaderParams<T, B extends Bzz = Bzz> {
   bzz: B
   doc: Doc<T>
-  feed: FeedParams
+  feed: Feed
   list: DataListReader<DataPayload, B>
   time: number
 }
@@ -237,6 +237,7 @@ Uses [Bzz](#bzz) and [FeedFactoryParams](#feedfactoryparams)
 interface CreateDocWriterParams<B extends Bzz = Bzz> {
   bzz: B
   feed: FeedFactoryParams
+  signParams?: any
   snapshotFrequency?: number
 }
 ```
@@ -263,6 +264,7 @@ Uses [Bzz](#bzz)
 ```typescript
 interface FromJSONDocWriterParams<B extends Bzz = Bzz>
   extends FromJSONDocReaderParams<B> {
+  signParams?: any
   snapshotFrequency?: number
 }
 ```
@@ -276,20 +278,22 @@ Uses [Bzz](#bzz)
 ```typescript
 interface LoadDocWriterParams<B extends Bzz = Bzz>
   extends LoadDocReaderParams<B> {
+  signParams?: any
   snapshotFrequency?: number
 }
 ```
 
 ### DocWriterParams
 
-Uses [FeedParams](bzz-feed.md#feedparams), [DataListWriter class](feed-list.md#datalistwriter-class), [Bzz](#bzz), [Doc](#doc) and [DataPayload](#datapayload)
+Uses [Feed](bzz-feed.md#feed), [DataListWriter class](feed-list.md#datalistwriter-class), [Bzz](#bzz), [Doc](#doc) and [DataPayload](#datapayload)
 
 ```typescript
 interface DocWriterParams<T, B extends Bzz = Bzz> {
   bzz: B
   doc: Doc<T>
-  feed: FeedParams
+  feed: Feed
   list: DataListWriter<DataPayload, B>
+  signParams?: any
   snapshotFrequency?: number
 }
 ```
@@ -298,14 +302,14 @@ interface DocWriterParams<T, B extends Bzz = Bzz> {
 
 Extends [InitDocWriterParams](#initdocwriterparams)
 
-Uses [FeedParams](bzz-feed.md#feedparams) and [Bzz](#bzz)
+Uses [Feed](bzz-feed.md#feed) and [Bzz](#bzz)
 
 ```typescript
 interface InitDocSynchronizerParams<T, B extends Bzz = Bzz>
   extends InitDocWriterParams<T, B> {
   pullInterval: number
   pushInterval?: number
-  sources?: Array<FeedParams>
+  sources?: Array<Feed>
 }
 ```
 
@@ -328,14 +332,14 @@ interface FromJSONDocSynchronizerParams<B extends Bzz = Bzz>
 
 Extends [LoadDocWriterParams](#loaddocwriterparams)
 
-Uses [FeedParams](bzz-feed.md#feedparams) and [Bzz](#bzz)
+Uses [Feed](bzz-feed.md#feed) and [Bzz](#bzz)
 
 ```typescript
 interface LoadDocSynchronizerParams<B extends Bzz = Bzz>
   extends LoadDocWriterParams<B> {
   pullInterval: number
   pushInterval?: number
-  sources?: Array<FeedParams>
+  sources?: Array<Feed>
 }
 ```
 
@@ -399,7 +403,7 @@ Creates a `DocReader` instance loading the remote document
 
 ### .metaFeed
 
-**Returns** [`FeedParams`](bzz-feed.md#feedparams)
+**Returns** [`Feed`](bzz-feed.md#feed)
 
 ### .pull()
 

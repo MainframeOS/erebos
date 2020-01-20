@@ -44,9 +44,15 @@ export async function uploadMeta<B extends Bzz = Bzz>(
   bzzFeed: B,
   feed: FeedParams,
   content: MetaContent,
+  signParams?: any,
 ): Promise<string> {
   const payload = { protocol: PROTOCOL, version: VERSION, ...content }
-  return await bzzFeed.setContent(feed, JSON.stringify(payload))
+  return await bzzFeed.setContent(
+    feed,
+    JSON.stringify(payload),
+    undefined,
+    signParams,
+  )
 }
 
 export async function downloadSnapshot<T, B extends Bzz = Bzz>(

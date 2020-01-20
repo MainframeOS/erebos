@@ -1,10 +1,9 @@
-import { Response, toSwarmHash } from '@erebos/bzz'
+import { FetchOptions, Response, toSwarmHash } from '@erebos/bzz'
 import {
   FEED_MAX_DATA_LENGTH,
   BzzFeed,
   FeedID,
   FeedParams,
-  FetchOptions,
 } from '@erebos/bzz-feed'
 import { Hex } from '@erebos/hex'
 

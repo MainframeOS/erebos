@@ -1,6 +1,6 @@
 {
   "name": "@erebos/bzz-feed",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "description": "Bzz Feed API",
   "repository": "git@github.com:MainframeHQ/erebos.git",
   "main": "cjs/index.js",

@@ -3,6 +3,7 @@ import {
   DocWriter,
   DocSubscriber,
   DocSynchronizer,
+  FeedFactoryParams,
   downloadDoc,
   downloadMeta,
 } from '@erebos/doc-sync'
@@ -12,13 +13,10 @@ import { DataListReader } from '@erebos/feed-list'
 import { pubKeyToAddress } from '@erebos/keccak256'
 import { createKeyPair, sign } from '@erebos/secp256k1'
 
-interface FeedUser {
-  user: string
-}
-
 interface Config {
   bzz: BzzFeed<any, any>
-  feed: FeedUser
+  feed: FeedFactoryParams
+  signParams: any
 }
 
 describe('doc-sync', () => {
@@ -27,11 +25,11 @@ describe('doc-sync', () => {
     const user = pubKeyToAddress(keyPair.getPublic('array'))
     const bzz = new BzzFeed({
       bzz: new BzzNode({ url: 'http://localhost:8500' }),
-      signBytes: (bytes: Array<number>) => {
-        return Promise.resolve(sign(bytes, keyPair))
+      signBytes: (bytes: Array<number>, key) => {
+        return Promise.resolve(sign(bytes, key))
       },
     })
-    return { bzz, feed: { user } }
+    return { bzz, feed: { user }, signParams: keyPair }
   }
 
   describe('DocReader and DocWriter', () => {
